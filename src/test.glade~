@@ -82,9 +82,6 @@
                   <object class="GtkFixed" id="fix_for_text">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <style>
-                      <class name="fixed"/>
-                    </style>
                   </object>
                 </child>
               </object>
