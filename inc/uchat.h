@@ -8,7 +8,14 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define INDENT_YOU(len) (len > 50 ? 174 : 574 - len*10)
+#define INDENT_YOU(len) (len > 49 ?  250 : (250 + len*10)/2)
+
+typedef struct s_size_alloc {
+    int x;
+    int y;
+    int width;
+    int height;
+}              t_rect;
 
 typedef struct s_data_users {
     GtkWidget *but;
@@ -40,6 +47,12 @@ typedef struct s_main {
     GtkWidget *fix_for_users;
     GtkWidget *fix_for_text;
     GtkWidget *lab_start;
+    GtkWidget *fix_cap;
+    GtkWidget *burger_but;
+    GtkWidget *burger_but_img;
+    GtkWidget *my_photo;
+    GtkWidget *frame_for_my_photo;
+    GtkWidget *friend_name;
     GtkBuilder *builder;
     char *text;
     struct s_data_users *users;
