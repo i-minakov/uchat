@@ -1,12 +1,27 @@
+window {
+	/* background:linear-gradient(0.25turn, #405170 10%, #09121D 100%); */
+	/* background-image: url("../img/фон2.png");
+    background-position: center; */
+    background-color: #121C2A;
+}
 .blocks {
     background-color: #121C2A;
     box-shadow: 2px 2px 15px 3px #0E1723;
 }
-.label {
+label * {
     color: white;
-    /* font: 13px; */
 }
-widget#l_name {
+.entry {
+    background-color: #0E1723;
+    color: whitesmoke;
+    padding-left: 20px;
+	padding-right: 20px;
+    border-radius: 50px;
+}
+button * {
     color: white;
-    font: 16px "nakula";
+}
+box * {
+    color: black;
+    border-radius: 7px;
 }

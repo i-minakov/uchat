@@ -2,20 +2,21 @@
 
 #include "../libmx/inc/libmx.h"
 #include <gtk/gtk.h>
-#include <gtk/gtkx.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 
-#define INDENT_YOU(len) (len > 49 ?  250 : (250 + len*10)/2)
-
-typedef struct s_size_alloc {
-    int x;
-    int y;
-    int width;
-    int height;
-}              t_rect;
+typedef struct s_message {
+    int count;
+    char *text;
+    GtkWidget *menu;
+    GtkWidget *file;
+    GtkWidget *label;
+    struct s_data_users *user;
+    struct s_message *prev;
+    struct s_message *next;
+}              t_msg;
 
 typedef struct s_data_users {
     GtkWidget *but;
@@ -34,6 +35,7 @@ typedef struct s_data_users {
     int count;
     int y_chat;
     struct s_main *m;
+    struct s_message *msg;
     struct s_data_users *head;
     struct s_data_users *next;
 }              t_user;
@@ -53,6 +55,10 @@ typedef struct s_main {
     GtkWidget *my_photo;
     GtkWidget *frame_for_my_photo;
     GtkWidget *friend_name;
+    GtkWidget *scrol_bar;
+    GtkWidget *edit_entry;
+    GtkWidget *file_ch;
+    GtkAdjustment *adj; 
     GtkBuilder *builder;
     char *text;
     struct s_data_users *users;
@@ -65,7 +71,10 @@ void reset_users(t_main *m);
 void send_but(GtkWidget *wid, t_main *m);
 void user_click(GtkWidget *wid, t_user *users);
 GtkWidget *resize_image(const char *path_to_image, uint width, uint heigh);
-
+void msg_pushfront(t_msg **head, char *text);
+void reset_l_mess(t_user *i);
 char *mx_strpart(char *str, int index);
+void free_msg(t_msg **list);
+t_msg *create_msg(char *text);
 
 #endif 

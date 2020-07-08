@@ -69,21 +69,25 @@
         <child>
           <object class="GtkScrolledWindow" id="scrol_text">
             <property name="width_request">673</property>
-            <property name="height_request">540</property>
+            <property name="height_request">520</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="hscrollbar_policy">never</property>
             <property name="shadow_type">in</property>
+            <property name="kinetic_scrolling">False</property>
             <child>
               <object class="GtkViewport" id="view_text">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <child>
                   <object class="GtkFixed" id="fix_for_text">
+                    <property name="name">fix_chat</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <style>
-                      <class name="fixed"/>
+                      <class name="label"/>
+                      <class name="box"/>
+                      <class name="button"/>
                     </style>
                   </object>
                 </child>
@@ -97,15 +101,20 @@
         </child>
         <child>
           <object class="GtkEntry" id="sms">
-            <property name="width_request">534</property>
-            <property name="height_request">50</property>
+            <property name="width_request">624</property>
+            <property name="height_request">51</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="primary_icon_pixbuf">attach.png</property>
             <property name="show_emoji_icon">True</property>
+            <property name="enable_emoji_completion">True</property>
+            <style>
+              <class name="entry"/>
+            </style>
           </object>
           <packing>
-            <property name="x">364</property>
-            <property name="y">643</property>
+            <property name="x">352</property>
+            <property name="y">629</property>
           </packing>
         </child>
         <child>
@@ -122,6 +131,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="opacity">0</property>
+                <property name="relief">none</property>
               </object>
               <packing>
                 <property name="x">260</property>
@@ -130,11 +140,41 @@
             </child>
           </object>
         </child>
+        <child>
+          <object class="GtkEntry" id="entry_edit">
+            <property name="width_request">624</property>
+            <property name="height_request">51</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="show_emoji_icon">True</property>
+            <property name="enable_emoji_completion">True</property>
+            <style>
+              <class name="entry"/>
+            </style>
+          </object>
+          <packing>
+            <property name="x">352</property>
+            <property name="y">629</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFileChooserButton" id="file_chooser">
+            <property name="width_request">-1</property>
+            <property name="height_request">-1</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="opacity">0.69999999999999996</property>
+            <property name="title" translatable="yes"/>
+          </object>
+          <packing>
+            <property name="x">310</property>
+            <property name="y">638</property>
+          </packing>
+        </child>
+        <style>
+          <class name="label"/>
+        </style>
       </object>
     </child>
-    <style>
-      <class name="blocks"/>
-      <class name="label"/>
-    </style>
   </object>
 </interface>
