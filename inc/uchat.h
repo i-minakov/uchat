@@ -89,5 +89,6 @@ void delete_msg(GtkMenuItem *item, t_msg *msg);
 void forward_msg(GtkMenuItem *item, t_msg *msg);
 void add_file(t_main *m, gchar *tmp);
 void init_signals(t_main *m);
+void save_file(GtkMenuItem *item, t_msg *msg);
 
 #endif 

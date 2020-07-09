@@ -84,15 +84,14 @@
                     <property name="name">fix_chat</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <style>
-                      <class name="label"/>
-                      <class name="box"/>
-                      <class name="button"/>
-                    </style>
                   </object>
                 </child>
               </object>
             </child>
+            <style>
+              <class name="box"/>
+              <class name="button"/>
+            </style>
           </object>
           <packing>
             <property name="x">327</property>
@@ -106,6 +105,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="primary_icon_pixbuf">attach.png</property>
+            <property name="secondary_icon_pixbuf">smile.png</property>
             <property name="show_emoji_icon">True</property>
             <property name="enable_emoji_completion">True</property>
             <style>
@@ -139,7 +139,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton">
+              <object class="GtkButton" id="dots_but">
                 <property name="label" translatable="yes">
 </property>
                 <property name="width_request">40</property>
@@ -147,6 +147,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
+                <property name="opacity">0</property>
               </object>
               <packing>
                 <property name="x">941</property>

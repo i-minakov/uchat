@@ -1,7 +1,4 @@
 window {
-	/* background:linear-gradient(0.25turn, #405170 10%, #09121D 100%); */
-	/* background-image: url("../img/фон2.png");
-    background-position: center; */
     background-color: #121C2A;
 }
 .blocks {
@@ -11,17 +8,13 @@ window {
 .label {
     color: white;
 }
+button * {
+    border-radius: 100px;
+}
 .entry {
     background-color: #0E1723;
     color: whitesmoke;
     padding-left: 20px;
 	padding-right: 20px;
     border-radius: 50px;
-}
-button * {
-    color: white;
-}
-box * {
-    color: black;
-    border-radius: 7px;
 }

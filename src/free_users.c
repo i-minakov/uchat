@@ -6,6 +6,10 @@ void free_msg(t_msg **list) {
 
     while(tmp) {
         hren = tmp->next;
+        if (tmp->text)
+            free(tmp->text);
+        if (tmp->filename)
+            free(tmp->filename);
         free(tmp->text);
         free(tmp);
         tmp = NULL;

@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
     t_main *m = (t_main *)malloc(sizeof(t_main) * 100);
     m->cap = (t_cap *)malloc(sizeof(t_cap) * 100);
     m->users = NULL;
-
+    
     for (int i = atoi(argv[1]); i > 0; i--)
         user_pushback(&m->users);
     gtk_init(&argc, &argv);
@@ -97,7 +97,10 @@ int main(int argc, char *argv[]) {
         gtk_widget_hide(i->frame_photo_act);
         gtk_widget_hide(i->backg_us_activ);
     }
-    gtk_main(); 
+    bool loop = true;
+    while (loop) {
+        loop = gtk_main_iteration();
+    }
     free_users(&m->users);
     free(m);
     return 0;

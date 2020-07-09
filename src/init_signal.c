@@ -20,6 +20,8 @@ static void entry_activate(GtkEntry *e, t_main *m) {
 
 static void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
                 GdkEvent *event, t_main *m) {
+    if (icon_pos == GTK_ENTRY_ICON_SECONDARY)
+        return;
     GtkWidget *dialog;
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
     gint res;
@@ -31,9 +33,8 @@ static void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos,
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         tmp = gtk_file_chooser_get_filename (chooser);
         add_file(m, tmp);
-        // g_free(tmp);
     }
-    gtk_widget_destroy (dialog);
+    gtk_widget_destroy(dialog);
 }
 
 void init_signals(t_main *m) {
