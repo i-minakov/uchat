@@ -10,6 +10,7 @@
 typedef struct s_message {
     int count;
     char *text;
+    char *filename;
     GtkWidget *menu;
     GtkWidget *file;
     GtkWidget *label;
@@ -40,6 +41,18 @@ typedef struct s_data_users {
     struct s_data_users *next;
 }              t_user;
 
+typedef struct s_cap {
+    GtkWidget *fix_cap;
+    GtkWidget *burger_but;
+    GtkWidget *burger_but_img;
+    GtkWidget *my_photo;
+    GtkWidget *frame_for_my_photo;
+    GtkWidget *friend_name;
+    GtkWidget *dot_menu;
+    GtkWidget *dot_menu_but;
+    struct s_main *m;
+}              t_cap;
+
 typedef struct s_main {
     GtkWidget *window;
     GtkWidget *fix1;
@@ -49,18 +62,13 @@ typedef struct s_main {
     GtkWidget *fix_for_users;
     GtkWidget *fix_for_text;
     GtkWidget *lab_start;
-    GtkWidget *fix_cap;
-    GtkWidget *burger_but;
-    GtkWidget *burger_but_img;
-    GtkWidget *my_photo;
-    GtkWidget *frame_for_my_photo;
-    GtkWidget *friend_name;
     GtkWidget *scrol_bar;
     GtkWidget *edit_entry;
     GtkWidget *file_ch;
     GtkAdjustment *adj; 
     GtkBuilder *builder;
     char *text;
+    struct s_cap *cap;
     struct s_data_users *users;
 }              t_main;
 
@@ -70,11 +78,16 @@ void set_users(t_main *m);
 void reset_users(t_main *m);
 void send_but(GtkWidget *wid, t_main *m);
 void user_click(GtkWidget *wid, t_user *users);
-GtkWidget *resize_image(const char *path_to_image, uint width, uint heigh);
+GtkWidget *resize_image(const char *path_to_image, 
+                        uint width, uint heigh);
 void msg_pushfront(t_msg **head, char *text);
 void reset_l_mess(t_user *i);
 char *mx_strpart(char *str, int index);
 void free_msg(t_msg **list);
-t_msg *create_msg(char *text);
+t_msg *create_msg(char *text, char *filename);
+void delete_msg(GtkMenuItem *item, t_msg *msg);
+void forward_msg(GtkMenuItem *item, t_msg *msg);
+void add_file(t_main *m, gchar *tmp);
+void init_signals(t_main *m);
 
 #endif 

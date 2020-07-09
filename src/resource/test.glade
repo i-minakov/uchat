@@ -138,6 +138,22 @@
                 <property name="y">32</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkButton" id="dots_but">
+                <property name="label" translatable="yes">
+</property>
+                <property name="width_request">40</property>
+                <property name="height_request">40</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="opacity">0</property>
+              </object>
+              <packing>
+                <property name="x">941</property>
+                <property name="y">32</property>
+              </packing>
+            </child>
           </object>
         </child>
         <child>

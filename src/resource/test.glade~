@@ -138,6 +138,21 @@
                 <property name="y">32</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkButton">
+                <property name="label" translatable="yes">
+</property>
+                <property name="width_request">40</property>
+                <property name="height_request">40</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+              </object>
+              <packing>
+                <property name="x">941</property>
+                <property name="y">32</property>
+              </packing>
+            </child>
           </object>
         </child>
         <child>
@@ -155,20 +170,6 @@
           <packing>
             <property name="x">352</property>
             <property name="y">629</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkFileChooserButton" id="file_chooser">
-            <property name="width_request">-1</property>
-            <property name="height_request">-1</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="opacity">0.69999999999999996</property>
-            <property name="title" translatable="yes"/>
-          </object>
-          <packing>
-            <property name="x">310</property>
-            <property name="y">638</property>
           </packing>
         </child>
         <style>

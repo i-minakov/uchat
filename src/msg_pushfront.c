@@ -4,16 +4,15 @@ void delete_msg(GtkMenuItem *item, t_msg *msg) {
     t_msg *t = NULL;
 
     gtk_grid_remove_row(GTK_GRID(msg->user->text_grid), msg->count);
-    for (t_msg *i = msg->prev; i->count != -1; i = i->prev) {
-        msg->user->row = i->count;
+    for (t_msg *i = msg->prev; i->count != -1; i = i->prev)
         i->count--;
-    }
     t = msg->next;
     t != NULL ? t->prev = msg->prev : 0;
     msg->prev->next = t;
     reset_l_mess(msg->user);
     free(msg);
     msg = NULL;
+    msg->user->row--;
 }
 
 void edit_done(GtkEntry *e, t_msg *msg) {
@@ -59,22 +58,25 @@ static void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg) {
     }
 }
 
-t_msg *create_msg(char *text) {
+t_msg *create_msg(char *text, char *filename) {
     t_msg *new = (t_msg *)malloc(sizeof(t_msg) * 10);
 
     new->next = NULL;
     new->prev = NULL;
     new->count = 0;
     new->user = NULL;
-    if (text != NULL) {
+    new->filename = filename;
+    new->text = NULL;
+    if (!text && !filename)
+        return new;
+    new->label = gtk_button_new();
+    gtk_widget_set_size_request(new->label, 100, 30);
+    if (text) {
         new->text = mx_strdup(text);
-        new->label = gtk_button_new_with_label(new->text);
-        gtk_widget_set_size_request(new->label, 100, 30);
-        new->menu = gtk_menu_new();
-        g_signal_connect(new->label, "button_press_event", G_CALLBACK(popup_menu), new);
+        gtk_button_set_label(GTK_BUTTON(new->label), new->text);
     }
-    else 
-        new->text = NULL;
+    new->menu = gtk_menu_new();
+    g_signal_connect(new->label, "button_press_event", G_CALLBACK(popup_menu), new);
     return new;
 }
 
@@ -85,7 +87,7 @@ void msg_pushfront(t_msg **head, char *text) {
     void (*menu_option[])(GtkMenuItem *item, t_msg *msg) = 
         {edit_msg, forward_msg, delete_msg};
 
-    tmp = create_msg(text);
+    tmp = create_msg(text, NULL);
     tmp->prev = *head;
     tmp->next = (*head)->next;
     (*head)->next = tmp;

@@ -20,8 +20,8 @@ void user_click(GtkWidget *wid, t_user *users) {
     gtk_widget_hide(users->frame_photo_slept);
     gtk_widget_show(users->frame_photo_act);
     gtk_widget_show(users->text_grid);
-    gtk_label_set_text(GTK_LABEL(users->m->friend_name), 
+    gtk_label_set_text(GTK_LABEL(users->m->cap->friend_name), 
                     gtk_label_get_text(GTK_LABEL(users->l_name)));
-    gtk_widget_show(users->m->friend_name);
+    gtk_widget_show(users->m->cap->friend_name);
     gtk_adjustment_set_value(users->m->adj, gtk_adjustment_get_page_size(users->m->adj));
 }
