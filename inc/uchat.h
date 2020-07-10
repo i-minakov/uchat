@@ -7,13 +7,25 @@
 #include <string.h>
 #include <stdbool.h>
 
-
 #define MX_BOX_END(wid, label) gtk_box_pack_end(GTK_BOX(wid), label, FALSE, FALSE, 10)
 #define MX_BOX_START(wid, label) gtk_box_pack_start(GTK_BOX(wid), label, FALSE, FALSE, 10)
 #define MX_MSG_PACK(flag, label, box) (flag == true ? MX_BOX_END(box, label) : MX_BOX_START(box, label))
 
+typedef struct s_size {
+		int x;
+    	int y;
+		float w;
+    	float h;
+        float xs;
+        float ys;
+} 				t_size;
+
+typedef struct s_style {
+    int lang;
+    int color;
+}              t_style;
+
 typedef struct s_message {
-    bool my;
     int count;
     char *text;
     char *filename;
@@ -59,6 +71,20 @@ typedef struct s_cap {
     struct s_main *m;
 }              t_cap;
 
+typedef struct s_menu {
+    GtkWidget *menu_box;
+    GtkWidget *menu_img;
+    GtkWidget *color_text;
+    GtkWidget *lang_text;
+    GtkWidget *lang1;
+    GtkWidget *lang2;
+    GtkWidget *color1;
+    GtkWidget *color2;
+    GtkWidget *user_search;
+    int flag;
+    
+}              t_menu;
+
 typedef struct s_main {
     GtkWidget *window;
     GtkWidget *fix1;
@@ -76,6 +102,8 @@ typedef struct s_main {
     char *text;
     struct s_cap *cap;
     struct s_data_users *users;
+    struct s_menu *menu;
+    struct s_style *style;
 }              t_main;
 
 t_user *mx_create_user();
@@ -95,6 +123,11 @@ void delete_msg(GtkMenuItem *item, t_msg *msg);
 void forward_msg(GtkMenuItem *item, t_msg *msg);
 void add_file(t_main *m, gchar *tmp);
 void init_signals(t_main *m);
-void save_file(GtkMenuItem *item, t_msg *msg);
+
+void burger_notify(GtkWidget *widget, GdkEvent *event, t_main *m);
+void burger_leave(GtkWidget *widget, GdkEvent *event, t_main *m);
+GtkWidget *resize_proportion(const char *path_to_image, int xs, int ys);
+
+void switch_menu(GtkWidget *wid, t_main *m);
 
 #endif 

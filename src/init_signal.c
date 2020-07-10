@@ -1,27 +1,11 @@
 #include "../inc/uchat.h"
 
-static void burger_notify(GtkWidget *widget, GdkEvent *event, t_main *m) {
-    gtk_widget_destroy(m->cap->burger_but_img);
-    m->cap->burger_but_img = gtk_image_new_from_file("./src/resource/burger2.png");
-    gtk_fixed_put(GTK_FIXED(m->cap->fix_cap), m->cap->burger_but_img, 267, 37);
-    gtk_widget_show(m->cap->burger_but_img);
-}
-
-static void burger_leave(GtkWidget *widget, GdkEvent *event, t_main *m) {
-    gtk_widget_destroy(m->cap->burger_but_img);
-    m->cap->burger_but_img = gtk_image_new_from_file("./src/resource/burger.png");
-    gtk_fixed_put(GTK_FIXED(m->cap->fix_cap), m->cap->burger_but_img, 267, 42);
-    gtk_widget_show(m->cap->burger_but_img);
-}
-
 static void entry_activate(GtkEntry *e, t_main *m) {
     send_but(m->but1, m);
 }
 
 static void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
                 GdkEvent *event, t_main *m) {
-    if (icon_pos == GTK_ENTRY_ICON_SECONDARY)
-        return;
     GtkWidget *dialog;
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
     gint res;
@@ -33,12 +17,14 @@ static void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos,
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         tmp = gtk_file_chooser_get_filename (chooser);
         add_file(m, tmp);
+        // g_free(tmp);
     }
-    gtk_widget_destroy(dialog);
+    gtk_widget_destroy (dialog);
 }
 
 void init_signals(t_main *m) {
     g_signal_connect(m->cap->burger_but, "enter-notify-event", G_CALLBACK(burger_notify), m);
+    g_signal_connect(m->cap->burger_but, "clicked", G_CALLBACK(switch_menu), m);
     g_signal_connect(m->cap->burger_but, "leave-notify-event", G_CALLBACK(burger_leave), m);
     g_signal_connect(m->but1, "clicked", G_CALLBACK(send_but), m);
     g_signal_connect(m->sms, "activate", G_CALLBACK(entry_activate), m);

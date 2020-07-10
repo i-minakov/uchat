@@ -1,21 +1,5 @@
 #include "../inc/uchat.h"
 
-void save_file(GtkMenuItem *item, t_msg *msg) {
-    GtkWidget *dialog;
-    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER;
-    gint res;
-    gchar *tmp = NULL;
-
-    dialog = gtk_file_chooser_dialog_new ("Save File", GTK_WINDOW(msg->user->m->window), action, ("_Cancel"), 
-                        GTK_RESPONSE_CANCEL, ("_Save"), GTK_RESPONSE_ACCEPT, NULL);
-    if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
-        GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
-        tmp = gtk_file_chooser_get_filename (chooser);
-        g_free(tmp);
-    }
-    gtk_widget_destroy (dialog);
-}
-
 void delete_msg(GtkMenuItem *item, t_msg *msg) {
     t_msg *t = NULL;
 
@@ -32,14 +16,12 @@ void delete_msg(GtkMenuItem *item, t_msg *msg) {
 }
 
 void edit_done(GtkEntry *e, t_msg *msg) {
-    char *str = NULL;
+    char *str = mx_strnew(mx_strlen(msg->text) + ((mx_strlen(msg->text)/50) + 1));
     int k = 0;
-    GtkWidget *dialog;
-    GtkDialogFlags flags;
 
     mx_strdel(&msg->text);
-    msg->text = mx_strdup((char *)gtk_entry_get_text(GTK_ENTRY(msg->user->m->edit_entry)));
-    str = mx_strnew(mx_strlen(msg->text) + ((mx_strlen(msg->text)/50) + 1));
+    msg->text = mx_strdup((char *)gtk_entry_get_text
+        (GTK_ENTRY(msg->user->m->edit_entry)));
     for (int j = 0; msg->text[j]; j++) {
         str[k++] = msg->text[j];
         (j%50 == 0 && j != 0) ? str[k++] = '\n' : 0;
@@ -48,23 +30,15 @@ void edit_done(GtkEntry *e, t_msg *msg) {
     gtk_widget_hide(msg->user->m->edit_entry);
     gtk_widget_show(msg->user->m->sms);
     free(str);
-    // if (msg->text == NULL || !mx_strlen(msg->text)) {
-    //     flags = GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT;
-    //     dialog = gtk_dialog_new_with_buttons ("Delete message?", GTK_WINDOW(msg->user->m->window),
-    //         flags, ("_Yes"), GTK_RESPONSE_ACCEPT, ("_No"), GTK_RESPONSE_REJECT, NULL);
-    //     if ((gtk_dialog_run(GTK_DIALOG (dialog))) == GTK_RESPONSE_ACCEPT)
-    //         delete_msg(NULL, msg);
-    //     gtk_widget_destroy (dialog);
-    // }
 }
 
 void edit_msg(GtkMenuItem *item, t_msg *msg) {
     // GtkWidget *lab = gtk_label_new(NULL);
     // char *markup = g_markup_printf_escaped(
-    //         "<span color=\"white\" font=\"12\"> Editing: %s</span>", msg->text);
+    //         "<span color=\"white\" font=\"10\"> Editing: %s</span>", msg->text);
 
     // gtk_label_set_markup(GTK_LABEL(lab), markup); 
-    // gtk_fixed_put(GTK_FIXED(msg->user->m->fix1), lab, 364, 610);
+    // gtk_fixed_put(GTK_FIXED(msg->user->m->fix1), lab, 364, 636);
     // gtk_widget_show(lab);
     // g_free(markup);
     gtk_widget_hide(msg->user->m->sms);
@@ -74,8 +48,6 @@ void edit_msg(GtkMenuItem *item, t_msg *msg) {
 }
 
 void forward_msg(GtkMenuItem *item, t_msg *msg) {
-    GtkWidget *copy_msg = g_object_ref(msg->label);
-    
 
 }
 
@@ -84,8 +56,6 @@ static void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg) {
         gtk_menu_popup_at_widget(GTK_MENU(msg->menu), (msg->label), GDK_GRAVITY_SOUTH_WEST, 
             GDK_GRAVITY_SOUTH_EAST, (GdkEvent *)event);
     }
-    else if (msg->filename != NULL)
-        save_file(NULL, msg);
 }
 
 t_msg *create_msg(char *text, char *filename) {
@@ -97,7 +67,6 @@ t_msg *create_msg(char *text, char *filename) {
     new->user = NULL;
     new->filename = filename;
     new->text = NULL;
-    new->my = false;
     if (!text && !filename)
         return new;
     new->label = gtk_button_new();

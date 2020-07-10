@@ -48,25 +48,36 @@ static void set_cap(t_cap *c) {
     g_free(markup);
 }
 
-int main(int argc, char *argv[]) {
-    t_main *m = (t_main *)malloc(sizeof(t_main) * 100);
-    m->cap = (t_cap *)malloc(sizeof(t_cap) * 100);
-    m->users = NULL;
-    
-    for (int i = atoi(argv[1]); i > 0; i--)
-        user_pushback(&m->users);
-    gtk_init(&argc, &argv);
+/////////////////////////////////////////////
+
+void init_menu(t_main *m) {
+    m->menu->menu_box = GTK_WIDGET(gtk_builder_get_object(m->builder, "menu_box"));
+    m->menu->menu_img = GTK_WIDGET(gtk_builder_get_object(m->builder, "menu_img"));
+    // m->menu->menu_img = resize_proportion("./src/resource/index.jpeg", 327, 250);
+    // gtk_fixed_put(GTK_FIXED(m->menu->menu_box), m->menu->menu_img, 0, 0);
+    m->menu->color_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "Colorlab"));
+    m->menu->lang_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "Langlab"));
+    m->menu->lang1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Lang1"));
+    m->menu->lang2 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Lang2"));
+    m->menu->color1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color2"));
+    m->menu->color2 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color2"));
+    m->menu->user_search = GTK_WIDGET(gtk_builder_get_object(m->builder, "Search_users"));
+    m->menu->flag = 0;
+}
+
+void init_components(t_main *m) {
     m->builder = gtk_builder_new_from_file("./src/resource/test.glade");
     m->window = GTK_WIDGET(gtk_builder_get_object(m->builder, "window1"));
     g_signal_connect(m->window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(m->builder, m->builder);
+
+    m->fix_for_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_text"));
+    m->fix_for_users = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_user"));
+    m->cap->fix_cap = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_cap"));
     m->fix1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix"));
     m->sms = GTK_WIDGET(gtk_builder_get_object(m->builder, "sms"));
     m->but1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "but1"));
-    m->fix_for_users = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_user"));
     m->lab_start = GTK_WIDGET(gtk_builder_get_object(m->builder, "lab_start"));
-    m->fix_for_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_text"));
-    m->cap->fix_cap = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_cap"));
     m->cap->burger_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "burger_but"));
     m->cap->dot_menu_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "dots_but"));
     m->scrol_bar = GTK_WIDGET(gtk_builder_get_object(m->builder, "scrol_text"));
@@ -74,22 +85,14 @@ int main(int argc, char *argv[]) {
     m->file_ch = GTK_WIDGET(gtk_builder_get_object(m->builder, "file_chooser"));
     m->adj = gtk_adjustment_new(1.0, 1.0, 10000.0, 1.0, 10.0, 1.0);
     gtk_scrolled_window_set_vadjustment(GTK_SCROLLED_WINDOW(m->scrol_bar), m->adj);
-    
-    //////////////////////////////////////////////////////////////////////
-    GtkCssProvider *cssProvider = gtk_css_provider_new();
-    GtkCssProvider *provider = gtk_css_provider_new();
-    gtk_css_provider_load_from_path(cssProvider, "./src/backg.css", NULL);
-    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
-                                GTK_STYLE_PROVIDER(cssProvider),
-                                GTK_STYLE_PROVIDER_PRIORITY_USER);
-    //////////////////////////////////////////////////////////////////////
+    m->style->color = 1;
+    m->style->lang = 1;
+    init_menu(m);
+}
 
-    set_users(m);
-    set_chat_grid(m);
-    set_cap(m->cap);
-    init_signals(m);
-    gtk_label_set_text(GTK_LABEL(m->lab_start), "Please select a chat to start messaging");
-    gtk_widget_show_all(m->window);
+/////////////////////////////////////////////
+
+void hide_something(t_main *m) {
     gtk_widget_hide(m->sms);
     gtk_widget_hide(m->but1);
     gtk_widget_hide(m->edit_entry);
@@ -97,11 +100,52 @@ int main(int argc, char *argv[]) {
         gtk_widget_hide(i->frame_photo_act);
         gtk_widget_hide(i->backg_us_activ);
     }
-    bool loop = true;
-    while (loop) {
-        loop = gtk_main_iteration();
-        
-    }
+    gtk_widget_hide(m->menu->menu_box);
+    gtk_widget_hide(m->menu->lang_text);
+    gtk_widget_hide(m->menu->color_text);
+    gtk_widget_hide(m->menu->lang1);
+    gtk_widget_hide(m->menu->lang2);
+    gtk_widget_hide(m->menu->color1);
+    gtk_widget_hide(m->menu->color2);
+    gtk_widget_hide(m->menu->user_search);
+}
+
+
+void connect_css(t_main *m) {
+    char *way = NULL;
+    if (m->style->color == 1)
+        way = "./src/backg.css";
+    else
+         way = "./src/backg.css";
+    GtkCssProvider *cssProvider = gtk_css_provider_new();
+    GtkCssProvider *provider = gtk_css_provider_new();
+    gtk_css_provider_load_from_path(cssProvider, way, NULL);
+    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
+                                GTK_STYLE_PROVIDER(cssProvider),
+                                GTK_STYLE_PROVIDER_PRIORITY_USER);
+}
+
+int main(int argc, char *argv[]) {
+    t_main *m = (t_main *)malloc(sizeof(t_main) * 100);
+    m->cap = (t_cap *)malloc(sizeof(t_cap) * 100);
+    m->menu = (t_menu *)malloc(sizeof(t_menu) * 100);
+    m->style = (t_style *)malloc(sizeof(t_style) * 100);
+    m->users = NULL;
+
+    for (int i = atoi(argv[1]); i > 0; i--)
+        user_pushback(&m->users);
+    gtk_init(&argc, &argv);
+    init_components(m);
+    connect_css(m);
+    set_users(m);
+    set_chat_grid(m);
+    set_cap(m->cap);
+    init_signals(m);
+    gtk_label_set_text(GTK_LABEL(m->lab_start), "Please select a chat to start messaging");
+    gtk_widget_show_all(m->window);
+    hide_something(m);
+
+    gtk_main(); 
     free_users(&m->users);
     free(m);
     return 0;

@@ -1,20 +1,55 @@
 window {
+	/* background:linear-gradient(0.25turn, #405170 10%, #09121D 100%); */
+	/* background-image: url("../img/фон2.png");
+    background-position: center; */
     background-color: #121C2A;
 }
-.blocks {
+.top {
     background-color: #121C2A;
-    box-shadow: 2px 2px 15px 3px #0E1723;
+    border: none;
+    box-shadow: 2px 2px 15px 3px #020508;
+
 }
+.users {
+    background-color: #121C2A;
+    border: none;
+    box-shadow: 1px 0px 20px 2px #0a1018;
+    outline: none;
+}
+.masage {
+    background-color: #09121D;
+    background:linear-gradient(0.45turn, #09121D 10%, #131E2C 100%);
+    border: none;
+    box-shadow: 1px 0px 20px 2px #0a1018;
+    outline: none;
+}
+/* .blocks {
+    background-color: #121C2A;
+    box-shadow: px 2px 15px 3px #0E1723;
+} */
 .label {
     color: white;
 }
-button * {
-    border-radius: 100px;
-}
 .entry {
-    background-color: #0E1723;
+    background-color: #253144;
     color: whitesmoke;
     padding-left: 20px;
 	padding-right: 20px;
     border-radius: 50px;
+    border: none;
+    caret-color: white;
+}
+button * {
+    background-color: #34425A;
+}
+.box{
+    background-color: #34425A;
+    color: white;
+    border: none;
+    border-radius: 7px;
+}
+.mbox {
+    background-image: url("../img/index.png");
+    border: none;
+    border-radius: 30px;
 }
