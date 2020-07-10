@@ -97,6 +97,7 @@ t_msg *create_msg(char *text, char *filename) {
     new->user = NULL;
     new->filename = filename;
     new->text = NULL;
+    new->my = false;
     if (!text && !filename)
         return new;
     new->label = gtk_button_new();

@@ -100,6 +100,7 @@ int main(int argc, char *argv[]) {
     bool loop = true;
     while (loop) {
         loop = gtk_main_iteration();
+        
     }
     free_users(&m->users);
     free(m);

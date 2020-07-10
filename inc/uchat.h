@@ -7,7 +7,13 @@
 #include <string.h>
 #include <stdbool.h>
 
+
+#define MX_BOX_END(wid, label) gtk_box_pack_end(GTK_BOX(wid), label, FALSE, FALSE, 10)
+#define MX_BOX_START(wid, label) gtk_box_pack_start(GTK_BOX(wid), label, FALSE, FALSE, 10)
+#define MX_MSG_PACK(flag, label, box) (flag == true ? MX_BOX_END(box, label) : MX_BOX_START(box, label))
+
 typedef struct s_message {
+    bool my;
     int count;
     char *text;
     char *filename;

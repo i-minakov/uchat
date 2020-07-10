@@ -65,7 +65,8 @@ void add_file(t_main *m, gchar *tmp) {
     file_check(tmp, &t, name);
     wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 900);
     gtk_widget_set_size_request(wid, 630, 30);
-    gtk_box_pack_end(GTK_BOX(wid), t->label, FALSE, FALSE, 10);
+    // gtk_box_pack_end(GTK_BOX(wid), t->label, FALSE, FALSE, 10);
+    MX_MSG_PACK(t->my, t->label, wid);
     gtk_grid_attach(GTK_GRID(us->text_grid), wid, 0, t->count, 1, 1);
     gtk_widget_show_all(wid);
     us->row++;
