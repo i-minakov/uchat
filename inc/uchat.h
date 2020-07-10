@@ -72,16 +72,27 @@ typedef struct s_cap {
     struct s_main *m;
 }              t_cap;
 
-typedef struct s_menu {
-    GtkWidget *menu_box;
-    GtkWidget *menu_img;
+typedef struct s_setting {
+    GtkWidget *sett_box;
+    GtkWidget *sett_fix;
     GtkWidget *color_text;
     GtkWidget *lang_text;
     GtkWidget *lang1;
     GtkWidget *lang2;
     GtkWidget *color1;
     GtkWidget *color2;
-    GtkWidget *user_search;
+    GtkWidget *my_name;
+    GtkWidget *my_frame;
+    GtkWidget *my_photo;
+    GtkWidget *set_but;
+    int flag; 
+}  t_setting;
+
+typedef struct s_menu {
+    GtkWidget *menu_box;
+    GtkWidget *settings;
+    GtkWidget *contacts;
+    GtkWidget *exit;
     int flag;
     
 }              t_menu;
@@ -98,6 +109,8 @@ typedef struct s_main {
     GtkWidget *scrol_bar;
     GtkWidget *edit_entry;
     GtkWidget *file_ch;
+    GtkWidget *bottom_b;
+    GtkWidget *top_b;
     GtkAdjustment *adj; 
     GtkBuilder *builder;
     char *text;
@@ -105,6 +118,7 @@ typedef struct s_main {
     struct s_data_users *users;
     struct s_menu *menu;
     struct s_style *style;
+    struct s_setting *set;
 }              t_main;
 
 int start(void);
@@ -132,5 +146,9 @@ void burger_leave(GtkWidget *widget, GdkEvent *event, t_main *m);
 GtkWidget *resize_proportion(const char *path_to_image, int xs, int ys);
 
 void switch_menu(GtkWidget *wid, t_main *m);
+void show_menu(t_main *m);
+void hide_menu(t_main *m);
+void hide_set(t_main *m);
+void show_set(t_main *m);
 
 #endif 

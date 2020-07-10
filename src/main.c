@@ -51,18 +51,27 @@ static void set_cap(t_cap *c) {
 /////////////////////////////////////////////
 
 void init_menu(t_main *m) {
-    m->menu->menu_box = GTK_WIDGET(gtk_builder_get_object(m->builder, "menu_box"));
-    m->menu->menu_img = GTK_WIDGET(gtk_builder_get_object(m->builder, "menu_img"));
-    // m->menu->menu_img = resize_proportion("./src/resource/index.jpeg", 327, 250);
-    // gtk_fixed_put(GTK_FIXED(m->menu->menu_box), m->menu->menu_img, 0, 0);
-    m->menu->color_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "Colorlab"));
-    m->menu->lang_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "Langlab"));
-    m->menu->lang1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Lang1"));
-    m->menu->lang2 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Lang2"));
-    m->menu->color1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color2"));
-    m->menu->color2 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color2"));
-    m->menu->user_search = GTK_WIDGET(gtk_builder_get_object(m->builder, "Search_users"));
+    m->menu->menu_box = GTK_WIDGET(gtk_builder_get_object(m->builder, "menu_img"));
+    m->menu->settings = GTK_WIDGET(gtk_builder_get_object(m->builder, "setting"));
+    m->menu->contacts = GTK_WIDGET(gtk_builder_get_object(m->builder, "contacts"));
+    m->menu->exit = GTK_WIDGET(gtk_builder_get_object(m->builder, "exit"));
     m->menu->flag = 0;
+
+    m->set->sett_box = GTK_WIDGET(gtk_builder_get_object(m->builder, "set_img"));
+    m->set->sett_fix = GTK_WIDGET(gtk_builder_get_object(m->builder, "setting_bar"));
+    m->set->color_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "Colorlab"));
+    m->set->lang_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "Langlab"));
+    m->set->lang1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Lang1"));
+    m->set->lang2 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Lang2"));
+    m->set->color1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color2"));
+    m->set->color2 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color2"));
+    m->set->my_name = GTK_WIDGET(gtk_builder_get_object(m->builder, "my_name"));
+    m->set->set_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "set_but"));
+    m->set->my_photo = resize_proportion("./src/resource/index.jpeg", 51, 51);
+    m->set->my_frame = gtk_image_new_from_file("./src/resource/activated photo.png");
+    gtk_fixed_put(GTK_FIXED(m->set->sett_fix), m->set->my_photo, 0, 0);
+    gtk_fixed_put(GTK_FIXED(m->set->sett_fix), m->set->my_frame, 0, 0);
+    m->set->flag = 0;
 }
 
 void init_components(t_main *m) {
@@ -71,6 +80,8 @@ void init_components(t_main *m) {
     g_signal_connect(m->window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(m->builder, m->builder);
 
+    m->bottom_b = GTK_WIDGET(gtk_builder_get_object(m->builder, "bottom_b"));
+    m->top_b = GTK_WIDGET(gtk_builder_get_object(m->builder, "top_b"));
     m->fix_for_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_text"));
     m->fix_for_users = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_user"));
     m->cap->fix_cap = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_cap"));
@@ -100,14 +111,8 @@ void hide_something(t_main *m) {
         gtk_widget_hide(i->frame_photo_act);
         gtk_widget_hide(i->backg_us_activ);
     }
-    gtk_widget_hide(m->menu->menu_box);
-    gtk_widget_hide(m->menu->lang_text);
-    gtk_widget_hide(m->menu->color_text);
-    gtk_widget_hide(m->menu->lang1);
-    gtk_widget_hide(m->menu->lang2);
-    gtk_widget_hide(m->menu->color1);
-    gtk_widget_hide(m->menu->color2);
-    gtk_widget_hide(m->menu->user_search);
+    hide_menu(m);
+    hide_set(m);
 }
 
 
@@ -130,6 +135,7 @@ int main(int argc, char *argv[]) {
     m->cap = (t_cap *)malloc(sizeof(t_cap) * 100);
     m->menu = (t_menu *)malloc(sizeof(t_menu) * 100);
     m->style = (t_style *)malloc(sizeof(t_style) * 100);
+    m->set = (t_setting *)malloc(sizeof(t_setting) * 100);
     m->users = NULL;
 
     for (int i = atoi(argv[1]); i > 0; i--)
