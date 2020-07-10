@@ -1,5 +1,14 @@
 #include "../inc/uchat.h"
 
+void show_setings(GtkWidget *wid, t_main *m) {
+    show_set(m);
+}
+
+void hide_setings(GtkWidget *wid, t_main *m) {
+    //провека данных
+    hide_set(m);
+}
+
 static void entry_activate(GtkEntry *e, t_main *m) {
     send_but(m->but1, m);
 }
@@ -58,6 +67,14 @@ void init_signals(t_main *m) {
     g_signal_connect(m->but1, "clicked", G_CALLBACK(send_but), m);
     g_signal_connect(m->sms, "activate", G_CALLBACK(entry_activate), m);
     g_signal_connect(m->sms, "icon-press", G_CALLBACK(attach_file), m);
+<<<<<<< HEAD
     g_signal_connect(m->search, "activate", G_CALLBACK(search_msg), m);
     g_signal_connect(m->scrol_bar, "edge-reached", G_CALLBACK(fun), m);
+=======
+
+    g_signal_connect(m->menu->settings, "clicked", G_CALLBACK(show_setings), m);
+    //g_signal_connect(m->menu->contacts, "clicked", G_CALLBACK(send_but), m);
+    //g_signal_connect(m->exit, "clicked", G_CALLBACK(send_but), m);
+    g_signal_connect(m->set->set_but, "clicked", G_CALLBACK(hide_setings), m);
+>>>>>>> 07d398e9ae83888db01a1730699de159d91143aa
 }
