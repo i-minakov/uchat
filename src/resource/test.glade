@@ -303,10 +303,57 @@
             <property name="y">90</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkScrolledWindow" id="scrol_forw">
+            <property name="width_request">250</property>
+            <property name="height_request">535</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkViewport">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkFixed" id="fix_for_forw">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkEntry" id="search_forw">
+                        <property name="width_request">218</property>
+                        <property name="height_request">32</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="primary_icon_name">edit-find-symbolic</property>
+                      </object>
+                      <packing>
+                        <property name="x">15</property>
+                        <property name="y">28</property>
+                      </packing>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="x">440</property>
+            <property name="y">66</property>
+          </packing>
+        </child>
         <style>
           <class name="label"/>
         </style>
       </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window_forw">
+    <property name="can_focus">False</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child>
+      <placeholder/>
     </child>
   </object>
 </interface>

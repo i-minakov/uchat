@@ -144,7 +144,6 @@ int main(int argc, char *argv[]) {
     gtk_label_set_text(GTK_LABEL(m->lab_start), "Please select a chat to start messaging");
     gtk_widget_show_all(m->window);
     hide_something(m);
-
     gtk_main(); 
     free_users(&m->users);
     free(m);

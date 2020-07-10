@@ -32,6 +32,7 @@ typedef struct s_message {
     GtkWidget *menu;
     GtkWidget *file;
     GtkWidget *label;
+    bool my;
     struct s_data_users *user;
     struct s_message *prev;
     struct s_message *next;
@@ -106,14 +107,15 @@ typedef struct s_main {
     struct s_style *style;
 }              t_main;
 
+int start(void);
+
 t_user *mx_create_user();
 void free_users(t_user **list);
 void set_users(t_main *m);
 void reset_users(t_main *m);
 void send_but(GtkWidget *wid, t_main *m);
 void user_click(GtkWidget *wid, t_user *users);
-GtkWidget *resize_image(const char *path_to_image, 
-                        uint width, uint heigh);
+GtkWidget *resize_image(const char *path_to_image, uint width, uint heigh);
 void msg_pushfront(t_msg **head, char *text);
 void reset_l_mess(t_user *i);
 char *mx_strpart(char *str, int index);
@@ -123,6 +125,7 @@ void delete_msg(GtkMenuItem *item, t_msg *msg);
 void forward_msg(GtkMenuItem *item, t_msg *msg);
 void add_file(t_main *m, gchar *tmp);
 void init_signals(t_main *m);
+void save_file(GtkMenuItem *item, t_msg *msg);
 
 void burger_notify(GtkWidget *widget, GdkEvent *event, t_main *m);
 void burger_leave(GtkWidget *widget, GdkEvent *event, t_main *m);

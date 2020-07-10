@@ -15,7 +15,8 @@ static void add_message(t_main *m, t_user *i) {
     wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 900);
     gtk_widget_set_name(wid, "box");
     gtk_widget_set_size_request(wid, 630, 30);
-    gtk_box_pack_end(GTK_BOX(wid), i->msg->next->label, FALSE, FALSE, 10);
+    // gtk_box_pack_end(GTK_BOX(wid), i->msg->next->label, FALSE, FALSE, 10);
+    MX_MSG_PACK(i->msg->next->my, i->msg->next->label, wid);
     gtk_grid_attach(GTK_GRID(i->text_grid), wid, 0, i->msg->next->count, 1, 1);
     gtk_widget_show_all(wid);
     i->row++;

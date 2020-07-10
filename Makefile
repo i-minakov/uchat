@@ -1,6 +1,6 @@
 NAME = uchat
 INC = inc/uchat.h
-SRC := $(wildcard src/*.c)
+SRC := $(wildcard src/*.c) 
 OBJ = $(addprefix obj/, $(notdir $(SRC:%.c=%.o)))
 LIBMX = libmx/libmx.a
 FLAGS = `pkg-config --cflags gtk+-3.0 pkg-config --libs gtk+-3.0` #-std=c11 -Wall -Wextra -Werror -Wpedantic 
