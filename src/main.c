@@ -71,6 +71,8 @@ void init_components(t_main *m) {
     g_signal_connect(m->window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(m->builder, m->builder);
 
+    m->bottom_b = GTK_WIDGET(gtk_builder_get_object(m->builder, "bottom_b"));
+    m->top_b = GTK_WIDGET(gtk_builder_get_object(m->builder, "top_b"));
     m->fix_for_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_text"));
     m->fix_for_users = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_user"));
     m->cap->fix_cap = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_cap"));
@@ -82,8 +84,8 @@ void init_components(t_main *m) {
     m->cap->dot_menu_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "dots_but"));
     m->scrol_bar = GTK_WIDGET(gtk_builder_get_object(m->builder, "scrol_text"));
     m->edit_entry = GTK_WIDGET(gtk_builder_get_object(m->builder, "entry_edit"));
-    m->file_ch = GTK_WIDGET(gtk_builder_get_object(m->builder, "file_chooser"));
-    m->adj = gtk_adjustment_new(1.0, 1.0, 10000.0, 1.0, 10.0, 1.0);
+    m->search = GTK_WIDGET(gtk_builder_get_object(m->builder, "entry_search"));
+    m->adj = gtk_adjustment_new(1.0, 1.0, 10.0, 1.0, 10.0, 1.0);
     gtk_scrolled_window_set_vadjustment(GTK_SCROLLED_WINDOW(m->scrol_bar), m->adj);
     m->style->color = 1;
     m->style->lang = 1;

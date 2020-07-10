@@ -5,7 +5,7 @@ window {
     background-color: #121C2A;
 }
 .top {
-    background-color: #121C2A;
+    /* background-color: #2a1216; */
     border: none;
     box-shadow: 2px 2px 15px 3px #020508;
 
@@ -22,6 +22,7 @@ window {
     border: none;
     box-shadow: 1px 0px 20px 2px #0a1018;
     outline: none;
+    animation: none;
 }
 /* .blocks {
     background-color: #121C2A;
@@ -52,4 +53,9 @@ window {
     background-image: url("../img/index.png");
     border: none;
     border-radius: 30px;
+}
+.scrol {
+    animation-play-state: unset;
+    animation: none;
+    animation-iteration-count: 0;
 }

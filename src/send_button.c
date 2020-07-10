@@ -19,6 +19,8 @@ static void add_message(t_main *m, t_user *i) {
     MX_MSG_PACK(i->msg->next->my, i->msg->next->label, wid);
     gtk_grid_attach(GTK_GRID(i->text_grid), wid, 0, i->msg->next->count, 1, 1);
     gtk_widget_show_all(wid);
+    i->msg->next->adj_value = gtk_adjustment_get_value(m->adj);
+    printf("%f\n", i->msg->next->adj_value);
     i->row++;
     reset_l_mess(i);
     free(str);
@@ -33,7 +35,9 @@ void send_but(GtkWidget *wid, t_main *m) {
     for (t_user *i = m->users; i; i = i->next) {
         if (i->check == true) {
             add_message(m, i);
-            gtk_adjustment_set_value(m->adj, gtk_adjustment_get_page_size(m->adj));
+            gtk_adjustment_set_value(m->adj, 
+                gtk_adjustment_get_upper(m->adj) -
+                     gtk_adjustment_get_page_size(m->adj) + 50.0);
         }
     }
     gtk_entry_set_text(GTK_ENTRY(m->sms), "");

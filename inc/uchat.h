@@ -29,6 +29,7 @@ typedef struct s_message {
     int count;
     char *text;
     char *filename;
+    gdouble adj_value;
     GtkWidget *menu;
     GtkWidget *file;
     GtkWidget *label;
@@ -87,6 +88,7 @@ typedef struct s_menu {
 }              t_menu;
 
 typedef struct s_main {
+    GtkWidget *search;
     GtkWidget *window;
     GtkWidget *fix1;
     GtkWidget *sms;
@@ -98,6 +100,8 @@ typedef struct s_main {
     GtkWidget *scrol_bar;
     GtkWidget *edit_entry;
     GtkWidget *file_ch;
+    GtkWidget *bottom_b;
+    GtkWidget *top_b;
     GtkAdjustment *adj; 
     GtkBuilder *builder;
     char *text;
