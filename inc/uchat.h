@@ -98,6 +98,7 @@ typedef struct s_menu {
 }              t_menu;
 
 typedef struct s_main {
+    GtkCssProvider *css;
     GtkWidget *window;
     GtkWidget *fix1;
     GtkWidget *sms;
@@ -150,5 +151,8 @@ void show_menu(t_main *m);
 void hide_menu(t_main *m);
 void hide_set(t_main *m);
 void show_set(t_main *m);
+
+void connect_css(t_main *m);
+void change_color(GtkToggleButton *togglebutton, t_main *m);
 
 #endif 

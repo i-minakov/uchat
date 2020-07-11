@@ -50,7 +50,11 @@ static void set_cap(t_cap *c) {
 
 /////////////////////////////////////////////
 
+
 void init_menu(t_main *m) {
+    m->style->color = 1;
+    m->style->lang = 1;
+
     m->menu->menu_box = GTK_WIDGET(gtk_builder_get_object(m->builder, "menu_img"));
     m->menu->settings = GTK_WIDGET(gtk_builder_get_object(m->builder, "setting"));
     m->menu->contacts = GTK_WIDGET(gtk_builder_get_object(m->builder, "contacts"));
@@ -63,7 +67,7 @@ void init_menu(t_main *m) {
     m->set->lang_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "Langlab"));
     m->set->lang1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Lang1"));
     m->set->lang2 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Lang2"));
-    m->set->color1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color2"));
+    m->set->color1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color1"));
     m->set->color2 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color2"));
     m->set->my_name = GTK_WIDGET(gtk_builder_get_object(m->builder, "my_name"));
     m->set->set_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "set_but"));
@@ -113,21 +117,6 @@ void hide_something(t_main *m) {
     }
     hide_menu(m);
     hide_set(m);
-}
-
-
-void connect_css(t_main *m) {
-    char *way = NULL;
-    if (m->style->color == 1)
-        way = "./src/backg.css";
-    else
-         way = "./src/backg.css";
-    GtkCssProvider *cssProvider = gtk_css_provider_new();
-    GtkCssProvider *provider = gtk_css_provider_new();
-    gtk_css_provider_load_from_path(cssProvider, way, NULL);
-    gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
-                                GTK_STYLE_PROVIDER(cssProvider),
-                                GTK_STYLE_PROVIDER_PRIORITY_USER);
 }
 
 int main(int argc, char *argv[]) {

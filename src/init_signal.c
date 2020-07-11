@@ -43,4 +43,5 @@ void init_signals(t_main *m) {
     //g_signal_connect(m->menu->contacts, "clicked", G_CALLBACK(send_but), m);
     //g_signal_connect(m->exit, "clicked", G_CALLBACK(send_but), m);
     g_signal_connect(m->set->set_but, "clicked", G_CALLBACK(hide_setings), m);
+    g_signal_connect(m->set->color1, "toggled", G_CALLBACK(change_color), m);
 }
