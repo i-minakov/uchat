@@ -5,11 +5,7 @@ window {
     background-color: #121C2A;
 }
 .top {
-<<<<<<< HEAD
-    /* background-color: #2a1216; */
-=======
     background-color: #2a1216;
->>>>>>> 07d398e9ae83888db01a1730699de159d91143aa
     border: none;
     box-shadow: 1px 0px 20px 2px #0a1018;
 
@@ -58,16 +54,9 @@ window {
     border: none;
     border-radius: 30px;
 }
-<<<<<<< HEAD
-.scrol {
-    animation-play-state: unset;
-    animation: none;
-    animation-iteration-count: 0;
-=======
 .but {
 	background-image: none;
 	border: none;
 	box-shadow: none;
 	-gtk-icon-shadow: none;
->>>>>>> 07d398e9ae83888db01a1730699de159d91143aa
 }
