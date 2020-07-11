@@ -7,11 +7,19 @@
 #include <string.h>
 #include <stdbool.h>
 
-#define MX_SHOW_HIDE(flag, widget) flag == 1 ? gtk_widget_show_all(widget) : gtk_widget_hide(widget) 
+#define MX_SHOW_HIDE(flag, widget) flag == 1 ? gtk_widget_show(widget) : gtk_widget_hide(widget) 
 
 #define MX_BOX_END(wid, label) gtk_box_pack_end(GTK_BOX(wid), label, FALSE, FALSE, 10)
 #define MX_BOX_START(wid, label) gtk_box_pack_start(GTK_BOX(wid), label, FALSE, FALSE, 10)
 #define MX_MSG_PACK(flag, label, box) (flag == true ? MX_BOX_END(box, label) : MX_BOX_START(box, label))
+
+#define MX_CSS(flag) flag == 1 ? "./src/black.css" : "./src/light.css"
+#define MX_BOTTOM(flag) flag == 1 ? "./src/resource/bottom.png" : "./src/resource/bottom1.png"
+#define MX_TOP(flag) flag == 1 ? "./src/resource/top.png" : "./src/resource/top1.png"
+#define MX_ACTIVE(flag) flag == 1 ? "./src/resource/activated.png" : "./src/resource/activated2.png"
+#define MX_SLEPT(flag) flag == 1 ? "./src/resource/slept.png" : "./src/resource/slept2.png"
+#define MX_ACT_PH(flag) flag == 1 ? "./src/resource/activated photo.png" : "./src/resource/activated photo2.png"
+#define MX_SL_PH(flag) flag == 1 ? "./src/resource/slept photo.png" : "./src/resource/slept photo2.png"
 
 typedef struct s_size {
 		int x;
@@ -123,7 +131,6 @@ typedef struct s_main {
     GtkWidget *lab_start;
     GtkWidget *scrol_bar;
     GtkWidget *edit_entry;
-    GtkWidget *file_ch;
     GtkWidget *bottom_b;
     GtkWidget *top_b;
     GtkAdjustment *adj; 
@@ -166,7 +173,7 @@ void hide_menu(t_main *m);
 void hide_set(t_main *m);
 void show_set(t_main *m);
 
-void connect_css(t_main *m);
+void connect_css(t_main *m, int flag);
 void change_color(GtkToggleButton *togglebutton, t_main *m);
 
 /////////////////////////////////////////////////////////////////////////////

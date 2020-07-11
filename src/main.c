@@ -125,9 +125,6 @@ void hide_something(t_main *m) {
     }
     hide_menu(m);
     hide_set(m);
-    // gtk_widget_hide(m->dots->block_but);
-    // gtk_widget_hide(m->dots->clear_msg_but);
-    // gtk_widget_hide(m->dots->search_msg_but);
     gtk_widget_hide(m->dots->fix_dot_menu);
 }
 
@@ -140,13 +137,13 @@ int main(int argc, char *argv[]) {
     m->dots = (t_dots *)malloc(sizeof(t_dots) * 10);
     m->users = NULL;
 
-    // log_screen();
+    //log_screen();
     
     for (int i = atoi(argv[1]); i > 0; i--)
         user_pushback(&m->users);
     gtk_init(&argc, &argv);
     init_components(m);
-    connect_css(m);
+    connect_css(m, 1);
     set_users(m);
     set_chat_grid(m);
     set_cap(m->cap);

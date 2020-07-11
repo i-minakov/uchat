@@ -68,6 +68,22 @@
           </packing>
         </child>
         <child>
+          <object class="GtkImage" id="bottom_b1">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">bottom1.png</property>
+            <style>
+              <class name="bottom"/>
+            </style>
+          </object>
+          <packing>
+            <property name="x">327</property>
+            <property name="y">610</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkImage" id="bottom_b">
             <property name="width_request">100</property>
             <property name="height_request">80</property>
@@ -107,57 +123,6 @@
           <packing>
             <property name="y">90</property>
           </packing>
-        </child>
-        <child>
-          <object class="GtkFixed" id="fix_cap">
-            <property name="width_request">1000</property>
-            <property name="height_request">90</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkImage" id="top_b">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pixbuf">top.png</property>
-                <style>
-                  <class name="top"/>
-                </style>
-              </object>
-            </child>
-            <child>
-              <object class="GtkButton" id="burger_but">
-                <property name="width_request">40</property>
-                <property name="height_request">40</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="opacity">0</property>
-                <property name="relief">none</property>
-              </object>
-              <packing>
-                <property name="x">260</property>
-                <property name="y">32</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="dots_but">
-                <property name="label" translatable="yes">
-</property>
-                <property name="width_request">40</property>
-                <property name="height_request">40</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="opacity">0</property>
-              </object>
-              <packing>
-                <property name="x">941</property>
-                <property name="y">32</property>
-              </packing>
-            </child>
-          </object>
         </child>
         <child>
           <object class="GtkLabel" id="lab_start">
@@ -531,6 +496,69 @@
             <property name="x">673</property>
             <property name="y">90</property>
           </packing>
+        </child>
+        <child>
+          <object class="GtkFixed" id="fix_cap">
+            <property name="width_request">1000</property>
+            <property name="height_request">90</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkImage" id="top_b1">
+                <property name="width_request">100</property>
+                <property name="height_request">80</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="pixbuf">top1.png</property>
+                <style>
+                  <class name="top"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImage" id="top_b">
+                <property name="width_request">100</property>
+                <property name="height_request">80</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="pixbuf">top.png</property>
+                <style>
+                  <class name="top"/>
+                </style>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton" id="burger_but">
+                <property name="width_request">40</property>
+                <property name="height_request">40</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="opacity">0</property>
+                <property name="relief">none</property>
+              </object>
+              <packing>
+                <property name="x">260</property>
+                <property name="y">32</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="dots_but">
+                <property name="label" translatable="yes">
+</property>
+                <property name="width_request">40</property>
+                <property name="height_request">40</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="opacity">0</property>
+              </object>
+              <packing>
+                <property name="x">941</property>
+                <property name="y">32</property>
+              </packing>
+            </child>
+          </object>
         </child>
         <style>
           <class name="label"/>

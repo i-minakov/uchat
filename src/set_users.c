@@ -18,10 +18,10 @@ void set_users(t_main *m) {
         i->fix = gtk_fixed_new();
         i->img = resize_image("./src/resource/index.jpeg", 51, 51);
         i->but = gtk_button_new();
-        i->backg_us_activ = gtk_image_new_from_file("./src/resource/activated.png");
-        i->backg_us_slept = gtk_image_new_from_file("./src/resource/slept.png");
-        i->frame_photo_slept = gtk_image_new_from_file("./src/resource/slept photo.png");
-        i->frame_photo_act = gtk_image_new_from_file("./src/resource/activated photo.png");
+        i->backg_us_activ = gtk_image_new_from_file(MX_ACTIVE(m->style->color));
+        i->backg_us_slept = gtk_image_new_from_file(MX_SLEPT(m->style->color));
+        i->frame_photo_slept = gtk_image_new_from_file(MX_SL_PH(m->style->color));
+        i->frame_photo_act = gtk_image_new_from_file(MX_ACT_PH(m->style->color));
         gtk_fixed_put(GTK_FIXED(i->fix), (i->backg_us_activ), 11, y);
         gtk_fixed_put(GTK_FIXED(i->fix), (i->backg_us_slept), 11, y);
         gtk_widget_set_opacity(i->but, 0.0);

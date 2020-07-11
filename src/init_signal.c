@@ -85,6 +85,7 @@ void clear_history(GtkWidget *wid, t_main *m) {
     gtk_grid_set_row_spacing(GTK_GRID(us->text_grid), 20);
     gtk_fixed_put(GTK_FIXED(m->fix_for_text), us->text_grid, 0, 0);
     gtk_widget_show(us->text_grid);
+    reset_l_mess(us);
 }   
 
 void block_user(GtkWidget *wid, t_main *m) {
@@ -97,6 +98,7 @@ void set_dots_signal(t_dots *d) {
     
     g_signal_connect(d->dot_but, "clicked", G_CALLBACK(show_hide_dots_menu), d);
     g_signal_connect(d->clear_msg_but, "clicked", G_CALLBACK(clear_history), d->m);
+    g_signal_connect(d->block_but, "clicked", G_CALLBACK(block_user), d->m);
 }
 
 void init_signals(t_main *m) {

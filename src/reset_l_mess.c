@@ -4,8 +4,10 @@ void reset_l_mess(t_user *i) {
     char *s = NULL;
     char *t = NULL;
 
-    if (i->msg->next == NULL)
+    if (i->msg->next == NULL) {
+        gtk_label_set_text(GTK_LABEL(i->l_mess), "");
         return ;
+    }
     t = i->msg->next->text;
     if (t && mx_strlen(t) > 15) {
         s = mx_strpart(t, 14);
