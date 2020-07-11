@@ -127,13 +127,13 @@ int main(int argc, char *argv[]) {
     m->set = (t_setting *)malloc(sizeof(t_setting) * 100);
     m->users = NULL;
 
-    log_screen();
+    //log_screen();
     
     for (int i = atoi(argv[1]); i > 0; i--)
         user_pushback(&m->users);
     gtk_init(&argc, &argv);
     init_components(m);
-    connect_css(m);
+    connect_css(m, 1);
     set_users(m);
     set_chat_grid(m);
     set_cap(m->cap);

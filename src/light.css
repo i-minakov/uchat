@@ -1,3 +1,7 @@
+* {
+    all: unset;
+}  
+
 window {
 	/* background:linear-gradient(0.25turn, #405170 10%, #09121D 100%); */
 	/* background-image: url("../img/фон2.png");
@@ -7,20 +11,24 @@ window {
 .top {
     background-color: #ffffff;
     border: none;
-    box-shadow: 1px 0px 20px 2px #0a1018;
+    box-shadow: -1px 0px 10px 0px #dddddd;
+
+}
+.bottom {
+    border: none;
+    box-shadow: -1px 0px 10px 0px #dddddd;
 
 }
 .users {
     background-color: #ffffff;
     border: none;
-    box-shadow: 1px 0px 20px 2px #0a1018;
+    box-shadow: -1px 0px 10px 0px #dddddd;
     outline: none;
 }
 .masage {
     background-color: #ffffff;
     background: none;
     border: none;
-    box-shadow: 1px 0px 20px 2px #0a1018;
     outline: none;
 }
 /* .blocks {
@@ -28,16 +36,18 @@ window {
     box-shadow: px 2px 15px 3px #0E1723;
 } */
 .label {
-    color: white;
+    color: #13171f;
 }
 .entry {
-    background-color: #253144;
-    color: whitesmoke;
+    background-color: #ffffff;
+    color: #13171f;
     padding-left: 20px;
 	padding-right: 20px;
     border-radius: 50px;
     border: none;
-    caret-color: white;
+    /* box-shadow: inset 1px 0px 4px 0px #dddddd; */
+    box-shadow: 1px 0px 4px 2px #d6d5d5;
+    caret-color: #13171f;
 }
 /* button * {
     background-color: #34425A;
