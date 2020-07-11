@@ -1,6 +1,6 @@
 #include "../inc/uchat.h"
 
-void s_bigger_w(guint width, guint heigh, t_size *s) {
+static void s_bigger_w(guint width, guint heigh, t_size *s) {
 	if (heigh > s->h) {
 			while(heigh > s->h && width > s->w) {
 				s->h++;
@@ -15,7 +15,7 @@ void s_bigger_w(guint width, guint heigh, t_size *s) {
 		}
 }
 
-void S_bigger(guint width, guint heigh, t_size *s) {
+static void S_bigger(guint width, guint heigh, t_size *s) {
 	if (width > s->w) {
 		s_bigger_w(width, heigh, s);
 	}
@@ -29,7 +29,7 @@ void S_bigger(guint width, guint heigh, t_size *s) {
 	}
 }
 
-void S_less(guint width, guint heigh, t_size *s) {
+static void S_less(guint width, guint heigh, t_size *s) {
 	if (width > s->w) {
 			while(heigh < s->h) {
                 s->h--;
@@ -44,7 +44,7 @@ void S_less(guint width, guint heigh, t_size *s) {
 	}
 }
 
-void get_size(guint width, guint heigh, t_size *s) {
+static void get_size(guint width, guint heigh, t_size *s) {
 	s->w = s->xs;
 	s->h = s->ys;
 

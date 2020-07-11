@@ -29,6 +29,7 @@ typedef struct s_message {
     int count;
     char *text;
     char *filename;
+    gdouble adj_value;
     GtkWidget *menu;
     GtkWidget *file;
     GtkWidget *label;
@@ -99,6 +100,7 @@ typedef struct s_menu {
 
 typedef struct s_main {
     GtkCssProvider *css;
+    GtkWidget *search;
     GtkWidget *window;
     GtkWidget *fix1;
     GtkWidget *sms;
@@ -122,8 +124,7 @@ typedef struct s_main {
     struct s_setting *set;
 }              t_main;
 
-int start(void);
-
+int log_screen(void);
 t_user *mx_create_user();
 void free_users(t_user **list);
 void set_users(t_main *m);
@@ -155,4 +156,101 @@ void show_set(t_main *m);
 void connect_css(t_main *m);
 void change_color(GtkToggleButton *togglebutton, t_main *m);
 
-#endif 
+typedef struct s_wid {
+	GtkBuilder *builder; 
+    GtkWidget *window;
+	GtkWidget *fixed;
+
+	GtkWidget *log_hower;
+	GtkWidget *sig_hower;
+	GtkWidget *log_hower2;
+	GtkWidget *sig_hower2;
+
+	GtkWidget *log_gif;
+	GtkWidget *sig_gif;
+
+	GtkWidget *log_text;
+	GtkWidget *log_name;
+	GtkWidget *log_pas;
+	GtkWidget *log_but;
+
+	GtkWidget *sig_text;
+	GtkWidget *sig_name;
+	GtkWidget *sig_pas;
+	GtkWidget *sig_pas2;
+	GtkWidget *sig_photo;
+	GtkWidget *sig_display;
+	int flagimg;
+	GtkWidget *sig_but;
+
+	GtkWidget *no_fil_log;
+	GtkWidget *no_fil_sig;
+	GtkWidget *the_end;
+
+	GtkWidget *badact;
+	GtkWidget *badact_but;
+	GtkWidget *badact_lab;
+	GtkWidget *black_back;
+
+	const gchar *logname;
+	const gchar *logpas;
+	const gchar *signame;
+	const gchar *sigpas;
+	const gchar *sigpas2;
+	const gchar *sigfile;
+} 			t_wid;
+
+typedef struct s_eye {
+	bool log;
+	bool sig;
+	bool sig2;
+    struct s_wid *wid;
+
+} 				t_eye;
+
+typedef struct s_sizefoto {
+		int x;
+    	int y;
+		int w;
+    	int h;
+} 				t_sizefoto;
+
+
+void init_widgets_start(t_wid *wid, t_eye *eye);
+void init_signals_start(t_wid *wid, t_eye *eye);
+
+void log_click(GtkWidget *widget, t_wid *wid);
+void sign_click(GtkWidget *widget, t_wid *wid);
+void show_fields(t_wid *wid);
+void hide_start(t_wid *wid);
+
+void log_hover(GtkWidget *widget, GdkEventButton *event, t_wid *wid);
+void sig_hover(GtkWidget *widget, GdkEventButton *event, t_wid *wid);
+
+void sig_enter_notify_event(GtkWidget *widget, GdkEventButton *event, t_wid *wid);
+void log_enter_notify_event(GtkWidget *widget, GdkEventButton *event, t_wid *wid);
+
+void log_ok(GtkWidget *widget, t_wid *wid);
+void sig_ok(GtkWidget *widget, t_wid *wid);
+
+void add_sig_photo(GtkWidget *widget, t_wid *wid);
+GtkWidget *resize_image_correct(const char *path_to_image);
+
+ void make_vis(GtkEntry            *entry,
+               GtkEntryIconPosition icon_pos,
+               GdkEvent            *event,
+               t_eye *eye);
+void make_vis1(GtkEntry            *entry,
+               GtkEntryIconPosition icon_pos,
+               GdkEvent            *event,
+               t_eye *eye);
+void make_vis2(GtkEntry            *entry,
+               GtkEntryIconPosition icon_pos,
+               GdkEvent            *event,
+               t_eye *eye);
+
+void bad_act(t_wid *wid, int flag);
+void hide_bad(GtkWidget *widget, t_wid *wid);
+int log_screen(void);
+
+#endif

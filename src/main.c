@@ -97,8 +97,8 @@ void init_components(t_main *m) {
     m->cap->dot_menu_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "dots_but"));
     m->scrol_bar = GTK_WIDGET(gtk_builder_get_object(m->builder, "scrol_text"));
     m->edit_entry = GTK_WIDGET(gtk_builder_get_object(m->builder, "entry_edit"));
-    m->file_ch = GTK_WIDGET(gtk_builder_get_object(m->builder, "file_chooser"));
-    m->adj = gtk_adjustment_new(1.0, 1.0, 10000.0, 1.0, 10.0, 1.0);
+    m->search = GTK_WIDGET(gtk_builder_get_object(m->builder, "entry_search"));
+    m->adj = gtk_adjustment_new(1.0, 1.0, 10.0, 1.0, 10.0, 1.0);
     gtk_scrolled_window_set_vadjustment(GTK_SCROLLED_WINDOW(m->scrol_bar), m->adj);
     m->style->color = 1;
     m->style->lang = 1;
@@ -127,6 +127,8 @@ int main(int argc, char *argv[]) {
     m->set = (t_setting *)malloc(sizeof(t_setting) * 100);
     m->users = NULL;
 
+    log_screen();
+    
     for (int i = atoi(argv[1]); i > 0; i--)
         user_pushback(&m->users);
     gtk_init(&argc, &argv);
