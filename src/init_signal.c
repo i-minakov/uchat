@@ -60,6 +60,45 @@ void fun (GtkScrolledWindow *scrolled_window, GtkPositionType pos, t_main *m) {
         printf("YES\n");
 }
 
+/////////////////////////////////////////////////////////////////////////////////////
+void show_hide_dots_menu(GtkWidget *wid, t_dots *d) {
+    MX_SHOW_HIDE(d->visible, d->fix_dot_menu);
+    if (d->visible == 1) 
+        d->visible = 0;
+    else 
+        d->visible = 1;
+}
+
+void clear_history(GtkWidget *wid, t_main *m) {
+    t_user *us = NULL;
+
+    for (t_user *i = m->users; i; i = i->next) 
+        i->check == true ? us = i : 0;
+    if (us == NULL)
+        return ;
+    gtk_widget_destroy(us->text_grid);
+    free_msg(&us->msg);
+    us->msg = create_msg(NULL, NULL);
+    us->msg->count = -1;
+    us->row = 0;
+    us->text_grid = gtk_grid_new();
+    gtk_grid_set_row_spacing(GTK_GRID(us->text_grid), 20);
+    gtk_fixed_put(GTK_FIXED(m->fix_for_text), us->text_grid, 0, 0);
+    gtk_widget_show(us->text_grid);
+}   
+
+void block_user(GtkWidget *wid, t_main *m) {
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+
+void set_dots_signal(t_dots *d) {
+    
+    g_signal_connect(d->dot_but, "clicked", G_CALLBACK(show_hide_dots_menu), d);
+    g_signal_connect(d->clear_msg_but, "clicked", G_CALLBACK(clear_history), d->m);
+}
+
 void init_signals(t_main *m) {
     g_signal_connect(m->cap->burger_but, "enter-notify-event", G_CALLBACK(burger_notify), m);
     g_signal_connect(m->cap->burger_but, "clicked", G_CALLBACK(switch_menu), m);
@@ -74,4 +113,6 @@ void init_signals(t_main *m) {
     //g_signal_connect(m->menu->contacts, "clicked", G_CALLBACK(send_but), m);
     //g_signal_connect(m->exit, "clicked", G_CALLBACK(send_but), m);
     g_signal_connect(m->set->set_but, "clicked", G_CALLBACK(hide_setings), m);
+    g_signal_connect(m->set->color1, "toggled", G_CALLBACK(change_color), m);
+    set_dots_signal(m->dots);
 }

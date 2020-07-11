@@ -7,6 +7,8 @@
 #include <string.h>
 #include <stdbool.h>
 
+#define MX_SHOW_HIDE(flag, widget) flag == 1 ? gtk_widget_show_all(widget) : gtk_widget_hide(widget) 
+
 #define MX_BOX_END(wid, label) gtk_box_pack_end(GTK_BOX(wid), label, FALSE, FALSE, 10)
 #define MX_BOX_START(wid, label) gtk_box_pack_start(GTK_BOX(wid), label, FALSE, FALSE, 10)
 #define MX_MSG_PACK(flag, label, box) (flag == true ? MX_BOX_END(box, label) : MX_BOX_START(box, label))
@@ -98,7 +100,18 @@ typedef struct s_menu {
     
 }              t_menu;
 
+typedef struct s_dot_menu {
+    int visible;
+    GtkWidget *dot_but;
+    GtkWidget *fix_dot_menu;
+    GtkWidget *search_msg_but;
+    GtkWidget *clear_msg_but;
+    GtkWidget *block_but;
+    struct s_main *m;
+}              t_dots;
+
 typedef struct s_main {
+    GtkCssProvider *css;
     GtkWidget *search;
     GtkWidget *window;
     GtkWidget *fix1;
@@ -116,6 +129,7 @@ typedef struct s_main {
     GtkAdjustment *adj; 
     GtkBuilder *builder;
     char *text;
+    struct s_dot_menu *dots;
     struct s_cap *cap;
     struct s_data_users *users;
     struct s_menu *menu;
@@ -152,9 +166,13 @@ void hide_menu(t_main *m);
 void hide_set(t_main *m);
 void show_set(t_main *m);
 
+void connect_css(t_main *m);
+void change_color(GtkToggleButton *togglebutton, t_main *m);
+
 /////////////////////////////////////////////////////////////////////////////
 // Olya login screen
 /////////////////////////////////////////////////////////////////////////////
+
 typedef struct s_wid {
 	GtkBuilder *builder; 
     GtkWidget *window;
