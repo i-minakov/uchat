@@ -20,6 +20,8 @@ static void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos,
     gint res;
     gchar *tmp = NULL;
 
+    if (icon_pos == GTK_ENTRY_ICON_SECONDARY)
+        return ;
     dialog = gtk_file_chooser_dialog_new ("Open File", GTK_WINDOW(m->window), action, ("_Cancel"), 
                         GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
@@ -91,7 +93,6 @@ void clear_history(GtkWidget *wid, t_main *m) {
 void block_user(GtkWidget *wid, t_main *m) {
 
 }
-
 //////////////////////////////////////////////////////////////////////////////////
 
 void set_dots_signal(t_dots *d) {
@@ -112,8 +113,6 @@ void init_signals(t_main *m) {
     g_signal_connect(m->scrol_bar, "edge-reached", G_CALLBACK(fun), m);
 
     g_signal_connect(m->menu->settings, "clicked", G_CALLBACK(show_setings), m);
-    //g_signal_connect(m->menu->contacts, "clicked", G_CALLBACK(send_but), m);
-    //g_signal_connect(m->exit, "clicked", G_CALLBACK(send_but), m);
     g_signal_connect(m->set->set_but, "clicked", G_CALLBACK(hide_setings), m);
     g_signal_connect(m->set->color1, "toggled", G_CALLBACK(change_color), m);
     set_dots_signal(m->dots);

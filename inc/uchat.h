@@ -21,6 +21,13 @@
 #define MX_ACT_PH(flag) flag == 1 ? "./src/resource/activated photo.png" : "./src/resource/activated photo2.png"
 #define MX_SL_PH(flag) flag == 1 ? "./src/resource/slept photo.png" : "./src/resource/slept photo2.png"
 
+typedef struct s_msg_forward {
+    char *text; 
+    char *filename;
+    char *autor;
+    struct s_forward *f;
+}              t_msg_forw;
+
 typedef struct s_size {
 		int x;
     	int y;
@@ -61,10 +68,12 @@ typedef struct s_data_users {
     GtkWidget *backg_us_activ;
     GtkWidget *frame_photo_act;
     GtkWidget *frame_photo_slept;
+    char *name;
     bool check;
     int row;
     int count;
     int y_chat;
+    char *photo_name;
     struct s_main *m;
     struct s_message *msg;
     struct s_data_users *head;
@@ -118,6 +127,15 @@ typedef struct s_dot_menu {
     struct s_main *m;
 }              t_dots;
 
+typedef struct s_forward {
+    GtkWidget *fix_forw;
+    GtkWidget *search_forw;
+    GtkWidget *fox_for_forw;
+    GtkWidget *grid_forw;
+    struct s_msg_forward *fm;
+    struct s_main *m;
+}              t_forw;
+
 typedef struct s_main {
     GtkCssProvider *css;
     GtkWidget *search;
@@ -136,6 +154,7 @@ typedef struct s_main {
     GtkAdjustment *adj; 
     GtkBuilder *builder;
     char *text;
+    struct s_forward *forw;
     struct s_dot_menu *dots;
     struct s_cap *cap;
     struct s_data_users *users;
@@ -162,6 +181,7 @@ void forward_msg(GtkMenuItem *item, t_msg *msg);
 void add_file(t_main *m, gchar *tmp);
 void init_signals(t_main *m);
 void save_file(GtkMenuItem *item, t_msg *msg);
+void add_message(t_main *m, t_user *i);
 
 void burger_notify(GtkWidget *widget, GdkEvent *event, t_main *m);
 void burger_leave(GtkWidget *widget, GdkEvent *event, t_main *m);

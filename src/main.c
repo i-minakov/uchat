@@ -111,6 +111,12 @@ void init_components(t_main *m) {
     m->dots->search_msg_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "search_but"));
     m->dots->visible = 1;
     m->dots->m = m;
+
+    m->forw->fix_forw = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_forw"));
+    m->forw->search_forw = GTK_WIDGET(gtk_builder_get_object(m->builder, "search_forw"));
+    m->forw->fox_for_forw = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_forw"));
+    m->forw->m = m;
+
 }
 
 /////////////////////////////////////////////
@@ -126,6 +132,7 @@ void hide_something(t_main *m) {
     hide_menu(m);
     hide_set(m);
     gtk_widget_hide(m->dots->fix_dot_menu);
+    gtk_widget_hide(m->forw->fix_forw);
 }
 
 int main(int argc, char *argv[]) {
@@ -135,9 +142,10 @@ int main(int argc, char *argv[]) {
     m->style = (t_style *)malloc(sizeof(t_style) * 100);
     m->set = (t_setting *)malloc(sizeof(t_setting) * 100);
     m->dots = (t_dots *)malloc(sizeof(t_dots) * 10);
+    m->forw = (t_forw *)malloc(sizeof(t_forw) * 10);
     m->users = NULL;
 
-    //log_screen();
+    // log_screen();
     
     for (int i = atoi(argv[1]); i > 0; i--)
         user_pushback(&m->users);

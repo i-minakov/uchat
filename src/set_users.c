@@ -16,7 +16,7 @@ void set_users(t_main *m) {
         i->m = m;
         gtk_grid_insert_row(GTK_GRID(m->grid_user), row);
         i->fix = gtk_fixed_new();
-        i->img = resize_image("./src/resource/index.jpeg", 51, 51);
+        i->img = resize_image(i->photo_name, 51, 51);
         i->but = gtk_button_new();
         i->backg_us_activ = gtk_image_new_from_file(MX_ACTIVE(m->style->color));
         i->backg_us_slept = gtk_image_new_from_file(MX_SLEPT(m->style->color));
@@ -31,7 +31,7 @@ void set_users(t_main *m) {
         gtk_widget_set_size_request(i->but, 305, 79);
         gtk_fixed_put(GTK_FIXED(i->fix), (i->but), 11, y);
         i->l_name = gtk_label_new(NULL);
-        markup = g_markup_printf_escaped("<span color=\"white\" font=\"14\">\%s</span>", "Olya");
+        markup = g_markup_printf_escaped("<span color=\"white\" font=\"14\">\%s</span>", i->name);
         gtk_label_set_markup(GTK_LABEL(i->l_name), markup); 
         i->l_mess = gtk_label_new(NULL);
         reset_l_mess(i);

@@ -30,9 +30,12 @@ static void save_but(GtkWidget *widget, GdkEvent *event, t_msg *msg) {
 static void file_check(gchar *tmp, t_msg **msg, char *name) {
     t_msg *t = *msg;
 
-    if (mx_strstr(tmp, ".png") || mx_strstr(tmp, ".jpg") || mx_strstr(tmp, ".jpeg")
-        || mx_strstr(tmp, ".gif") || mx_strstr(tmp, ".svg")) {
-            t->file = resize_image(tmp, 200, 200);
+    if (mx_strstr(tmp, ".jpg") || mx_strstr(tmp, ".jpeg")
+        || mx_strstr(tmp, ".gif")) {
+            if (mx_strstr(tmp, ".gif"))
+                t->file = gtk_image_new_from_file(tmp);
+            else 
+                t->file = resize_image(tmp, 200, 200);
             gtk_button_set_image(GTK_BUTTON(t->label), t->file);
     }
     else {
@@ -52,10 +55,8 @@ void add_file(t_main *m, gchar *tmp) {
     char **p = mx_strsplit((char *)tmp, '/');
     char *name = NULL;
 
-    for (t_user *i = m->users; i; i = i->next) {
-        if (i->check == true)
-            us = i;
-    }
+    for (t_user *i = m->users; i; i = i->next)
+        i->check == true ? us = i : 0;
     for (int i = 0; p[i]; i++)
         if (p[i + 1] == NULL)
             name = p[i];
@@ -65,7 +66,6 @@ void add_file(t_main *m, gchar *tmp) {
     file_check(tmp, &t, name);
     wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 900);
     gtk_widget_set_size_request(wid, 630, 30);
-    // gtk_box_pack_end(GTK_BOX(wid), t->label, FALSE, FALSE, 10);
     MX_MSG_PACK(t->my, t->label, wid);
     gtk_grid_attach(GTK_GRID(us->text_grid), wid, 0, t->count, 1, 1);
     gtk_widget_show_all(wid);

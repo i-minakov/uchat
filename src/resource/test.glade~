@@ -160,7 +160,9 @@
             <property name="height_request">51</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="max_length">300</property>
             <property name="primary_icon_pixbuf">attach.png</property>
+            <property name="secondary_icon_pixbuf">smile.png</property>
             <property name="show_emoji_icon">True</property>
             <property name="enable_emoji_completion">True</property>
             <style>
@@ -401,7 +403,7 @@
         </child>
         <child>
           <object class="GtkFixed" id="dot_menu">
-            <property name="width_request">16</property>
+            <property name="width_request">90</property>
             <property name="height_request">80</property>
             <property name="can_focus">False</property>
             <child>
@@ -560,95 +562,73 @@
             </child>
           </object>
         </child>
-        <style>
-          <class name="label"/>
-        </style>
-      </object>
-    </child>
-  </object>
-  <object class="GtkWindow" id="window_forw">
-    <property name="can_focus">False</property>
-    <property name="default_width">250</property>
-    <property name="default_height">535</property>
-    <child>
-      <placeholder/>
-    </child>
-    <child>
-      <object class="GtkFixed" id="fix_forw">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <child>
-          <object class="GtkScrolledWindow" id="scrol_forw1">
-            <property name="width_request">250</property>
-            <property name="height_request">535</property>
-            <property name="can_focus">True</property>
-            <property name="shadow_type">in</property>
+          <object class="GtkFixed" id="fix_forw">
+            <property name="width_request">129</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
             <child>
-              <object class="GtkViewport">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
+              <object class="GtkScrolledWindow" id="scrol_forw">
+                <property name="width_request">250</property>
+                <property name="height_request">463</property>
+                <property name="can_focus">True</property>
+                <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkFixed" id="fix_for_forw1">
+                  <object class="GtkViewport">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
-                      <object class="GtkEntry" id="search_forw1">
-                        <property name="width_request">218</property>
-                        <property name="height_request">32</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="primary_icon_name">edit-find-symbolic</property>
-                      </object>
-                      <packing>
-                        <property name="x">15</property>
-                        <property name="y">28</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <object class="GtkGrid" id="grid_forw">
-                        <property name="width_request">100</property>
-                        <property name="height_request">80</property>
+                      <object class="GtkFixed" id="fix_for_forw">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
-                        <child>
-                          <placeholder/>
-                        </child>
                       </object>
-                      <packing>
-                        <property name="x">7</property>
-                        <property name="y">71</property>
-                      </packing>
                     </child>
                   </object>
                 </child>
               </object>
+              <packing>
+                <property name="y">64</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="search_forw">
+                <property name="width_request">207</property>
+                <property name="height_request">30</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="primary_icon_name">edit-find-symbolic</property>
+                <style>
+                  <class name="entry"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">22</property>
+                <property name="y">29</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="width_request">194</property>
+                <property name="height_request">26</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Choose recipient...</property>
+              </object>
+              <packing>
+                <property name="x">31</property>
+                <property name="y">3</property>
+              </packing>
             </child>
           </object>
+          <packing>
+            <property name="x">450</property>
+            <property name="y">71</property>
+          </packing>
         </child>
+        <style>
+          <class name="label"/>
+        </style>
       </object>
     </child>
   </object>

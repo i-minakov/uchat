@@ -10,5 +10,7 @@ t_user *mx_create_user() {
     user->msg = create_msg(NULL, NULL);
     user->msg->count = -1;
     user->m = NULL;
+    user->photo_name = "./src/resource/index.jpeg";
+    user->name = "Olya";
     return user;
 }
