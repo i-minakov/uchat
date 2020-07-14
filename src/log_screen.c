@@ -44,7 +44,7 @@ int log_screen(void)
 	t_eye *eye = (t_eye *)malloc(sizeof(t_eye) * 4);
     eye->wid = wid;
 
-	gtk_init(NULL, NULL);
+	// gtk_init(NULL, NULL);
 	init_builder(wid);
 	init_widgets_start(wid, eye);
 	init_signals_start(wid, eye);

@@ -21,6 +21,19 @@
 #define MX_ACT_PH(flag) flag == 1 ? "./src/resource/activated photo.png" : "./src/resource/activated photo2.png"
 #define MX_SL_PH(flag) flag == 1 ? "./src/resource/slept photo.png" : "./src/resource/slept photo2.png"
 
+#define MX_START(flag) flag == 2 ? "Выберите чат, чтобы начать переписку" : "Please select a chat to start messaging"
+#define MX_MENU_EX(flag) flag == 2 ? "Выход" : "Exit"
+#define MX_MENU_SET(flag) flag == 2 ? "Настройки" : "Settings"
+#define MX_MENU_CONT(flag) flag == 2 ? "Контакты" : "Contacts"
+#define MX_MENU_SEA(flag) flag == 2 ? "Поиск" : "Search"
+
+#define MX_DOT_DEL(flag) flag == 2 ? "Удалить чат" : "Delete chat"
+#define MX_DOT_BL(flag) flag == 2 ? "Заблокировать" : "Block user"
+#define MX_DOT_FI(flag) flag == 2 ? "Поиск по сообщениям" : "Find massage"
+
+#define MX_COLOR(flag) flag == 2 ? "Тема" : "Theme"
+#define MX_LANG(flag) flag == 2 ? "Язык" : "language"
+
 typedef struct s_msg_forward {
     char *text; 
     char *filename;
@@ -29,12 +42,12 @@ typedef struct s_msg_forward {
 }              t_msg_forw;
 
 typedef struct s_size {
-		int x;
-    	int y;
-		float w;
-    	float h;
-        float xs;
-        float ys;
+    int x;
+    int y;
+    float w;
+    float h;
+    float xs;
+    float ys;
 } 				t_size;
 
 typedef struct s_style {
@@ -89,6 +102,7 @@ typedef struct s_cap {
     GtkWidget *friend_name;
     GtkWidget *dot_menu;
     GtkWidget *dot_menu_but;
+    GtkWidget *my_name;
     struct s_main *m;
 }              t_cap;
 
@@ -110,6 +124,7 @@ typedef struct s_setting {
 
 typedef struct s_menu {
     GtkWidget *menu_box;
+    GtkWidget *search;
     GtkWidget *settings;
     GtkWidget *contacts;
     GtkWidget *exit;
@@ -132,12 +147,14 @@ typedef struct s_forward {
     GtkWidget *search_forw;
     GtkWidget *fox_for_forw;
     GtkWidget *grid_forw;
+    GtkWidget *but_cancel;
     struct s_msg_forward *fm;
     struct s_main *m;
 }              t_forw;
 
 typedef struct s_main {
     GtkCssProvider *css;
+    GtkCssProvider *css2;
     GtkWidget *search;
     GtkWidget *window;
     GtkWidget *fix1;
@@ -182,6 +199,8 @@ void add_file(t_main *m, gchar *tmp);
 void init_signals(t_main *m);
 void save_file(GtkMenuItem *item, t_msg *msg);
 void add_message(t_main *m, t_user *i);
+void forward_msg(GtkMenuItem *item, t_msg *msg);
+void edit_msg(GtkMenuItem *item, t_msg *msg);
 
 void burger_notify(GtkWidget *widget, GdkEvent *event, t_main *m);
 void burger_leave(GtkWidget *widget, GdkEvent *event, t_main *m);
@@ -195,6 +214,7 @@ void show_set(t_main *m);
 
 void connect_css(t_main *m, int flag);
 void change_color(GtkToggleButton *togglebutton, t_main *m);
+void change_lang(GtkToggleButton *togglebutton, t_main *m); 
 
 /////////////////////////////////////////////////////////////////////////////
 // Olya login screen

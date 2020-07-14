@@ -28,7 +28,7 @@ static void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos,
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         tmp = gtk_file_chooser_get_filename (chooser);
         add_file(m, tmp);
-        // g_free(tmp);
+        
     }
     gtk_widget_destroy (dialog);
 }
@@ -102,6 +102,31 @@ void set_dots_signal(t_dots *d) {
     g_signal_connect(d->block_but, "clicked", G_CALLBACK(block_user), d->m);
 }
 
+void show_search(GtkWidget *w, t_main *m) {
+    gtk_widget_hide(m->cap->burger_but_img);
+    gtk_widget_hide(m->cap->burger_but);
+    gtk_widget_hide(m->cap->my_photo);
+    gtk_widget_hide(m->cap->frame_for_my_photo);
+    gtk_widget_hide(m->dots->fix_dot_menu);
+    gtk_widget_hide(m->cap->my_name);
+    gtk_widget_show(m->search);
+}
+
+void close_search(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
+                GdkEvent *event, t_main *m) {
+    if (icon_pos == GTK_ENTRY_ICON_PRIMARY)
+        return ;
+    gtk_widget_show(m->cap->burger_but_img);
+    gtk_widget_show(m->cap->burger_but);
+    gtk_widget_show(m->cap->my_photo);
+    gtk_widget_show(m->cap->frame_for_my_photo);
+    gtk_widget_show(m->cap->my_name);
+    gtk_widget_hide(m->search);
+    gtk_widget_destroy(m->grid_user);
+    set_users(m);
+    gtk_widget_show_all(m->fix_for_users);
+}
+
 void init_signals(t_main *m) {
     g_signal_connect(m->cap->burger_but, "enter-notify-event", G_CALLBACK(burger_notify), m);
     g_signal_connect(m->cap->burger_but, "clicked", G_CALLBACK(switch_menu), m);
@@ -109,11 +134,14 @@ void init_signals(t_main *m) {
     g_signal_connect(m->but1, "clicked", G_CALLBACK(send_but), m);
     g_signal_connect(m->sms, "activate", G_CALLBACK(entry_activate), m);
     g_signal_connect(m->sms, "icon-press", G_CALLBACK(attach_file), m);
-    g_signal_connect(m->search, "activate", G_CALLBACK(search_msg), m);
+    g_signal_connect(m->dots->search_msg_but, "clicked", G_CALLBACK(show_search), m);
     g_signal_connect(m->scrol_bar, "edge-reached", G_CALLBACK(fun), m);
+    g_signal_connect(m->search, "activate", G_CALLBACK(search_msg), m);
+    g_signal_connect(m->search, "icon-press", G_CALLBACK(close_search), m);
 
     g_signal_connect(m->menu->settings, "clicked", G_CALLBACK(show_setings), m);
     g_signal_connect(m->set->set_but, "clicked", G_CALLBACK(hide_setings), m);
     g_signal_connect(m->set->color1, "toggled", G_CALLBACK(change_color), m);
+    g_signal_connect(m->set->lang1, "toggled", G_CALLBACK(change_lang), m);
     set_dots_signal(m->dots);
 }
