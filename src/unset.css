@@ -1,3 +1,31 @@
-* {
+window {
     all: unset;
-}  
+}
+.top {
+    all: unset;
+}
+.bottom {
+    all: unset;
+
+}
+.users {
+    all: unset;
+}
+.masage {
+    all: unset;
+}
+.label {
+    all: unset;
+}
+.entry {
+    all: unset;
+}
+.box{
+    all: unset;
+}
+.mbox {
+    all: unset;
+}
+.but {
+	all: unset;
+}
