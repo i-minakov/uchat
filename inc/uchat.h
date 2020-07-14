@@ -170,6 +170,7 @@ typedef struct s_main {
     GtkWidget *top_b;
     GtkAdjustment *adj; 
     GtkBuilder *builder;
+    int exit;
     char *text;
     struct s_forward *forw;
     struct s_dot_menu *dots;
@@ -201,6 +202,7 @@ void save_file(GtkMenuItem *item, t_msg *msg);
 void add_message(t_main *m, t_user *i);
 void forward_msg(GtkMenuItem *item, t_msg *msg);
 void edit_msg(GtkMenuItem *item, t_msg *msg);
+void login();
 
 void burger_notify(GtkWidget *widget, GdkEvent *event, t_main *m);
 void burger_leave(GtkWidget *widget, GdkEvent *event, t_main *m);
@@ -256,12 +258,12 @@ typedef struct s_wid {
 	GtkWidget *badact_lab;
 	GtkWidget *black_back;
 
-	const gchar *logname;
-	const gchar *logpas;
-	const gchar *signame;
-	const gchar *sigpas;
-	const gchar *sigpas2;
-	const gchar *sigfile;
+	char *logname;
+	char *logpas;
+	char *signame;
+	char *sigpas;
+	char *sigpas2;
+	char *sigfile;
 } 			t_wid;
 
 typedef struct s_eye {

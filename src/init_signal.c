@@ -28,7 +28,6 @@ static void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos,
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         tmp = gtk_file_chooser_get_filename (chooser);
         add_file(m, tmp);
-        
     }
     gtk_widget_destroy (dialog);
 }
@@ -127,6 +126,12 @@ void close_search(GtkEntry *entry, GtkEntryIconPosition icon_pos,
     gtk_widget_show_all(m->fix_for_users);
 }
 
+void exit_chat(GtkWidget *w, t_main *m) {
+    m->exit = 1;
+    gtk_widget_destroy(m->window);
+    gtk_main_quit();
+}
+
 void init_signals(t_main *m) {
     g_signal_connect(m->cap->burger_but, "enter-notify-event", G_CALLBACK(burger_notify), m);
     g_signal_connect(m->cap->burger_but, "clicked", G_CALLBACK(switch_menu), m);
@@ -143,5 +148,6 @@ void init_signals(t_main *m) {
     g_signal_connect(m->set->set_but, "clicked", G_CALLBACK(hide_setings), m);
     g_signal_connect(m->set->color1, "toggled", G_CALLBACK(change_color), m);
     g_signal_connect(m->set->lang1, "toggled", G_CALLBACK(change_lang), m);
+    g_signal_connect(m->menu->exit, "clicked", G_CALLBACK(exit_chat), m);
     set_dots_signal(m->dots);
 }

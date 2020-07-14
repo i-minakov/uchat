@@ -138,6 +138,7 @@ void hide_something(t_main *m) {
 t_main *malloc_main() {
     t_main *m = (t_main *)malloc(sizeof(t_main) * 100);
 
+    m->exit = 0;
     m->cap = (t_cap *)malloc(sizeof(t_cap) * 100);
     m->menu = (t_menu *)malloc(sizeof(t_menu) * 100);
     m->style = (t_style *)malloc(sizeof(t_style) * 100);
@@ -159,45 +160,38 @@ void free_all(t_main *m) {
     free(m);
 }
 
-// void loop(t_main *m) {  
-
-//     while (1) {
-
-//         init_components(m);
-//         connect_css(m, 1);
-//         set_users(m);
-//         set_chat_grid(m);
-//         set_cap(m->cap);
-//         init_signals(m);  
-//         log_screen();
-//         gtk_label_set_text(GTK_LABEL(m->lab_start),
-//                         "Please select a chat to start messaging");
-//         gtk_widget_show_all(m->window);
-//         hide_something(m);
-//         gtk_main(); 
-//     }
-// }
-
-int main(int argc, char *argv[]) {
+void chat_screen() {
     t_main *m = malloc_main();
+    int ex = 0;
 
-    gtk_init(&argc, &argv);
-    for (int i = atoi(argv[1]); i > 0; i--)
+    gtk_init(NULL, NULL);
+    for (int i = 10; i > 0; i--)
         user_pushback(&m->users);
-
     init_components(m);
     connect_css(m, 1);
     set_users(m);
     set_chat_grid(m);
     set_cap(m->cap);
     init_signals(m);  
-    log_screen();
     gtk_label_set_text(GTK_LABEL(m->lab_start),
                      "Please select a chat to start messaging");
     gtk_widget_show_all(m->window);
     hide_something(m);
     gtk_main(); 
-
+    ex = m->exit;
     free_all(m);
+    if (ex == 1)
+        login();
+}
+
+void login() {  
+    if (log_screen() == 1)
+        return ;
+    chat_screen();
+}
+
+int main(int argc, char *argv[]) {
+    // login();
+    chat_screen();
     return 0;
 }
