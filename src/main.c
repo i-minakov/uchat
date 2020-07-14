@@ -55,6 +55,7 @@ void init_menu(t_main *m) {
     m->style->color = 1;
     m->style->lang = 1;
     m->menu->menu_box = GTK_WIDGET(gtk_builder_get_object(m->builder, "menu_img"));
+    m->menu->menu_fix = GTK_WIDGET(gtk_builder_get_object(m->builder, "menu_box"));
     m->menu->search = GTK_WIDGET(gtk_builder_get_object(m->builder, "search"));
     m->menu->settings = GTK_WIDGET(gtk_builder_get_object(m->builder, "setting"));
     m->menu->contacts = GTK_WIDGET(gtk_builder_get_object(m->builder, "contacts"));
@@ -70,9 +71,11 @@ void init_menu(t_main *m) {
     m->set->color2 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color2"));
     m->set->my_name = GTK_WIDGET(gtk_builder_get_object(m->builder, "my_name"));
     m->set->set_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "set_but"));
-    m->set->my_photo = resize_proportion("./src/resource/index.jpeg", 51, 51);
-    m->set->my_frame = gtk_image_new_from_file("./src/resource/activated photo.png");
+    m->set->my_photo = resize_proportion("./src/resource/index.jpeg", 80, 80);
+    m->set->my_frame2 = resize_proportion("./src/resource/slept photo2.png", 80, 80);
+    m->set->my_frame = resize_proportion("./src/resource/slept photo.png", 80, 80);
     gtk_fixed_put(GTK_FIXED(m->set->sett_fix), m->set->my_photo, 30, 30);
+    gtk_fixed_put(GTK_FIXED(m->set->sett_fix), m->set->my_frame2, 30, 30);
     gtk_fixed_put(GTK_FIXED(m->set->sett_fix), m->set->my_frame, 30, 30);
     m->set->flag = 0;
 }
@@ -102,6 +105,7 @@ void init_components(t_main *m) {
     m->style->lang = 1;
     init_menu(m);
 
+    m->dots->dot_img = GTK_WIDGET(gtk_builder_get_object(m->builder, "dot_img1"));
     m->dots->dot_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "dots_but"));
     m->dots->fix_dot_menu = GTK_WIDGET(gtk_builder_get_object(m->builder, "dot_menu"));
     m->dots->block_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "block_but"));
@@ -130,6 +134,7 @@ void hide_something(t_main *m) {
     }
     hide_menu(m);
     hide_set(m);
+
     gtk_widget_hide(m->dots->fix_dot_menu);
     gtk_widget_hide(m->forw->fix_forw);
     gtk_widget_hide(m->search);
@@ -176,7 +181,7 @@ void chat_screen() {
     gtk_label_set_text(GTK_LABEL(m->lab_start),
                      "Please select a chat to start messaging");
     gtk_widget_show_all(m->window);
-    hide_something(m);
+    hide_something(m);\
     gtk_main(); 
     ex = m->exit;
     free_all(m);

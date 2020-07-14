@@ -54,6 +54,7 @@ window {
 .but {
 	background-image: none;
 	border: none;
-	box-shadow: none;
+    box-shadow: none;
+    color: white;
 	-gtk-icon-shadow: none;
 }

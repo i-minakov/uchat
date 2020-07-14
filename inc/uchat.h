@@ -117,6 +117,7 @@ typedef struct s_setting {
     GtkWidget *color2;
     GtkWidget *my_name;
     GtkWidget *my_frame;
+    GtkWidget *my_frame2;
     GtkWidget *my_photo;
     GtkWidget *set_but;
     int flag; 
@@ -124,6 +125,7 @@ typedef struct s_setting {
 
 typedef struct s_menu {
     GtkWidget *menu_box;
+    GtkWidget *menu_fix;
     GtkWidget *search;
     GtkWidget *settings;
     GtkWidget *contacts;
@@ -134,6 +136,7 @@ typedef struct s_menu {
 
 typedef struct s_dot_menu {
     int visible;
+    GtkWidget *dot_img;
     GtkWidget *dot_but;
     GtkWidget *fix_dot_menu;
     GtkWidget *search_msg_but;

@@ -4,6 +4,9 @@ void wid_ch(t_main *m) {
     MX_SHOW_HIDE(m->style->color, m->bottom_b);
     MX_SHOW_HIDE(m->style->color, m->top_b);
     MX_SHOW_HIDE(m->style->color, m->set->sett_box);
+    MX_SHOW_HIDE(m->style->color, m->dots->dot_img);
+    MX_SHOW_HIDE(m->style->color, m->menu->menu_box);
+    MX_SHOW_HIDE(m->style->color, m->set->my_frame);
 }
 
 void change_color(GtkToggleButton *togglebutton, t_main *m) {

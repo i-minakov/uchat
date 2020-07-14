@@ -176,186 +176,38 @@
           </packing>
         </child>
         <child>
-          <object class="GtkFixed" id="setting_bar">
-            <property name="width_request">100</property>
-            <property name="height_request">80</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkImage" id="set_img2">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pixbuf">set1.png</property>
-                <style>
-                  <class name="mbox"/>
-                </style>
-              </object>
-            </child>
-            <child>
-              <object class="GtkImage" id="set_img">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pixbuf">set.png</property>
-                <style>
-                  <class name="mbox"/>
-                </style>
-              </object>
-            </child>
-            <child>
-              <object class="GtkRadioButton" id="color2">
-                <property name="label" translatable="yes">Светлая</property>
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="active">True</property>
-                <property name="draw_indicator">True</property>
-                <property name="group">color1</property>
-              </object>
-              <packing>
-                <property name="x">125</property>
-                <property name="y">140</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkRadioButton" id="color1">
-                <property name="label" translatable="yes">Тёмная</property>
-                <property name="width_request">20</property>
-                <property name="height_request">80</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="active">True</property>
-                <property name="draw_indicator">True</property>
-              </object>
-              <packing>
-                <property name="x">25</property>
-                <property name="y">140</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkRadioButton" id="Lang1">
-                <property name="label" translatable="yes">Eng</property>
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="active">True</property>
-                <property name="draw_indicator">True</property>
-              </object>
-              <packing>
-                <property name="x">25</property>
-                <property name="y">230</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkRadioButton" id="Lang2">
-                <property name="label" translatable="yes">Pyc</property>
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <property name="active">True</property>
-                <property name="draw_indicator">True</property>
-                <property name="group">Lang1</property>
-              </object>
-              <packing>
-                <property name="x">125</property>
-                <property name="y">230</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="Colorlab">
-                <property name="width_request">10</property>
-                <property name="height_request">20</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Theme</property>
-              </object>
-              <packing>
-                <property name="x">30</property>
-                <property name="y">130</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="Langlab">
-                <property name="width_request">20</property>
-                <property name="height_request">10</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">language</property>
-              </object>
-              <packing>
-                <property name="x">30</property>
-                <property name="y">220</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="my_name">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">label</property>
-              </object>
-              <packing>
-                <property name="x">100</property>
-                <property name="y">30</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="set_but">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <child>
-                  <object class="GtkImage">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="pixbuf">but3.png</property>
-                  </object>
-                </child>
-                <style>
-                  <class name="but"/>
-                </style>
-              </object>
-              <packing>
-                <property name="x">100</property>
-                <property name="y">300</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="y">90</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkFixed" id="menu_box">
             <property name="width_request">327</property>
             <property name="height_request">250</property>
             <property name="can_focus">False</property>
+            <child>
+              <object class="GtkImage" id="menu_img2">
+                <property name="width_request">100</property>
+                <property name="height_request">80</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="pixbuf">menu2.png</property>
+                <style>
+                  <class name="mbox"/>
+                </style>
+              </object>
+            </child>
             <child>
               <object class="GtkImage" id="menu_img">
                 <property name="width_request">100</property>
                 <property name="height_request">80</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixbuf">Rectangle 47.png</property>
+                <property name="pixbuf">menu.png</property>
                 <style>
                   <class name="mbox"/>
                 </style>
               </object>
-              <packing>
-                <property name="x">-5</property>
-              </packing>
             </child>
             <child>
               <object class="GtkButton" id="contacts">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
+                <property name="width_request">20</property>
+                <property name="height_request">10</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -366,21 +218,21 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Contacts</property>
-                    <style>
-                      <class name="but"/>
-                    </style>
                   </object>
                 </child>
+                <style>
+                  <class name="but"/>
+                </style>
               </object>
               <packing>
-                <property name="x">124</property>
-                <property name="y">117</property>
+                <property name="x">80</property>
+                <property name="y">30</property>
               </packing>
             </child>
             <child>
               <object class="GtkButton" id="setting">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
+                <property name="width_request">20</property>
+                <property name="height_request">10</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -391,20 +243,21 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Settings</property>
-                    <style>
-                      <class name="but"/>
-                    </style>
                   </object>
                 </child>
+                <style>
+                  <class name="but"/>
+                </style>
               </object>
               <packing>
-                <property name="x">200</property>
+                <property name="x">80</property>
+                <property name="y">70</property>
               </packing>
             </child>
             <child>
               <object class="GtkButton" id="exit">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
+                <property name="width_request">20</property>
+                <property name="height_request">10</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -415,20 +268,21 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Exit</property>
-                    <style>
-                      <class name="but"/>
-                    </style>
                   </object>
                 </child>
+                <style>
+                  <class name="but"/>
+                </style>
               </object>
               <packing>
-                <property name="x">100</property>
+                <property name="x">80</property>
+                <property name="y">150</property>
               </packing>
             </child>
             <child>
               <object class="GtkButton" id="search">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
+                <property name="width_request">20</property>
+                <property name="height_request">10</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -439,16 +293,19 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Search</property>
-                    <style>
-                      <class name="but"/>
-                    </style>
                   </object>
                 </child>
+                <style>
+                  <class name="but"/>
+                </style>
               </object>
+              <packing>
+                <property name="x">80</property>
+                <property name="y">110</property>
+              </packing>
             </child>
           </object>
           <packing>
-            <property name="x">500</property>
             <property name="y">90</property>
           </packing>
         </child>
@@ -458,18 +315,28 @@
             <property name="height_request">80</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkImage" id="menu_img1">
+              <object class="GtkImage" id="dot_img2">
                 <property name="width_request">100</property>
                 <property name="height_request">80</property>
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="pixbuf">dotsb2.png</property>
                 <style>
                   <class name="mbox"/>
                 </style>
               </object>
-              <packing>
-                <property name="x">-5</property>
-              </packing>
+            </child>
+            <child>
+              <object class="GtkImage" id="dot_img1">
+                <property name="width_request">100</property>
+                <property name="height_request">80</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="pixbuf">dotsb.png</property>
+                <style>
+                  <class name="mbox"/>
+                </style>
+              </object>
             </child>
             <child>
               <object class="GtkButton" id="block_but">
@@ -492,7 +359,7 @@
                 </child>
               </object>
               <packing>
-                <property name="x">124</property>
+                <property name="x">30</property>
                 <property name="y">117</property>
               </packing>
             </child>
@@ -517,7 +384,8 @@
                 </child>
               </object>
               <packing>
-                <property name="x">200</property>
+                <property name="x">30</property>
+                <property name="y">70</property>
               </packing>
             </child>
             <child>
@@ -541,12 +409,12 @@
                 </child>
               </object>
               <packing>
-                <property name="x">100</property>
+                <property name="x">30</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="x">673</property>
+            <property name="x">777</property>
             <property name="y">90</property>
           </packing>
         </child>
@@ -711,6 +579,154 @@
             <property name="x">450</property>
             <property name="y">62</property>
           </packing>
+        </child>
+        <child>
+          <object class="GtkFixed" id="setting_bar">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkImage" id="set_img2">
+                <property name="width_request">100</property>
+                <property name="height_request">80</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="pixbuf">set1.png</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkImage" id="set_img">
+                <property name="width_request">100</property>
+                <property name="height_request">80</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="pixbuf">setl.png</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="color2">
+                <property name="label" translatable="yes">Светлая</property>
+                <property name="width_request">100</property>
+                <property name="height_request">80</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">True</property>
+                <property name="group">color1</property>
+              </object>
+              <packing>
+                <property name="x">125</property>
+                <property name="y">140</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="color1">
+                <property name="label" translatable="yes">Тёмная</property>
+                <property name="width_request">20</property>
+                <property name="height_request">80</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">True</property>
+              </object>
+              <packing>
+                <property name="x">25</property>
+                <property name="y">140</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="Lang1">
+                <property name="label" translatable="yes">Eng</property>
+                <property name="width_request">100</property>
+                <property name="height_request">80</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">True</property>
+              </object>
+              <packing>
+                <property name="x">25</property>
+                <property name="y">230</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkRadioButton" id="Lang2">
+                <property name="label" translatable="yes">Pyc</property>
+                <property name="width_request">100</property>
+                <property name="height_request">80</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="active">True</property>
+                <property name="draw_indicator">True</property>
+                <property name="group">Lang1</property>
+              </object>
+              <packing>
+                <property name="x">125</property>
+                <property name="y">230</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="Colorlab">
+                <property name="width_request">10</property>
+                <property name="height_request">20</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Theme</property>
+              </object>
+              <packing>
+                <property name="x">30</property>
+                <property name="y">130</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="Langlab">
+                <property name="width_request">20</property>
+                <property name="height_request">10</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">language</property>
+              </object>
+              <packing>
+                <property name="x">30</property>
+                <property name="y">220</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="my_name">
+                <property name="width_request">100</property>
+                <property name="height_request">80</property>
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">label</property>
+              </object>
+              <packing>
+                <property name="x">100</property>
+                <property name="y">30</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="set_but">
+                <property name="width_request">100</property>
+                <property name="height_request">80</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pixbuf">but3.png</property>
+                  </object>
+                </child>
+                <style>
+                  <class name="but"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">100</property>
+                <property name="y">300</property>
+              </packing>
+            </child>
+          </object>
         </child>
         <style>
           <class name="label"/>
