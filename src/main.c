@@ -72,6 +72,24 @@ void init_menu(t_main *m) {
     m->menu->contacts = GTK_WIDGET(gtk_builder_get_object(m->builder, "contacts"));
     m->menu->exit = GTK_WIDGET(gtk_builder_get_object(m->builder, "exit"));
     m->menu->flag = 0;
+    m->menu->setic = gtk_image_new_from_file("./src/resource/setic.png"); 
+    m->menu->setic2 = gtk_image_new_from_file("./src/resource/setic2.png"); 
+    m->menu->searchic = gtk_image_new_from_file("./src/resource/searchic.png"); 
+    m->menu->searchic2 = gtk_image_new_from_file("./src/resource/searchic2.png"); 
+    m->menu->exic = gtk_image_new_from_file("./src/resource/exic.png"); ;
+    m->menu->exic2 = gtk_image_new_from_file("./src/resource/exic2.png"); ;
+    m->menu->contic = gtk_image_new_from_file("./src/resource/contic.png");
+    m->menu->contic2 = gtk_image_new_from_file("./src/resource/contic2.png");
+
+    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->contic, 40, 35);
+    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->contic2, 40, 35);
+    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->setic, 40, 75);
+    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->setic2, 40, 75);
+    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->searchic, 40, 115);
+    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->searchic2, 40, 115);
+    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->exic, 40, 153);
+    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->exic2, 40, 153);
+
     m->set->sett_box = GTK_WIDGET(gtk_builder_get_object(m->builder, "set_img"));
     m->set->sett_fix = GTK_WIDGET(gtk_builder_get_object(m->builder, "setting_bar"));
     m->set->color_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "Colorlab"));
@@ -146,6 +164,7 @@ void hide_something(t_main *m) {
         gtk_widget_hide(i->backg_us_activ);
         gtk_widget_hide(i->text_grid);
     }
+    the_ic(1, m);
     hide_menu(m);
     hide_set(m);
 
