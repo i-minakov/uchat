@@ -82,7 +82,6 @@ typedef struct s_data_users {
     GtkWidget *backg_us_activ;
     GtkWidget *frame_photo_act;
     GtkWidget *frame_photo_slept;
-    GtkAdjustment *adj;
     char *name;
     bool check;
     int row;

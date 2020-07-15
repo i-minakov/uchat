@@ -22,6 +22,10 @@ static void cancel_forw(GtkWidget *w, t_forw *f) {
     free(f->fm);
 }
 
+static void search_forw() {
+    
+}
+
 static void create_window(t_forw *f, t_user *head) {
     int row = 0;
     GtkWidget *but;

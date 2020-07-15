@@ -1,5 +1,16 @@
 #include "../inc/uchat.h"
 
+static void dialog_delete(t_msg *msg) {
+    GtkWidget *dialog;
+    GtkDialogFlags flags = GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT;
+    
+    dialog = gtk_dialog_new_with_buttons ("Delete message?", GTK_WINDOW(msg->user->m->window),
+        flags, ("_Yes"), GTK_RESPONSE_ACCEPT, ("_No"), GTK_RESPONSE_REJECT, NULL);
+    if ((gtk_dialog_run(GTK_DIALOG (dialog))) == GTK_RESPONSE_ACCEPT)
+        delete_msg(NULL, msg);
+    gtk_widget_destroy (dialog);
+}
+
 static void edit_done(GtkEntry *e, t_msg *msg) {
     char *str = NULL;
     int k = 0;
@@ -16,15 +27,10 @@ static void edit_done(GtkEntry *e, t_msg *msg) {
     gtk_button_set_label(GTK_BUTTON(msg->label), str);
     gtk_widget_hide(msg->user->m->edit_entry);
     gtk_widget_show(msg->user->m->sms);
+    if (msg->text == NULL || !mx_strlen(msg->text))
+        dialog_delete(msg);
     free(str);
-    // if (msg->text == NULL || !mx_strlen(msg->text)) {
-    //     flags = GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT;
-    //     dialog = gtk_dialog_new_with_buttons ("Delete message?", GTK_WINDOW(msg->user->m->window),
-    //         flags, ("_Yes"), GTK_RESPONSE_ACCEPT, ("_No"), GTK_RESPONSE_REJECT, NULL);
-    //     if ((gtk_dialog_run(GTK_DIALOG (dialog))) == GTK_RESPONSE_ACCEPT)
-    //         delete_msg(NULL, msg);
-    //     gtk_widget_destroy (dialog);
-    // }
+    g_signal_handlers_disconnect_by_func(e, G_CALLBACK(edit_done), msg);
 }
 
 void edit_msg(GtkMenuItem *item, t_msg *msg) {

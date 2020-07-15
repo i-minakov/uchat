@@ -101,7 +101,7 @@ void init_components(t_main *m) {
     m->search = GTK_WIDGET(gtk_builder_get_object(m->builder, "entry_search"));
     m->adj = gtk_adjustment_new(1.0, 1.0, 10.0, 1.0, 10.0, 1.0);
     gtk_scrolled_window_set_vadjustment(GTK_SCROLLED_WINDOW(m->scrol_bar), m->adj);
-    gtk_scrolled_window_set_overlay_scrolling(GTK_SCROLLED_WINDOW(m->scrol_bar), false);
+    // gtk_scrolled_window_set_overlay_scrolling(GTK_SCROLLED_WINDOW(m->scrol_bar), false);
     m->style->color = 1;
     m->style->lang = 1;
     init_menu(m);
