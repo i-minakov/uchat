@@ -27,7 +27,7 @@ static void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos,
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         tmp = gtk_file_chooser_get_filename (chooser);
-        add_file(m, tmp);
+        add_file(m, tmp, true);
     }
     gtk_widget_destroy (dialog);
 }

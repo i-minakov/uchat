@@ -1,6 +1,6 @@
 #include "../inc/uchat.h"
 
-static void msg_file_pushfornt(t_msg **head, char *filename) {
+static void msg_file_pushfornt(t_msg **head, char *filename, bool my) {
     t_msg *tmp = NULL;
     GtkWidget *item[3];
     char *s[] = {"Save", "Forward", "Delete", NULL};
@@ -8,6 +8,7 @@ static void msg_file_pushfornt(t_msg **head, char *filename) {
         {save_file, forward_msg, delete_msg};
 
     tmp = create_msg(NULL, filename);
+    tmp->my = my;
     tmp->prev = *head;
     tmp->next = (*head)->next;
     (*head)->next = tmp;
@@ -31,7 +32,7 @@ static void file_check(gchar *tmp, t_msg **msg, char *name) {
     t_msg *t = *msg;
 
     if (mx_strstr(tmp, ".jpg") || mx_strstr(tmp, ".jpeg")
-        || mx_strstr(tmp, ".gif") || mx_strstr(tmp, ".mp4")) {
+        || mx_strstr(tmp, ".gif")) {
             if (mx_strstr(tmp, ".gif"))
                 t->file = gtk_image_new_from_file(tmp);
             // else if (mx_strstr(tmp, ".mp4"))
@@ -50,7 +51,7 @@ static void file_check(gchar *tmp, t_msg **msg, char *name) {
     }
 }
 
-void add_file(t_main *m, gchar *tmp) {
+void add_file(t_main *m, gchar *tmp, bool my) {
     t_user *us = NULL;
     t_msg *t = NULL;
     GtkWidget *wid;
@@ -62,13 +63,13 @@ void add_file(t_main *m, gchar *tmp) {
     for (int i = 0; p[i]; i++)
         if (p[i + 1] == NULL)
             name = p[i];
-    msg_file_pushfornt(&us->msg, (char *)tmp);
+    msg_file_pushfornt(&us->msg, (char *)tmp, my);
     t = us->msg->next;
     t->user = us;
     file_check(tmp, &t, name);
     wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 900);
     gtk_widget_set_size_request(wid, 630, 30);
-    MX_MSG_PACK(t->my, t->label, wid);
+    MX_MSG_PACK(my, t->label, wid);
     gtk_grid_attach(GTK_GRID(us->text_grid), wid, 0, t->count, 1, 1);
     gtk_widget_show_all(wid);
     us->row++;

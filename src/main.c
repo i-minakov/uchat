@@ -29,7 +29,7 @@ void set_chat_grid(t_main *m) {
             s = mx_delit_fre(s, (char *)(&buf));
             if (buf == 10) {
                 m->text = s;
-                add_message(m, i, j%2 == 0 ? false : true);
+                add_message(m, i, j%2 == 0 ? false : true, false);
                 s = NULL;
                 j++;
             }

@@ -48,8 +48,6 @@ void set_users(t_main *m) {
         gtk_grid_insert_row(GTK_GRID(m->grid_user), row);
         init_component(i, m);
         insert_component(i);
-        // gtk_style_context_add_class(gtk_widget_get_style_context(i->fix), "user");
-        // gtk_widget_class_set_css_name(i->fix->style_set, "user");
         gtk_grid_attach(GTK_GRID(m->grid_user), i->fix, 0, row, 1, 1);
         i->count = row;
         row++;

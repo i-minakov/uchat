@@ -7,10 +7,10 @@ static void user_recipient(GtkWidget *wid, t_user *us) {
     user_click(NULL, us);
     if (fm->text) {
         us->m->text = mx_delit_fre(mx_delit_fre(mx_strjoin("forwared by ", fm->autor), ":\n"), fm->text);
-        add_message(us->m, us, false);
+        add_message(us->m, us, true, true);
     }
     else 
-        add_file(us->m, (gchar *)fm->filename);
+        add_file(us->m, (gchar *)fm->filename, true);
     reset_users(us->m);
     gtk_widget_destroy(fm->f->grid_forw);
     free(fm);
