@@ -340,8 +340,8 @@
             </child>
             <child>
               <object class="GtkButton" id="block_but">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
+                <property name="width_request">20</property>
+                <property name="height_request">10</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -352,21 +352,21 @@
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Block user</property>
-                    <style>
-                      <class name="but"/>
-                    </style>
                   </object>
                 </child>
+                <style>
+                  <class name="but"/>
+                </style>
               </object>
               <packing>
-                <property name="x">30</property>
-                <property name="y">117</property>
+                <property name="x">25</property>
+                <property name="y">90</property>
               </packing>
             </child>
             <child>
               <object class="GtkButton" id="clear_but">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
+                <property name="width_request">20</property>
+                <property name="height_request">10</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -382,16 +382,19 @@
                     </style>
                   </object>
                 </child>
+                <style>
+                  <class name="but"/>
+                </style>
               </object>
               <packing>
-                <property name="x">30</property>
-                <property name="y">70</property>
+                <property name="x">25</property>
+                <property name="y">55</property>
               </packing>
             </child>
             <child>
               <object class="GtkButton" id="search_but">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
+                <property name="width_request">20</property>
+                <property name="height_request">10</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -407,9 +410,13 @@
                     </style>
                   </object>
                 </child>
+                <style>
+                  <class name="but"/>
+                </style>
               </object>
               <packing>
-                <property name="x">30</property>
+                <property name="x">25</property>
+                <property name="y">20</property>
               </packing>
             </child>
           </object>
@@ -602,6 +609,9 @@
                 <property name="y">10</property>
               </packing>
             </child>
+            <style>
+              <class name="forv_box"/>
+            </style>
           </object>
           <packing>
             <property name="x">450</property>

@@ -132,6 +132,15 @@ typedef struct s_menu {
     GtkWidget *settings;
     GtkWidget *contacts;
     GtkWidget *exit;
+
+    GtkWidget *setic;
+    GtkWidget *setic2;
+    GtkWidget *searchic;
+    GtkWidget *searchic2;
+    GtkWidget *exic;
+    GtkWidget *exic2;
+    GtkWidget *contic;
+    GtkWidget *contic2;
     int flag;
     
 }              t_menu;
@@ -227,6 +236,7 @@ void show_set(t_main *m);
 void connect_css(t_main *m, int flag);
 void change_color(GtkToggleButton *togglebutton, t_main *m);
 void change_lang(GtkToggleButton *togglebutton, t_main *m); 
+void the_ic(int flag, t_main *m);
 
 /////////////////////////////////////////////////////////////////////////////
 // Olya login screen
