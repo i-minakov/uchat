@@ -115,6 +115,7 @@ void init_components(t_main *m) {
     m->dots->visible = 1;
     m->dots->m = m;
 
+    m->forw->forw_img = GTK_WIDGET(gtk_builder_get_object(m->builder, "forw_img"));
     m->forw->fix_forw = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_forw"));
     m->forw->search_forw = GTK_WIDGET(gtk_builder_get_object(m->builder, "search_forw"));
     m->forw->fox_for_forw = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_forw"));

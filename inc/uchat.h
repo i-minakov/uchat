@@ -147,6 +147,7 @@ typedef struct s_dot_menu {
 }              t_dots;
 
 typedef struct s_forward {
+    GtkWidget *forw_img;
     GtkWidget *fix_forw;
     GtkWidget *search_forw;
     GtkWidget *fox_for_forw;
