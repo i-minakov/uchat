@@ -40,11 +40,13 @@ void init_builder(t_wid *wid) {
 
 int log_screen(void)
 {
+	int ex = 0;
 	t_wid *wid = (t_wid *)malloc(sizeof(t_wid) * 1000);
 	t_eye *eye = (t_eye *)malloc(sizeof(t_eye) * 4);
     eye->wid = wid;
+	wid->logname = NULL;
 
-	// gtk_init(NULL, NULL);
+	gtk_init(NULL, NULL);
 	init_builder(wid);
 	init_widgets_start(wid, eye);
 	init_signals_start(wid, eye);
@@ -54,7 +56,7 @@ int log_screen(void)
     gtk_widget_show(wid->window); 
 
     gtk_main();
+	(wid->logname == NULL || !mx_strlen(wid->logname)) ? ex = 1 : 0;
 	free(wid);
-
-    return 0;
+    return ex;
 }

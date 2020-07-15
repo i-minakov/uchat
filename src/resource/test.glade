@@ -506,7 +506,7 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <child>
-              <object class="GtkImage" id="forv_img2">
+              <object class="GtkImage" id="forw_img2">
                 <property name="width_request">100</property>
                 <property name="height_request">80</property>
                 <property name="visible">True</property>
@@ -515,7 +515,7 @@
               </object>
             </child>
             <child>
-              <object class="GtkImage" id="forv_img">
+              <object class="GtkImage" id="forw_img">
                 <property name="width_request">100</property>
                 <property name="height_request">80</property>
                 <property name="visible">True</property>
@@ -525,7 +525,7 @@
             </child>
             <child>
               <object class="GtkScrolledWindow" id="scrol_forw">
-                <property name="width_request">250</property>
+                <property name="width_request">220</property>
                 <property name="height_request">463</property>
                 <property name="can_focus">True</property>
                 <property name="shadow_type">in</property>
@@ -546,13 +546,13 @@
                 </style>
               </object>
               <packing>
-                <property name="x">32</property>
+                <property name="x">48</property>
                 <property name="y">100</property>
               </packing>
             </child>
             <child>
               <object class="GtkEntry" id="search_forw">
-                <property name="width_request">250</property>
+                <property name="width_request">220</property>
                 <property name="height_request">30</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -562,7 +562,7 @@
                 </style>
               </object>
               <packing>
-                <property name="x">32</property>
+                <property name="x">48</property>
                 <property name="y">55</property>
               </packing>
             </child>
@@ -575,7 +575,7 @@
                 <property name="label" translatable="yes">Choose recipient...</property>
               </object>
               <packing>
-                <property name="x">32</property>
+                <property name="x">48</property>
                 <property name="y">15</property>
               </packing>
             </child>
@@ -602,6 +602,9 @@
                 <property name="y">10</property>
               </packing>
             </child>
+            <style>
+              <class name="forv_box"/>
+            </style>
           </object>
           <packing>
             <property name="x">450</property>

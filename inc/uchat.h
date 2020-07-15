@@ -8,16 +8,17 @@
 #include <stdbool.h>
 
 #define MX_SHOW_HIDE(flag, widget) flag == 1 ? gtk_widget_show(widget) : gtk_widget_hide(widget) 
-
 #define MX_BOX_END(wid, label) gtk_box_pack_end(GTK_BOX(wid), label, FALSE, FALSE, 10)
 #define MX_BOX_START(wid, label) gtk_box_pack_start(GTK_BOX(wid), label, FALSE, FALSE, 10)
 #define MX_MSG_PACK(flag, label, box) (flag == true ? MX_BOX_END(box, label) : MX_BOX_START(box, label))
 
+#define MX_MY_PHOTO(flag) flag == 1 ? "./src/resource/my photo.png" : "./src/resource/activated photo2.png"
+#define MX_NAME_COLOR(flag) flag == 1 ? "<span color=\"white\" font=\"14\">\%s</span>" : "<span color=\"black\" font=\"14\">\%s</span>"
 #define MX_CSS(flag) flag == 1 ? "./src/black.css" : "./src/light.css"
 #define MX_BOTTOM(flag) flag == 1 ? "./src/resource/bottom.png" : "./src/resource/bottom1.png"
 #define MX_TOP(flag) flag == 1 ? "./src/resource/top.png" : "./src/resource/top1.png"
 #define MX_ACTIVE(flag) flag == 1 ? "./src/resource/activated.png" : "./src/resource/activated2.png"
-#define MX_SLEPT(flag) flag == 1 ? "./src/resource/slept.png" : "./src/resource/slept2.png"
+#define MX_SLEPT(flag) flag == 1 ? "./src/resource/slept.png" : "./src/resource/slept2 1.png"
 #define MX_ACT_PH(flag) flag == 1 ? "./src/resource/activated photo.png" : "./src/resource/activated photo2.png"
 #define MX_SL_PH(flag) flag == 1 ? "./src/resource/slept photo.png" : "./src/resource/slept photo2.png"
 
@@ -81,6 +82,7 @@ typedef struct s_data_users {
     GtkWidget *backg_us_activ;
     GtkWidget *frame_photo_act;
     GtkWidget *frame_photo_slept;
+    GtkAdjustment *adj;
     char *name;
     bool check;
     int row;
@@ -121,7 +123,7 @@ typedef struct s_setting {
     GtkWidget *my_photo;
     GtkWidget *set_but;
     int flag; 
-}  t_setting;
+}              t_setting;
 
 typedef struct s_menu {
     GtkWidget *menu_box;
@@ -146,6 +148,7 @@ typedef struct s_dot_menu {
 }              t_dots;
 
 typedef struct s_forward {
+    GtkWidget *forw_img;
     GtkWidget *fix_forw;
     GtkWidget *search_forw;
     GtkWidget *fox_for_forw;
@@ -164,6 +167,7 @@ typedef struct s_main {
     GtkWidget *sms;
     GtkWidget *but1;
     GtkWidget *grid_user;
+    GtkWidget *grid_search;
     GtkWidget *fix_for_users;
     GtkWidget *fix_for_text;
     GtkWidget *lab_start;
@@ -173,6 +177,8 @@ typedef struct s_main {
     GtkWidget *top_b;
     GtkAdjustment *adj; 
     GtkBuilder *builder;
+    int exit;
+    int flag_search; // 1 - msg, 2 - users, 3 - contacts
     char *text;
     struct s_forward *forw;
     struct s_dot_menu *dots;
@@ -204,6 +210,9 @@ void save_file(GtkMenuItem *item, t_msg *msg);
 void add_message(t_main *m, t_user *i);
 void forward_msg(GtkMenuItem *item, t_msg *msg);
 void edit_msg(GtkMenuItem *item, t_msg *msg);
+void search_activ(GtkEntry *e, t_main *m);
+void show_hide_back_us(t_user *users);
+void login();
 
 void burger_notify(GtkWidget *widget, GdkEvent *event, t_main *m);
 void burger_leave(GtkWidget *widget, GdkEvent *event, t_main *m);
@@ -259,12 +268,12 @@ typedef struct s_wid {
 	GtkWidget *badact_lab;
 	GtkWidget *black_back;
 
-	const gchar *logname;
-	const gchar *logpas;
-	const gchar *signame;
-	const gchar *sigpas;
-	const gchar *sigpas2;
-	const gchar *sigfile;
+	char *logname;
+	char *logpas;
+	char *signame;
+	char *sigpas;
+	char *sigpas2;
+	char *sigfile;
 } 			t_wid;
 
 typedef struct s_eye {

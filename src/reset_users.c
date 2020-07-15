@@ -34,14 +34,5 @@ void reset_users(t_main *m) {
     }
     set_users(m);
     gtk_widget_show_all(m->fix_for_users);
-    for (t_user *i = m->users; i; i = i->next) {
-        if (i->check == true) {
-            gtk_widget_hide(i->backg_us_slept);
-            gtk_widget_hide(i->frame_photo_slept);
-        }
-        else {
-            gtk_widget_hide(i->backg_us_activ);
-            gtk_widget_hide(i->frame_photo_act);
-        }
-    }
+    show_hide_back_us(m->users);
 }

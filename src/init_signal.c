@@ -28,33 +28,8 @@ static void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos,
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         tmp = gtk_file_chooser_get_filename (chooser);
         add_file(m, tmp);
-        
     }
     gtk_widget_destroy (dialog);
-}
-
-static void search_msg(GtkEntry *e, t_main *m) {
-    t_user *us = NULL;
-    char *s = NULL;
-
-    if ((s = (char *)gtk_entry_get_text(e)) == NULL && !mx_strlen(s))
-        return ;
-    for (t_user *i = m->users; i; i = i->next)
-        (i->check == true) ? us = i : 0;
-    for (t_msg *i = us->msg; i; i = i->next) {
-        if (!mx_strcmp_null(i->text, s)) {
-           gtk_adjustment_set_value(m->adj, i->adj_value + 150.0);
-           printf("adj now === %f\n", gtk_adjustment_get_value(m->adj));
-           return ;
-        }
-    }
-    for (t_msg *i = us->msg; i; i = i->next) {
-        if (mx_get_substr_index(i->text, s) > -1) {
-           gtk_adjustment_set_value(m->adj, i->adj_value + 150.0);
-           printf("adj now === %f\n", gtk_adjustment_get_value(m->adj));
-           return ;
-        }
-    }
 }
 
 void fun (GtkScrolledWindow *scrolled_window, GtkPositionType pos, t_main *m) {
@@ -102,7 +77,31 @@ void set_dots_signal(t_dots *d) {
     g_signal_connect(d->block_but, "clicked", G_CALLBACK(block_user), d->m);
 }
 
-void show_search(GtkWidget *w, t_main *m) {
+void show_search_msg(GtkWidget *w, t_main *m) {
+    m->flag_search = 1;
+    gtk_widget_hide(m->cap->burger_but_img);
+    gtk_widget_hide(m->cap->burger_but);
+    gtk_widget_hide(m->cap->my_photo);
+    gtk_widget_hide(m->cap->frame_for_my_photo);
+    gtk_widget_hide(m->dots->fix_dot_menu);
+    gtk_widget_hide(m->cap->my_name);
+    gtk_widget_show(m->search);
+}
+
+void show_search_users(GtkWidget *w, t_main *m) {
+    m->flag_search = 2;
+    gtk_widget_hide(m->cap->burger_but_img);
+    gtk_widget_hide(m->cap->burger_but);
+    gtk_widget_hide(m->cap->my_photo);
+    gtk_widget_hide(m->cap->frame_for_my_photo);
+    gtk_widget_hide(m->dots->fix_dot_menu);
+    gtk_widget_hide(m->cap->my_name);
+    gtk_widget_hide(m->menu->menu_fix);
+    gtk_widget_show(m->search);
+}
+
+void show_search_contacts(GtkWidget *w, t_main *m) {
+    m->flag_search = 3;
     gtk_widget_hide(m->cap->burger_but_img);
     gtk_widget_hide(m->cap->burger_but);
     gtk_widget_hide(m->cap->my_photo);
@@ -125,6 +124,13 @@ void close_search(GtkEntry *entry, GtkEntryIconPosition icon_pos,
     gtk_widget_destroy(m->grid_user);
     set_users(m);
     gtk_widget_show_all(m->fix_for_users);
+    show_hide_back_us(m->users);
+}
+
+void exit_chat(GtkWidget *w, t_main *m) {
+    m->exit = 1;
+    gtk_widget_destroy(m->window);
+    gtk_main_quit();
 }
 
 void init_signals(t_main *m) {
@@ -134,14 +140,16 @@ void init_signals(t_main *m) {
     g_signal_connect(m->but1, "clicked", G_CALLBACK(send_but), m);
     g_signal_connect(m->sms, "activate", G_CALLBACK(entry_activate), m);
     g_signal_connect(m->sms, "icon-press", G_CALLBACK(attach_file), m);
-    g_signal_connect(m->dots->search_msg_but, "clicked", G_CALLBACK(show_search), m);
+    g_signal_connect(m->dots->search_msg_but, "clicked", G_CALLBACK(show_search_msg), m);
     g_signal_connect(m->scrol_bar, "edge-reached", G_CALLBACK(fun), m);
-    g_signal_connect(m->search, "activate", G_CALLBACK(search_msg), m);
+    g_signal_connect(m->search, "activate", G_CALLBACK(search_activ), m);
     g_signal_connect(m->search, "icon-press", G_CALLBACK(close_search), m);
 
     g_signal_connect(m->menu->settings, "clicked", G_CALLBACK(show_setings), m);
     g_signal_connect(m->set->set_but, "clicked", G_CALLBACK(hide_setings), m);
     g_signal_connect(m->set->color1, "toggled", G_CALLBACK(change_color), m);
     g_signal_connect(m->set->lang1, "toggled", G_CALLBACK(change_lang), m);
+    g_signal_connect(m->menu->exit, "clicked", G_CALLBACK(exit_chat), m);
+    g_signal_connect(m->menu->search, "clicked", G_CALLBACK(show_search_users), m);
     set_dots_signal(m->dots);
 }

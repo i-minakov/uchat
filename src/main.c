@@ -24,14 +24,14 @@ void set_chat_grid(t_main *m) {
         //////////////////
         // read from DB //
         //////////////////
-        gtk_fixed_put(GTK_FIXED(m->fix_for_text), i->text_grid, 0, 0);
+        gtk_fixed_put(GTK_FIXED(m->fix_for_text), i->text_grid, 0, 10);
     }
 }
 
 static void set_cap(t_cap *c) {
     c->my_name = gtk_label_new(NULL);
     c->friend_name = gtk_label_new(NULL);
-    c->my_photo = resize_image("./src/resource/index.jpeg", 51, 51);
+    c->my_photo = resize_proportion("./src/resource/index.jpeg", 51, 51);
     c->frame_for_my_photo = gtk_image_new_from_file("./src/resource/my photo.png");
     c->burger_but_img = gtk_image_new_from_file("./src/resource/burger.png");
     c->dot_menu = gtk_image_new_from_file("./src/resource/dots.png");
@@ -42,7 +42,7 @@ static void set_cap(t_cap *c) {
     gtk_label_set_markup(GTK_LABEL(c->my_name), markup); 
     gtk_fixed_put(GTK_FIXED(c->fix_cap), c->dot_menu, 941, 32);
     gtk_fixed_put(GTK_FIXED(c->fix_cap), c->my_name, 83, 38);
-    gtk_fixed_put(GTK_FIXED(c->fix_cap), c->friend_name, 353, 42);
+    gtk_fixed_put(GTK_FIXED(c->fix_cap), c->friend_name, 353, 37);
     gtk_fixed_put(GTK_FIXED(c->fix_cap), c->burger_but_img, 267, 42);
     gtk_widget_show_all(c->fix_cap);
     g_free(markup);
@@ -101,6 +101,7 @@ void init_components(t_main *m) {
     m->search = GTK_WIDGET(gtk_builder_get_object(m->builder, "entry_search"));
     m->adj = gtk_adjustment_new(1.0, 1.0, 10.0, 1.0, 10.0, 1.0);
     gtk_scrolled_window_set_vadjustment(GTK_SCROLLED_WINDOW(m->scrol_bar), m->adj);
+    gtk_scrolled_window_set_overlay_scrolling(GTK_SCROLLED_WINDOW(m->scrol_bar), false);
     m->style->color = 1;
     m->style->lang = 1;
     init_menu(m);
@@ -114,6 +115,7 @@ void init_components(t_main *m) {
     m->dots->visible = 1;
     m->dots->m = m;
 
+    m->forw->forw_img = GTK_WIDGET(gtk_builder_get_object(m->builder, "forw_img"));
     m->forw->fix_forw = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_forw"));
     m->forw->search_forw = GTK_WIDGET(gtk_builder_get_object(m->builder, "search_forw"));
     m->forw->fox_for_forw = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_forw"));
@@ -143,6 +145,7 @@ void hide_something(t_main *m) {
 t_main *malloc_main() {
     t_main *m = (t_main *)malloc(sizeof(t_main) * 100);
 
+    m->exit = 0;
     m->cap = (t_cap *)malloc(sizeof(t_cap) * 100);
     m->menu = (t_menu *)malloc(sizeof(t_menu) * 100);
     m->style = (t_style *)malloc(sizeof(t_style) * 100);
@@ -164,45 +167,38 @@ void free_all(t_main *m) {
     free(m);
 }
 
-// void loop(t_main *m) {  
-
-//     while (1) {
-
-//         init_components(m);
-//         connect_css(m, 1);
-//         set_users(m);
-//         set_chat_grid(m);
-//         set_cap(m->cap);
-//         init_signals(m);  
-//         log_screen();
-//         gtk_label_set_text(GTK_LABEL(m->lab_start),
-//                         "Please select a chat to start messaging");
-//         gtk_widget_show_all(m->window);
-//         hide_something(m);
-//         gtk_main(); 
-//     }
-// }
-
-int main(int argc, char *argv[]) {
+void chat_screen() {
     t_main *m = malloc_main();
+    int ex = 0;
 
-    gtk_init(&argc, &argv);
-    for (int i = atoi(argv[1]); i > 0; i--)
+    gtk_init(NULL, NULL);
+    for (int i = 10; i > 0; i--)
         user_pushback(&m->users);
-
     init_components(m);
     connect_css(m, 1);
     set_users(m);
     set_chat_grid(m);
     set_cap(m->cap);
     init_signals(m);  
-    log_screen();
     gtk_label_set_text(GTK_LABEL(m->lab_start),
                      "Please select a chat to start messaging");
     gtk_widget_show_all(m->window);
-    hide_something(m);\
+    hide_something(m);
     gtk_main(); 
-
+    ex = m->exit;
     free_all(m);
+    if (ex == 1)
+        login();
+}
+
+void login() {  
+    if (log_screen() == 1)
+        return ;
+    chat_screen();
+}
+
+int main(int argc, char *argv[]) {
+    // login();
+    chat_screen();
     return 0;
 }

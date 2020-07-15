@@ -10,9 +10,9 @@ static bool sigcheck(const gchar *login) {
 }
 
 void sig_ok(GtkWidget *widget, t_wid *wid) {
-  	wid->signame = gtk_entry_get_text (GTK_ENTRY (wid->sig_name));
-	wid->sigpas = gtk_entry_get_text (GTK_ENTRY (wid->sig_pas));
-	wid->sigpas2 = gtk_entry_get_text (GTK_ENTRY (wid->sig_pas2));
+  	wid->signame = (char *)gtk_entry_get_text (GTK_ENTRY (wid->sig_name));
+	wid->sigpas = (char *)gtk_entry_get_text (GTK_ENTRY (wid->sig_pas));
+	wid->sigpas2 = (char *)gtk_entry_get_text (GTK_ENTRY (wid->sig_pas2));
 
 	if (strcmp(wid->signame, "\0") == 0 || strcmp(wid->sigpas, "\0") == 0 ||
 		strcmp(wid->sigpas2, "\0") == 0)
@@ -25,9 +25,9 @@ void sig_ok(GtkWidget *widget, t_wid *wid) {
 		if (strcmp(wid->sigpas, wid->sigpas2) != 0)
 			bad_act(wid, 3);
 		else {
-		gtk_widget_show(wid->the_end);
-		sleep(3);
-		gtk_main_quit();
+			gtk_widget_show(wid->the_end);
+			sleep(3);
+			gtk_main_quit();
 		}
 	}
 }

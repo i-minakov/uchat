@@ -30,7 +30,7 @@ static void insert_component(t_user *i) {
     gtk_fixed_put(GTK_FIXED(i->fix), (i->frame_photo_act), 23, 14);
     gtk_widget_set_size_request(i->but, 305, 79);
     gtk_fixed_put(GTK_FIXED(i->fix), (i->but), 11, 0);
-    markup = g_markup_printf_escaped("<span color=\"white\" font=\"14\">\%s</span>", i->name);
+    markup = g_markup_printf_escaped(MX_NAME_COLOR(i->m->style->color), i->name);
     gtk_label_set_markup(GTK_LABEL(i->l_name), markup); 
     reset_l_mess(i);
     gtk_fixed_put(GTK_FIXED(i->fix), (i->l_name), 83, 21);
@@ -48,6 +48,8 @@ void set_users(t_main *m) {
         gtk_grid_insert_row(GTK_GRID(m->grid_user), row);
         init_component(i, m);
         insert_component(i);
+        // gtk_style_context_add_class(gtk_widget_get_style_context(i->fix), "user");
+        // gtk_widget_class_set_css_name(i->fix->style_set, "user");
         gtk_grid_attach(GTK_GRID(m->grid_user), i->fix, 0, row, 1, 1);
         i->count = row;
         row++;
