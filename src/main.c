@@ -24,14 +24,14 @@ void set_chat_grid(t_main *m) {
         //////////////////
         // read from DB //
         //////////////////
-        gtk_fixed_put(GTK_FIXED(m->fix_for_text), i->text_grid, 0, 0);
+        gtk_fixed_put(GTK_FIXED(m->fix_for_text), i->text_grid, 0, 10);
     }
 }
 
 static void set_cap(t_cap *c) {
     c->my_name = gtk_label_new(NULL);
     c->friend_name = gtk_label_new(NULL);
-    c->my_photo = resize_image("./src/resource/index.jpeg", 51, 51);
+    c->my_photo = resize_proportion("./src/resource/index.jpeg", 51, 51);
     c->frame_for_my_photo = gtk_image_new_from_file("./src/resource/my photo.png");
     c->burger_but_img = gtk_image_new_from_file("./src/resource/burger.png");
     c->dot_menu = gtk_image_new_from_file("./src/resource/dots.png");
@@ -42,7 +42,7 @@ static void set_cap(t_cap *c) {
     gtk_label_set_markup(GTK_LABEL(c->my_name), markup); 
     gtk_fixed_put(GTK_FIXED(c->fix_cap), c->dot_menu, 941, 32);
     gtk_fixed_put(GTK_FIXED(c->fix_cap), c->my_name, 83, 38);
-    gtk_fixed_put(GTK_FIXED(c->fix_cap), c->friend_name, 353, 42);
+    gtk_fixed_put(GTK_FIXED(c->fix_cap), c->friend_name, 353, 37);
     gtk_fixed_put(GTK_FIXED(c->fix_cap), c->burger_but_img, 267, 42);
     gtk_widget_show_all(c->fix_cap);
     g_free(markup);
@@ -101,6 +101,7 @@ void init_components(t_main *m) {
     m->search = GTK_WIDGET(gtk_builder_get_object(m->builder, "entry_search"));
     m->adj = gtk_adjustment_new(1.0, 1.0, 10.0, 1.0, 10.0, 1.0);
     gtk_scrolled_window_set_vadjustment(GTK_SCROLLED_WINDOW(m->scrol_bar), m->adj);
+    gtk_scrolled_window_set_overlay_scrolling(GTK_SCROLLED_WINDOW(m->scrol_bar), false);
     m->style->color = 1;
     m->style->lang = 1;
     init_menu(m);
@@ -181,7 +182,7 @@ void chat_screen() {
     gtk_label_set_text(GTK_LABEL(m->lab_start),
                      "Please select a chat to start messaging");
     gtk_widget_show_all(m->window);
-    hide_something(m);\
+    hide_something(m);
     gtk_main(); 
     ex = m->exit;
     free_all(m);

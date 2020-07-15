@@ -571,9 +571,6 @@
                 <property name="y">528</property>
               </packing>
             </child>
-            <style>
-              <class name="forw"/>
-            </style>
           </object>
           <packing>
             <property name="x">450</property>

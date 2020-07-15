@@ -65,3 +65,9 @@ window {
 	box-shadow: none;
 	-gtk-icon-shadow: none;
 }
+.user {
+    box-shadow: 1px 1px 4px 2px #d6d5d5;
+}
+/* .forv {
+
+} */
