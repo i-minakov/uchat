@@ -7,7 +7,7 @@ static void user_recipient(GtkWidget *wid, t_user *us) {
     user_click(NULL, us);
     if (fm->text) {
         us->m->text = mx_delit_fre(mx_delit_fre(mx_strjoin("forwared by ", fm->autor), ":\n"), fm->text);
-        add_message(us->m, us);
+        add_message(us->m, us, false);
     }
     else 
         add_file(us->m, (gchar *)fm->filename);
@@ -22,18 +22,14 @@ static void cancel_forw(GtkWidget *w, t_forw *f) {
     free(f->fm);
 }
 
-static void search_forw() {
-    
-}
-
-static void create_window(t_forw *f, t_user *head) {
+static void create_window(t_forw *f, t_user *head, char *s) {
     int row = 0;
     GtkWidget *but;
     GtkWidget *box;
     GtkWidget *fix;
 
     for (t_user *i = head; i; i = i->next) {
-        if (i->check == true)
+        if (i->check == true || (s != NULL && !mx_strstr(i->name, s)))
             continue;
         fix = gtk_fixed_new();
         gtk_grid_insert_row(GTK_GRID(f->grid_forw), row);
@@ -50,6 +46,18 @@ static void create_window(t_forw *f, t_user *head) {
     }
 }
 
+static void search_forw(GtkEntry *e, t_forw *f) {
+    char *s = NULL;
+
+    s = (char *)gtk_entry_get_text(e);
+    gtk_widget_destroy(f->grid_forw);
+    f->grid_forw = gtk_grid_new();
+    gtk_grid_set_row_spacing(GTK_GRID(f->grid_forw), 10);
+    create_window(f, f->m->users, s);
+    gtk_fixed_put(GTK_FIXED(f->fox_for_forw), f->grid_forw, 0, 0);
+    gtk_widget_show_all(f->fix_forw);
+}
+
 void forward_msg(GtkMenuItem *item, t_msg *msg) {
     t_forw *f = msg->user->m->forw;
 
@@ -60,8 +68,9 @@ void forward_msg(GtkMenuItem *item, t_msg *msg) {
     f->fm->autor = msg->user->name;
     f->grid_forw = gtk_grid_new();
     gtk_grid_set_row_spacing(GTK_GRID(f->grid_forw), 10);
-    create_window(f, msg->user->head);
+    create_window(f, msg->user->head, NULL);
     gtk_fixed_put(GTK_FIXED(f->fox_for_forw), f->grid_forw, 0, 0);
     g_signal_connect(f->but_cancel, "clicked", G_CALLBACK(cancel_forw), f);
+    g_signal_connect(f->search_forw, "activate", G_CALLBACK(search_forw), f);
     gtk_widget_show_all(f->fix_forw);
 }

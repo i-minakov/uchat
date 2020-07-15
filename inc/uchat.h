@@ -39,6 +39,7 @@ typedef struct s_msg_forward {
     char *text; 
     char *filename;
     char *autor;
+    bool my;
     struct s_forward *f;
 }              t_msg_forw;
 
@@ -196,7 +197,7 @@ void reset_users(t_main *m);
 void send_but(GtkWidget *wid, t_main *m);
 void user_click(GtkWidget *wid, t_user *users);
 GtkWidget *resize_image(const char *path_to_image, uint width, uint heigh);
-void msg_pushfront(t_msg **head, char *text);
+void msg_pushfront(t_msg **head, char *text, bool my);
 void reset_l_mess(t_user *i);
 char *mx_strpart(char *str, int index);
 void free_msg(t_msg **list);
@@ -206,7 +207,7 @@ void forward_msg(GtkMenuItem *item, t_msg *msg);
 void add_file(t_main *m, gchar *tmp);
 void init_signals(t_main *m);
 void save_file(GtkMenuItem *item, t_msg *msg);
-void add_message(t_main *m, t_user *i);
+void add_message(t_main *m, t_user *i, bool my);
 void forward_msg(GtkMenuItem *item, t_msg *msg);
 void edit_msg(GtkMenuItem *item, t_msg *msg);
 void search_activ(GtkEntry *e, t_main *m);

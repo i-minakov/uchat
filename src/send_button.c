@@ -1,6 +1,6 @@
 #include "../inc/uchat.h"
 
-void add_message(t_main *m, t_user *i) {
+void add_message(t_main *m, t_user *i, bool my) {
     GtkWidget *wid;
     char *str = mx_strnew(mx_strlen(m->text) + ((mx_strlen(m->text)/50) + 1));
     int k = 0;
@@ -9,7 +9,7 @@ void add_message(t_main *m, t_user *i) {
         str[k++] = m->text[j];
         (j%50 == 0 && j != 0) ? str[k++] = '\n' : 0;
     }
-    msg_pushfront(&i->msg, str);
+    msg_pushfront(&i->msg, str, my);
     gtk_grid_insert_row(GTK_GRID(m->grid_user), i->msg->next->count);
     i->msg->next->user = i;
     wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 900);
@@ -31,7 +31,7 @@ void send_but(GtkWidget *wid, t_main *m) {
     reset_users(m);
     for (t_user *i = m->users; i; i = i->next) {
         if (i->check == true)
-            add_message(m, i);
+            add_message(m, i, true);
     }
     gtk_entry_set_text(GTK_ENTRY(m->sms), "");
     gtk_adjustment_set_value(m->adj, 

@@ -15,15 +15,26 @@ static void user_pushback(t_user **head) {
 }
 
 void set_chat_grid(t_main *m) {
+    int buf;
+    char *s = NULL;
+    int j = 0;
 
     for (t_user *i = m->users; i; i = i->next) {
         i->y_chat = 30;
         i->row = 0;
         i->text_grid = gtk_grid_new();
         gtk_grid_set_row_spacing(GTK_GRID(i->text_grid), 20);
-        //////////////////
-        // read from DB //
-        //////////////////
+        int fd = open("../t.txt", O_RDWR);
+        while(read(fd, &buf, 1)) {
+            s = mx_delit_fre(s, (char *)(&buf));
+            if (buf == 10) {
+                m->text = s;
+                add_message(m, i, j%2 == 0 ? false : true);
+                s = NULL;
+                j++;
+            }
+        }
+        close(fd);
         gtk_fixed_put(GTK_FIXED(m->fix_for_text), i->text_grid, 0, 10);
     }
 }
@@ -133,6 +144,7 @@ void hide_something(t_main *m) {
     for (t_user *i = m->users; i; i = i->next) {
         gtk_widget_hide(i->frame_photo_act);
         gtk_widget_hide(i->backg_us_activ);
+        gtk_widget_hide(i->text_grid);
     }
     hide_menu(m);
     hide_set(m);

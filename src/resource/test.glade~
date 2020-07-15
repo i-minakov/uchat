@@ -602,6 +602,9 @@
                 <property name="y">10</property>
               </packing>
             </child>
+            <style>
+              <class name="forv_box"/>
+            </style>
           </object>
           <packing>
             <property name="x">450</property>

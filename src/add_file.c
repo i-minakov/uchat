@@ -31,9 +31,11 @@ static void file_check(gchar *tmp, t_msg **msg, char *name) {
     t_msg *t = *msg;
 
     if (mx_strstr(tmp, ".jpg") || mx_strstr(tmp, ".jpeg")
-        || mx_strstr(tmp, ".gif")) {
+        || mx_strstr(tmp, ".gif") || mx_strstr(tmp, ".mp4")) {
             if (mx_strstr(tmp, ".gif"))
                 t->file = gtk_image_new_from_file(tmp);
+            // else if (mx_strstr(tmp, ".mp4"))
+            //     t->file = gtk_video_new_for_filename(tmp);
             else 
                 t->file = resize_image(tmp, 200, 200);
             gtk_button_set_image(GTK_BUTTON(t->label), t->file);

@@ -151,5 +151,6 @@ void init_signals(t_main *m) {
     g_signal_connect(m->set->lang1, "toggled", G_CALLBACK(change_lang), m);
     g_signal_connect(m->menu->exit, "clicked", G_CALLBACK(exit_chat), m);
     g_signal_connect(m->menu->search, "clicked", G_CALLBACK(show_search_users), m);
+    g_signal_connect(m->menu->contacts, "clicked", G_CALLBACK(show_search_contacts), m);
     set_dots_signal(m->dots);
 }

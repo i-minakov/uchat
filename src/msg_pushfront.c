@@ -13,7 +13,7 @@ void save_file(GtkMenuItem *item, t_msg *msg) {
         tmp = gtk_file_chooser_get_filename (chooser);
         g_free(tmp);
     }
-    gtk_widget_destroy (dialog);
+    gtk_widget_destroy(dialog);
 }
 
 void delete_msg(GtkMenuItem *item, t_msg *msg) {
@@ -49,7 +49,7 @@ t_msg *create_msg(char *text, char *filename) {
     new->user = NULL;
     new->filename = filename;
     new->text = NULL;
-    new->my = false;
+    new->my = true;
     if (!text && !filename)
         return new;
     new->label = gtk_button_new();
@@ -63,14 +63,16 @@ t_msg *create_msg(char *text, char *filename) {
     return new;
 }
 
-void msg_pushfront(t_msg **head, char *text) {
+void msg_pushfront(t_msg **head, char *text, bool my) {
     t_msg *tmp = NULL;
     GtkWidget *item[3];
+    int i = 0;
     char *s[] = {"Edit", "Forward", "Delete", NULL};
     void (*menu_option[])(GtkMenuItem *item, t_msg *msg) = 
         {edit_msg, forward_msg, delete_msg};
 
     tmp = create_msg(text, NULL);
+    tmp->my = my;
     tmp->prev = *head;
     tmp->next = (*head)->next;
     (*head)->next = tmp;
@@ -78,7 +80,7 @@ void msg_pushfront(t_msg **head, char *text) {
         tmp->next->prev = tmp;
         tmp->count = tmp->next->count + 1;
     }
-    for (int i = 0; i < 3; i++) {
+    for (my == false ? i = 1 : 0; i < 3; i++) {
         item[i] = gtk_menu_item_new_with_label(s[i]);
         g_signal_connect(item[i], "activate", G_CALLBACK(menu_option[i]), tmp);
         gtk_menu_shell_append(GTK_MENU_SHELL(tmp->menu), item[i]);
