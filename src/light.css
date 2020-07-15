@@ -65,3 +65,9 @@ window {
 	box-shadow: none;
 	-gtk-icon-shadow: none;
 }
+.forv {
+    background-color: #ffffff;
+    background: none;
+    border: none;
+    outline: none;
+}

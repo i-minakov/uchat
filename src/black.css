@@ -61,3 +61,9 @@ window {
     color: white;
 	-gtk-icon-shadow: none;
 }
+.forv {
+    background-color: #ffffff;
+    background: none;
+    border: none;
+    outline: none;
+}
