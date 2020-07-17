@@ -5,7 +5,7 @@ window {
     background-color: #121C2A;
 }
 .top {
-    background-color: #2a1216;
+    /* background-color: #2a1216; */
     border: none;
     box-shadow: 1px 0px 20px 2px #0a1018;
 
@@ -63,4 +63,18 @@ window {
     background: none;
     border: none;
     outline: none;
+}
+#lm {
+    background-color: #34425A;
+    border-color: #34425A;
+    box-shadow: none;
+    color: whitesmoke;
+    background-image: none;
+}
+#lm2 {
+    background-color: #1C2636;
+    border-color: #1C2636;
+    box-shadow: none;
+    color: whitesmoke;
+    background-image: none;
 }

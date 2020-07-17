@@ -53,6 +53,7 @@ t_msg *create_msg(char *text, char *filename) {
     if (!text && !filename)
         return new;
     new->label = gtk_button_new();
+    gtk_widget_set_name(new->label, "lm");
     gtk_widget_set_size_request(new->label, 100, 30);
     if (text) {
         new->text = mx_strdup(text);

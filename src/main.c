@@ -24,17 +24,17 @@ void set_chat_grid(t_main *m) {
         i->row = 0;
         i->text_grid = gtk_grid_new();
         gtk_grid_set_row_spacing(GTK_GRID(i->text_grid), 20);
-        int fd = open("../t.txt", O_RDWR);
-        while(read(fd, &buf, 1)) {
-            s = mx_delit_fre(s, (char *)(&buf));
-            if (buf == 10) {
-                m->text = s;
-                add_message(m, i, j%2 == 0 ? false : true, false);
-                s = NULL;
-                j++;
-            }
-        }
-        close(fd);
+        // int fd = open("../t.txt", O_RDWR);
+        // while(read(fd, &buf, 1)) {
+        //     s = mx_delit_fre(s, (char *)(&buf));
+        //     if (buf == 10) {
+        //         m->text = s;
+        //         add_message(m, i, j%2 == 0 ? false : true, false);
+        //         s = NULL;
+        //         j++;
+        //     }
+        // }
+        // close(fd);
         gtk_fixed_put(GTK_FIXED(m->fix_for_text), i->text_grid, 0, 10);
     }
 }
@@ -229,7 +229,7 @@ void login() {
 }
 
 int main(int argc, char *argv[]) {
-    // login();
-    chat_screen();
+    login();
+    //chat_screen();
     return 0;
 }

@@ -18,7 +18,7 @@
 #define MX_BOTTOM(flag) flag == 1 ? "./src/resource/bottom.png" : "./src/resource/bottom1.png"
 #define MX_TOP(flag) flag == 1 ? "./src/resource/top.png" : "./src/resource/top1.png"
 #define MX_ACTIVE(flag) flag == 1 ? "./src/resource/activated.png" : "./src/resource/activated2.png"
-#define MX_SLEPT(flag) flag == 1 ? "./src/resource/slept.png" : "./src/resource/slept2 1.png"
+#define MX_SLEPT(flag) flag == 1 ? "./src/resource/slept.png" : "./src/resource/slept22.png"
 #define MX_ACT_PH(flag) flag == 1 ? "./src/resource/activated photo.png" : "./src/resource/activated photo2.png"
 #define MX_SL_PH(flag) flag == 1 ? "./src/resource/slept photo.png" : "./src/resource/slept photo2.png"
 

@@ -5,7 +5,7 @@ window {
     background-color: #ffffff;
 }
 .top {
-    background-color: #ffffff;
+    /* background-color: #ffffff; */
     border: none;
     box-shadow: -1px 0px 10px 0px #dddddd;
 
@@ -71,7 +71,17 @@ window {
     border: none;
     outline: none;
 }
-/* 
-.forv_box {
-    box-shadow: 1px 1px 4px 2px #d6d5d5;
-} */
+#lm {
+    background-color: #F88161;
+    border-color: #F88161;
+    box-shadow: none;
+    color: whitesmoke;
+    background-image: none;
+}
+#lm2 {
+    background-color: #F54D64;
+    border-color: #F54D64;
+    box-shadow: none;
+    color: whitesmoke;
+    background-image: none;
+}

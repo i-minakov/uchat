@@ -4,7 +4,7 @@
 static void seting(t_wid *wid, char *tmp) {
 	int marg;
 
-	marg = 300 + ((492 - strlen(tmp))/2);
+	marg = 300 + ((492 - (strlen(tmp) * 7))/2);
 	gtk_label_set_label(GTK_LABEL(wid->badact_lab), tmp);
 	gtk_label_set_xalign(GTK_LABEL(wid->badact_lab), marg);
 	g_signal_handlers_block_by_func(wid->sig_gif, log_enter_notify_event, wid);
@@ -15,8 +15,6 @@ static void seting(t_wid *wid, char *tmp) {
 
 void bad_act(t_wid *wid, int flag) {
 	char *tmp = NULL;
-	int marg;
-
 	gtk_widget_show(wid->badact);
 	gtk_widget_show(wid->badact_but);
 	gtk_widget_show(wid->badact_lab);
@@ -28,8 +26,12 @@ void bad_act(t_wid *wid, int flag) {
 	if(flag == 3)
 		tmp = "Passwords mismatch";
 	if(flag == 4)
-		tmp = "You can attach file only in PNG, JPEG, SVG and GIF format";
+		tmp = "You can attach file only in PNG, JPG and JPEG format";
 	if(flag == 5)
 		tmp = "The access to this photo is denied";
+	if(flag == 6)
+		tmp = "Login must start with letters";
+	if(flag == 7)
+		tmp = "Password can only contains chars and numbers";
 	seting(wid, tmp);
 }
