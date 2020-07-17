@@ -37,6 +37,7 @@ static void search_user(GtkEntry *e, t_main *m) {
         if (!mx_strstr(i->name, s))
             gtk_widget_destroy(i->fix);
     }
+    burger_leave(NULL, NULL, m);
 }
 
 void search_activ(GtkEntry *e, t_main *m) {

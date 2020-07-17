@@ -1,12 +1,6 @@
 #include "../inc/uchat.h"
 
-void user_click(GtkWidget *wid, t_user *users) {
-    char *markup = g_markup_printf_escaped
-            ("<span color=\"white\" font=\"14\">\%s</span>",
-                 gtk_label_get_text(GTK_LABEL(users->l_name)));
-
-    gtk_widget_hide(users->m->lab_start);
-    gtk_widget_show(users->m->sms);
+static void other_users(t_user *users) {
     for (t_user *i = users->head; i; i = i->next) {
         if (i->check == true) {
             gtk_widget_hide(i->backg_us_activ);
@@ -18,6 +12,16 @@ void user_click(GtkWidget *wid, t_user *users) {
         i->check = false;
     }
     users->check = true;
+}
+
+void user_click(GtkWidget *wid, t_user *users) {
+    char *markup = g_markup_printf_escaped
+            ("<span color=\"white\" font=\"14\">\%s</span>",
+                 gtk_label_get_text(GTK_LABEL(users->l_name)));
+
+    gtk_widget_hide(users->m->lab_start);
+    gtk_widget_show(users->m->sms);
+    other_users(users);
     gtk_widget_hide(users->backg_us_slept);
     gtk_widget_show(users->backg_us_activ);
     gtk_widget_hide(users->frame_photo_slept);
@@ -25,8 +29,7 @@ void user_click(GtkWidget *wid, t_user *users) {
     gtk_widget_show(users->text_grid);
     gtk_label_set_markup(GTK_LABEL(users->m->cap->friend_name), markup);
     gtk_widget_show(users->m->cap->friend_name);
-    gtk_adjustment_set_value(users->m->adj, 
-                        gtk_adjustment_get_upper(users->m->adj)
-                         - gtk_adjustment_get_page_size(users->m->adj));
+    users->m->order = 1;
+    g_idle_add((GSourceFunc)move_scrol, users->m);
     g_free(markup);
 }

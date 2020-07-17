@@ -1,46 +1,60 @@
 #include "../inc/uchat.h"
 
-void add_message(t_main *m, t_user *i, bool my, bool forw) {
-    GtkWidget *wid;
-    char *str = mx_strnew(mx_strlen(m->text) + ((mx_strlen(m->text)/50) + 1));
-    int k = 0;
-    // GtkWidget *lab = gtk_label_new(NULL);
-    // char *markup = g_markup_printf_escaped("<span color=\"white\" font=\"10\">\%s</span>", "15:20");
-    // gtk_label_set_markup(GTK_LABEL(lab), markup);
+static void add_time(t_user *i, t_add_m *s) {
+    char **m = NULL;
+    time_t rawtime;
+    struct tm * timeinfo;
 
-    for (int j = 0; m->text[j]; j++) {
-        str[k++] = m->text[j];
+    if (s->time_m == NULL) {
+        time(&rawtime);
+        timeinfo = localtime(&rawtime);
+        s->time_m = asctime(timeinfo);
+        m = mx_strsplit(s->time_m, '\n');
+        gtk_widget_set_tooltip_text(i->msg->next->label, m[0]);
+        mx_del_strarr(&m);
+    }
+    else
+        gtk_widget_set_tooltip_text(i->msg->next->label, s->time_m);
+    
+}
+
+void add_message(t_user *i, t_add_m *s) {
+    GtkWidget *wid;
+    char *str = mx_strnew(mx_strlen(s->text) + ((mx_strlen(s->text)/50) + 1));
+    int k = 0;
+
+    for (int j = 0; s->text[j]; j++) {
+        str[k++] = s->text[j];
         (j%50 == 0 && j != 0) ? str[k++] = '\n' : 0;
     }
-    msg_pushfront(&i->msg, str, my);
-    gtk_grid_insert_row(GTK_GRID(m->grid_user), i->msg->next->count);
+    msg_pushfront(&i->msg, str, s->my, s->forw);
+    gtk_grid_insert_row(GTK_GRID(i->m->grid_user), i->row++);
     i->msg->next->user = i;
-    wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 900);
-    gtk_widget_set_size_request(wid, 630, 30);
-    // gtk_box_pack_end(GTK_BOX(wid), lab, FALSE, FALSE, 10);
-    MX_MSG_PACK(my, i->msg->next->label, wid);
+    wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_widget_set_size_request(wid, 650, 30);
+    add_time(i, s);
+    MX_MSG_PACK(s->my, i->msg->next->label, wid);
     gtk_grid_attach(GTK_GRID(i->text_grid), wid, 0, i->msg->next->count, 1, 1);
     gtk_widget_show_all(wid);
-    i->msg->next->adj_value = gtk_adjustment_get_value(m->adj);
-    i->row++;
+    i->msg->next->adj_value = gtk_adjustment_get_value(i->m->adj);
     reset_l_mess(i);
     free(str);
-    // g_free(markup);
+    free(s);
 }
 
 void send_but(GtkWidget *wid, t_main *m) {
+    char *text = NULL;
 
-    m->text = (char *)gtk_entry_get_text(GTK_ENTRY(m->sms));
-    if (!m->text || !mx_strlen(m->text))
+    text = (char *)gtk_entry_get_text(GTK_ENTRY(m->sms));
+    if (text == NULL || !mx_strlen(text))
         return ;
     reset_users(m);
     for (t_user *i = m->users; i; i = i->next) {
-        if (i->check == true)
-            add_message(m, i, true, false);
+        if (i->check == true) 
+            add_message(i, create_struct(text, true, 0, NULL));
     }
     gtk_entry_set_text(GTK_ENTRY(m->sms), "");
-    gtk_adjustment_set_value(m->adj, 
-                gtk_adjustment_get_upper(m->adj) -
-                     gtk_adjustment_get_page_size(m->adj) + 2.0);
+    m->order = 1;
+    g_idle_add((GSourceFunc)move_scrol, m);
 }
 // Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.

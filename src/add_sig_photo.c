@@ -11,7 +11,7 @@ static bool show_photo (t_wid *wid) {
 	gtk_fixed_put(GTK_FIXED(wid->fixed), wid->sig_display, 0, 0);
 	gtk_widget_show(wid->sig_display);
 	wid->flagimg = 1;
-	return true;
+	return true; 
 }
 
 void add_sig_photo(GtkWidget *widget, t_wid *wid) {
@@ -19,8 +19,8 @@ void add_sig_photo(GtkWidget *widget, t_wid *wid) {
 	
 	for (int i = 0; tmp[i]; i++) {
 		if(tmp[i] == '.') {
-			if (strcmp(&tmp[i], ".png") == 0 || strcmp(&tmp[i], ".jpg") == 0
-				|| strcmp(&tmp[i], ".gif") == 0 || strcmp(&tmp[i], ".svg") == 0) {
+			if (mx_strcmp(&tmp[i], ".png") == 0 || mx_strcmp(&tmp[i], ".jpg") == 0
+				|| mx_strcmp(&tmp[i], ".jpeg") == 0) {
 				wid->sigfile = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(wid->sig_photo));
 				if(show_photo (wid))
 				return ;

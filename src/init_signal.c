@@ -96,7 +96,7 @@ void show_search_users(GtkWidget *w, t_main *m) {
     gtk_widget_hide(m->cap->frame_for_my_photo);
     gtk_widget_hide(m->dots->fix_dot_menu);
     gtk_widget_hide(m->cap->my_name);
-    gtk_widget_hide(m->menu->menu_fix);
+    hide_menu(m);
     gtk_widget_show(m->search);
 }
 
@@ -108,6 +108,7 @@ void show_search_contacts(GtkWidget *w, t_main *m) {
     gtk_widget_hide(m->cap->frame_for_my_photo);
     gtk_widget_hide(m->dots->fix_dot_menu);
     gtk_widget_hide(m->cap->my_name);
+    hide_menu(m);
     gtk_widget_show(m->search);
 }
 
@@ -125,6 +126,7 @@ void close_search(GtkEntry *entry, GtkEntryIconPosition icon_pos,
     set_users(m);
     gtk_widget_show_all(m->fix_for_users);
     show_hide_back_us(m->users);
+    burger_leave(NULL, NULL, m);
 }
 
 void exit_chat(GtkWidget *w, t_main *m) {

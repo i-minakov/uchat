@@ -222,11 +222,13 @@ int chat_screen() {
 }
 
 int main(int argc, char *argv[]) {
+
     while (1) {
-        if (log_screen() == 0)
-            break ;
+        // if (log_screen() == 1)
+        //     break ;
         if (chat_screen() == 0)
             break;
     }
+    // system("leaks -q uchat");
     return 0;
 }

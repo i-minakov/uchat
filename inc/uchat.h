@@ -6,10 +6,12 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <time.h>
 
+#define MX_SET_NAME_MSG(flag, label) flag == true ? gtk_widget_set_name(label, "lm") : gtk_widget_set_name(label, "lm2")
 #define MX_SHOW_HIDE(flag, widget) flag == 1 ? gtk_widget_show(widget) : gtk_widget_hide(widget) 
-#define MX_BOX_END(wid, label) gtk_box_pack_end(GTK_BOX(wid), label, FALSE, FALSE, 10)
-#define MX_BOX_START(wid, label) gtk_box_pack_start(GTK_BOX(wid), label, FALSE, FALSE, 10)
+#define MX_BOX_END(wid, label) gtk_box_pack_end(GTK_BOX(wid), label, FALSE, FALSE, 0)
+#define MX_BOX_START(wid, label) gtk_box_pack_start(GTK_BOX(wid), label, FALSE, FALSE, 0)
 #define MX_MSG_PACK(flag, label, box) (flag == true ? MX_BOX_END(box, label) : MX_BOX_START(box, label))
 
 #define MX_MY_PHOTO(flag) flag == 1 ? "./src/resource/my photo.png" : "./src/resource/activated photo2.png"
@@ -18,7 +20,7 @@
 #define MX_BOTTOM(flag) flag == 1 ? "./src/resource/bottom.png" : "./src/resource/bottom1.png"
 #define MX_TOP(flag) flag == 1 ? "./src/resource/top.png" : "./src/resource/top1.png"
 #define MX_ACTIVE(flag) flag == 1 ? "./src/resource/activated.png" : "./src/resource/activated2.png"
-#define MX_SLEPT(flag) flag == 1 ? "./src/resource/slept.png" : "./src/resource/slept2 1.png"
+#define MX_SLEPT(flag) flag == 1 ? "./src/resource/slept.png" : "./src/resource/slept22.png"
 #define MX_ACT_PH(flag) flag == 1 ? "./src/resource/activated photo.png" : "./src/resource/activated photo2.png"
 #define MX_SL_PH(flag) flag == 1 ? "./src/resource/slept photo.png" : "./src/resource/slept photo2.png"
 
@@ -35,11 +37,19 @@
 #define MX_COLOR(flag) flag == 2 ? "Тема" : "Theme"
 #define MX_LANG(flag) flag == 2 ? "Язык" : "language"
 
+typedef struct s_add_msg {
+    char *text;
+    bool my; 
+    int forw;
+    char *time_m;
+}              t_add_m;
+
 typedef struct s_msg_forward {
     char *text; 
     char *filename;
     char *autor;
     bool my;
+    int was_forw;
     struct s_forward *f;
 }              t_msg_forw;
 
@@ -66,7 +76,7 @@ typedef struct s_message {
     GtkWidget *file;
     GtkWidget *label;
     bool my;
-    bool forward;
+    int forward;
     struct s_data_users *user;
     struct s_message *prev;
     struct s_message *next;
@@ -188,6 +198,7 @@ typedef struct s_main {
     GtkAdjustment *adj; 
     GtkBuilder *builder;
     int exit;
+    int order;
     int flag_search; // 1 - msg, 2 - users, 3 - contacts
     char *text;
     struct s_forward *forw;
@@ -207,7 +218,7 @@ void reset_users(t_main *m);
 void send_but(GtkWidget *wid, t_main *m);
 void user_click(GtkWidget *wid, t_user *users);
 GtkWidget *resize_image(const char *path_to_image, uint width, uint heigh);
-void msg_pushfront(t_msg **head, char *text, bool my);
+void msg_pushfront(t_msg **head, char *text, bool my, int forw);
 void reset_l_mess(t_user *i);
 char *mx_strpart(char *str, int index);
 void free_msg(t_msg **list);
@@ -217,11 +228,15 @@ void forward_msg(GtkMenuItem *item, t_msg *msg);
 void add_file(t_main *m, gchar *tmp, bool my);
 void init_signals(t_main *m);
 void save_file(GtkMenuItem *item, t_msg *msg);
-void add_message(t_main *m, t_user *i, bool my, bool forw);
+void add_message(t_user *i, t_add_m *s);
 void forward_msg(GtkMenuItem *item, t_msg *msg);
 void edit_msg(GtkMenuItem *item, t_msg *msg);
 void search_activ(GtkEntry *e, t_main *m);
 void show_hide_back_us(t_user *users);
+void reply_msg(GtkMenuItem *item, t_msg *msg);
+t_add_m *create_struct(char *text, bool my, int forw, char *time_m);
+void move_scrol(t_main *m);
+
 void login();
 
 void burger_notify(GtkWidget *widget, GdkEvent *event, t_main *m);
