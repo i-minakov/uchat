@@ -15,26 +15,26 @@ static void user_pushback(t_user **head) {
 }
 
 void set_chat_grid(t_main *m) {
-    int buf;
-    char *s = NULL;
-    int j = 0;
+    // int buf;
+    // char *s = NULL;
+    // int j = 0;
 
     for (t_user *i = m->users; i; i = i->next) {
         i->y_chat = 30;
         i->row = 0;
         i->text_grid = gtk_grid_new();
         gtk_grid_set_row_spacing(GTK_GRID(i->text_grid), 20);
-        int fd = open("../t.txt", O_RDWR);
-        while(read(fd, &buf, 1)) {
-            s = mx_delit_fre(s, (char *)(&buf));
-            if (buf == 10) {
-                m->text = s;
-                add_message(m, i, j%2 == 0 ? false : true, false);
-                s = NULL;
-                j++;
-            }
-        }
-        close(fd);
+        // int fd = open("../t.txt", O_RDWR);
+        // while(read(fd, &buf, 1)) {
+        //     s = mx_delit_fre(s, (char *)(&buf));
+        //     if (buf == 10) {
+        //         m->text = s;
+        //         add_message(m, i, j%2 == 0 ? false : true, false);
+        //         s = NULL;
+        //         j++;
+        //     }
+        // }
+        // close(fd);
         gtk_fixed_put(GTK_FIXED(m->fix_for_text), i->text_grid, 0, 10);
     }
 }
@@ -198,7 +198,7 @@ void free_all(t_main *m) {
     free(m);
 }
 
-void chat_screen() {
+int chat_screen() {
     t_main *m = malloc_main();
     int ex = 0;
 
@@ -218,18 +218,15 @@ void chat_screen() {
     gtk_main(); 
     ex = m->exit;
     free_all(m);
-    if (ex == 1)
-        login();
-}
-
-void login() {  
-    if (log_screen() == 1)
-        return ;
-    chat_screen();
+    return ex;
 }
 
 int main(int argc, char *argv[]) {
-    // login();
-    chat_screen();
+    while (1) {
+        if (log_screen() == 0)
+            break ;
+        if (chat_screen() == 0)
+            break;
+    }
     return 0;
 }

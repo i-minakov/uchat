@@ -56,7 +56,6 @@ int log_screen(void)
     gtk_widget_show(wid->window); 
 
     gtk_main();
-	(wid->logname == NULL || !mx_strlen(wid->logname)) ? ex = 1 : 0;
 	free(wid);
     return ex;
 }
