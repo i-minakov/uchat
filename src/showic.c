@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 void b_ic(t_main *m) {
     if (!gtk_widget_is_visible(m->menu->setic)) {

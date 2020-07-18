@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 void wid_ch(t_main *m) {
     MX_SHOW_HIDE(m->style->color, m->bottom_b);

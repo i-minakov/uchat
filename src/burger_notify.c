@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 void burger_notify(GtkWidget *widget, GdkEvent *event, t_main *m) {
     int y;

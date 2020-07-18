@@ -1,234 +1,213 @@
-#include "../inc/uchat.h"
+#include "header.h"
 
-static void user_pushback(t_user **head) {
-    t_user *tmp = *head;
+/*void *mx_first(void *old) {
+    t_server *server = (t_server *)old;
 
-    if (tmp == NULL) {
-        *head = mx_create_user();
-        (*head)->head = *head;
-        return ;
+    printf("%s\n", server->json);
+    server->json = mx_strdup("lol");
+    printf("%s\n", server->json);
+    return NULL;
+}
+
+void *mx_second(void *old) {
+    t_server *server = (t_server *)old;
+
+    printf("%s\n", server->json);
+    server->json = mx_strdup("zoom");
+    printf("%s\n", server->json);
+    return NULL;
+}
+
+int main() {
+    t_server str;
+    pthread_t first;
+    pthread_t second;
+
+    pthread_create(&first, NULL, mx_first, (void *)&str);
+    pthread_join(first, NULL);
+
+    pthread_create(&second, NULL, mx_second, (void *)&str);
+    pthread_join(second, NULL);
+    return 0;
+}*/
+
+/*int main() {
+    char *json = NULL;
+    char *command = mx_strdup("mx_update");
+    char **argv = (char **)malloc(sizeof(char *) * 4);
+
+    argv[0] = mx_strdup("command1");
+    argv[1] = mx_strdup("command2");
+    argv[2] = mx_strdup("command3");
+    argv[3] = NULL;
+    json = mx_request(command, argv);
+    printf("%s\n\n", json);
+    
+    char *get_value_command = mx_get_value(json, "command");
+    char **arr = mx_get_arr(json);
+
+    printf("%s\n", get_value_command);
+    for (int i = 0; arr[i]; i++)
+        printf("%s\n", arr[i]);
+    system("leaks -q uchat");
+    return 0;
+}*/
+
+/*int main(int argc, char *argv[]) {
+    if (argc != 2)
+        return 1;
+    FILE *img = fopen(argv[1], "rb");
+    char ch[4];
+    int nb = fread(ch, 4, 1, img);
+    while (nb != 0) {
+        printf("%s\n", ch);
+        nb = fread(ch, 4, 1, img);
     }
-    while (tmp->next)
-        tmp = tmp->next;
-    tmp->next = mx_create_user();
-    tmp->next->head = *head;
-}
+    fclose(img);
+    return 0;
+}*/
 
-void set_chat_grid(t_main *m) {
-    // int buf;
-    // char *s = NULL;
-    // int j = 0;
+/*void *mx_mom(void *restrict dst, const void *restrict src, size_t n, size_t i) {
+    unsigned char *d = (unsigned char *)dst;
+    unsigned char *s = (unsigned char *)src;
 
-    for (t_user *i = m->users; i; i = i->next) {
-        i->y_chat = 30;
-        i->row = 0;
-        i->text_grid = gtk_grid_new();
-        gtk_grid_set_row_spacing(GTK_GRID(i->text_grid), 20);
-        // int fd = open("../t.txt", O_RDWR);
-        // while(read(fd, &buf, 1)) {
-        //     s = mx_delit_fre(s, (char *)(&buf));
-        //     if (buf == 10) {
-        //         m->text = s;
-        //         add_message(m, i, j%2 == 0 ? false : true, false);
-        //         s = NULL;
-        //         j++;
-        //     }
-        // }
-        // close(fd);
-        gtk_fixed_put(GTK_FIXED(m->fix_for_text), i->text_grid, 0, 10);
+    d += 2;
+    s += i;
+    for ( ; n--; ) {
+        if (*s == 0) {
+            *d = *s;
+            d++;
+            return d;
+        }
+        *d = *s;
+        d++;
+        s++;
     }
+    return NULL;
 }
 
-static void set_cap(t_cap *c) {
-    c->my_name = gtk_label_new(NULL);
-    c->friend_name = gtk_label_new(NULL);
-    c->my_photo = resize_proportion("./src/resource/index.jpeg", 51, 51);
-    c->frame_for_my_photo = gtk_image_new_from_file("./src/resource/my photo.png");
-    c->burger_but_img = gtk_image_new_from_file("./src/resource/burger.png");
-    c->dot_menu = gtk_image_new_from_file("./src/resource/dots.png");
-    char *markup = g_markup_printf_escaped("<span color=\"white\" font=\"14\">\%s</span>", "Ilysha");
-
-    gtk_fixed_put(GTK_FIXED(c->fix_cap), c->my_photo, 23, 20);
-    gtk_fixed_put(GTK_FIXED(c->fix_cap), c->frame_for_my_photo, 23, 20);
-    gtk_label_set_markup(GTK_LABEL(c->my_name), markup); 
-    gtk_fixed_put(GTK_FIXED(c->fix_cap), c->dot_menu, 941, 32);
-    gtk_fixed_put(GTK_FIXED(c->fix_cap), c->my_name, 83, 38);
-    gtk_fixed_put(GTK_FIXED(c->fix_cap), c->friend_name, 353, 37);
-    gtk_fixed_put(GTK_FIXED(c->fix_cap), c->burger_but_img, 267, 42);
-    gtk_widget_show_all(c->fix_cap);
-    g_free(markup);
-}
-
-/////////////////////////////////////////////
-
-
-void init_menu(t_main *m) {
-    m->style->color = 1;
-    m->style->lang = 1;
-    m->menu->menu_box = GTK_WIDGET(gtk_builder_get_object(m->builder, "menu_img"));
-    m->menu->menu_fix = GTK_WIDGET(gtk_builder_get_object(m->builder, "menu_box"));
-    m->menu->search = GTK_WIDGET(gtk_builder_get_object(m->builder, "search"));
-    m->menu->settings = GTK_WIDGET(gtk_builder_get_object(m->builder, "setting"));
-    m->menu->contacts = GTK_WIDGET(gtk_builder_get_object(m->builder, "contacts"));
-    m->menu->exit = GTK_WIDGET(gtk_builder_get_object(m->builder, "exit"));
-    m->menu->flag = 0;
-    m->menu->setic = gtk_image_new_from_file("./src/resource/setic.png"); 
-    m->menu->setic2 = gtk_image_new_from_file("./src/resource/setic2.png"); 
-    m->menu->searchic = gtk_image_new_from_file("./src/resource/searchic.png"); 
-    m->menu->searchic2 = gtk_image_new_from_file("./src/resource/searchic2.png"); 
-    m->menu->exic = gtk_image_new_from_file("./src/resource/exic.png"); ;
-    m->menu->exic2 = gtk_image_new_from_file("./src/resource/exic2.png"); ;
-    m->menu->contic = gtk_image_new_from_file("./src/resource/contic.png");
-    m->menu->contic2 = gtk_image_new_from_file("./src/resource/contic2.png");
-
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->contic, 40, 35);
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->contic2, 40, 35);
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->setic, 40, 75);
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->setic2, 40, 75);
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->searchic, 40, 115);
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->searchic2, 40, 115);
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->exic, 40, 153);
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->exic2, 40, 153);
-
-    m->set->sett_box = GTK_WIDGET(gtk_builder_get_object(m->builder, "set_img"));
-    m->set->sett_fix = GTK_WIDGET(gtk_builder_get_object(m->builder, "setting_bar"));
-    m->set->color_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "Colorlab"));
-    m->set->lang_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "Langlab"));
-    m->set->lang1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Lang1"));
-    m->set->lang2 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Lang2"));
-    m->set->color1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color1"));
-    m->set->color2 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color2"));
-    m->set->my_name = GTK_WIDGET(gtk_builder_get_object(m->builder, "my_name"));
-    m->set->set_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "set_but"));
-    m->set->my_photo = resize_proportion("./src/resource/index.jpeg", 80, 80);
-    m->set->my_frame2 = resize_proportion("./src/resource/slept photo2.png", 80, 80);
-    m->set->my_frame = resize_proportion("./src/resource/slept photo.png", 80, 80);
-    gtk_fixed_put(GTK_FIXED(m->set->sett_fix), m->set->my_photo, 30, 30);
-    gtk_fixed_put(GTK_FIXED(m->set->sett_fix), m->set->my_frame2, 30, 30);
-    gtk_fixed_put(GTK_FIXED(m->set->sett_fix), m->set->my_frame, 30, 30);
-    m->set->flag = 0;
-}
-
-void init_components(t_main *m) {
-    m->builder = gtk_builder_new_from_file("./src/resource/test.glade");
-    m->window = GTK_WIDGET(gtk_builder_get_object(m->builder, "window1"));
-    g_signal_connect(m->window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    gtk_builder_connect_signals(m->builder, m->builder);
-    m->bottom_b = GTK_WIDGET(gtk_builder_get_object(m->builder, "bottom_b"));
-    m->top_b = GTK_WIDGET(gtk_builder_get_object(m->builder, "top_b"));
-    m->fix_for_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_text"));
-    m->fix_for_users = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_user"));
-    m->cap->fix_cap = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_cap"));
-    m->fix1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix"));
-    m->sms = GTK_WIDGET(gtk_builder_get_object(m->builder, "sms"));
-    m->but1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "but1"));
-    m->lab_start = GTK_WIDGET(gtk_builder_get_object(m->builder, "lab_start"));
-    m->cap->burger_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "burger_but"));
-    m->cap->dot_menu_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "dots_but"));
-    m->scrol_bar = GTK_WIDGET(gtk_builder_get_object(m->builder, "scrol_text"));
-    m->edit_entry = GTK_WIDGET(gtk_builder_get_object(m->builder, "entry_edit"));
-    m->search = GTK_WIDGET(gtk_builder_get_object(m->builder, "entry_search"));
-    m->adj = gtk_adjustment_new(1.0, 1.0, 10.0, 1.0, 10.0, 1.0);
-    gtk_scrolled_window_set_vadjustment(GTK_SCROLLED_WINDOW(m->scrol_bar), m->adj);
-    // gtk_scrolled_window_set_overlay_scrolling(GTK_SCROLLED_WINDOW(m->scrol_bar), false);
-    m->style->color = 1;
-    m->style->lang = 1;
-    init_menu(m);
-
-    m->dots->dot_img = GTK_WIDGET(gtk_builder_get_object(m->builder, "dot_img1"));
-    m->dots->dot_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "dots_but"));
-    m->dots->fix_dot_menu = GTK_WIDGET(gtk_builder_get_object(m->builder, "dot_menu"));
-    m->dots->block_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "block_but"));
-    m->dots->clear_msg_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "clear_but"));
-    m->dots->search_msg_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "search_but"));
-    m->dots->visible = 1;
-    m->dots->m = m;
-
-    m->forw->forw_img = GTK_WIDGET(gtk_builder_get_object(m->builder, "forw_img"));
-    m->forw->fix_forw = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_forw"));
-    m->forw->search_forw = GTK_WIDGET(gtk_builder_get_object(m->builder, "search_forw"));
-    m->forw->fox_for_forw = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_forw"));
-    m->forw->but_cancel = GTK_WIDGET(gtk_builder_get_object(m->builder, "cancel_forw"));
-    m->forw->m = m;
-
-}
-
-/////////////////////////////////////////////
-
-void hide_something(t_main *m) {
-    gtk_widget_hide(m->sms);
-    gtk_widget_hide(m->but1);
-    gtk_widget_hide(m->edit_entry);
-    for (t_user *i = m->users; i; i = i->next) {
-        gtk_widget_hide(i->frame_photo_act);
-        gtk_widget_hide(i->backg_us_activ);
-        gtk_widget_hide(i->text_grid);
-    }
-    the_ic(1, m);
-    hide_menu(m);
-    hide_set(m);
-
-    gtk_widget_hide(m->dots->fix_dot_menu);
-    gtk_widget_hide(m->forw->fix_forw);
-    gtk_widget_hide(m->search);
-}
-
-t_main *malloc_main() {
-    t_main *m = (t_main *)malloc(sizeof(t_main) * 100);
-
-    m->exit = 0;
-    m->cap = (t_cap *)malloc(sizeof(t_cap) * 100);
-    m->menu = (t_menu *)malloc(sizeof(t_menu) * 100);
-    m->style = (t_style *)malloc(sizeof(t_style) * 100);
-    m->set = (t_setting *)malloc(sizeof(t_setting) * 100);
-    m->dots = (t_dots *)malloc(sizeof(t_dots) * 10);
-    m->forw = (t_forw *)malloc(sizeof(t_forw) * 10);
-    m->users = NULL;
-    return m;
-}
-
-void free_all(t_main *m) {
-    free_users(&m->users);
-    free(m->cap);
-    free(m->menu);
-    free(m->style);
-    free(m->set);
-    free(m->dots);
-    free(m->forw);
-    free(m);
-}
-
-int chat_screen() {
-    t_main *m = malloc_main();
-    int ex = 0;
-
-    gtk_init(NULL, NULL);
-    for (int i = 10; i > 0; i--)
-        user_pushback(&m->users);
-    init_components(m);
-    connect_css(m, 1);
-    set_users(m);
-    set_chat_grid(m);
-    set_cap(m->cap);
-    init_signals(m);  
-    gtk_label_set_text(GTK_LABEL(m->lab_start),
-                     "Please select a chat to start messaging");
-    gtk_widget_show_all(m->window);
-    hide_something(m);
-    gtk_main(); 
-    ex = m->exit;
-    free_all(m);
-    return ex;
-}
+int main() {
+    char ch[11];
+    char *s = "1234567890";
+    memset(ch, '\0', 11);
+    mx_mom(ch, s, 15, 3);
+    printf("%s\n", ch);
+    return 0;
+}*/
 
 int main(int argc, char *argv[]) {
-
-    while (1) {
-        // if (log_screen() == 1)
-        //     break ;
-        if (chat_screen() == 0)
-            break;
-    }
-    // system("leaks -q uchat");
+    if (!strcmp(argv[1], "server"))
+        return mx_server(argc, argv);
+    else if (!strcmp(argv[1], "client"))
+        return mx_client(argc, argv);
     return 0;
 }
+
+/*static void mx_print_list(t_list *list, char *name, char *another_name) {
+    for (t_list *node = list; node; node = node->next) {
+        printf("%d\t", ((t_history *)node->data)->id);
+        printf("%s\t", ((t_history *)node->data)->message);
+        printf("%s\t", ((t_history *)node->data)->time);
+        printf("%s\t", ((t_history *)node->data)->name);
+        printf("%s\t", ((t_history *)node->data)->mssg_id ? ((t_history *)node->data)->mssg_id : "NULL");
+        printf("%s\t", ((t_history *)node->data)->forward ? ((t_history *)node->data)->forward : "NULL");
+        printf("%s\t", ((t_history *)node->data)->flag);
+        printf("%s\n", ((t_history *)node->data)->file_name ? ((t_history *)node->data)->file_name : "NULL");
+        if (mx_strcmp(((t_history *)node->data)->mssg_id, "NULL") != 0 && mx_strcmp(((t_history *)node->data)->forward, "NULL") == 0) {
+            mx_reply_forward(name, another_name, ((t_history *)node->data)->mssg_id, &node);
+            printf("\tReply to the message id %s => ", ((t_history *)node->data)->mssg_id);
+            printf("%s\t", ((t_history *)node->data)->r_f_mssg ? ((t_history *)node->data)->r_f_mssg : "NULL");
+            printf("%s\n", ((t_history *)node->data)->r_f_time ? ((t_history *)node->data)->r_f_time : "NULL");
+        }
+        else if (mx_strcmp(((t_history *)node->data)->forward, "NULL") != 0) {
+            mx_reply_forward(name, ((t_history *)node->data)->forward, ((t_history *)node->data)->mssg_id, &node);
+            printf("\tForward from %s to the message id %s => ", ((t_history *)node->data)->forward, ((t_history *)node->data)->mssg_id);
+            printf("%s\t", ((t_history *)node->data)->r_f_mssg ? ((t_history *)node->data)->r_f_mssg : "NULL");
+            printf("%s\n", ((t_history *)node->data)->r_f_time ? ((t_history *)node->data)->r_f_time : "NULL");
+        }
+    }
+}
+int main(int argc, char *argv[]) {
+    int result = 0;
+
+    if (argc == 2 && mx_strcmp(argv[1], "1") == 0)
+        result = mx_create_table_users();
+    else if (argc == 5 && mx_strcmp(argv[1], "2") == 0)
+        result = mx_add_new_user(argv[2], argv[3], argv[4]);
+    else if (argc == 5 && mx_strcmp(argv[1], "3") == 0)
+        result = mx_add_user_to_table(argv[2], argv[3], mx_atoi(argv[4]));
+    else if (argc == 3 && mx_strcmp(argv[1], "4") == 0)
+        result = mx_delete_user(argv[2]);
+    else if (argc == 4 && mx_strcmp(argv[1], "5") == 0)
+        result = mx_change_log(argv[2], argv[3]);
+    else if (argc == 4 && mx_strcmp(argv[1], "6") == 0)
+        result = mx_change_pass(argv[2], argv[3]);
+    else if (argc == 4 && mx_strcmp(argv[1], "7") == 0) {
+        t_list *list = mx_send_list_back(argv[2], mx_atoi(argv[3]));
+
+        for (t_list *node = list; node; node = node->next) {
+            printf("%s\t%s\t", ((t_table_list *)node->data)->name, ((t_table_list *)node->data)->path_img);
+            printf("%s\t", ((t_table_list *)node->data)->last_mssg ? ((t_table_list *)node->data)->last_mssg : "NULL");
+            printf("%s\n", ((t_table_list *)node->data)->last_mssg_time ? ((t_table_list *)node->data)->last_mssg_time : "NULL");
+        }
+    }
+    else if (argc == 4 && mx_strcmp(argv[1], "8") == 0)
+        result = mx_change_img(argv[2], argv[3]);
+    else if (argc == 8 && mx_strcmp(argv[1], "9") == 0) {
+        t_input data;
+        data.name_from = mx_strdup(argv[2]);
+        data.name_to = mx_strdup(argv[3]);
+        data.message = mx_strdup(argv[4]);
+        data.flag = mx_atoi(argv[5]);
+        data.reply = mx_strdup(argv[6]);
+        data.forward = mx_strdup(argv[7]);
+        if (mx_atoi(argv[5]) == 1)
+            data.file_name = mx_strdup(argv[4]);
+        else
+            data.file_name = mx_strdup("NULL");
+
+        result = mx_recv_new_mess(&data);
+    }
+    else if (argc == 5 && mx_strcmp(argv[1], "10") == 0) {
+        t_list *list = mx_history_back(argv[2], argv[3], argv[4]);
+
+        mx_print_list(list, argv[2], argv[3]);
+    }
+    else if (argc == 4 && mx_strcmp(argv[1], "11") == 0)
+        result = mx_del_history(argv[2], argv[3]);
+    else if (argc == 5 && mx_strcmp(argv[1], "12") == 0)
+        result = mx_del_message(argv[2], argv[3], argv[4]);
+    else if (argc == 6 && mx_strcmp(argv[1], "13") == 0)
+        result = mx_edit(argv[2], argv[3], argv[4], argv[5]);
+    else if (argc == 4 && mx_strcmp(argv[1], "14") == 0)
+        mx_check_user_pass(argv[2], argv[3]) ? printf("ok :)\n") : printf("not ok T_T\n");
+    else if (argc == 4 && mx_strcmp(argv[1], "15") == 0)
+        printf("%s\n", mx_hash(argv[1], argv[2]));
+    else if (argc == 4 && mx_strcmp(argv[1], "16") == 0) {
+        t_list *list = mx_user_search(argv[2], argv[3]);
+
+        for (t_list *node = list; node; node = node->next) {
+            printf("%s\t", ((t_table_list *)node->data)->name);
+            printf("%s\n", ((t_table_list *)node->data)->path_img);
+        }
+    }
+    else if (argc == 6 && mx_strcmp(argv[1], "17") == 0) {
+        t_list *list = mx_mssg_search(argv[2], argv[3], argv[4], argv[5]);
+
+        mx_print_list(list, argv[2], argv[3]);
+    }
+    else if (argc == 5 && mx_strcmp(argv[1], "18") == 0)
+        result += mx_set_type(argv[2], argv[3], mx_atoi(argv[4]));
+    else if (argc == 4 && mx_strcmp(argv[1], "19") == 0)
+        printf("%d\n", mx_get_type(argv[2], mx_atoi(argv[3])));
+    else if (argc == 5 && mx_strcmp(argv[1], "20") == 0) {
+        char *img_name = NULL;
+        char *path = mx_get_img_path(argv[2], argv[3], mx_atoi(argv[4]), &img_name);
+
+        printf("%s\t%s\n", path, img_name);
+    }
+    else if (argc == 5 && mx_strcmp(argv[1], "21") == 0)
+        result += mx_del_user_from_table(argv[2], argv[3], mx_atoi(argv[4]));
+    // system("leaks -q uchat");
+    return result;
+}*/

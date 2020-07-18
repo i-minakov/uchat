@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 void burger_leave(GtkWidget *widget, GdkEvent *event, t_main *m) {
     gtk_widget_destroy(m->cap->burger_but_img);

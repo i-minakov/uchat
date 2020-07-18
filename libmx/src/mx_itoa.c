@@ -1,35 +1,20 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
-static short int numlen(int n) {
-    short int len = 1;
-
-    if (n < 0) {
-        len++;
+char *mx_itoa(long int number) {
+    long int i = 1;
+    char *rez = NULL;
+    
+    if (number == 0) {
+        rez = mx_strdup("0");
+        return rez;
     }
-    while (n /= 10) {
-        len++;
-    }
-    return len;
-}
-
-char *mx_itoa(int number) {
-    int len = 0;
-    char *str = NULL;
-
-    if (number == -2147483648)
-        return mx_strdup("-2147483648");
-    if (!number)
-        return mx_strdup("0");
-    len = numlen(number);
-    str = (char*) malloc(sizeof(char) * (len + 1));
-    str[len] = 0;
-    if (number < 0) {
-        str[0] = '-';
-        number = -number;
-    }
-    for (int i = 0; number; i++) {
-        str[len - 1 - i] = number % 10 + '0';
-        number /= 10;
-    }
-    return str;
+    for (long n = (number < 0) ? (long) number * -1 : number; n;
+        n /= 10, i++);
+    i = number < 0 ? i++ : i - 1;
+    rez = mx_strnew(i);
+    for (long n = (number < 0) ? (long) number * -1 : number; n;
+        rez[i - 1] = n % 10 + '0', n /= 10, i--);
+    if (number < 0)
+        rez[0] = '-';
+    return rez;
 }

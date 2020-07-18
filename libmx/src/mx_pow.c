@@ -1,9 +1,11 @@
-double mx_pow(double n, unsigned int pow) {
-    double x = n;
+#include "libmx.h"
 
-    if (pow == 0)
-        return 1;
-    for (unsigned int i = 0; i < pow - 1; i++)
-        x *= n;
-    return x;
+double mx_pow(double n, unsigned int pow) {
+	unsigned int pp = 1;
+	double y = n;
+	if (pow == 0) return 1;
+	for (; pp < pow; pp++) {
+		y *= n;
+	}
+	return y;
 }

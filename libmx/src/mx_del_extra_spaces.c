@@ -1,56 +1,38 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
-static void skip_spaces(const char *str, int *i) {
-    while (mx_isspace(str[*i])) {
-        (*i)++;
-    }
+bool mx_isspace(char c) {
+	if (c == '\t' || c == '\n' || c == '\v' || c == '\f' || c == '\r' || c == ' ') return 1;
+	else return 0;
 }
 
-static void skip_spaces_ncount(const char *str, int *i, int *count) {
-    for (; mx_isspace(str[*i]); (*i)++)
-        *count += 1;
-}
-
-static void skip_untilspace(const char *str, int *i) {
-    while (!mx_isspace(str[*i]) && str[*i]) {
-        (*i)++;
-    }
-}
-
-static char *create_fin_s(int fin_size, const char *s) {
-    char *fin = mx_strnew(fin_size);
-    int i = 0;
-    int j = 0;
-
-    for (j = 0; j < fin_size; j++) {
-        fin[j] = s[i];
-        if (mx_isspace(s[i])) {
-            fin[j] = ' ';
-            skip_spaces(s, &i);
-            continue;
-        }
-        i++;
-    }
-    return fin;
+static int mx_length_without_spaces(char *str) {
+	int length = 0;
+	for (int i = 0; i < mx_strlen(str) - 1; i++) {
+		if (mx_isspace(str[i]) && mx_isspace(str[i + 1])) {
+			length++;
+		}
+	}
+	return mx_strlen(str) - length;
 }
 
 char *mx_del_extra_spaces(const char *str) {
-    char *s = mx_strtrim(str);
-    int i = 0;
-    int sp_count = 0;
-    int sp_total = 0;
-    char *fin = NULL;
-
-    if (!s)
-        return NULL;
-    while (1) {
-        skip_untilspace(s, &i);
-        if (!s[i])
-            break;
-        sp_count += 1;
-        skip_spaces_ncount(s, &i, &sp_total);
-    }
-    fin = create_fin_s(i - sp_total + sp_count, s);
-    free(s);
-    return fin;
+	if (!str) return NULL;
+	char *trim_str = mx_strtrim(str);
+	if (!trim_str) return (char *)str;
+	int result_length = mx_length_without_spaces(trim_str);
+	char *result = mx_strnew(result_length);
+	if (!result) return NULL;
+	int counter = 0;
+	for (int i = 0; i < mx_strlen(trim_str); i++) {
+		if (!mx_isspace(trim_str[i])) {
+			result[counter] = trim_str[i];
+			counter++;
+		}
+		else if (!mx_isspace(trim_str[i + 1])) {
+			result[counter] = ' ';
+			counter++;
+		}
+	}
+	mx_strdel(&trim_str);
+	return result;
 }

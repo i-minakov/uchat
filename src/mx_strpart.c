@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 char *mx_strpart(char *str, int index) {
     char *res = NULL;
