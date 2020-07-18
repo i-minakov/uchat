@@ -82,6 +82,12 @@ typedef struct s_message {
     struct s_message *next;
 }              t_msg;
 
+typedef struct s_sticker {
+    GtkWidget **img;
+    GtkWidget **but;
+    char **way;
+}              t_sticker;
+
 typedef struct s_data_users {
     GtkWidget *but;
     GtkWidget *fix;
@@ -129,10 +135,14 @@ typedef struct s_setting {
     GtkWidget *color1;
     GtkWidget *color2;
     GtkWidget *my_name;
+    GtkWidget *my_pas;
     GtkWidget *my_frame;
     GtkWidget *my_frame2;
     GtkWidget *my_photo;
     GtkWidget *set_but;
+    GtkWidget *chan_ph;
+    GtkWidget *chan_name;
+    GtkWidget *chan_pas;
     int flag; 
 }              t_setting;
 
@@ -188,6 +198,11 @@ typedef struct s_main {
     GtkWidget *but1;
     GtkWidget *grid_user;
     GtkWidget *grid_search;
+
+    GtkWidget *stic_fix_img;
+    GtkWidget *grid_stic;
+    GtkWidget *fix_for_stic;
+
     GtkWidget *fix_for_users;
     GtkWidget *fix_for_text;
     GtkWidget *lab_start;
@@ -205,6 +220,7 @@ typedef struct s_main {
     struct s_dot_menu *dots;
     struct s_cap *cap;
     struct s_data_users *users;
+    struct s_sticker *stic;
     struct s_menu *menu;
     struct s_style *style;
     struct s_setting *set;
@@ -239,6 +255,11 @@ void move_scrol(t_main *m);
 
 void login();
 
+void init_main_stuff(t_main *m);
+void init_menu(t_main *m);
+void init_set(t_main *m);
+void init_dot_forv(t_main *m);
+
 void burger_notify(GtkWidget *widget, GdkEvent *event, t_main *m);
 void burger_leave(GtkWidget *widget, GdkEvent *event, t_main *m);
 GtkWidget *resize_proportion(const char *path_to_image, int xs, int ys);
@@ -252,7 +273,23 @@ void show_set(t_main *m);
 void connect_css(t_main *m, int flag);
 void change_color(GtkToggleButton *togglebutton, t_main *m);
 void change_lang(GtkToggleButton *togglebutton, t_main *m); 
+void change_name(GtkEntry *e, t_main *m);
+void backto_name(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
+                GdkEvent *event, t_main *m);
+void enter_name(GtkWidget *widget, t_main *m);
+void change_pas(GtkEntry *e, t_main *m);
+void backto_pas(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
+                GdkEvent *event, t_main *m);
+void enter_pas(GtkWidget *widget, t_main *m);
+
+void set_stics(t_main *m);
+void stic_click(GtkWidget *w, t_main *m);
+void stic_free(t_main *m);
 void the_ic(int flag, t_main *m);
+
+void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
+                GdkEvent *event, t_main *m);
+
 
 /////////////////////////////////////////////////////////////////////////////
 // Olya login screen

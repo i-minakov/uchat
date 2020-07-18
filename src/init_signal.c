@@ -13,25 +13,6 @@ static void entry_activate(GtkEntry *e, t_main *m) {
     send_but(m->but1, m);
 }
 
-static void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
-                GdkEvent *event, t_main *m) {
-    GtkWidget *dialog;
-    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
-    gint res;
-    gchar *tmp = NULL;
-
-    if (icon_pos == GTK_ENTRY_ICON_SECONDARY)
-        return ;
-    dialog = gtk_file_chooser_dialog_new ("Open File", GTK_WINDOW(m->window), action, ("_Cancel"), 
-                        GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
-    if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
-        GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
-        tmp = gtk_file_chooser_get_filename (chooser);
-        add_file(m, tmp, true);
-    }
-    gtk_widget_destroy (dialog);
-}
-
 void fun (GtkScrolledWindow *scrolled_window, GtkPositionType pos, t_main *m) {
     if (pos == GTK_POS_TOP) 
         printf("YES\n");
@@ -135,6 +116,10 @@ void exit_chat(GtkWidget *w, t_main *m) {
     gtk_main_quit();
 }
 
+void change_photo(GtkWidget *w, t_main *m) {
+    attach_file(NULL, 2, NULL, m);
+}
+
 void init_signals(t_main *m) {
     g_signal_connect(m->cap->burger_but, "enter-notify-event", G_CALLBACK(burger_notify), m);
     g_signal_connect(m->cap->burger_but, "clicked", G_CALLBACK(switch_menu), m);
@@ -154,5 +139,14 @@ void init_signals(t_main *m) {
     g_signal_connect(m->menu->exit, "clicked", G_CALLBACK(exit_chat), m);
     g_signal_connect(m->menu->search, "clicked", G_CALLBACK(show_search_users), m);
     g_signal_connect(m->menu->contacts, "clicked", G_CALLBACK(show_search_contacts), m);
+
+    g_signal_connect(m->set->my_name, "clicked", G_CALLBACK(enter_name), m);
+    g_signal_connect(m->set->chan_name, "icon-press", G_CALLBACK(backto_name), m);
+    g_signal_connect(m->set->chan_name, "activate", G_CALLBACK(change_name), m);
+    g_signal_connect(m->set->my_pas, "clicked", G_CALLBACK(enter_pas), m);
+    g_signal_connect(m->set->chan_pas, "icon-press", G_CALLBACK(backto_pas), m);
+    g_signal_connect(m->set->chan_pas, "activate", G_CALLBACK(change_pas), m);
+    g_signal_connect(m->set->chan_ph, "clicked", G_CALLBACK(change_photo), m);
+
     set_dots_signal(m->dots);
 }

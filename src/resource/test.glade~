@@ -654,7 +654,7 @@
                 <property name="group">color1</property>
               </object>
               <packing>
-                <property name="x">125</property>
+                <property name="x">135</property>
                 <property name="y">140</property>
               </packing>
             </child>
@@ -669,7 +669,7 @@
                 <property name="draw_indicator">True</property>
               </object>
               <packing>
-                <property name="x">25</property>
+                <property name="x">35</property>
                 <property name="y">140</property>
               </packing>
             </child>
@@ -684,7 +684,7 @@
                 <property name="draw_indicator">True</property>
               </object>
               <packing>
-                <property name="x">25</property>
+                <property name="x">35</property>
                 <property name="y">230</property>
               </packing>
             </child>
@@ -700,7 +700,7 @@
                 <property name="group">Lang1</property>
               </object>
               <packing>
-                <property name="x">125</property>
+                <property name="x">135</property>
                 <property name="y">230</property>
               </packing>
             </child>
@@ -712,7 +712,7 @@
                 <property name="label" translatable="yes">Theme</property>
               </object>
               <packing>
-                <property name="x">30</property>
+                <property name="x">40</property>
                 <property name="y">130</property>
               </packing>
             </child>
@@ -724,21 +724,8 @@
                 <property name="label" translatable="yes">language</property>
               </object>
               <packing>
-                <property name="x">30</property>
+                <property name="x">40</property>
                 <property name="y">220</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="my_name">
-                <property name="width_request">100</property>
-                <property name="height_request">80</property>
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">label</property>
-              </object>
-              <packing>
-                <property name="x">100</property>
-                <property name="y">30</property>
               </packing>
             </child>
             <child>
@@ -764,7 +751,136 @@
                 <property name="y">300</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkButton" id="my_name">
+                <property name="width_request">20</property>
+                <property name="height_request">10</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="width_request">20</property>
+                    <property name="height_request">10</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Name</property>
+                  </object>
+                </child>
+                <style>
+                  <class name="but"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">130</property>
+                <property name="y">40</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="my_pas">
+                <property name="width_request">20</property>
+                <property name="height_request">10</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <child>
+                  <object class="GtkLabel">
+                    <property name="width_request">20</property>
+                    <property name="height_request">10</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Password</property>
+                  </object>
+                </child>
+                <style>
+                  <class name="but"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">130</property>
+                <property name="y">70</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="chan_name">
+                <property name="width_request">160</property>
+                <property name="height_request">30</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="secondary_icon_pixbuf">cancel.png</property>
+                <style>
+                  <class name="entry"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">130</property>
+                <property name="y">40</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry" id="chan_pas">
+                <property name="width_request">160</property>
+                <property name="height_request">30</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="secondary_icon_pixbuf">cancel.png</property>
+                <style>
+                  <class name="entry"/>
+                </style>
+              </object>
+              <packing>
+                <property name="x">130</property>
+                <property name="y">80</property>
+              </packing>
+            </child>
           </object>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="stic_fix_glob">
+            <property name="width_request">200</property>
+            <property name="height_request">160</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="hscrollbar_policy">never</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkViewport" id="stic_viev">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkFixed" id="stic_fix">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                      <object class="GtkImage" id="stic_img2">
+                        <property name="width_request">100</property>
+                        <property name="height_request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="pixbuf">stic_img.png</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImage" id="stic_img">
+                        <property name="width_request">100</property>
+                        <property name="height_request">80</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="pixbuf">stic_img2.png</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <style>
+              <class name="users"/>
+            </style>
+          </object>
+          <packing>
+            <property name="x">780</property>
+            <property name="y">450</property>
+          </packing>
         </child>
         <style>
           <class name="label"/>

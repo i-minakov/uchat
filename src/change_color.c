@@ -8,6 +8,7 @@ void wid_ch(t_main *m) {
     MX_SHOW_HIDE(m->style->color, m->menu->menu_box);
     MX_SHOW_HIDE(m->style->color, m->set->my_frame);
     MX_SHOW_HIDE(m->style->color, m->forw->forw_img);
+    MX_SHOW_HIDE(m->style->color, m->stic_fix_img);
     the_ic(m->style->color, m);
     gtk_widget_destroy(m->cap->frame_for_my_photo);
     m->cap->frame_for_my_photo = gtk_image_new_from_file(MX_MY_PHOTO(m->style->color));
@@ -27,3 +28,4 @@ void change_color(GtkToggleButton *togglebutton, t_main *m) {
     show_hide_back_us(m->users);
     wid_ch(m);
 }
+

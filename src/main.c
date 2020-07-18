@@ -61,96 +61,14 @@ static void set_cap(t_cap *c) {
 
 /////////////////////////////////////////////
 
-
-void init_menu(t_main *m) {
-    m->style->color = 1;
-    m->style->lang = 1;
-    m->menu->menu_box = GTK_WIDGET(gtk_builder_get_object(m->builder, "menu_img"));
-    m->menu->menu_fix = GTK_WIDGET(gtk_builder_get_object(m->builder, "menu_box"));
-    m->menu->search = GTK_WIDGET(gtk_builder_get_object(m->builder, "search"));
-    m->menu->settings = GTK_WIDGET(gtk_builder_get_object(m->builder, "setting"));
-    m->menu->contacts = GTK_WIDGET(gtk_builder_get_object(m->builder, "contacts"));
-    m->menu->exit = GTK_WIDGET(gtk_builder_get_object(m->builder, "exit"));
-    m->menu->flag = 0;
-    m->menu->setic = gtk_image_new_from_file("./src/resource/setic.png"); 
-    m->menu->setic2 = gtk_image_new_from_file("./src/resource/setic2.png"); 
-    m->menu->searchic = gtk_image_new_from_file("./src/resource/searchic.png"); 
-    m->menu->searchic2 = gtk_image_new_from_file("./src/resource/searchic2.png"); 
-    m->menu->exic = gtk_image_new_from_file("./src/resource/exic.png"); ;
-    m->menu->exic2 = gtk_image_new_from_file("./src/resource/exic2.png"); ;
-    m->menu->contic = gtk_image_new_from_file("./src/resource/contic.png");
-    m->menu->contic2 = gtk_image_new_from_file("./src/resource/contic2.png");
-
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->contic, 40, 35);
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->contic2, 40, 35);
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->setic, 40, 75);
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->setic2, 40, 75);
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->searchic, 40, 115);
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->searchic2, 40, 115);
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->exic, 40, 153);
-    gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->exic2, 40, 153);
-
-    m->set->sett_box = GTK_WIDGET(gtk_builder_get_object(m->builder, "set_img"));
-    m->set->sett_fix = GTK_WIDGET(gtk_builder_get_object(m->builder, "setting_bar"));
-    m->set->color_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "Colorlab"));
-    m->set->lang_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "Langlab"));
-    m->set->lang1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Lang1"));
-    m->set->lang2 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Lang2"));
-    m->set->color1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color1"));
-    m->set->color2 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color2"));
-    m->set->my_name = GTK_WIDGET(gtk_builder_get_object(m->builder, "my_name"));
-    m->set->set_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "set_but"));
-    m->set->my_photo = resize_proportion("./src/resource/index.jpeg", 80, 80);
-    m->set->my_frame2 = resize_proportion("./src/resource/slept photo2.png", 80, 80);
-    m->set->my_frame = resize_proportion("./src/resource/slept photo.png", 80, 80);
-    gtk_fixed_put(GTK_FIXED(m->set->sett_fix), m->set->my_photo, 30, 30);
-    gtk_fixed_put(GTK_FIXED(m->set->sett_fix), m->set->my_frame2, 30, 30);
-    gtk_fixed_put(GTK_FIXED(m->set->sett_fix), m->set->my_frame, 30, 30);
-    m->set->flag = 0;
-}
-
 void init_components(t_main *m) {
-    m->builder = gtk_builder_new_from_file("./src/resource/test.glade");
-    m->window = GTK_WIDGET(gtk_builder_get_object(m->builder, "window1"));
-    g_signal_connect(m->window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    gtk_builder_connect_signals(m->builder, m->builder);
-    m->bottom_b = GTK_WIDGET(gtk_builder_get_object(m->builder, "bottom_b"));
-    m->top_b = GTK_WIDGET(gtk_builder_get_object(m->builder, "top_b"));
-    m->fix_for_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_text"));
-    m->fix_for_users = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_user"));
-    m->cap->fix_cap = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_cap"));
-    m->fix1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix"));
-    m->sms = GTK_WIDGET(gtk_builder_get_object(m->builder, "sms"));
-    m->but1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "but1"));
-    m->lab_start = GTK_WIDGET(gtk_builder_get_object(m->builder, "lab_start"));
-    m->cap->burger_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "burger_but"));
-    m->cap->dot_menu_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "dots_but"));
-    m->scrol_bar = GTK_WIDGET(gtk_builder_get_object(m->builder, "scrol_text"));
-    m->edit_entry = GTK_WIDGET(gtk_builder_get_object(m->builder, "entry_edit"));
-    m->search = GTK_WIDGET(gtk_builder_get_object(m->builder, "entry_search"));
-    m->adj = gtk_adjustment_new(1.0, 1.0, 10.0, 1.0, 10.0, 1.0);
-    gtk_scrolled_window_set_vadjustment(GTK_SCROLLED_WINDOW(m->scrol_bar), m->adj);
-    // gtk_scrolled_window_set_overlay_scrolling(GTK_SCROLLED_WINDOW(m->scrol_bar), false);
-    m->style->color = 1;
-    m->style->lang = 1;
+    init_main_stuff(m);
+    set_users(m);
+    set_chat_grid(m);
+    set_cap(m->cap);
     init_menu(m);
-
-    m->dots->dot_img = GTK_WIDGET(gtk_builder_get_object(m->builder, "dot_img1"));
-    m->dots->dot_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "dots_but"));
-    m->dots->fix_dot_menu = GTK_WIDGET(gtk_builder_get_object(m->builder, "dot_menu"));
-    m->dots->block_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "block_but"));
-    m->dots->clear_msg_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "clear_but"));
-    m->dots->search_msg_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "search_but"));
-    m->dots->visible = 1;
-    m->dots->m = m;
-
-    m->forw->forw_img = GTK_WIDGET(gtk_builder_get_object(m->builder, "forw_img"));
-    m->forw->fix_forw = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_forw"));
-    m->forw->search_forw = GTK_WIDGET(gtk_builder_get_object(m->builder, "search_forw"));
-    m->forw->fox_for_forw = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_forw"));
-    m->forw->but_cancel = GTK_WIDGET(gtk_builder_get_object(m->builder, "cancel_forw"));
-    m->forw->m = m;
-
+    init_set(m);
+    init_dot_forv(m);
 }
 
 /////////////////////////////////////////////
@@ -167,7 +85,9 @@ void hide_something(t_main *m) {
     the_ic(1, m);
     hide_menu(m);
     hide_set(m);
-
+    //gtk_widget_hide(m->fix_for_stic);
+    gtk_widget_hide(m->set->chan_name);
+    gtk_widget_hide(m->set->chan_pas);
     gtk_widget_hide(m->dots->fix_dot_menu);
     gtk_widget_hide(m->forw->fix_forw);
     gtk_widget_hide(m->search);
@@ -183,6 +103,7 @@ t_main *malloc_main() {
     m->set = (t_setting *)malloc(sizeof(t_setting) * 100);
     m->dots = (t_dots *)malloc(sizeof(t_dots) * 10);
     m->forw = (t_forw *)malloc(sizeof(t_forw) * 10);
+    m->stic = (t_sticker *)malloc(sizeof (t_sticker *) * 100);
     m->users = NULL;
     return m;
 }
@@ -207,9 +128,6 @@ int chat_screen() {
         user_pushback(&m->users);
     init_components(m);
     connect_css(m, 1);
-    set_users(m);
-    set_chat_grid(m);
-    set_cap(m->cap);
     init_signals(m);  
     gtk_label_set_text(GTK_LABEL(m->lab_start),
                      "Please select a chat to start messaging");
