@@ -1,4 +1,4 @@
-#include "header.h"
+#include "../inc/header.h"
 
 static int mx_json_add_object(cJSON **cmd_name, char *str1, char *str2) {
     cJSON *check = NULL;

@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void change_pas(GtkEntry *e, t_main *m) {
     gchar *tmp = NULL;

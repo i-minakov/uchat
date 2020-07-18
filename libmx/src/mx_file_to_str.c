@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 char *mx_file_to_str(const char *file) {
 	if (!file) return NULL;

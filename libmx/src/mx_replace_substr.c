@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 char *mx_replace_substr(const char *str, const char *sub, const char *replace) {
 	if (!sub || !str || !replace || !mx_strlen(str)) return NULL;

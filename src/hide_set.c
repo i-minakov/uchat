@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void hide_set(t_main *m) {
     hide_menu(m);

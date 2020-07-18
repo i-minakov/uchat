@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 static void user_recipient(GtkWidget *wid, t_user *us) {
     t_msg_forw *fm = us->m->forw->fm;

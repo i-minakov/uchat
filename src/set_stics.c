@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void stic_click(GtkWidget *w, t_main *m) {
     puts("++++\n");

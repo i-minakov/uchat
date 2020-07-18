@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 static int mx_arrsize_malloc(char **arr) {
     int count = 2;

@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void reply_msg(GtkMenuItem *item, t_msg *msg) {
     if (msg->text) {

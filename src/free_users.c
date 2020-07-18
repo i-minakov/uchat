@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void free_msg(t_msg **list) {
     t_msg *tmp = *list;

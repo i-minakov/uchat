@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void hide_bad(GtkWidget *widget, t_wid *wid) {
 	gtk_widget_hide(wid->badact_but);

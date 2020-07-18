@@ -1,5 +1,5 @@
 
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 static void seting(t_wid *wid, char *tmp) {
 	int marg;

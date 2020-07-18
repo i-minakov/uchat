@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 char *mx_strnew(const int size) {
 	if (size < 0) return NULL;

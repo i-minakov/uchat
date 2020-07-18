@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 t_user *mx_create_user() {
     t_user *user = (t_user *)malloc(sizeof(t_user) * 100);

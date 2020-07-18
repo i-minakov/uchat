@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void make_vis(GtkEntry            *entry,
                GtkEntryIconPosition icon_pos,

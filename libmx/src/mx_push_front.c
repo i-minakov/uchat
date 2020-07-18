@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 void mx_push_front(t_list **list, void *data) {
 	t_list *node = (t_list *)malloc(sizeof(t_list));

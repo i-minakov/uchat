@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 static void con(t_main *m) {
     if (m->style->color == 1) {

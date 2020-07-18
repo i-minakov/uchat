@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 void mx_print_long_err(char *s1, char *s2, char *s3, char *s4) {
     if (s1)

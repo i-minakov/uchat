@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 void *mx_memmove(void *dst, const void *src, size_t len) {
 	if ((len <= 0) || (dst == src)) return dst;

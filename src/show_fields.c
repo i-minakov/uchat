@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void show_fields(t_wid *wid) {
 	gtk_widget_show(wid->log_text);

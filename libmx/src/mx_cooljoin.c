@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "../inc/../inc/libmx.h"
 
 char *mx_cooljoin(char *src, char *d) {
     char *s = NULL;

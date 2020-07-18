@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 static void put_fix(t_main *m) {
     gtk_widget_set_size_request (m->set->chan_ph, 80, 80);
