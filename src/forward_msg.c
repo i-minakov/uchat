@@ -1,7 +1,8 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 static void user_recipient(GtkWidget *wid, t_user *us) {
     t_msg_forw *fm = us->m->forw->fm;
+    t_add_m *s = NULL;
 
     gtk_widget_hide(fm->f->fix_forw);
     user_click(NULL, us);
@@ -11,7 +12,9 @@ static void user_recipient(GtkWidget *wid, t_user *us) {
                 mx_strjoin("forwared by ", fm->autor), ":\n"), fm->text);
         else
             us->m->text = fm->text;
-        add_message(us, create_struct(us->m->text, true, 1, NULL));
+        s = create_struct(us->m->text, true, 1, NULL);
+        s->forw_from = mx_strdup(fm->autor);
+        add_message(us, s);
     }
     else 
         add_file(us->m, (gchar *)fm->filename, true);

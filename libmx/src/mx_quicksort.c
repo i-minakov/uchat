@@ -1,41 +1,37 @@
-#include "../inc/libmx.h"
-
-static void swap(char **s1, char **s2) {
-    char *tmp;
-
-    tmp = *s1;
-    *s1 = *s2;
-    *s2 = tmp;
-}
-
-static void cycle(int *i, int *j, char **arr, int *count) {
-    int pivot = mx_strlen(arr[(*i + *j) / 2]);
-
-    while (*i <= *j) {
-        while (mx_strlen(arr[*i]) < pivot)
-            (*i)++;
-        while (mx_strlen(arr[*j]) > pivot)
-            (*j)--;
-        if (*i <= *j) {
-            swap(&arr[*i], &arr[*j]);
-            *count += 1;
-            (*i)++;
-            (*j)--;
-        }
-    }
-}
+#include "libmx.h"
 
 int mx_quicksort(char **arr, int left, int right) {
-    int count = 0;
-    int i = left;
-    int j = right;
+	if (!arr) return -1;
+	int count = 0;
+    if (left < right) {
+        int first = left, last = right; 
+        char *middle = arr[(first + last) / 2];
+        
+        while (mx_strlen(arr[first]) < mx_strlen(middle)) first++;
+        while (mx_strlen(arr[last]) > mx_strlen(middle)) last--;
+        if (first <= last) {
+            if (arr[first] != arr[last]) count++;
+            char *tmp = arr[first];
+            arr[first] = arr[last];
+            arr[last] = tmp;
+            first++;
+            last--;
+        }
 
-    if (!arr)
-        return -1;
-    cycle(&i, &j, arr, &count);
-    if (left < j)
-        count += mx_quicksort(arr, left, j);
-    if (i < right)
-        count += mx_quicksort(arr, i, right);
+        while (first <= last) {
+        	while (mx_strlen(arr[first]) < mx_strlen(middle)) first++;
+            while (mx_strlen(arr[last]) > mx_strlen(middle)) last--;
+            if (first <= last) {
+                if (arr[first] != arr[last]) count++;
+                char *tmp = arr[first];
+                arr[first] = arr[last];
+                arr[last] = tmp;
+                first++;
+                last--;
+            }
+        }
+        count += mx_quicksort(arr, left, last);
+        count += mx_quicksort(arr, first, right);
+    }
     return count;
 }

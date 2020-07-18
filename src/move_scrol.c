@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 void move_scrol(t_main *m) {
     if (m->order != 1)

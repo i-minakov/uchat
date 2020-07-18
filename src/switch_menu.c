@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 void switch_menu(GtkWidget *wid, t_main *m) {
     char *way = NULL;

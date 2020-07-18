@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 void reset_l_mess(t_user *i) {
     char *s = NULL;

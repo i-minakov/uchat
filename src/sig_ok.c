@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 static bool sigcheck(gchar *login) {
 	for(int i = 0; login[i]; i++) {

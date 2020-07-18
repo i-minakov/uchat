@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 static void stic_and_fix(t_main *m) {
     gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->contic, 40, 35);

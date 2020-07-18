@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 static void init_signals_users(t_main *m) {
     for (t_user *i = (m->users); i; i = i->next)

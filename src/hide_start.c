@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 void hide_start(t_wid *wid) {
 	if(gtk_widget_is_visible (wid->log_hower))

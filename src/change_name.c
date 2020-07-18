@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 void change_name(GtkEntry *e, t_main *m) {
     gchar *tmp = NULL;

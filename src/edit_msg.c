@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 static void dialog_delete(t_msg *msg) {
     GtkWidget *dialog;

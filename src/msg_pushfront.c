@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 void save_file(GtkMenuItem *item, t_msg *msg) {
     GtkWidget *dialog;

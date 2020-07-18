@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 void stic_free(t_main *m) {
     free(m->stic->img);

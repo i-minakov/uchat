@@ -1,31 +1,25 @@
-#include "../inc/libmx.h"
-
-static void cycle(char **arr, const char *s, int *count, t_bot_mid_up *pts) {
-    while (mx_strcmp(s, arr[pts->mid]) && pts->bot != pts->up) {
-        if (mx_strcmp(s, arr[pts->mid]) > 0) {
-            pts->bot = pts->mid + 1;
-            pts->mid = (pts->bot + pts->up) / 2;
-        }
-        else {
-            pts->up = pts->mid - 1;
-            pts->mid = (pts->bot + pts->up) / 2;
-        }
-        *count += 1;
-    }
-}
+#include "libmx.h"
 
 int mx_binary_search(char **arr, int size, const char *s, int *count) {
-    t_bot_mid_up points = {0, (size - 1) / 2, size -1};
-
-    *count = 0;
-    if (size < 1 || !s || !arr || !count)
-        return -1;
-    cycle(arr, s, count, &points);
-    if (!mx_strcmp(s, arr[points.mid])) {
-        *count += 1;
-        return points.mid;
-    }
-    else
-        *count = 0;
-    return -1;
+	int max = size - 1, min = 0, mid; 
+	if (!s) return -1;
+ 	while(min <= max) {  
+	mid = min + (max - min) / 2;
+		if(mx_strcmp(arr[mid], s) == 0) {
+			*count += 1;
+			return mid;
+		}
+		else {
+			if(mx_strcmp(arr[mid], s) < 0) {
+				*count += 1;
+				min = mid + 1;
+			}
+			else {
+				*count += 1;
+				max = mid - 1;
+			}
+		}
+	}
+	*count = 0;
+	return -1;
 }

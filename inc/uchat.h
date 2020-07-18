@@ -1,6 +1,6 @@
 #ifndef UCHAT_H
 
-#include "../libmx/inc/libmx.h"
+#include "libmx/inc/libmx.h"
 #include <gtk/gtk.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -42,6 +42,8 @@ typedef struct s_add_msg {
     bool my; 
     int forw;
     char *time_m;
+    char *forw_from;
+    int reply_id;
 }              t_add_m;
 
 typedef struct s_msg_forward {
@@ -212,10 +214,12 @@ typedef struct s_main {
     GtkWidget *top_b;
     GtkAdjustment *adj; 
     GtkBuilder *builder;
+    char **command;
     int exit;
     int order;
     int flag_search; // 1 - msg, 2 - users, 3 - contacts
     char *text;
+    char *my_name;
     struct s_forward *forw;
     struct s_dot_menu *dots;
     struct s_cap *cap;
@@ -227,6 +231,9 @@ typedef struct s_main {
 }              t_main;
 
 int log_screen(void);
+int interface();
+
+t_main *malloc_main();
 t_user *mx_create_user();
 void free_users(t_user **list);
 void set_users(t_main *m);

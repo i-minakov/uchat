@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 void show_setings(GtkWidget *wid, t_main *m) {
     show_set(m);

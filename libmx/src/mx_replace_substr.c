@@ -1,35 +1,16 @@
-#include "../inc/libmx.h"
+#include "libmx.h"
 
-static void cycle(const char *str, t_swap_strings strings,
-                  char *s, int sub_count) {
-    int rep_len = mx_strlen(strings.replace);
-    int sub_len = mx_strlen(strings.str);
-    int sub_index = 0;
+char *mx_replace_substr(const char *str, const char *sub, const char *replace) {
+	if (!sub || !str || !replace || !mx_strlen(str)) return NULL;
 
-    for (int i = 0; i < sub_count; i++) {
-        sub_index = mx_get_substr_index(str, strings.str);
-        mx_strncpy(s, str, sub_index);
-        mx_strcat(s, strings.replace);
-        str += sub_index + sub_len;
-        s += sub_index + rep_len;
-    }
-    if (*str)
-        mx_strcpy(s, str);
-}
-
-char *mx_replace_substr(const char *str, const char *sub,
-                        const char *replace) {
-    int sub_count = 0;
-    char *save = NULL;
-    t_swap_strings strings = {(char *)sub, (char *)replace};
-
-    if (!str || !sub || !replace)
-        return NULL;
-    sub_count = mx_count_substr(str, sub);
-    if (!sub_count || !*sub)
-        return mx_strdup(str);
-    save = mx_strnew(mx_strlen(str)
-           + (mx_strlen(replace) - mx_strlen(sub)) * sub_count);
-    cycle(str, strings, save, sub_count);
-    return save;
+	if (!mx_strlen(sub) || !mx_strlen(replace) || mx_count_substr(str, sub) < 0) return (char *) str;
+	
+	char *rez = mx_strnew(mx_strlen(str) + mx_count_substr(str, sub) * (mx_strlen(replace) - mx_strlen(sub)));
+	for (int i = 0, k = 0; i < mx_strlen(str); i++) {
+		if (!mx_get_substr_index(&str[i], sub)) {
+			for (int j = 0; j < mx_strlen(replace); j++, k++) rez[k] = replace[j];
+			i += mx_strlen(sub) - 1;
+		} else rez[k] = str[i], k++;
+	}
+	return rez;
 }

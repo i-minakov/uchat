@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 GtkWidget *resize_image(const char *path_to_image, uint width, uint heigh) {
     GtkWidget *img;

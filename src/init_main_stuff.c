@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 static void builder_and_stule(t_main *m) {
     m->builder = gtk_builder_new_from_file("./src/resource/test.glade");

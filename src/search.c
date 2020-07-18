@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 static void search_msg(GtkEntry *e, t_main *m) {
     t_user *us = NULL;

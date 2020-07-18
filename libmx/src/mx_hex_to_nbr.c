@@ -1,33 +1,31 @@
-#include "../inc/libmx.h"
-
-static char hexchar(char c) {
-    if (mx_isdigit(c))
-        return c;
-    if ('a' == c || 'A' == c)
-        return 58;
-    if ('b' == c || 'B' == c)
-        return 59;
-    if ('c' == c || 'C' == c)
-        return 60;
-    if ('d' == c || 'D' == c)
-        return 61;
-    if ('e' == c || 'E' == c)
-        return 62;
-    if ('f' == c || 'F' == c)
-        return 63;
-    else
-        return 0;
-}
+#include "libmx.h"
 
 unsigned long mx_hex_to_nbr(const char *hex) {
-    unsigned long num = 0;
-    unsigned long i = 0;
+	int count = 0;
+	for (int i = 0; hex[i]; i++) {
+		count++;
+	}
+	unsigned long int sum = 0;
+	unsigned long int x = 0, stepen = 1;
+	for (int i = 0; hex[i]; i++) {
+		if (hex[i] == 'A' || hex[i] == 'a') x = 10;
+		else if (hex[i] == 'B' || hex[i] == 'b') x = 11;
+		else if (hex[i] == 'C' || hex[i] == 'c') x = 12;
+		else if (hex[i] == 'D' || hex[i] == 'd') x = 13;
+		else if (hex[i] == 'E' || hex[i] == 'e') x = 14;
+		else if (hex[i] == 'F' || hex[i] == 'f') x = 15;
+		else if (hex[i] > 47 && hex[i] < 58) x = hex[i] - '0';
+		else return -1;
 
-    if (!hex)
-        return 0;
-    while (hexchar(hex[i])) {
-        num = num * 16 + hexchar(hex[i]) - 48;
-        i++;
-    }
-    return num;
+		if (count > 1) {
+			stepen = 1;
+			for (int j = count - 1; j > 0; j--) {
+			stepen = stepen * 16;
+			}
+		}
+		else if (count == 1) stepen = 1;
+		sum = sum + x * stepen;
+		count = count - 1;
+	}
+	return sum;
 }

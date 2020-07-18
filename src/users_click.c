@@ -1,4 +1,4 @@
-#include "../inc/uchat.h"
+#include "uchat.h"
 
 static void other_users(t_user *users) {
     for (t_user *i = users->head; i; i = i->next) {
@@ -29,7 +29,10 @@ void user_click(GtkWidget *wid, t_user *users) {
     gtk_widget_show(users->text_grid);
     gtk_label_set_markup(GTK_LABEL(users->m->cap->friend_name), markup);
     gtk_widget_show(users->m->cap->friend_name);
-    users->m->order = 1;
+    // users->m->order = 1;
     g_idle_add((GSourceFunc)move_scrol, users->m);
     g_free(markup);
+    users->m->command = mx_arrjoin(users->m->command, "mx_update");
+    users->m->command = mx_arrjoin(users->m->command, "chat");
+    users->m->command = mx_arrjoin(users->m->command, users->name);
 }
