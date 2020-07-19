@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 void mx_pop_front(t_list **head) {
 	if (!head || !*head) return;

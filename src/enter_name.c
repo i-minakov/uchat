@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void enter_name(GtkWidget *widget, t_main *m) {
     gtk_widget_hide(m->set->my_name);

@@ -1,4 +1,4 @@
-#include "header.h"
+#include "../inc/header.h"
 
 /* !!!delete!!! */
 static void mx_enter_argv(char ***arr, t_client *client) {

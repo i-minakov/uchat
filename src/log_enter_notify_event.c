@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void log_enter_notify_event(GtkWidget *widget, GdkEventButton *event, t_wid *wid)
 {	

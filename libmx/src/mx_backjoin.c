@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "../inc/../inc/libmx.h"
 
 char *mx_backjoin(char *src, char *d) {
     char *s = NULL;

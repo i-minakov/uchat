@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 static void msg_file_pushfornt(t_msg **head, char *filename, bool my) {
     t_msg *tmp = NULL;

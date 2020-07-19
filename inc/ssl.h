@@ -14,7 +14,7 @@
 #include <arpa/inet.h>
 #include <resolv.h>
 
-#include "libmx/inc/libmx.h"
+#include "../libmx/inc/libmx.h"
 
 typedef struct s_way {
     void *data;

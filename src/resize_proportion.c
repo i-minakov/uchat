@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 static void s_bigger_w(guint width, guint heigh, t_size *s) {
 	if (heigh > s->h) {

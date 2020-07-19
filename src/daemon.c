@@ -1,4 +1,4 @@
-#include "header.h"
+#include "../inc/header.h"
 
 int mx_daemon_state(int argc, char *argv[]) {
     pid_t pid = fork();

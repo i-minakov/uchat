@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void log_hover(GtkWidget *widget, GdkEventButton *event, t_wid *wid)
 {	

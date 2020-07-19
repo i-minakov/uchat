@@ -33,7 +33,7 @@
 #endif
 #if defined(_MSC_VER)
 #pragma warning (push)
-/* disable warning about single line comments in system headers */
+/* disable warning about single line comments in system ../inc/header.hs */
 #pragma warning (disable : 4001)
 #endif
 
@@ -56,7 +56,7 @@
 #pragma GCC visibility pop
 #endif
 
-#include "cJSON.h"
+#include "../inc/cJSON.h"
 
 /* define our own boolean type */
 #ifdef true
@@ -112,7 +112,7 @@ CJSON_PUBLIC(double) cJSON_GetNumberValue(const cJSON * const item)
     return item->valuedouble;
 }
 
-/* This is a safeguard to prevent copy-pasters from using incompatible C and header files */
+/* This is a safeguard to prevent copy-pasters from using incompatible C and ../inc/header.h files */
 #if (CJSON_VERSION_MAJOR != 1) || (CJSON_VERSION_MINOR != 7) || (CJSON_VERSION_PATCH != 13)
     #error cJSON.h and cJSON.c have different versions. Make sure that both have the same.
 #endif

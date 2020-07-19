@@ -1,48 +1,45 @@
 NAME = uchat
-
-INC = ./inc/header.h ./inc/ssl.h ./inc/cJSON.h ./inc/json_functions.h ./inc/database.h ./inc/uchat.h
-
-HEADTMP = ./header.h ./ssl.h ./cJSON.h ./json_functions.h ./database.h ./uchat.h
-
-SRC = ./*.c #./client.c ./server.c ./main.c ./ssl.c ./daemon.c ./cJSON.c ./json_functions.c ./mx_help.c ./mx_db.c
-
-SRCS = ./src/*.c #./src/client.c ./src/server.c ./src/main.c ./src/ssl.c ./src/daemon.c ./src/cJSON.c ./src/json_functions.c ./src/mx_help.c ./src/mx_db.c
-
-OBJ = ./*.o #./client.o ./server.o ./main.o ./ssl.o ./daemon.o ./cJSON.o ./json_functions.o ./mx_help.o ./mx_db.o
-
-OBJO = ./obj/*.o #./obj/client.o ./obj/server.o ./obj/main.o ./obj/ssl.o ./obj/daemon.o ./obj/cJSON.o ./obj/json_functions.o ./obj/mx_help.o ./obj/mx_db.o
-
+INC = inc/*.h
+SRC := $(wildcard src/*.c)
+OBJ = $(addprefix obj/, $(notdir $(SRC:%.c=%.o)))
+LIBMX = libmx/libmx.a
 SSL_PATH = -I/usr/local/opt/openssl/include
-
-CFLGS = $(SSL_PATH) `pkg-config --cflags gtk+-3.0 pkg-config --libs gtk+-3.0`  -g -fsanitize=address
-
+FLAGS = $(SSL_PATH) `pkg-config --cflags gtk+-3.0 pkg-config --libs gtk+-3.0` #-std=c11 -Wall -Wextra -Werror -Wpedantic 
+SANFLAG = -g -fsanitize=address
 SQLITE = -lsqlite3
-
 PTHREAD = -lpthread
-
 SSL = -L/usr/local/opt/openssl/lib/ -lssl -lcrypto
 
-all: install clean
+all: $(NAME)
 
-install:
-	@make -C libmx -f Makefile install
-	@cp $(INC) $(SRCS) .
-	@clang $(CFLGS) -c $(SRC)
-	@mkdir -pv obj
-	@mv $(OBJ) ./obj
-	@clang $(CFLGS) $(OBJO) libmx/libmx.a -o $(NAME) $(SQLITE) $(SSL) $(PTHREAD)
+install: $(NAME)
 
-uninstall: clean
-	@make -C libmx -f Makefile uninstall
-	@rm -rf $(NAME)
+$(NAME): $(LIBMX) $(OBJ)
+	@make clean
+	@clang $(FLAGS) $(OBJ) $(LIBMX) -o $(NAME) $(SQLITE) $(SSL) $(PTHREAD)
+	@printf "\x1b[32;1m$(NAME) created\x1b[0m\n"
+
+$(LIBMX):
+	@make -C libmx
+
+$(OBJ): | obj
+
+obj:
+	@mkdir obj
+
+obj/%.o: src/%.c $(INC)
+	@clang $(FLAGS) -c $< -o $@
+	@printf "\x1b[32mcompiled: \x1b[0m[$<]\n"
 
 clean:
+	@rm -rf *.o ush.dSYM
 	@make clean -C libmx
-	@rm -rf $(OBJO)
-	@rm -rf $(SRC)
-	@rm -rf $(OBJ)
-	@rm -rf $(HEADTMP)
+
+uninstall: clean
+	@make uninstall -C libmx
+	@make clean
 	@rm -rf ./obj
+	@rm -rf $(NAME)
 
 reinstall: uninstall install
 
@@ -61,3 +58,5 @@ del_db:
 	@rm database.db
 	@rm -rf database
 
+d:
+	@clang $(FLAGS) $(SANFLAG) src/*.c libmx/libmx.a -o ush --debug

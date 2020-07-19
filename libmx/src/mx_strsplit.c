@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 char **mx_strsplit(char const *s, char c) {
     if (!s || !mx_strlen(s))

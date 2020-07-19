@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void show_hide_back_us(t_user *users) {
     for (t_user *i = users; i; i = i->next) {

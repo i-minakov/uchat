@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 static void user_pushfront(t_user **head, t_user *user) {
     t_user *tmp = *head;

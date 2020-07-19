@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 static void first_choise(t_wid *wid) {
     //изначальный выбор нажатием + анимация

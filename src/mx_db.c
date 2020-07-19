@@ -1,4 +1,4 @@
-#include "header.h"
+#include "../inc/header.h"
 
 /* open database database.db */
 int mx_open_db(int flag, sqlite3 **db, char **err_msg) {

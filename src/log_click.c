@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void log_click(GtkWidget *widget, t_wid *wid) {
 	hide_start(wid);

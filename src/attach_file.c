@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
                 GdkEvent *event, t_main *m) {

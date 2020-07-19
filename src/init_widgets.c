@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 static void log_widgets(t_wid *wid) {
 	wid->log->log_gif = GTK_WIDGET(gtk_builder_get_object(wid->builder, "loggif"));

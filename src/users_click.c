@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 static void other_users(t_user *users) {
     for (t_user *i = users->head; i; i = i->next) {

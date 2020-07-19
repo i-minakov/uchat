@@ -1,4 +1,4 @@
-#include "../inc/libmx.h"
+#include "../inc/../inc/libmx.h"
 
 int mx_strcmp_null(const char *s1, const char *s2) {
     int i = 0;

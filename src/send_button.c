@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 static void command_msg(t_user *us, t_add_m *s) {
     char *id = NULL;

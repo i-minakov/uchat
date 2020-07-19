@@ -27,7 +27,7 @@
 #include <malloc.h>
 #include <ctype.h>
 
-#include "libmx/inc/libmx.h"
+#include "../libmx/inc/libmx.h"
 #include "json_functions.h"
 #include "database.h"
 #include "ssl.h"

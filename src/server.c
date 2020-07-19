@@ -1,4 +1,4 @@
-#include "header.h"
+#include "../inc/header.h"
 
 /* send user photo */
 /* len of user name 100 */

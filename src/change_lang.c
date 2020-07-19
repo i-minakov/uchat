@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void ch_lang(t_main *m) {
     gtk_label_set_text(GTK_LABEL(m->lab_start), MX_START(m->style->lang));

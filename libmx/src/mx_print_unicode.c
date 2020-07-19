@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 static void prtu(int c, int a, int b, int i) {
 	for (int j = i; j >= 0; j--) {

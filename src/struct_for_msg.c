@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 t_add_m *create_struct(char *text, bool my, int forw, char *time_m) {
     t_add_m *new = (t_add_m *)malloc(sizeof(t_add_m) * 6);

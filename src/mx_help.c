@@ -1,4 +1,4 @@
-#include "header.h"
+#include "../inc/header.h"
 
 char *mx_super_join(char *src1, char *src2, int fl) {
     char *s = mx_strjoin(src1, src2);

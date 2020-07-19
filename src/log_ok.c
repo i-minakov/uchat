@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 void log_ok(GtkWidget *widget, t_wid *wid) {
 	wid->log->logname = (char *)gtk_entry_get_text (GTK_ENTRY (wid->log->log_name));

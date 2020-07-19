@@ -1,4 +1,4 @@
-#include "libmx.h"
+#include "../inc/libmx.h"
 
 char *mx_strstr(const char *haystack, const char *needle) {
 	if (!mx_strlen(needle)) return (char *) haystack;

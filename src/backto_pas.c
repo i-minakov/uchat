@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 void backto_pas(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
                 GdkEvent *event, t_main *m) {
     gtk_widget_hide(m->set->chan_pas);

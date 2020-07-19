@@ -1,4 +1,4 @@
-#include "uchat.h"
+#include "../inc/uchat.h"
 
 static bool show_photo (t_wid *wid) {
 	GtkWidget *tmp = resize_image_correct(wid->sig->sigfile);
