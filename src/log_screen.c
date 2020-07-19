@@ -38,7 +38,7 @@ void init_builder(t_wid *wid) {
 								GTK_STYLE_PROVIDER_PRIORITY_USER);
 }
 
-int log_screen(void)
+int log_screen(t_main *m)
 {
 	int ex = 0;
 	t_wid *wid = (t_wid *)malloc(sizeof(t_wid) * 10);
@@ -46,6 +46,9 @@ int log_screen(void)
 	wid->log = (t_login *)malloc(sizeof(t_login) * 10);
 	t_eye *eye = (t_eye *)malloc(sizeof(t_eye) * 4);
     eye->wid = wid;
+	wid->m = m;
+	wid->m->log_in = wid;
+	wid->sig->sigfile = NULL;
 
 	gtk_init(NULL, NULL);
 	init_builder(wid);
@@ -56,7 +59,7 @@ int log_screen(void)
 
     gtk_widget_show(wid->window); 
 
-    gtk_main();
-	free(wid);
+    // gtk_main();
+	// free(wid);
     return ex;
 }

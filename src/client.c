@@ -24,6 +24,7 @@ static void mx_get_request(char **json, t_client *client) { // delete
     mx_strdel(&command);
     mx_del_strarr(&arr);
 }
+
 static void mx_hash_pass(char **json) {
     char *command = mx_get_value(*json, "command");
     char **arr = mx_get_arr(*json);
@@ -60,15 +61,13 @@ static int mx_command(t_client *client, char **json) {
 void mx_client_send(t_client *client) {
     char *json = NULL;
 
-    chat_screen(&client->gtk);
-    client->gtk->order = -2;
+    log_screen(client->gtk);
     while (client->exit == 1) {
         gtk_main_iteration();
         mx_get_request(&json, client);
         if (mx_command(client, &json) == 1)
             break;
         mx_strdel(&json);
-        // client->gtk->order++;
     }
     client->exit = 0;
     mx_strdel(&json);

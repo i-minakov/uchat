@@ -16,7 +16,7 @@ static void init_component(t_user *i, t_main *m) {
     i->frame_photo_act = gtk_image_new_from_file(MX_ACT_PH(m->style->color));
     i->l_name = gtk_label_new(NULL);
     i->l_mess = gtk_label_new(NULL);
-    i->l_time = gtk_label_new("15:20");
+    i->l_time = gtk_label_new(NULL);
 }
 
 static void insert_component(t_user *i) {

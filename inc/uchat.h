@@ -231,9 +231,11 @@ typedef struct s_main {
     struct s_menu *menu;
     struct s_style *style;
     struct s_setting *set;
+    struct s_wid *log_in;
 }              t_main;
 
-int log_screen(void);
+int chat_screen(t_main **gtk);
+int log_screen(t_main *m);
 int interface();
 
 t_main *malloc_main();
@@ -264,8 +266,6 @@ t_add_m *create_struct(char *text, bool my, int forw, char *time_m);
 void move_scrol(t_main *m);
 void add_message_back(t_user *i, t_add_m *s, int count);
 void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg);
-
-void login();
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);
@@ -349,6 +349,7 @@ typedef struct s_wid {
 	GtkWidget *black_back;
     struct s_sign *sig;
     struct s_login *log;
+    struct s_main *m;
 } 			t_wid;
 
 // typedef struct s_wid {
@@ -446,6 +447,5 @@ void make_vis2(GtkEntry            *entry,
 
 void bad_act(t_wid *wid, int flag);
 void hide_bad(GtkWidget *widget, t_wid *wid);
-int log_screen(void);
 
 #endif
