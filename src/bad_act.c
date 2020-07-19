@@ -4,13 +4,13 @@
 static void seting(t_wid *wid, char *tmp) {
 	int marg;
 
-	marg = 300 + ((492 - (strlen(tmp) * 7))/2);
+	marg = 300 + ((492 - (mx_strlen(tmp) * 7))/2);
 	gtk_label_set_label(GTK_LABEL(wid->badact_lab), tmp);
 	gtk_label_set_xalign(GTK_LABEL(wid->badact_lab), marg);
-	g_signal_handlers_block_by_func(wid->sig_gif, log_enter_notify_event, wid);
-	g_signal_handlers_block_by_func(wid->log_gif, sig_enter_notify_event, wid);
-	if(wid->flagimg == 1)
-		gtk_widget_hide(wid->sig_display);
+	g_signal_handlers_block_by_func(wid->sig->sig_gif, log_enter_notify_event, wid);
+	g_signal_handlers_block_by_func(wid->log->log_gif, sig_enter_notify_event, wid);
+	if(wid->sig->flagimg == 1)
+		gtk_widget_hide(wid->sig->sig_display);
 }
 
 void bad_act(t_wid *wid, int flag) {

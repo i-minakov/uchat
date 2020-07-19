@@ -140,6 +140,7 @@ int chat_screen(t_main **gtk) {
 int interface() {
     t_main *m = malloc_main();
 
+    log_screen();
     chat_screen(&m);
     gtk_main();
     free_all(m);

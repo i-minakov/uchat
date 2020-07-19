@@ -307,24 +307,23 @@ void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos,
 // Olya login screen
 /////////////////////////////////////////////////////////////////////////////
 
-typedef struct s_wid {
-	GtkBuilder *builder; 
-    GtkWidget *window;
-	GtkWidget *fixed;
-
+typedef struct s_login {
 	GtkWidget *log_hower;
-	GtkWidget *sig_hower;
 	GtkWidget *log_hower2;
-	GtkWidget *sig_hower2;
-
 	GtkWidget *log_gif;
-	GtkWidget *sig_gif;
-
 	GtkWidget *log_text;
 	GtkWidget *log_name;
 	GtkWidget *log_pas;
 	GtkWidget *log_but;
+	GtkWidget *no_fil_log;
+	char *logname;
+	char *logpas;
+} 			t_login;
 
+typedef struct s_sign {
+	GtkWidget *sig_hower;
+	GtkWidget *sig_hower2;
+	GtkWidget *sig_gif;
 	GtkWidget *sig_text;
 	GtkWidget *sig_name;
 	GtkWidget *sig_pas;
@@ -333,23 +332,68 @@ typedef struct s_wid {
 	GtkWidget *sig_display;
 	int flagimg;
 	GtkWidget *sig_but;
-
-	GtkWidget *no_fil_log;
 	GtkWidget *no_fil_sig;
-	GtkWidget *the_end;
-
-	GtkWidget *badact;
-	GtkWidget *badact_but;
-	GtkWidget *badact_lab;
-	GtkWidget *black_back;
-
-	char *logname;
-	char *logpas;
 	char *signame;
 	char *sigpas;
 	char *sigpas2;
 	char *sigfile;
+} 			t_sign;
+
+typedef struct s_wid {
+	GtkBuilder *builder; 
+    GtkWidget *window;
+	GtkWidget *fixed;
+	GtkWidget *badact;
+	GtkWidget *badact_but;
+	GtkWidget *badact_lab;
+	GtkWidget *black_back;
+    struct s_sign *sig;
+    struct s_login *log;
 } 			t_wid;
+
+// typedef struct s_wid {
+// 	GtkBuilder *builder; 
+//     GtkWidget *window;
+// 	GtkWidget *fixed;
+
+// 	GtkWidget *log_hower;
+// 	GtkWidget *sig_hower;
+// 	GtkWidget *log_hower2;
+// 	GtkWidget *sig_hower2;
+
+// 	GtkWidget *log_gif;
+// 	GtkWidget *sig_gif;
+
+// 	GtkWidget *log_text;
+// 	GtkWidget *log_name;
+// 	GtkWidget *log_pas;
+// 	GtkWidget *log_but;
+
+// 	GtkWidget *sig_text;
+// 	GtkWidget *sig_name;
+// 	GtkWidget *sig_pas;
+// 	GtkWidget *sig_pas2;
+// 	GtkWidget *sig_photo;
+// 	GtkWidget *sig_display;
+// 	int flagimg;
+// 	GtkWidget *sig_but;
+
+// 	GtkWidget *no_fil_log;
+// 	GtkWidget *no_fil_sig;
+// 	GtkWidget *the_end;
+
+// 	GtkWidget *badact;
+// 	GtkWidget *badact_but;
+// 	GtkWidget *badact_lab;
+// 	GtkWidget *black_back;
+
+// 	char *logname;
+// 	char *logpas;
+// 	char *signame;
+// 	char *sigpas;
+// 	char *sigpas2;
+// 	char *sigfile;
+// } 			t_wid;
 
 typedef struct s_eye {
 	bool log;

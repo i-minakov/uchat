@@ -12,15 +12,15 @@ static bool sigcheck(gchar *login) {
 bool valid(t_wid *wid) {
 	int f = 0;
 
-	if(gtk_widget_is_visible(wid->no_fil_sig))
-			gtk_widget_hide(wid->no_fil_sig);
-	if (mx_isdigit(wid->signame[0]))
+	if(gtk_widget_is_visible(wid->sig->no_fil_sig))
+			gtk_widget_hide(wid->sig->no_fil_sig);
+	if (mx_isdigit(wid->sig->signame[0]))
 			f = 6;
-	if (!sigcheck(wid->signame))
+	if (!sigcheck(wid->sig->signame))
 			f = 2;
-	if (!sigcheck(wid->sigpas))
+	if (!sigcheck(wid->sig->sigpas))
 			f = 7;
-	if (strcmp(wid->sigpas, wid->sigpas2) != 0)
+	if (mx_strcmp(wid->sig->sigpas, wid->sig->sigpas2) != 0)
 			f = 3;
 	if (f != 0){
 		bad_act(wid, f);
@@ -30,16 +30,15 @@ bool valid(t_wid *wid) {
 }
 
 void sig_ok(GtkWidget *widget, t_wid *wid) {
-  	wid->signame = (char *)gtk_entry_get_text (GTK_ENTRY (wid->sig_name));
-	wid->sigpas = (char *)gtk_entry_get_text (GTK_ENTRY (wid->sig_pas));
-	wid->sigpas2 = (char *)gtk_entry_get_text (GTK_ENTRY (wid->sig_pas2));
+  	wid->sig->signame = (char *)gtk_entry_get_text (GTK_ENTRY (wid->sig->sig_name));
+	wid->sig->sigpas = (char *)gtk_entry_get_text (GTK_ENTRY (wid->sig->sig_pas));
+	wid->sig->sigpas2 = (char *)gtk_entry_get_text (GTK_ENTRY (wid->sig->sig_pas2));
 
-	if (strcmp(wid->signame, "\0") == 0 || strcmp(wid->sigpas, "\0") == 0 ||
-		strcmp(wid->sigpas2, "\0") == 0)
-		gtk_widget_show(wid->no_fil_sig);
+	if (mx_strcmp(wid->sig->signame, "\0") == 0 || mx_strcmp(wid->sig->sigpas, "\0") == 0 ||
+		mx_strcmp(wid->sig->sigpas2, "\0") == 0)
+		gtk_widget_show(wid->sig->no_fil_sig);
 	else {
 		if (valid(wid)){
-			gtk_widget_show(wid->the_end);
 			sleep(3);
 			gtk_main_quit();
 		}
