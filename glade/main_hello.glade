@@ -334,18 +334,6 @@
           </packing>
         </child>
         <child>
-          <object class="GtkImage" id="the_end">
-            <property name="width_request">100</property>
-            <property name="height_request">80</property>
-            <property name="can_focus">False</property>
-            <property name="pixbuf">../img/zaba.jpg</property>
-          </object>
-          <packing>
-            <property name="x">270</property>
-            <property name="y">250</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkButton" id="login1">
             <property name="width_request">100</property>
             <property name="height_request">80</property>
@@ -457,6 +445,17 @@
           <packing>
             <property name="x">-5</property>
             <property name="y">-2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFixed">
+            <property name="width_request">959</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="y">13</property>
           </packing>
         </child>
       </object>
