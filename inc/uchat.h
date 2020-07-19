@@ -52,6 +52,7 @@ typedef struct s_msg_forward {
     char *autor;
     bool my;
     int was_forw;
+    int stic;
     struct s_forward *f;
 }              t_msg_forw;
 
@@ -78,6 +79,7 @@ typedef struct s_message {
     GtkWidget *file;
     GtkWidget *label;
     bool my;
+    bool stic;
     int forward;
     struct s_data_users *user;
     struct s_message *prev;
@@ -204,6 +206,7 @@ typedef struct s_main {
     GtkWidget *stic_fix_img;
     GtkWidget *grid_stic;
     GtkWidget *fix_for_stic;
+    GtkWidget *stic_scrol;
 
     GtkWidget *fix_for_users;
     GtkWidget *fix_for_text;
@@ -248,7 +251,7 @@ void free_msg(t_msg **list);
 t_msg *create_msg(char *text, char *filename);
 void delete_msg(GtkMenuItem *item, t_msg *msg);
 void forward_msg(GtkMenuItem *item, t_msg *msg);
-void add_file(t_main *m, gchar *tmp, bool my);
+void add_file(t_main *m, t_add_m *s, int stic);
 void init_signals(t_main *m);
 void save_file(GtkMenuItem *item, t_msg *msg);
 void add_message(t_user *i, t_add_m *s);
@@ -259,6 +262,8 @@ void show_hide_back_us(t_user *users);
 void reply_msg(GtkMenuItem *item, t_msg *msg);
 t_add_m *create_struct(char *text, bool my, int forw, char *time_m);
 void move_scrol(t_main *m);
+void add_message_back(t_user *i, t_add_m *s, int count);
+void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg);
 
 void login();
 

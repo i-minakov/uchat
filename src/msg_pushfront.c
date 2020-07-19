@@ -31,12 +31,12 @@ void delete_msg(GtkMenuItem *item, t_msg *msg) {
     msg = NULL;
 }
 
-static void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg) {
+void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg) {
     if (event->button != 1) {
         gtk_menu_popup_at_widget(GTK_MENU(msg->menu), (msg->label), GDK_GRAVITY_SOUTH_WEST, 
             GDK_GRAVITY_SOUTH_EAST, (GdkEvent *)event);
     }
-    else if (msg->filename != NULL)
+    else if (msg->filename != NULL && msg->stic != true)
         save_file(NULL, msg);
 }
 
