@@ -44,7 +44,7 @@ typedef struct s_input {
 
 t_list *mx_get_tables_list(void);
 t_list *mx_send_list_back(char *name, int flag);
-t_list *mx_user_search(char *part_name, char *size);
+t_list *mx_user_search(char *name, char *part_name, char *size);
 t_list *mx_history_back(char *name_from, char *name_to, char *size);
 t_list *mx_mssg_search(char *name, char *another_name, char *part_mssg, char *size);
 bool mx_part_cmp(char *data, char *part_name);

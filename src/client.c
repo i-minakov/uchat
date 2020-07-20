@@ -12,6 +12,108 @@ static void mx_enter_argv(char ***arr, t_client *client) {
     }
 }
 
+/* sort */
+int mx_intcmp(char *str1, char *str2) {
+    int num1 = mx_atoi(str1);
+    int num2 = mx_atoi(str2);
+
+    if (num1 != num2)
+        return num1 - num2;
+    return 0;
+}
+int mx_monthcmp(char *month1, char *month2) {
+    enum e_month {Jan, Feb, Mar, Apr, May, Jun,
+                  Jul, Aug, Sep, Oct, Nov, Dec};
+    static struct {char *m; enum e_month e;} map[] = {
+        {"Jan", Jan}, {"Feb", Feb}, {"Mar", Mar}, {"Apr", Apr},
+        {"May", May}, {"Jun", Jun}, {"Jul", Jul}, {"Aug", Aug},
+        {"Sep", Sep}, {"Oct", Oct}, {"Nov", Nov}, {"Dec", Dec},};
+    int num1 = 0;
+    int num2 = 0;
+
+    for (int i = 0; i < sizeof(map)/sizeof(map[0]); i++) {
+        if (mx_strcmp(month1, map[i].m) == 0)
+            num1 = map[i].e;
+        if (mx_strcmp(month2, map[i].m) == 0)
+            num2 = map[i].e;
+    }
+    if (num1 != num2)
+        return num1 - num2;
+    return 0;
+}
+static int mx_switch_time(int i, char **arr1, char **arr2) {
+    switch(i) {
+        case 1:
+            return mx_intcmp(arr1[4], arr2[4]);
+        case 2:
+            return mx_monthcmp(arr1[1], arr2[1]);
+        case 3:
+            return mx_intcmp(arr1[2], arr2[2]);
+        case 4:
+            return mx_intcmp(arr1[0], arr2[0]);
+        case 5:
+            return mx_intcmp(arr1[1], arr2[1]);
+        case 6:
+            return mx_intcmp(arr1[2], arr2[2]);
+        default:
+            return 0;
+    }
+}
+static void mx_change_cmp(char ***arr) {
+    if (!arr || !*arr)
+        return;
+    char **shift = mx_strsplit((*arr)[3], ':');
+
+    mx_del_strarr(&(*arr));
+    *arr = shift;
+}
+static int mx_parse_time(char *str1, char *str2) {
+    int result = 0;
+    char **arr1 = mx_strsplit(str1, ' ');
+    char **arr2 = mx_strsplit(str2, ' ');
+
+    for (int i = 0; i < 6; i++) {
+        if (i == 3) {
+            mx_change_cmp(&arr1);
+            mx_change_cmp(&arr2);
+        }
+        if ((result = mx_switch_time(i + 1, arr1, arr2)) != 0)
+            break;
+    }
+    mx_del_strarr(&arr1);
+    mx_del_strarr(&arr2);
+    return result;
+}
+static int mx_pre_parse_time(char *json1, char *json2) {
+    int result = 0;
+    char **arr1 = mx_get_arr(json1);
+    char **arr2 = mx_get_arr(json2);
+
+    result = mx_parse_time(arr1[1], arr2[1]);
+    mx_del_strarr(&arr1);
+    mx_del_strarr(&arr2);
+    return result;
+}
+void mx_sort_mssg(t_list **list, int flag) {
+    int out = 0;
+    void *data = NULL;
+
+    while (out == 0) {
+        out = 1;
+        for (t_list *i = *list; i && i->next; i = i->next)
+            if ((flag == 0 && mx_pre_parse_time((char *)((t_data *)i->data)->list->data,
+                    (char *)((t_data *)i->next->data)->list->data) > 0)
+                || (flag == 1 && mx_strcmp(((t_data *)i->data)->name,
+                    ((t_data *)i->next->data)->name) > 0)) {
+                data = i->data;
+                i->data = i->next->data;
+                i->next->data = data;
+                data = NULL;
+                out = 0;
+            }
+    }
+}
+
 /* send request */
 static void mx_get_request(char **json, t_client *client) { // delete
     char *command = NULL;
@@ -158,7 +260,13 @@ static void mx_trim_full_list(t_info **info) {
     free(*info);
     *info = NULL;
 }
-void mx_recv_list(char ch[], t_info **info, t_files *files) { // print list && sort list
+static void mx_sort_recv_list(t_info **info) {
+    if (mx_strcmp("mx_regular_request", (*info)->cmd) != 0)
+        mx_sort_mssg(&(*info)->list, 1);
+    else
+        mx_sort_mssg(&(*info)->list, 0);
+}
+void mx_recv_list(char ch[], t_info **info, t_files *files) { // print list
     if (ch[0] == 'C')
         mx_static_read(ch, &(*info)->cmd);
     else if (ch[0] == 'S')
@@ -179,7 +287,8 @@ void mx_recv_list(char ch[], t_info **info, t_files *files) { // print list && s
         mx_static_read(ch, (char **)&((t_data *)(*info)->list->data)->list->data);
     }
     else if (ch[0] == 'E' && ch[1] == 'E') {
-        // bool cmp
+        mx_sort_recv_list(info);
+        //=========== delete ===========//
         printf("cmd = %s\n", (*info)->cmd);
         printf("size = %s\n", (*info)->size);
         for (t_list *i = (*info)->list; i; i = i->next) {
@@ -189,6 +298,7 @@ void mx_recv_list(char ch[], t_info **info, t_files *files) { // print list && s
                     printf("mssg = %s\n", (char *)j->data);
         }
         printf("\n");
+        //=========== delete ===========//
         mx_trim_full_list(info);
         *info = mx_create_info();
     }

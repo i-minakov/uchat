@@ -9,7 +9,7 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/uio.h>
-#include <malloc.h>
+#include <malloc/malloc.h>
 
 typedef struct s_list {
 	void *data;

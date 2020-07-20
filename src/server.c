@@ -182,7 +182,7 @@ static void mx_send_back(t_node **node, char **json) {
         hist_flagh = 1;
     }
     else if (mx_strcmp(command, "mx_user_search") == 0)
-        list = mx_user_search(arr[0], arr[1]);
+        list = mx_user_search(arr[0], arr[1], arr[2]);
     else if (mx_strcmp(command, "mx_get_type") == 0)
         type = mx_get_type(arr[0], mx_atoi(arr[1]));
     else if (mx_strcmp(command, "mx_get_img_path") == 0) {
@@ -238,10 +238,14 @@ static void mx_mutex_command(t_node **node, char *json) {
 
     if (mx_strcmp(command, "mx_error") == 0)
         (*node)->exit = 0;
-    else if (mx_strcmp(command, "mx_add_new_user") == 0)
-        mx_add_new_user(arr[0], arr[1], arr[2]) == 0
-            ? mx_bites_str((*node)->ssl, "mx_add_new_user", 'G')
-            : mx_bites_str((*node)->ssl, "User already exist", 'B');
+    else if (mx_strcmp(command, "mx_add_new_user") == 0) {
+        if (mx_add_new_user(arr[0], arr[1], arr[2]) == 0)
+            mx_bites_str((*node)->ssl, "mx_add_new_user", 'G');
+        else {
+            mx_bites_str((*node)->ssl, "User already exist", 'B');
+            mx_strdel(&(*node)->user);
+        }
+    }
     else if (mx_strcmp(command, "mx_add_user_to_table") == 0)
         mx_add_user_to_table(arr[0], arr[1], mx_atoi(arr[2])) == 0
             ? mx_bites_str((*node)->ssl, "mx_add_user_to_table", 'G')
@@ -299,6 +303,22 @@ static void mx_mutex_command(t_node **node, char *json) {
         mx_del_user_from_table(arr[0], arr[1], mx_atoi(arr[2])) == 0
             ? mx_bites_str((*node)->ssl, "mx_del_user_from_table", 'G')
             : mx_bites_str((*node)->ssl, "Can't delete user from table", 'B');
+    else if (mx_strcmp(command, "mx_check_user_pass") == 0) {
+        if (mx_check_user_pass(arr[0], arr[1]) == 0)
+            mx_bites_str((*node)->ssl, "mx_check_user_pass", 'G');
+        else {
+            mx_bites_str((*node)->ssl, "Wrong pass or user name", 'B');
+            mx_strdel(&(*node)->user);
+        }
+    }
+    else if (mx_strcmp(command, "mx_log_out") == 0) {
+        mx_strdel(&(*node)->user);
+        mx_strdel(&(*node)->chat);
+        mx_strdel(&(*node)->size);
+        mx_strdel(&(*node)->history);
+        (*node)->size = mx_strdup("20");
+        (*node)->history = mx_strdup("normal");
+    }
     mx_strdel(&command);
     mx_del_strarr(&arr);
 }
@@ -447,7 +467,7 @@ void *mx_server_handel(void *data) {
 
     while (node->exit == 1) {
         mx_choose(node, &json);
-        if (json) {system("clear"); printf("%s\n", json);}                       // delete
+        // if (json) {system("clear"); printf("%s\n", json);}                       // delete
         // if (json) {printf("%d\n", node->client); printf("%s\n", json);}          // delete
         mx_exe_request(&node, &json);
         mx_strdel(&json);

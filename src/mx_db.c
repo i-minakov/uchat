@@ -1340,14 +1340,14 @@ static t_list *mx_get_user_list(void) {
     sqlite3_close(data.db);
     return list;
 }
-t_list *mx_user_search(char *part_name, char *size) {
+t_list *mx_user_search(char *name, char *part_name, char *size) {
     if (!part_name)
         return NULL;
     t_list *list = mx_get_user_list();
     t_list *true_list = NULL;
 
     for (t_list *node = list; node; node = node->next) {
-        if (mx_part_cmp((char *)node->data, part_name)) {
+        if (mx_part_cmp((char *)node->data, part_name) && mx_strcmp((char *)node->data, name) != 0) {
             t_table_list *transfer = (t_table_list *)malloc(sizeof(t_table_list));
 
             transfer->name = mx_strdup((char *)node->data);

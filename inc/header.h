@@ -24,7 +24,7 @@
 #include <uuid/uuid.h>
 #include <sys/xattr.h>
 #include <sys/ioctl.h>
-#include <malloc.h>
+#include <malloc/malloc.h>
 #include <ctype.h>
 
 #include "../libmx/inc/libmx.h"
@@ -40,34 +40,36 @@
 #define SIZE_SEND_LESS 1024
 
 // Client
-void mx_client_send(t_client *client);
-void mx_recv_len_theme(char ch[], t_client *client);
 char *mx_right_path(t_info **info, t_files *files);
-void mx_recv_list_files(char ch[], t_info **info, t_files *files);
-void mx_recv_list(char ch[], t_info **info, t_files *files);
-void mx_client_recv_file(char ch[], t_client *client);
-void *mx_client_read(void *client_pointer);
+void mx_client_send(t_client *client);
+void mx_sort_mssg(t_list **list, int flag);
 void mx_send_command(char *json, t_client *client);
+void mx_recv_len_theme(char ch[], t_client *client);
+void mx_client_recv_file(char ch[], t_client *client);
+void mx_recv_list(char ch[], t_info **info, t_files *files);
+void mx_recv_list_files(char ch[], t_info **info, t_files *files);
 void *mx_files(void *client_pointer);
+void *mx_client_read(void *client_pointer);
+int mx_monthcmp(char *month1, char *month2);
+int mx_intcmp(char *str1, char *str2);
 int mx_client(int argc, char *argv[]);
 
 // Server
-void mx_send_history_list(t_node **node, char *name);
-void mx_send_answer_type(t_node **node, int type, int flag);
-void mx_send_answer_list(t_node **node, t_list *list, int hist_flag, char *cmd);
+void mx_choose(t_node *node, char **json);
 void mx_not_mutex(t_node **node, char **json);
 void mx_exe_request(t_node **node, char **json);
-void mx_choose(t_node *node, char **json);
+void mx_send_history_list(t_node **node, char *name);
+void mx_send_answer_type(t_node **node, int type, int flag);
 void mx_del_client(t_way **list, t_node **node, void *data);
-void *mx_server_handel(void *data);
+void mx_send_answer_list(t_node **node, t_list *list, int hist_flag, char *cmd);
 void *mx_server_files(void *data);
+void *mx_server_handel(void *data);
 int mx_server(int argc, char *argv[]);
 
 // help
 void mx_del_if_exist(char *name);
 void mx_del_file(FILE *file, char **size, char **name);
 void mx_check_file_size(FILE *file, char **size, char **name);
-int mx_arr_size(char **arr);
 char *mx_add_char(char *str, char c);
 char *mx_super_join(char *src1, char *src2, int fl);
 char **mx_copy_arr(char **s);
@@ -85,6 +87,7 @@ void mx_file_bites(FILE *file, SSL *ssl, char ch1, char ch2);
 void mx_file_format(char **arr, SSL *ssl, char ch1, char ch2);
 void mx_file_size_close(SSL *ssl, char *str, char ch1, char ch2);
 void *mx_mom(void *restrict dst, const void *restrict src, size_t n, size_t i);
+int mx_arr_size(char **arr);
 
 int chat_screen(t_main **gtk);
 
