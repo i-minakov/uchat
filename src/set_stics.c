@@ -1,7 +1,7 @@
 #include "../inc/uchat.h"
 
 void stic_click(GtkWidget *w, t_main *m) {
-    add_file(m, create_struct((char *)gtk_widget_get_name(w), true, 0, NULL), 1);
+    add_file(m, create_struct((char *)gtk_widget_get_name(w), true, 0, NULL), 2);
 }
 
 static void init_signals_stics(t_main *m) {

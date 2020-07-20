@@ -22,13 +22,14 @@ void fun(GtkScrolledWindow *scrolled_window, GtkPositionType pos, t_main *m) {
     
     t_user *us = NULL;
     int c = -1;
+    int adj = 0;
 
     for (t_user *i = m->users; i; i = i->next) 
         i->check == true ? us = i : 0;
     int buf;
     char *s = NULL;
     int j = 0;
-    int fd = open("../t.txt", O_RDWR);
+    int fd = open("./t.txt", O_RDWR);
     while(read(fd, &buf, 1)) {
         s = mx_delit_fre(s, (char *)(&buf));
         if (buf == 10) {
@@ -40,6 +41,7 @@ void fun(GtkScrolledWindow *scrolled_window, GtkPositionType pos, t_main *m) {
         buf = 0;
     }
     close(fd);
+    g_idle_add(gtk_adjustment_set_value(m->adj, us->msg->next->adj_value); 
     
 }
 

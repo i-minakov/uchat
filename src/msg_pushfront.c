@@ -36,7 +36,7 @@ void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg) {
         gtk_menu_popup_at_widget(GTK_MENU(msg->menu), (msg->label), GDK_GRAVITY_SOUTH_WEST, 
             GDK_GRAVITY_SOUTH_EAST, (GdkEvent *)event);
     }
-    else if (msg->filename != NULL && msg->stic != true)
+    else if (msg->filename != NULL && msg->stic != 2)
         save_file(NULL, msg);
 }
 
@@ -46,6 +46,7 @@ t_msg *create_msg(char *text, char *filename) {
     new->next = NULL;
     new->prev = NULL;
     new->count = 0;
+    new->stic = 0;
     new->user = NULL;
     new->filename = filename;
     new->text = NULL;

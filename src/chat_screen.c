@@ -1,5 +1,10 @@
 #include "../inc/uchat.h"
 
+void mx_show(GtkWidget *wid) {
+    gtk_widget_show(wid);
+    g_idle_remove_by_data(wid);
+}
+
 static void user_pushback(t_user **head) {
     t_user *tmp = *head;
 
@@ -123,9 +128,8 @@ int chat_screen(t_main **gtk) {
     t_main *m = *gtk;
     int ex = 0;
 
-    m->my_name = m->log_in->sig->signame;
+    // m->my_name = m->log_in->sig->signame;
     
-    gtk_init(NULL, NULL);
     for (int i = 10; i > 0; i--)
         user_pushback(&m->users);
     init_components(m);
@@ -135,13 +139,13 @@ int chat_screen(t_main **gtk) {
                      "Please select a chat to start messaging");
     gtk_widget_show_all(m->window);
     hide_something(m);
-    // gtk_widget_hide(m->window);
     return ex;
 }
 
 int interface() {
     t_main *m = malloc_main();
-
+    
+    gtk_init(NULL, NULL);
     // log_screen();
     chat_screen(&m);
     gtk_main();

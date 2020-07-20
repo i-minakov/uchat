@@ -79,7 +79,7 @@ typedef struct s_message {
     GtkWidget *file;
     GtkWidget *label;
     bool my;
-    bool stic;
+    int stic;
     int forward;
     struct s_data_users *user;
     struct s_message *prev;
@@ -266,6 +266,7 @@ t_add_m *create_struct(char *text, bool my, int forw, char *time_m);
 void move_scrol(t_main *m);
 void add_message_back(t_user *i, t_add_m *s, int count);
 void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg);
+void command_msg(t_user *us, t_add_m *s, int flag);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);

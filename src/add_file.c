@@ -21,7 +21,7 @@ static void msg_file_pushfront(t_msg **head, t_add_m *s, int sticer) {
         tmp->next->prev = tmp;
         tmp->count = tmp->next->count + 1;
     }
-    for (int i = sticer; i < 3; i++) {
+    for (int i = sticer - 1; i < 3; i++) {
         item[i] = gtk_menu_item_new_with_label(func[i]);
         g_signal_connect(item[i], "activate", G_CALLBACK(menu_option[i]), tmp);
         gtk_menu_shell_append(GTK_MENU_SHELL(tmp->menu), item[i]);
@@ -49,7 +49,7 @@ static void file_check(gchar *tmp, t_msg **msg, char *name) {
     }
 }
 
-static void send_file(t_user *us, t_add_m *s, t_msg *t) {
+static void send_file(t_user *us, t_add_m *s, t_msg *t, int flag) {
     GtkWidget *wid;
 
     wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 900);
@@ -59,6 +59,8 @@ static void send_file(t_user *us, t_add_m *s, t_msg *t) {
     gtk_grid_attach(GTK_GRID(us->text_grid), wid, 0, t->count, 1, 1);
     gtk_widget_show_all(wid);
     us->row++;
+    if (s->my == true) 
+        command_msg(us, s, flag);
 }
 
 void add_file(t_main *m, t_add_m *s, int stic) {
@@ -77,12 +79,12 @@ void add_file(t_main *m, t_add_m *s, int stic) {
     t->user = us;
     if (stic == 0) {
         file_check(s->text, &t, name);
-        send_file(us, s, t);
+        send_file(us, s, t, stic);
     }
     else {
         t->file = gtk_image_new_from_file(s->text);
         gtk_button_set_image(GTK_BUTTON(t->label), t->file);
-        send_file(us, s, t);
+        send_file(us, s, t, stic);
     }
     mx_del_strarr(&p);
 }
