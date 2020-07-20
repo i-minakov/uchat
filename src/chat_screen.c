@@ -1,7 +1,7 @@
 #include "../inc/uchat.h"
 
 void mx_show(GtkWidget *wid) {
-    gtk_widget_show(wid);
+    gtk_widget_show_all(wid);
     g_idle_remove_by_data(wid);
 }
 
@@ -25,7 +25,6 @@ void set_chat_grid(t_main *m) {
     // int j = 0;
 
     for (t_user *i = m->users; i; i = i->next) {
-        i->y_chat = 30;
         i->row = 0;
         i->text_grid = gtk_grid_new();
         gtk_grid_set_row_spacing(GTK_GRID(i->text_grid), 20);
@@ -121,6 +120,9 @@ void free_all(t_main *m) {
     free(m->set);
     free(m->dots);
     free(m->forw);
+    free(m->stic->but);
+    free(m->stic->img);
+    mx_del_strarr(&m->stic->way);
     free(m);
 }
 
@@ -129,7 +131,11 @@ int chat_screen(t_main **gtk) {
     int ex = 0;
 
     // m->my_name = m->log_in->sig->signame;
-    
+    // m->command = mx_arrjoin(m->command, "mx_add_new_user");
+    // m->command = mx_arrjoin(m->command, m->log_in->sig->signame);
+    // m->command = mx_arrjoin(m->command, "1");
+    // m->command = mx_arrjoin(m->command, 
+    // 	m->log_in->sig->sigfile == NULL ? "./User1.jpg" : m->log_in->sig->sigfile);
     for (int i = 10; i > 0; i--)
         user_pushback(&m->users);
     init_components(m);
@@ -137,6 +143,7 @@ int chat_screen(t_main **gtk) {
     init_signals(m);  
     gtk_label_set_text(GTK_LABEL(m->lab_start),
                      "Please select a chat to start messaging");
+    g_idle_add((GSourceFunc)move_scrol, m);
     gtk_widget_show_all(m->window);
     hide_something(m);
     return ex;

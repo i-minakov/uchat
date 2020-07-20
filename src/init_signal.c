@@ -15,7 +15,7 @@ static void entry_activate(GtkEntry *e, t_main *m) {
 
 
 void fun(GtkScrolledWindow *scrolled_window, GtkPositionType pos, t_main *m) {
-    if (pos == GTK_POS_TOP && m->order > 0) 
+    if (pos == GTK_POS_TOP && m->order == 2) 
         printf("YES\n");
     else 
         return ;
@@ -34,14 +34,13 @@ void fun(GtkScrolledWindow *scrolled_window, GtkPositionType pos, t_main *m) {
         s = mx_delit_fre(s, (char *)(&buf));
         if (buf == 10) {
             add_message_back(us, create_struct(s, j%2 == 0 ? false : true, 0, NULL), c);
-            s = NULL;
+            mx_strdel(&s);
             j++;
             c--;
         }
         buf = 0;
     }
     close(fd);
-    g_idle_add(gtk_adjustment_set_value(m->adj, us->msg->next->adj_value); 
     
 }
 

@@ -39,13 +39,13 @@ void sig_ok(GtkWidget *widget, t_wid *wid) {
 		gtk_widget_show(wid->sig->no_fil_sig);
 	else {
 		if (valid(wid)){
-			wid->m->command = mx_arrjoin(wid->m->command, "mx_add_new_user");
+			// wid->m->command = mx_arrjoin(wid->m->command, "mx_add_new_user");
+			// wid->m->command = mx_arrjoin(wid->m->command, wid->sig->signame);
+			// wid->m->command = mx_arrjoin(wid->m->command, "1");
+			// wid->m->command = mx_arrjoin(wid->m->command, 
+			// 	wid->sig->sigfile == NULL ? "./User1.jpg" : wid->sig->sigfile);
+			wid->m->command = mx_arrjoin(wid->m->command, "mx_update");
 			wid->m->command = mx_arrjoin(wid->m->command, wid->sig->signame);
-			wid->m->command = mx_arrjoin(wid->m->command, "1");
-			wid->m->command = mx_arrjoin(wid->m->command, 
-				wid->sig->sigfile == NULL ? "./User1.jpg" : wid->sig->sigfile);
-			sleep(3);
-			// gtk_main_quit();
 			gtk_widget_destroy(wid->window);
 			chat_screen(&wid->m);
 		}

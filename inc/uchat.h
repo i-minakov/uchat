@@ -11,7 +11,7 @@
 #define MX_SET_NAME_MSG(flag, label) flag == true ? gtk_widget_set_name(label, "lm") : gtk_widget_set_name(label, "lm2")
 #define MX_SHOW_HIDE(flag, widget) flag == 1 ? gtk_widget_show(widget) : gtk_widget_hide(widget) 
 #define MX_BOX_END(wid, label) gtk_box_pack_end(GTK_BOX(wid), label, FALSE, FALSE, 0)
-#define MX_BOX_START(wid, label) gtk_box_pack_start(GTK_BOX(wid), label, FALSE, FALSE, 0)
+#define MX_BOX_START(wid, label) gtk_box_pack_start(GTK_BOX(wid), label, FALSE, FALSE, 10)
 #define MX_MSG_PACK(flag, label, box) (flag == true ? MX_BOX_END(box, label) : MX_BOX_START(box, label))
 
 #define MX_MY_PHOTO(flag) flag == 1 ? "./src/resource/my photo.png" : "./src/resource/activated photo2.png"
@@ -238,6 +238,7 @@ int chat_screen(t_main **gtk);
 int log_screen(t_main *m);
 int interface();
 
+void mx_show(GtkWidget *wid);
 t_main *malloc_main();
 t_user *mx_create_user();
 void free_users(t_user **list);
