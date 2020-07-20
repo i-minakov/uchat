@@ -4,7 +4,7 @@ SRC := $(wildcard src/*.c)
 OBJ = $(addprefix obj/, $(notdir $(SRC:%.c=%.o)))
 LIBMX = libmx/libmx.a
 SSL_PATH = -I/usr/local/opt/openssl/include
-FLAGS = $(SSL_PATH) `pkg-config --cflags gtk+-3.0 pkg-config --libs gtk+-3.0` #-std=c11 -Wall -Wextra -Werror -Wpedantic 
+FLAGS = $(SSL_PATH) `pkg-config --cflags gtk+-3.0 pkg-config --libs gtk+-3.0` $(SANFLAG) #-std=c11 -Wall -Wextra -Werror -Wpedantic 
 SANFLAG = -g -fsanitize=address
 SQLITE = -lsqlite3
 PTHREAD = -lpthread
@@ -59,4 +59,4 @@ del_db:
 	@rm -rf database
 
 d:
-	@clang $(FLAGS) $(SANFLAG) src/*.c libmx/libmx.a -o ush --debug
+	@clang $(FLAGS) $(SANFLAG) $(SQLITE) $(SSL) $(PTHREAD) src/*.c libmx/libmx.a

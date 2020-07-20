@@ -84,7 +84,7 @@ void hide_something(t_main *m) {
     the_ic(1, m);
     hide_menu(m);
     hide_set(m);
-
+    gtk_widget_hide(m->stic_scrol);
     gtk_widget_hide(m->dots->fix_dot_menu);
     gtk_widget_hide(m->forw->fix_forw);
     gtk_widget_hide(m->search);
@@ -123,7 +123,8 @@ int chat_screen(t_main **gtk) {
     t_main *m = *gtk;
     int ex = 0;
 
-    m->my_name = "Ilysha";
+    m->my_name = m->log_in->sig->signame;
+    
     gtk_init(NULL, NULL);
     for (int i = 10; i > 0; i--)
         user_pushback(&m->users);
@@ -134,12 +135,14 @@ int chat_screen(t_main **gtk) {
                      "Please select a chat to start messaging");
     gtk_widget_show_all(m->window);
     hide_something(m);
+    // gtk_widget_hide(m->window);
     return ex;
 }
 
 int interface() {
     t_main *m = malloc_main();
 
+    // log_screen();
     chat_screen(&m);
     gtk_main();
     free_all(m);

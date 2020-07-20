@@ -52,6 +52,7 @@ typedef struct s_msg_forward {
     char *autor;
     bool my;
     int was_forw;
+    int stic;
     struct s_forward *f;
 }              t_msg_forw;
 
@@ -78,6 +79,7 @@ typedef struct s_message {
     GtkWidget *file;
     GtkWidget *label;
     bool my;
+    bool stic;
     int forward;
     struct s_data_users *user;
     struct s_message *prev;
@@ -204,6 +206,7 @@ typedef struct s_main {
     GtkWidget *stic_fix_img;
     GtkWidget *grid_stic;
     GtkWidget *fix_for_stic;
+    GtkWidget *stic_scrol;
 
     GtkWidget *fix_for_users;
     GtkWidget *fix_for_text;
@@ -228,9 +231,11 @@ typedef struct s_main {
     struct s_menu *menu;
     struct s_style *style;
     struct s_setting *set;
+    struct s_wid *log_in;
 }              t_main;
 
-int log_screen(void);
+int chat_screen(t_main **gtk);
+int log_screen(t_main *m);
 int interface();
 
 t_main *malloc_main();
@@ -248,7 +253,7 @@ void free_msg(t_msg **list);
 t_msg *create_msg(char *text, char *filename);
 void delete_msg(GtkMenuItem *item, t_msg *msg);
 void forward_msg(GtkMenuItem *item, t_msg *msg);
-void add_file(t_main *m, gchar *tmp, bool my);
+void add_file(t_main *m, t_add_m *s, int stic);
 void init_signals(t_main *m);
 void save_file(GtkMenuItem *item, t_msg *msg);
 void add_message(t_user *i, t_add_m *s);
@@ -259,8 +264,8 @@ void show_hide_back_us(t_user *users);
 void reply_msg(GtkMenuItem *item, t_msg *msg);
 t_add_m *create_struct(char *text, bool my, int forw, char *time_m);
 void move_scrol(t_main *m);
-
-void login();
+void add_message_back(t_user *i, t_add_m *s, int count);
+void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);
@@ -302,24 +307,23 @@ void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos,
 // Olya login screen
 /////////////////////////////////////////////////////////////////////////////
 
-typedef struct s_wid {
-	GtkBuilder *builder; 
-    GtkWidget *window;
-	GtkWidget *fixed;
-
+typedef struct s_login {
 	GtkWidget *log_hower;
-	GtkWidget *sig_hower;
 	GtkWidget *log_hower2;
-	GtkWidget *sig_hower2;
-
 	GtkWidget *log_gif;
-	GtkWidget *sig_gif;
-
 	GtkWidget *log_text;
 	GtkWidget *log_name;
 	GtkWidget *log_pas;
 	GtkWidget *log_but;
+	GtkWidget *no_fil_log;
+	char *logname;
+	char *logpas;
+} 			t_login;
 
+typedef struct s_sign {
+	GtkWidget *sig_hower;
+	GtkWidget *sig_hower2;
+	GtkWidget *sig_gif;
 	GtkWidget *sig_text;
 	GtkWidget *sig_name;
 	GtkWidget *sig_pas;
@@ -328,23 +332,69 @@ typedef struct s_wid {
 	GtkWidget *sig_display;
 	int flagimg;
 	GtkWidget *sig_but;
-
-	GtkWidget *no_fil_log;
 	GtkWidget *no_fil_sig;
-	GtkWidget *the_end;
-
-	GtkWidget *badact;
-	GtkWidget *badact_but;
-	GtkWidget *badact_lab;
-	GtkWidget *black_back;
-
-	char *logname;
-	char *logpas;
 	char *signame;
 	char *sigpas;
 	char *sigpas2;
 	char *sigfile;
+} 			t_sign;
+
+typedef struct s_wid {
+	GtkBuilder *builder; 
+    GtkWidget *window;
+	GtkWidget *fixed;
+	GtkWidget *badact;
+	GtkWidget *badact_but;
+	GtkWidget *badact_lab;
+	GtkWidget *black_back;
+    struct s_sign *sig;
+    struct s_login *log;
+    struct s_main *m;
 } 			t_wid;
+
+// typedef struct s_wid {
+// 	GtkBuilder *builder; 
+//     GtkWidget *window;
+// 	GtkWidget *fixed;
+
+// 	GtkWidget *log_hower;
+// 	GtkWidget *sig_hower;
+// 	GtkWidget *log_hower2;
+// 	GtkWidget *sig_hower2;
+
+// 	GtkWidget *log_gif;
+// 	GtkWidget *sig_gif;
+
+// 	GtkWidget *log_text;
+// 	GtkWidget *log_name;
+// 	GtkWidget *log_pas;
+// 	GtkWidget *log_but;
+
+// 	GtkWidget *sig_text;
+// 	GtkWidget *sig_name;
+// 	GtkWidget *sig_pas;
+// 	GtkWidget *sig_pas2;
+// 	GtkWidget *sig_photo;
+// 	GtkWidget *sig_display;
+// 	int flagimg;
+// 	GtkWidget *sig_but;
+
+// 	GtkWidget *no_fil_log;
+// 	GtkWidget *no_fil_sig;
+// 	GtkWidget *the_end;
+
+// 	GtkWidget *badact;
+// 	GtkWidget *badact_but;
+// 	GtkWidget *badact_lab;
+// 	GtkWidget *black_back;
+
+// 	char *logname;
+// 	char *logpas;
+// 	char *signame;
+// 	char *sigpas;
+// 	char *sigpas2;
+// 	char *sigfile;
+// } 			t_wid;
 
 typedef struct s_eye {
 	bool log;
@@ -397,6 +447,5 @@ void make_vis2(GtkEntry            *entry,
 
 void bad_act(t_wid *wid, int flag);
 void hide_bad(GtkWidget *widget, t_wid *wid);
-int log_screen(void);
 
 #endif

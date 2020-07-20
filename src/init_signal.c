@@ -13,9 +13,34 @@ static void entry_activate(GtkEntry *e, t_main *m) {
     send_but(m->but1, m);
 }
 
-void fun (GtkScrolledWindow *scrolled_window, GtkPositionType pos, t_main *m) {
-    if (pos == GTK_POS_TOP) 
+
+void fun(GtkScrolledWindow *scrolled_window, GtkPositionType pos, t_main *m) {
+    if (pos == GTK_POS_TOP && m->order > 0) 
         printf("YES\n");
+    else 
+        return ;
+    
+    t_user *us = NULL;
+    int c = -1;
+
+    for (t_user *i = m->users; i; i = i->next) 
+        i->check == true ? us = i : 0;
+    int buf;
+    char *s = NULL;
+    int j = 0;
+    int fd = open("../t.txt", O_RDWR);
+    while(read(fd, &buf, 1)) {
+        s = mx_delit_fre(s, (char *)(&buf));
+        if (buf == 10) {
+            add_message_back(us, create_struct(s, j%2 == 0 ? false : true, 0, NULL), c);
+            s = NULL;
+            j++;
+            c--;
+        }
+        buf = 0;
+    }
+    close(fd);
+    
 }
 
 /////////////////////////////////////////////////////////////////////////////////////

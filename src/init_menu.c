@@ -11,6 +11,7 @@ static void stic_and_fix(t_main *m) {
     gtk_fixed_put(GTK_FIXED(m->menu->menu_fix), m->menu->exic2, 40, 153);
     m->fix_for_stic = GTK_WIDGET(gtk_builder_get_object(m->builder, "stic_fix"));
     m->stic_fix_img = GTK_WIDGET(gtk_builder_get_object(m->builder, "stic_img"));
+    m->stic_scrol = GTK_WIDGET(gtk_builder_get_object(m->builder, "stic_fix_glob"));
     set_stics(m);
 }
 
