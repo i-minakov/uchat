@@ -183,7 +183,7 @@ static void mx_server_answer(char ch[], char *str, t_client *client) { // server
     if (ch[0] == 'G')
         printf("good = %s\n", client->status);
 }
-void mx_recv_len_theme(char ch[], t_client *client) { // change lan and theme
+void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
     char *str = NULL;
 
     mx_static_read(ch, &str);
@@ -224,6 +224,8 @@ char *mx_right_path(t_info **info, t_files *files) {
         path = mx_super_join("./source/cash/chats/", files->file_name, 0);
     else if (mx_strcmp((*info)->cmd, "mx_user_search") == 0)
         path = mx_super_join("./source/cash/search/", files->file_name, 0);
+    else if (mx_strcmp((*info)->cmd, "mx_your_photo") == 0)
+        path = mx_super_join("./source/cash/", files->file_name, 0);
     return path;
 }
 void mx_recv_list_files(char ch[], t_info **info, t_files *files) {
@@ -265,7 +267,7 @@ static void mx_sort_recv_list(t_info **info) {
     else
         mx_sort_mssg(&(*info)->list, 0);
 }
-void mx_recv_list(char ch[], t_info **info, t_files *files) { // print list
+void mx_recv_list(char ch[], t_info **info, t_files *files) {
     if (ch[0] == 'C')
         mx_static_read(ch, &(*info)->cmd);
     else if (ch[0] == 'S')
@@ -287,17 +289,6 @@ void mx_recv_list(char ch[], t_info **info, t_files *files) { // print list
     }
     else if (ch[0] == 'E' && ch[1] == 'E') {
         mx_sort_recv_list(info);
-        //=========== delete ===========//
-        printf("cmd = %s\n", (*info)->cmd);
-        printf("size = %s\n", (*info)->size);
-        for (t_list *i = (*info)->list; i; i = i->next) {
-            printf("name = %s\n", ((t_data *)i->data)->name);
-            for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
-                if ((char *)j->data)
-                    printf("mssg = %s\n", (char *)j->data);
-        }
-        printf("\n");
-        //=========== delete ===========//
         mx_trim_full_list(info);
         *info = mx_create_info();
     }
@@ -345,7 +336,7 @@ void *mx_client_read(void *client_pointer) {
         if (((t_client *)client_pointer)->exit == 0)
             break;            
         else if (ch[0] == 'T' || ch[0] == 'G' || ch[0] == 'B')
-            mx_recv_len_theme(ch, client);
+            mx_recv_lan_theme(ch, client);
         else if (ch[0] == 'S' || ch[0] == 'N' || ch[0] == 'I' || ch[0] == 'H' || ch[0] == 'C' || ch[0] == 'E')
             mx_recv_list(ch, &info, &file);
         else if (ch[0] == 'F')
