@@ -15,33 +15,34 @@ static void entry_activate(GtkEntry *e, t_main *m) {
 
 
 void fun(GtkScrolledWindow *scrolled_window, GtkPositionType pos, t_main *m) {
-    if (pos == GTK_POS_TOP && m->order == 2) 
+    if (pos == GTK_POS_TOP && m->order == 2 && m->users->msg->count < 15) 
         printf("YES\n");
     else 
         return ;
     
     t_user *us = NULL;
-    int c = -1;
     int adj = 0;
+    int c = 0;
 
     for (t_user *i = m->users; i; i = i->next) 
         i->check == true ? us = i : 0;
+    for (t_msg *j = us->msg; j; j = j->next) 
+        j->next == NULL ? c = j->count - 1 : 0;
     int buf;
     char *s = NULL;
     int j = 0;
     int fd = open("./t.txt", O_RDWR);
     while(read(fd, &buf, 1)) {
-        s = mx_delit_fre(s, (char *)(&buf));
         if (buf == 10) {
             add_message_back(us, create_struct(s, j%2 == 0 ? false : true, 0, NULL), c);
             mx_strdel(&s);
             j++;
             c--;
         }
+        else s = mx_delit_fre(s, (char *)(&buf));
         buf = 0;
     }
     close(fd);
-    
 }
 
 /////////////////////////////////////////////////////////////////////////////////////

@@ -20,13 +20,13 @@ void delete_msg(GtkMenuItem *item, t_msg *msg) {
     t_msg *t = NULL;
 
     gtk_grid_remove_row(GTK_GRID(msg->user->text_grid), msg->count);
-    for (t_msg *i = msg->prev; i->count != -1; i = i->prev)
+    for (t_msg *i = msg->prev; i->prev; i = i->prev)
         i->count--;
     t = msg->next;
     t != NULL ? t->prev = msg->prev : 0;
     msg->prev->next = t;
     reset_l_mess(msg->user);
-    msg->user->row--;
+    msg->count > 0 ? msg->user->row-- : 0;
     free(msg);
     msg = NULL;
 }
@@ -41,7 +41,7 @@ void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg) {
 }
 
 t_msg *create_msg(char *text, char *filename) {
-    t_msg *new = (t_msg *)malloc(sizeof(t_msg) * 10);
+    t_msg *new = (t_msg *)malloc(sizeof(t_msg) * 15);
 
     new->next = NULL;
     new->prev = NULL;
@@ -51,6 +51,7 @@ t_msg *create_msg(char *text, char *filename) {
     new->filename = filename;
     new->text = NULL;
     new->my = true;
+    new->time = NULL;
     if (!text && !filename)
         return new;
     new->label = gtk_button_new();

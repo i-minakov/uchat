@@ -1,10 +1,12 @@
 chlen
 zalupa
 govnio
-andrey pizdatiy parserandrey pizdatiy parser andrey pizdatiy parserandrey pizdatiy parserandrey pizdatiy parser
+pizdatiy parser
 andrey pizdatiy parser
 pushka
 top
 1
 2
+3
+3
 ~                       

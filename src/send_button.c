@@ -29,8 +29,9 @@ static void add_time(t_user *i, t_add_m *s) {
         time(&rawtime);
         timeinfo = localtime(&rawtime);
         s->time_m = asctime(timeinfo);
-        m = mx_strsplit(s->time_m, '\n');
+        m = mx_strsplit(asctime(timeinfo), '\n');
         gtk_widget_set_tooltip_text(i->msg->next->label, m[0]);
+        i->msg->next->time = mx_strdup(m[0]);
         mx_del_strarr(&m);
     }
     else

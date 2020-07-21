@@ -23,7 +23,9 @@
 #define MX_SLEPT(flag) flag == 1 ? "./src/resource/slept.png" : "./src/resource/slept22.png"
 #define MX_ACT_PH(flag) flag == 1 ? "./src/resource/activated photo.png" : "./src/resource/activated photo2.png"
 #define MX_SL_PH(flag) flag == 1 ? "./src/resource/slept photo.png" : "./src/resource/slept photo2.png"
-
+#define MX_ICON_ENTRY_PR(flag) flag == 1 ? "./src/resource/attach.png" : "./src/resource/attach1.png"
+#define MX_ICON_ENTRY_SEC(flag) flag == 1 ? "./src/resource/smile.png" : "./src/resource/smile1.png"
+ 
 #define MX_START(flag) flag == 2 ? "Выберите чат, чтобы начать переписку" : "Please select a chat to start messaging"
 #define MX_MENU_EX(flag) flag == 2 ? "Выход" : "Exit"
 #define MX_MENU_SET(flag) flag == 2 ? "Настройки" : "Settings"
@@ -74,6 +76,7 @@ typedef struct s_message {
     int count;
     char *text;
     char *filename;
+    char *time; 
     gdouble adj_value;
     GtkWidget *menu;
     GtkWidget *file;
