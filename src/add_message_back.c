@@ -29,7 +29,6 @@ static void msg_pushback(t_msg **head, char *text, bool my, int forw) {
     tmp->my = my;
     tmp->forward = forw;
     for (t_msg *i = (*head); i; i = i->next) {
-        i->next->count++;
         if (i->next == NULL) {
             i->next = tmp;
             tmp->prev = i;
@@ -60,16 +59,15 @@ void add_message_back(t_user *i, t_add_m *s, int count) {
             msg = k;
             k->user = i;
         }
-    gtk_grid_insert_row(GTK_GRID(i->m->grid_user), i->row++);
+    msg->count = count;
     wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_widget_set_size_request(wid, 650, 30);
     add_time(i, s);
     MX_MSG_PACK(s->my, msg->label, wid);
-    // gtk_grid_attach(GTK_GRID(i->text_grid), wid, 0, -1, 1, 1);
-    gtk_grid_attach_next_to(GTK_GRID(i->text_grid), NULL, wid, GTK_POS_TOP, 1, 1);
-    gtk_widget_show_all(wid);
+    MX_SET_NAME_MSG(s->my, msg->label);
+    gtk_grid_attach_next_to(GTK_GRID(i->text_grid), wid, NULL, GTK_POS_TOP, 1, 1);
+    g_idle_add((GSourceFunc)mx_show, wid);
     msg->adj_value = gtk_adjustment_get_value(i->m->adj);
     reset_l_mess(i);
     free(str);
-    i->row++;
 }

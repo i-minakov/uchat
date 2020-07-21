@@ -40,9 +40,25 @@ static void search_user(GtkEntry *e, t_main *m) {
     burger_leave(NULL, NULL, m);
 }
 
+static void search_contacts(GtkEntry *e, t_main *m) {
+    char *s = (char *)gtk_entry_get_text(e);
+
+    if (s == NULL)
+        return ;
+    m->command = mx_arrjoin(m->command, "mx_add_user_to_table");
+    m->command = mx_arrjoin(m->command, m->my_name);
+    m->command = mx_arrjoin(m->command, s);
+    m->command = mx_arrjoin(m->command, "1");
+    user_pushback(&m->users, s);
+    set_users(m);
+    set_chat_grid(m);
+}
+ 
 void search_activ(GtkEntry *e, t_main *m) {
     if (m->flag_search == 1)
         search_msg(e, m);
+    // else if (m->flag_search == 2)
+    //     search_user(e, m);
     else if (m->flag_search == 2)
-        search_user(e, m);
+        search_contacts(e, m);
 }

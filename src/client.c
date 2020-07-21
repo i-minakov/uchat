@@ -6,6 +6,9 @@ static void mx_enter_argv(char ***arr, t_client *client) {
 
     if (request) {
         *arr = mx_copy_arr(request);
+        if (!mx_strcmp_null(request[0], "mx_update") && 
+                !mx_strcmp_null(request[1], "user"))
+            client->gtk->order = 98; 
         mx_del_strarr(&client->gtk->command);
         client->gtk->command = NULL;
         request = NULL;
@@ -146,17 +149,17 @@ static int mx_command(t_client *client, char **json) {
     pthread_mutex_lock(client->mutex);
     if (mx_check_json_cmd(*json, "command", "mx_error"))
         result = 1;
+    else if (mx_check_json_cmd(*json, "command", "mx_add_new_user")
+            || mx_check_json_cmd(*json, "command", "mx_check_user_pass")
+            || mx_check_json_cmd(*json, "command", "mx_change_pass")) {
+            mx_hash_pass(json);
+    }
     if (mx_for_file(*json)) {
         mx_push_file_way(&client->list, (void *)*json);
         *json = NULL;
     }
-    else {
-        if (mx_check_json_cmd(*json, "command", "mx_add_new_user")
-            || mx_check_json_cmd(*json, "command", "mx_check_user_pass")
-            || mx_check_json_cmd(*json, "command", "mx_change_pass"))
-            mx_hash_pass(json);            
+    else 
         mx_bites_str(client->ssl, *json, 'T');
-    }
     pthread_mutex_unlock(client->mutex);
     return result;
 }
@@ -166,7 +169,9 @@ void mx_client_send(t_client *client) {
     log_screen(client->gtk);
     while (client->exit == 1) {
         gtk_main_iteration();
-        mx_get_request(&json, client);
+        mx_get_request(&json, client); 
+        if (client->gtk->order == 98)
+            chat_screen(&client->gtk);
         if (mx_command(client, &json) == 1)
             break;
         mx_strdel(&json);
@@ -267,7 +272,7 @@ static void mx_sort_recv_list(t_info **info) {
     else
         mx_sort_mssg(&(*info)->list, 0);
 }
-void mx_recv_list(char ch[], t_info **info, t_files *files) {
+void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
     if (ch[0] == 'C')
         mx_static_read(ch, &(*info)->cmd);
     else if (ch[0] == 'S')
@@ -289,6 +294,21 @@ void mx_recv_list(char ch[], t_info **info, t_files *files) {
     }
     else if (ch[0] == 'E' && ch[1] == 'E') {
         mx_sort_recv_list(info);
+        // printf("cmd = %s\n", (*info)->cmd);
+        // printf("size = %s\n", (*info)->size);
+        // for (t_list *i = (*info)->list; i; i = i->next) {
+        //     printf("name = %s\n", ((t_data *)i->data)->name);
+        //     for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
+        //         if ((char *)j->data)
+        //             printf("mssg = %s\n", (char *)j->data);
+        // }
+        // printf("\n");
+        char *json = ((t_data *)(*info)->list->data)->list->data;
+        char *cmd = mx_get_value(json, "command");
+        char **arr = mx_get_arr(json);
+        printf("%s\n", arr[1]);
+        add_message(mx_user_by_name(((t_data *)(*info)->list->data)->name,
+             client->gtk), create_struct(arr[0], false, 0, arr[1]));
         mx_trim_full_list(info);
         *info = mx_create_info();
     }
@@ -338,7 +358,7 @@ void *mx_client_read(void *client_pointer) {
         else if (ch[0] == 'T' || ch[0] == 'G' || ch[0] == 'B')
             mx_recv_lan_theme(ch, client);
         else if (ch[0] == 'S' || ch[0] == 'N' || ch[0] == 'I' || ch[0] == 'H' || ch[0] == 'C' || ch[0] == 'E')
-            mx_recv_list(ch, &info, &file);
+            mx_recv_list(ch, &info, &file, client);
         else if (ch[0] == 'F')
             mx_client_recv_file(ch, client);
         mx_memset(ch, '\0', SIZE_SEND);
@@ -357,14 +377,12 @@ static void mx_change_file_pass(char ***arr, char *command) {
 
     if (mx_strcmp(command, "mx_add_new_user") == 0
         || mx_strcmp(command, "mx_recv_new_mess") == 0) {
-        pars = mx_strsplit(argv[2], '/');
         mx_strdel(&argv[2]);
-        argv[2] = mx_strdup(pars[mx_arr_size(pars) - 1]);
+        argv[2] = mx_super_join(argv[0], ".jpg", 0);
     }
     else if (mx_strcmp(command, "mx_change_img") == 0) {
-        pars = mx_strsplit(argv[1], '/');
         mx_strdel(&argv[1]);
-        argv[1] = mx_strdup(pars[mx_arr_size(pars) - 1]);
+        argv[1] = mx_super_join(argv[0], ".jpg", 0);
     }
     mx_del_strarr(&pars);
 }

@@ -1,5 +1,22 @@
 #include "../inc/uchat.h"
 
+static void reset_time(char *time, GtkWidget *label) {
+    char **m = NULL;
+    char *s = NULL;
+    char *res = NULL;
+
+    printf("%s\n", time);
+    m = mx_strsplit(time, ' ');
+    s = mx_strdup(m[3]);
+    mx_del_strarr(&m);
+    m = mx_strsplit(s, ':');
+    res = mx_strpart(s, 5);
+    gtk_label_set_text(GTK_LABEL(label), res);
+    free(res);
+    free(s);
+    mx_del_strarr(&m);
+}
+
 void reset_l_mess(t_user *i) {
     char *s = NULL;
     char *t = NULL;
@@ -17,4 +34,5 @@ void reset_l_mess(t_user *i) {
     }
     else 
         gtk_label_set_text(GTK_LABEL(i->l_mess), t);
+    // reset_time(i->msg->next->time, i->l_time);
 }

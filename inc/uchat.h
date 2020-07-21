@@ -11,7 +11,7 @@
 #define MX_SET_NAME_MSG(flag, label) flag == true ? gtk_widget_set_name(label, "lm") : gtk_widget_set_name(label, "lm2")
 #define MX_SHOW_HIDE(flag, widget) flag == 1 ? gtk_widget_show(widget) : gtk_widget_hide(widget) 
 #define MX_BOX_END(wid, label) gtk_box_pack_end(GTK_BOX(wid), label, FALSE, FALSE, 0)
-#define MX_BOX_START(wid, label) gtk_box_pack_start(GTK_BOX(wid), label, FALSE, FALSE, 0)
+#define MX_BOX_START(wid, label) gtk_box_pack_start(GTK_BOX(wid), label, FALSE, FALSE, 10)
 #define MX_MSG_PACK(flag, label, box) (flag == true ? MX_BOX_END(box, label) : MX_BOX_START(box, label))
 
 #define MX_MY_PHOTO(flag) flag == 1 ? "./src/resource/my photo.png" : "./src/resource/activated photo2.png"
@@ -23,7 +23,9 @@
 #define MX_SLEPT(flag) flag == 1 ? "./src/resource/slept.png" : "./src/resource/slept22.png"
 #define MX_ACT_PH(flag) flag == 1 ? "./src/resource/activated photo.png" : "./src/resource/activated photo2.png"
 #define MX_SL_PH(flag) flag == 1 ? "./src/resource/slept photo.png" : "./src/resource/slept photo2.png"
-
+#define MX_ICON_ENTRY_PR(flag) flag == 1 ? "./src/resource/attach.png" : "./src/resource/attach1.png"
+#define MX_ICON_ENTRY_SEC(flag) flag == 1 ? "./src/resource/smile.png" : "./src/resource/smile1.png"
+ 
 #define MX_START(flag) flag == 2 ? "Выберите чат, чтобы начать переписку" : "Please select a chat to start messaging"
 #define MX_MENU_EX(flag) flag == 2 ? "Выход" : "Exit"
 #define MX_MENU_SET(flag) flag == 2 ? "Настройки" : "Settings"
@@ -74,12 +76,13 @@ typedef struct s_message {
     int count;
     char *text;
     char *filename;
+    char *time; 
     gdouble adj_value;
     GtkWidget *menu;
     GtkWidget *file;
     GtkWidget *label;
     bool my;
-    bool stic;
+    int stic;
     int forward;
     struct s_data_users *user;
     struct s_message *prev;
@@ -238,8 +241,10 @@ int chat_screen(t_main **gtk);
 int log_screen(t_main *m);
 int interface();
 
+void mx_show(GtkWidget *wid);
 t_main *malloc_main();
-t_user *mx_create_user();
+t_user *mx_create_user(char *name);
+void user_pushback(t_user **head, char *name);
 void free_users(t_user **list);
 void set_users(t_main *m);
 void reset_users(t_main *m);
@@ -266,6 +271,9 @@ t_add_m *create_struct(char *text, bool my, int forw, char *time_m);
 void move_scrol(t_main *m);
 void add_message_back(t_user *i, t_add_m *s, int count);
 void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg);
+void command_msg(t_user *us, t_add_m *s, int flag);
+t_user *mx_user_by_name(char *name, t_main *m);
+void set_chat_grid(t_main *m);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);

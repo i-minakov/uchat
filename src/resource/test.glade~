@@ -164,8 +164,6 @@
             <property name="max_length">300</property>
             <property name="primary_icon_pixbuf">attach.png</property>
             <property name="secondary_icon_pixbuf">smile.png</property>
-            <property name="show_emoji_icon">True</property>
-            <property name="enable_emoji_completion">True</property>
             <style>
               <class name="entry"/>
             </style>

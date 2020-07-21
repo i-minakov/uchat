@@ -28,6 +28,7 @@ typedef struct s_files{
     char *file_size;
 }              t_files;
 
+/* Users' info*/
 typedef struct s_data{
     char *path;
     char *name;

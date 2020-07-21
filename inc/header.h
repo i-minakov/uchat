@@ -46,7 +46,7 @@ void mx_sort_mssg(t_list **list, int flag);
 void mx_send_command(char *json, t_client *client);
 void mx_recv_len_theme(char ch[], t_client *client);
 void mx_client_recv_file(char ch[], t_client *client);
-void mx_recv_list(char ch[], t_info **info, t_files *files);
+void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client);
 void mx_recv_list_files(char ch[], t_info **info, t_files *files);
 void *mx_files(void *client_pointer);
 void *mx_client_read(void *client_pointer);
