@@ -195,6 +195,15 @@ typedef struct s_forward {
     struct s_main *m;
 }              t_forw;
 
+typedef struct s_search
+{
+    char *name;
+    GtkWidget* but;
+    struct s_main *m;
+    struct s_search *next;
+}              t_search;
+
+
 typedef struct s_main {
     GtkCssProvider *css;
     GtkCssProvider *css2;
@@ -223,6 +232,7 @@ typedef struct s_main {
     char **command;
     int exit;
     int order;
+    int cmd; // 1 - theme; 2 - lang; 3 - search; 
     int flag_search; // 1 - msg, 2 - users, 3 - contacts
     char *text;
     char *my_name;
@@ -234,6 +244,7 @@ typedef struct s_main {
     struct s_menu *menu;
     struct s_style *style;
     struct s_setting *set;
+    struct s_search *srch;
     struct s_wid *log_in;
 }              t_main;
 
@@ -273,7 +284,10 @@ void add_message_back(t_user *i, t_add_m *s, int count);
 void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg);
 void command_msg(t_user *us, t_add_m *s, int flag);
 t_user *mx_user_by_name(char *name, t_main *m);
-void set_chat_grid(t_main *m);
+void set_chat_grid(t_main *m, int flag);
+t_search *mx_create_node_search(char *name);
+void pushfront_search_contact(t_search **head, t_main *m, t_search *s);
+void user_pushfront(t_user **head, char *name);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);

@@ -120,6 +120,16 @@ void show_search_contacts(GtkWidget *w, t_main *m) {
     gtk_widget_show(m->search);
 }
 
+void free_srch(t_search **s) {
+    t_search *tmp = NULL;
+
+    for (t_search *i = *s; i; i = tmp) {
+        free(i->name);
+        tmp = i->next;
+        free(i);
+    }
+}
+
 void close_search(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
                 GdkEvent *event, t_main *m) {
     if (icon_pos == GTK_ENTRY_ICON_PRIMARY)
@@ -135,6 +145,8 @@ void close_search(GtkEntry *entry, GtkEntryIconPosition icon_pos,
     gtk_widget_show_all(m->fix_for_users);
     show_hide_back_us(m->users);
     burger_leave(NULL, NULL, m);
+    if (m->flag_search == 3) 
+        free_srch(&m->srch);
 }
 
 void exit_chat(GtkWidget *w, t_main *m) {

@@ -6,7 +6,7 @@ t_add_m *create_struct(char *text, bool my, int forw, char *time_m) {
     new->text = text;
     new->my = my;
     new->forw = forw;
-    new->time_m = mx_strdup(time_m);
+    new->time_m = time_m;
     new->forw_from = NULL;
     new->reply_id = -1;
     return new;

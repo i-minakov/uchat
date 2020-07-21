@@ -1,14 +1,45 @@
 #include "../inc/uchat.h"
 
+void user_pushfront(t_user **head, char *name) {
+    t_user *tmp = *head;
+
+    *head = mx_create_user(name);
+    (*head)->next = tmp;
+    (*head)->head = *head;
+    for (t_user *i = tmp; i; i = i->next) {
+        i->count++;
+        i->head = *head;
+    }
+}
+
+t_search *mx_create_node_search(char *name) {
+    t_search *new = (t_search *)malloc(sizeof(t_search) * 3);
+
+    new->name = mx_strdup(name);
+    new->next = NULL;
+    return new;
+}
+
+void pushfront_search_contact(t_search **head, t_main *m, t_search *s) {
+    t_search *tmp = *head;
+
+    if (s == NULL)
+        *head = mx_create_node_search(s->name);
+    else 
+        *head = s;
+    (*head)->next = tmp;
+    (*head)->m = m;
+}
+
 t_user *mx_user_by_name(char *name, t_main *m) {
     t_user *us = NULL;
 
     for (t_user *i = m->users; i; i = i->next) 
         !mx_strcmp(i->name, name) ? us = i : 0;
     if (us == NULL) {
-        user_pushback(&m->users, name);
+        user_pushfront(&m->users, name);
         reset_users(m);
-        set_chat_grid(m);
+        set_chat_grid(m, 1);
         g_idle_add((GSourceFunc)mx_show, m->fix_for_users);
         for (t_user *i = m->users; i; i = i->next) 
             i->next == NULL ? us = i : 0;
@@ -35,15 +66,20 @@ void user_pushback(t_user **head, char *name) {
     tmp->next->head = *head;
 }
 
-void set_chat_grid(t_main *m) {
-
-    for (t_user *i = m->users; i; i = i->next) {
-        if (i->next == NULL) {
+void set_chat_grid(t_main *m, int flag) {
+    if (flag == 0) {
+        for (t_user *i = m->users; i; i = i->next) {
             i->row = 0;
             i->text_grid = gtk_grid_new();
             gtk_grid_set_row_spacing(GTK_GRID(i->text_grid), 20);
             gtk_fixed_put(GTK_FIXED(m->fix_for_text), i->text_grid, 0, 10);
-        }
+        }   
+    }
+    else {
+        m->users->row = 0;
+        m->users->text_grid = gtk_grid_new();
+        gtk_grid_set_row_spacing(GTK_GRID(m->users->text_grid), 20);
+        gtk_fixed_put(GTK_FIXED(m->fix_for_text), m->users->text_grid, 0, 10);
     }
 }
 
@@ -70,7 +106,7 @@ static void set_cap(t_cap *c) {
 void init_components(t_main *m) {
     init_main_stuff(m);
     set_users(m);
-    set_chat_grid(m);
+    set_chat_grid(m, 0);
     set_cap(m->cap);
     init_menu(m);
     init_set(m);
@@ -109,6 +145,7 @@ t_main *malloc_main() {
     m->dots = (t_dots *)malloc(sizeof(t_dots) * 10);
     m->forw = (t_forw *)malloc(sizeof(t_forw) * 10);
     m->stic = (t_sticker *)malloc(sizeof (t_sticker *) * 100);
+    m->srch= NULL;
     m->users = NULL;
     m->command = NULL;
     m->my_name = NULL;
@@ -127,6 +164,7 @@ void free_all(t_main *m) {
     free(m->stic->but);
     free(m->stic->img);
     mx_del_strarr(&m->stic->way);
+    free(m->stic);
     free(m);
 }
 
@@ -135,13 +173,13 @@ int chat_screen(t_main **gtk) {
     int ex = 0;
 
     m->order = 0;
-    m->my_name = m->log_in->sig->signame;
+    // m->my_name = m->log_in->sig->signame;
     m->command = mx_arrjoin(m->command, "mx_add_new_user");
     m->command = mx_arrjoin(m->command, m->my_name);
-    m->command = mx_arrjoin(m->command, m->log_in->sig->sigpas);
+    // m->command = mx_arrjoin(m->command, m->log_in->sig->sigpas);
     m->command = mx_arrjoin(m->command, "./index.jpg");
-    // for (int i = 10; i > 0; i--)
-        // user_pushback(&m->users, "yarik");
+    for (int i = 10; i > 0; i--) 
+        user_pushback(&m->users, "yarik");
     init_components(m);
     connect_css(m, 1);
     init_signals(m);  

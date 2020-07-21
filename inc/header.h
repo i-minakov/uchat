@@ -24,7 +24,6 @@
 #include <uuid/uuid.h>
 #include <sys/xattr.h>
 #include <sys/ioctl.h>
-#include <malloc/malloc.h>
 #include <ctype.h>
 
 #include "../libmx/inc/libmx.h"

@@ -28,8 +28,8 @@ static void add_time(t_user *i, t_add_m *s) {
     if (s->time_m == NULL) {
         time(&rawtime);
         timeinfo = localtime(&rawtime);
-        s->time_m = asctime(timeinfo);
-        m = mx_strsplit(asctime(timeinfo), '\n');
+        s->time_m = mx_strdup(asctime(timeinfo));
+        m = mx_strsplit(s->time_m, '\n');
         gtk_widget_set_tooltip_text(i->msg->next->label, m[0]);
         i->msg->next->time = mx_strdup(m[0]);
         mx_del_strarr(&m);
@@ -61,8 +61,6 @@ void add_message(t_user *i, t_add_m *s) {
         g_idle_add((GSourceFunc)mx_show, wid);
     else 
         gtk_widget_show_all(wid);
-    // i->msg->next->adj_value = gtk_adjustment_get_value(i->m->adj);
-    printf("%s\n", str);
     reset_l_mess(i);
     free(str);
     i->m->order = 1;
@@ -81,6 +79,7 @@ void send_but(GtkWidget *wid, t_main *m) {
         if (i->check == true) {
             add_message(i, s);
             command_msg(i, s, 0);
+            free(s->time_m);
             free(s);
         }
     }
