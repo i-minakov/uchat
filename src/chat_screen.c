@@ -85,6 +85,8 @@ void hide_something(t_main *m) {
     hide_menu(m);
     hide_set(m);
 
+    gtk_widget_hide(m->set->chan_name);
+    gtk_widget_hide(m->set->chan_pas);
     gtk_widget_hide(m->dots->fix_dot_menu);
     gtk_widget_hide(m->forw->fix_forw);
     gtk_widget_hide(m->search);
@@ -140,7 +142,7 @@ int chat_screen(t_main **gtk) {
 int interface() {
     t_main *m = malloc_main();
 
-    log_screen();
+    //log_screen();
     chat_screen(&m);
     gtk_main();
     free_all(m);

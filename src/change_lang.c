@@ -6,6 +6,7 @@ void ch_lang(t_main *m) {
     gtk_button_set_label(GTK_BUTTON(m->menu->settings), MX_MENU_SET(m->style->lang));
     gtk_button_set_label(GTK_BUTTON(m->menu->contacts), MX_MENU_CONT(m->style->lang));
     gtk_button_set_label(GTK_BUTTON(m->menu->search), MX_MENU_SEA(m->style->lang));
+    gtk_button_set_label(GTK_BUTTON(m->menu->black_list),  MX_MENU_BLL(m->style->lang));
 
     gtk_button_set_label(GTK_BUTTON(m->dots->clear_msg_but), MX_DOT_DEL(m->style->lang));
     gtk_button_set_label(GTK_BUTTON(m->dots->block_but), MX_DOT_BL(m->style->lang));

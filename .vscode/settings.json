@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "cctype": "c"
+        "cctype": "c",
+        "limits": "cpp"
     }
 }

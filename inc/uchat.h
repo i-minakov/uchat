@@ -28,6 +28,7 @@
 #define MX_MENU_EX(flag) flag == 2 ? "Выход" : "Exit"
 #define MX_MENU_SET(flag) flag == 2 ? "Настройки" : "Settings"
 #define MX_MENU_CONT(flag) flag == 2 ? "Контакты" : "Contacts"
+#define MX_MENU_BLL(flag) flag == 2 ? "Чёрный список" : "Black list"
 #define MX_MENU_SEA(flag) flag == 2 ? "Поиск" : "Search"
 
 #define MX_DOT_DEL(flag) flag == 2 ? "Удалить чат" : "Delete chat"
@@ -155,6 +156,7 @@ typedef struct s_menu {
     GtkWidget *settings;
     GtkWidget *contacts;
     GtkWidget *exit;
+    GtkWidget *black_list;
 
     GtkWidget *setic;
     GtkWidget *setic2;
@@ -164,6 +166,8 @@ typedef struct s_menu {
     GtkWidget *exic2;
     GtkWidget *contic;
     GtkWidget *contic2;
+    GtkWidget *blackic;
+    GtkWidget *blackic2;
     int flag;
     
 }              t_menu;
