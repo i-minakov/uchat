@@ -1,6 +1,6 @@
 #include "../inc/uchat.h"
 
-static void user_pushfront(t_user **head, t_user *user) {
+static void user_pushfront_by_count(t_user **head, t_user *user) {
     t_user *tmp = *head;
     t_user *node = NULL;
 
@@ -27,7 +27,7 @@ void reset_users(t_main *m) {
     for (t_user *i = m->users; i->next; i = i->next) {
         if (i->next->check == true) {      
             tmp = i->next->next;
-            user_pushfront(&m->users, i->next);
+            user_pushfront_by_count(&m->users, i->next);
             i->next = tmp;
             break;
         }

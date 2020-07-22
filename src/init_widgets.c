@@ -30,7 +30,6 @@ static void valid_widgets(t_wid *wid) {
 
 	wid->badact = GTK_WIDGET(gtk_builder_get_object(wid->builder, "bad_img"));
 	wid->badact_but = GTK_WIDGET(gtk_builder_get_object(wid->builder, "badbut"));
-	wid->badact_lab = GTK_WIDGET(gtk_builder_get_object(wid->builder, "badlab"));
 	wid->black_back = GTK_WIDGET(gtk_builder_get_object(wid->builder, "black_back"));
 }
 

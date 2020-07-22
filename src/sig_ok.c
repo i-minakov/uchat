@@ -2,7 +2,7 @@
 
 static bool sigcheck(gchar *login) {
 	for(int i = 0; login[i]; i++) {
-		if(login[i] < 48 || (login[i] > 57 && login[i] < 97)
+		if(login[i] < 48 || (login[i] > 57 && login[i] < 65) || (login[i] > 90 && login[i] < 97)
 			|| login[i] > 122)
 			return false;
 	}
@@ -23,7 +23,7 @@ bool valid(t_wid *wid) {
 	if (mx_strcmp(wid->sig->sigpas, wid->sig->sigpas2) != 0)
 			f = 3;
 	if (f != 0){
-		bad_act(wid, f);
+		bad_act(wid, f, 1);
 		return false;
 	}
 		return true;
@@ -39,8 +39,12 @@ void sig_ok(GtkWidget *widget, t_wid *wid) {
 		gtk_widget_show(wid->sig->no_fil_sig);
 	else {
 		if (valid(wid)){
-			sleep(3);
-			gtk_main_quit();
+			wid->m->command = mx_arrjoin(wid->m->command, "mx_update");
+			wid->m->command = mx_arrjoin(wid->m->command, "user");
+			wid->m->command = mx_arrjoin(wid->m->command, wid->sig->signame);
+			gtk_widget_hide(wid->window);
+			gtk_widget_destroy(wid->fixed);
+			wid->m->cmd = SIG_UP;
 		}
 	}
 }

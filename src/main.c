@@ -10,128 +10,29 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-/*void *mx_first(void *old) {
-    t_server *server = (t_server *)old;
-
-    printf("%s\n", server->json);
-    server->json = mx_strdup("lol");
-    printf("%s\n", server->json);
-    return NULL;
-}
-
-void *mx_second(void *old) {
-    t_server *server = (t_server *)old;
-
-    printf("%s\n", server->json);
-    server->json = mx_strdup("zoom");
-    printf("%s\n", server->json);
-    return NULL;
-}
-
-/////////////////////////////////////////////
-
-void init_components(t_main *m) {
-    init_main_stuff(m);
-    set_users(m);
-    set_chat_grid(m);
-    set_cap(m->cap);
-    init_menu(m);
-    init_set(m);
-    init_dot_forv(m);
-}
-
-    pthread_create(&first, NULL, mx_first, (void *)&str);
-    pthread_join(first, NULL);
-
-    pthread_create(&second, NULL, mx_second, (void *)&str);
-    pthread_join(second, NULL);
-    return 0;
-}*/
-
-/*int main() {
-    char *json = NULL;
-    char *command = mx_strdup("mx_update");
-    char **argv = (char **)malloc(sizeof(char *) * 4);
-
-    argv[0] = mx_strdup("command1");
-    argv[1] = mx_strdup("command2");
-    argv[2] = mx_strdup("command3");
-    argv[3] = NULL;
-    json = mx_request(command, argv);
-    printf("%s\n\n", json);
-    
-    char *get_value_command = mx_get_value(json, "command");
-    char **arr = mx_get_arr(json);
-
-    printf("%s\n", get_value_command);
-    for (int i = 0; arr[i]; i++)
-        printf("%s\n", arr[i]);
-    system("leaks -q uchat");
-    return 0;
-}*/
-
-/*int main(int argc, char *argv[]) {
-    if (argc != 2)
-        return 1;
-    FILE *img = fopen(argv[1], "rb");
-    char ch[4];
-    int nb = fread(ch, 4, 1, img);
-    while (nb != 0) {
-        printf("%s\n", ch);
-        nb = fread(ch, 4, 1, img);
+/*static void mx_print_list(t_list *list, char *name, char *another_name) {
+    for (t_list *node = list; node; node = node->next) {
+        printf("%d\t", ((t_history *)node->data)->id);
+        printf("%s\t", ((t_history *)node->data)->message);
+        printf("%s\t", ((t_history *)node->data)->time);
+        printf("%s\t", ((t_history *)node->data)->name);
+        printf("%s\t", ((t_history *)node->data)->mssg_id ? ((t_history *)node->data)->mssg_id : "NULL");
+        printf("%s\t", ((t_history *)node->data)->forward ? ((t_history *)node->data)->forward : "NULL");
+        printf("%s\t", ((t_history *)node->data)->flag);
+        printf("%s\n", ((t_history *)node->data)->file_name ? ((t_history *)node->data)->file_name : "NULL");
+        if (mx_strcmp(((t_history *)node->data)->mssg_id, "NULL") != 0 && mx_strcmp(((t_history *)node->data)->forward, "NULL") == 0) {
+            mx_reply_forward(name, another_name, ((t_history *)node->data)->mssg_id, &node);
+            printf("\tReply to the message id %s => ", ((t_history *)node->data)->mssg_id);
+            printf("%s\t", ((t_history *)node->data)->r_f_mssg ? ((t_history *)node->data)->r_f_mssg : "NULL");
+            printf("%s\n", ((t_history *)node->data)->r_f_time ? ((t_history *)node->data)->r_f_time : "NULL");
+        }
+        else if (mx_strcmp(((t_history *)node->data)->forward, "NULL") != 0) {
+            mx_reply_forward(name, ((t_history *)node->data)->forward, ((t_history *)node->data)->mssg_id, &node);
+            printf("\tForward from %s to the message id %s => ", ((t_history *)node->data)->forward, ((t_history *)node->data)->mssg_id);
+            printf("%s\t", ((t_history *)node->data)->r_f_mssg ? ((t_history *)node->data)->r_f_mssg : "NULL");
+            printf("%s\n", ((t_history *)node->data)->r_f_time ? ((t_history *)node->data)->r_f_time : "NULL");
+        }
     }
-    the_ic(1, m);
-    hide_menu(m);
-    hide_set(m);
-    //gtk_widget_hide(m->fix_for_stic);
-    gtk_widget_hide(m->set->chan_name);
-    gtk_widget_hide(m->set->chan_pas);
-    gtk_widget_hide(m->dots->fix_dot_menu);
-    gtk_widget_hide(m->forw->fix_forw);
-    gtk_widget_hide(m->search);
-}
-
-t_main *malloc_main() {
-    t_main *m = (t_main *)malloc(sizeof(t_main) * 100);
-
-    m->exit = 0;
-    m->cap = (t_cap *)malloc(sizeof(t_cap) * 100);
-    m->menu = (t_menu *)malloc(sizeof(t_menu) * 100);
-    m->style = (t_style *)malloc(sizeof(t_style) * 100);
-    m->set = (t_setting *)malloc(sizeof(t_setting) * 100);
-    m->dots = (t_dots *)malloc(sizeof(t_dots) * 10);
-    m->forw = (t_forw *)malloc(sizeof(t_forw) * 10);
-    m->stic = (t_sticker *)malloc(sizeof (t_sticker *) * 100);
-    m->users = NULL;
-    return m;
-}
-
-int main(int argc, char *argv[]) {
-    if (!strcmp(argv[1], "server"))
-        return mx_server(argc, argv);
-    else if (!strcmp(argv[1], "client"))
-        return mx_client(argc, argv);
-    return 0;
-}
-
-int chat_screen() {
-    t_main *m = malloc_main();
-    int ex = 0;
-
-    gtk_init(NULL, NULL);
-    for (int i = 10; i > 0; i--)
-        user_pushback(&m->users);
-    init_components(m);
-    connect_css(m, 1);
-    init_signals(m);  
-    gtk_label_set_text(GTK_LABEL(m->lab_start),
-                     "Please select a chat to start messaging");
-    gtk_widget_show_all(m->window);
-    hide_something(m);
-    gtk_main(); 
-    ex = m->exit;
-    free_all(m);
-    return ex;
 }
 int main(int argc, char *argv[]) {
     int result = 0;
@@ -189,8 +90,8 @@ int main(int argc, char *argv[]) {
         mx_check_user_pass(argv[2], argv[3]) ? printf("ok :)\n") : printf("not ok T_T\n");
     else if (argc == 4 && mx_strcmp(argv[1], "15") == 0)
         printf("%s\n", mx_hash(argv[1], argv[2]));
-    else if (argc == 4 && mx_strcmp(argv[1], "16") == 0) {
-        t_list *list = mx_user_search(argv[2], argv[3]);
+    else if (argc == 5 && mx_strcmp(argv[1], "16") == 0) {
+        t_list *list = mx_user_search(argv[2], argv[3], argv[4]);
 
         for (t_list *node = list; node; node = node->next) {
             printf("%s\t", ((t_table_list *)node->data)->name);

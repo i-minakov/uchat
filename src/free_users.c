@@ -7,6 +7,7 @@ void free_msg(t_msg **list) {
     while(tmp) {
         hren = tmp->next;
         free(tmp->text);
+        tmp->time ? free(tmp->time) : 0;
         free(tmp);
         tmp = NULL;
         tmp = hren;
@@ -19,6 +20,7 @@ void free_users(t_user **list) {
 
     while(tmp) {
         hren = tmp->next;
+        free(tmp->name);
         free_msg(&tmp->msg);
         free(tmp);
         tmp = NULL;

@@ -2,7 +2,7 @@
 
 static void user_recipient(GtkWidget *wid, t_user *us) {
     t_msg_forw *fm = us->m->forw->fm;
-    t_add_m *s = NULL;
+    t_add_m *s = create_struct(fm->text ? NULL : fm->filename, true, 1, NULL);
 
     gtk_widget_hide(fm->f->fix_forw);
     user_click(NULL, us);
@@ -12,12 +12,15 @@ static void user_recipient(GtkWidget *wid, t_user *us) {
                 mx_strjoin("forwared by ", fm->autor), ":\n"), fm->text);
         else
             us->m->text = fm->text;
-        s = create_struct(us->m->text, true, 1, NULL);
+        s->text = us->m->text;
         s->forw_from = mx_strdup(fm->autor);
+        mx_del_strarr(&us->m->command);
         add_message(us, s);
+        command_msg(us, s, fm->stic);
     }
     else 
-        add_file(us->m, (gchar *)fm->filename, true);
+        add_file(us->m, s, fm->stic);
+    free(s);
     reset_users(us->m);
     gtk_widget_destroy(fm->f->grid_forw);
     free(fm);
@@ -74,6 +77,7 @@ void forward_msg(GtkMenuItem *item, t_msg *msg) {
     f->fm->was_forw = msg->forward;
     f->fm->filename = msg->filename;
     f->fm->autor = msg->user->name;
+    f->fm->stic = msg->stic;
     f->grid_forw = gtk_grid_new();
     gtk_grid_set_row_spacing(GTK_GRID(f->grid_forw), 10);
     create_window(f, msg->user->head, NULL);

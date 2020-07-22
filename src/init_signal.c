@@ -13,9 +13,36 @@ static void entry_activate(GtkEntry *e, t_main *m) {
     send_but(m->but1, m);
 }
 
-void fun (GtkScrolledWindow *scrolled_window, GtkPositionType pos, t_main *m) {
-    if (pos == GTK_POS_TOP) 
+
+void fun(GtkScrolledWindow *scrolled_window, GtkPositionType pos, t_main *m) {
+    if (pos == GTK_POS_TOP && m->order == 2 && m->users->msg->count < 15) 
         printf("YES\n");
+    else 
+        return ;
+    
+    t_user *us = NULL;
+    int adj = 0;
+    int c = 0;
+
+    for (t_user *i = m->users; i; i = i->next) 
+        i->check == true ? us = i : 0;
+    for (t_msg *j = us->msg; j; j = j->next) 
+        j->next == NULL ? c = j->count - 1 : 0;
+    int buf;
+    char *s = NULL;
+    int j = 0;
+    int fd = open("./t.txt", O_RDWR);
+    while(read(fd, &buf, 1)) {
+        if (buf == 10) {
+            add_message_back(us, create_struct(s, j%2 == 0 ? false : true, 0, NULL), c);
+            mx_strdel(&s);
+            j++;
+            c--;
+        }
+        else s = mx_delit_fre(s, (char *)(&buf));
+        buf = 0;
+    }
+    close(fd);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -93,6 +120,16 @@ void show_search_contacts(GtkWidget *w, t_main *m) {
     gtk_widget_show(m->search);
 }
 
+void free_srch(t_search **s) {
+    t_search *tmp = NULL;
+
+    for (t_search *i = *s; i; i = tmp) {
+        free(i->name);
+        tmp = i->next;
+        free(i);
+    }
+}
+
 void close_search(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
                 GdkEvent *event, t_main *m) {
     if (icon_pos == GTK_ENTRY_ICON_PRIMARY)
@@ -108,6 +145,8 @@ void close_search(GtkEntry *entry, GtkEntryIconPosition icon_pos,
     gtk_widget_show_all(m->fix_for_users);
     show_hide_back_us(m->users);
     burger_leave(NULL, NULL, m);
+    if (m->flag_search == 3) 
+        free_srch(&m->srch);
 }
 
 void exit_chat(GtkWidget *w, t_main *m) {

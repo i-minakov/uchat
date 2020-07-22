@@ -27,5 +27,9 @@ void change_color(GtkToggleButton *togglebutton, t_main *m) {
     gtk_widget_show_all(m->fix_for_users);
     show_hide_back_us(m->users);
     wid_ch(m);
+    gtk_entry_set_icon_from_icon_name(GTK_ENTRY(m->sms), 
+        GTK_ENTRY_ICON_PRIMARY, MX_ICON_ENTRY_PR(m->style->color));
+    gtk_entry_set_icon_from_icon_name(GTK_ENTRY(m->sms), 
+        GTK_ENTRY_ICON_SECONDARY, MX_ICON_ENTRY_SEC(m->style->color));
 }
 

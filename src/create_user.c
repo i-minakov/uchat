@@ -1,6 +1,6 @@
 #include "../inc/uchat.h"
 
-t_user *mx_create_user() {
+t_user *mx_create_user(char *name) {
     t_user *user = (t_user *)malloc(sizeof(t_user) * 100);
 
     user->check = false;
@@ -10,7 +10,7 @@ t_user *mx_create_user() {
     user->msg = create_msg(NULL, NULL);
     user->msg->count = -1;
     user->m = NULL;
-    user->photo_name = "./src/resource/index.jpeg";
-    user->name = "Olya";
+    user->photo_name = "./src/resource/index.jpg";
+    user->name = mx_strdup(name);
     return user;
 }

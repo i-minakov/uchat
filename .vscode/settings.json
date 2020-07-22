@@ -1,6 +1,17 @@
 {
     "files.associations": {
         "cctype": "c",
+<<<<<<< HEAD
         "limits": "cpp"
+=======
+        "array": "cpp",
+        "istream": "cpp",
+        "limits": "cpp",
+        "numeric": "cpp",
+        "sstream": "cpp",
+        "streambuf": "cpp",
+        "utility": "cpp",
+        "typeinfo": "c"
+>>>>>>> b6b387f91a24782fdc1edb2226efe2fe03fb7b8c
     }
 }

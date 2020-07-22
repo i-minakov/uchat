@@ -24,11 +24,11 @@ void add_sig_photo(GtkWidget *widget, t_wid *wid) {
 				wid->sig->sigfile = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(wid->sig->sig_photo));
 				if(show_photo(wid))
 				return ;
-				bad_act(wid, 5);
+				bad_act(wid, 5, 1);
 				wid->sig->sigfile = NULL;
 			}
 		}
 	}
-	bad_act(wid, 4);
+	bad_act(wid, 4, 1);
 	wid->sig->sigfile = NULL;
 }
