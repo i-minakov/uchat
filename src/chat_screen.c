@@ -12,22 +12,25 @@ void user_pushfront(t_user **head, char *name) {
     }
 }
 
-t_search *mx_create_node_search(char *name) {
-    t_search *new = (t_search *)malloc(sizeof(t_search) * 3);
+t_search *mx_create_node_search(char *name, char *path) {
+    t_search *new = (t_search *)malloc(sizeof(t_search));
 
     new->name = mx_strdup(name);
+    new->path = mx_strdup(path);
     new->next = NULL;
     return new;
 }
 
-void pushfront_search_contact(t_search **head, t_main *m, t_search *s) {
-    t_search *tmp = *head;
+void pushfront_search_contact(t_search **head, t_main *m, char *name, char *path) {
+    t_search *tmp = mx_create_node_search(name, path);
 
-    if (s == NULL)
-        *head = mx_create_node_search(s->name);
-    else 
-        *head = s;
-    (*head)->next = tmp;
+    if (!head || !*head) {
+        *head = tmp;
+        (*head)->m = m;
+        return;
+    }
+    tmp->next = *head;
+    *head = tmp;
     (*head)->m = m;
 }
 

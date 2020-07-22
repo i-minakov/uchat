@@ -118,7 +118,7 @@ void mx_send_answer_list(t_node **node, t_list *list, int hist_flag, char *cmd) 
     for (; i; i = i->next) {
         data = (t_table_list *)i->data;
         mx_bites_str((*node)->ssl, data->name, 'N');
-        if ((*node)->flag == 0 || mx_strcmp(cmd, "mx_regular_request") != 0)
+        if ((*node)->flag == 0 && mx_strcmp(cmd, "mx_regular_request") == 0)
             mx_send_user_file(data->path_img, node);
         else if ((*node)->flag >= (FLAG * mx_list_size(list)))
             (*node)->flag = 0;
@@ -213,9 +213,6 @@ static void mx_mutex_command(t_node **node, char *json) {
     if (mx_strcmp(command, "mx_error") == 0)
         (*node)->exit = 0;
     else if (mx_strcmp(command, "mx_add_new_user") == 0) {
-        printf("%s\n", arr[0]);
-        printf("%s\n", arr[1]);
-        printf("%s\n", arr[2]);
         if (mx_add_new_user(arr[0], arr[1], arr[2]) == 0) {
             // mx_send_your_photo(node);
             mx_bites_str((*node)->ssl, "mx_add_new_user", 'G');

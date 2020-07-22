@@ -121,11 +121,12 @@ void show_search_contacts(GtkWidget *w, t_main *m) {
 }
 
 void free_srch(t_search **s) {
+    t_search *list = *s;
     t_search *tmp = NULL;
 
-    for (t_search *i = *s; i; i = tmp) {
-        free(i->name);
+    for (t_search *i = list; i; i = tmp) {
         tmp = i->next;
+        mx_strdel(&i->name);
         free(i);
     }
 }

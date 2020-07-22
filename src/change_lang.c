@@ -17,9 +17,17 @@ void ch_lang(t_main *m) {
 }
 
 void change_lang(GtkToggleButton *togglebutton, t_main *m) {
+    char *str = NULL;
+
     if (m->style->lang == 1) 
         m->style->lang = 2;
     else 
         m->style->lang = 1;
     ch_lang(m);
+    str = mx_itoa(m->style->color);
+    m->command = mx_arrjoin(m->command, "mx_set_type");
+    m->command = mx_arrjoin(m->command, m->my_name);
+    m->command = mx_arrjoin(m->command, str);
+    m->command = mx_arrjoin(m->command, "0");
+    free(str);
 }

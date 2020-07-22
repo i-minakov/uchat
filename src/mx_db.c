@@ -1304,15 +1304,12 @@ bool mx_check_user_pass(char *name, char *pass) {
         return false;
     }
     data.flag = sqlite3_step(data.res);
-    if (data.flag == SQLITE_ROW) {
-        printf("%s\n", (char *)sqlite3_column_text(data.res, 4));
-        printf("%s\n", pass);
+    if (data.flag == SQLITE_ROW)
         if (mx_strcmp((char *)sqlite3_column_text(data.res, 4), pass) == 0) {
             sqlite3_finalize(data.res);
             sqlite3_close(data.db);
             return true;
         }
-    }
     sqlite3_finalize(data.res);
     sqlite3_close(data.db);
     return false;

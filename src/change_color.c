@@ -17,6 +17,8 @@ void wid_ch(t_main *m) {
 }
 
 void change_color(GtkToggleButton *togglebutton, t_main *m) {
+    char *str = NULL;
+
     if (m->style->color == 1) 
         m->style->color = 2;
     else 
@@ -31,5 +33,11 @@ void change_color(GtkToggleButton *togglebutton, t_main *m) {
         GTK_ENTRY_ICON_PRIMARY, MX_ICON_ENTRY_PR(m->style->color));
     gtk_entry_set_icon_from_icon_name(GTK_ENTRY(m->sms), 
         GTK_ENTRY_ICON_SECONDARY, MX_ICON_ENTRY_SEC(m->style->color));
+    str = mx_itoa(m->style->color);
+    m->command = mx_arrjoin(m->command, "mx_set_type");
+    m->command = mx_arrjoin(m->command, m->my_name);
+    m->command = mx_arrjoin(m->command, str);
+    m->command = mx_arrjoin(m->command, "1");
+    free(str);
 }
 

@@ -11,7 +11,12 @@
         "sstream": "cpp",
         "streambuf": "cpp",
         "utility": "cpp",
+<<<<<<< HEAD
         "typeinfo": "c"
 >>>>>>> b6b387f91a24782fdc1edb2226efe2fe03fb7b8c
+=======
+        "typeinfo": "c",
+        "uchat.h": "c"
+>>>>>>> b6225907ed170092d51ff7b83dc1567d27702ea6
     }
 }
