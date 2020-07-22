@@ -9,8 +9,10 @@ void log_ok(GtkWidget *widget, t_wid *wid) {
 	else {
 		if(gtk_widget_is_visible (wid->log->no_fil_log))
 			gtk_widget_hide (wid->log->no_fil_log);
-		sleep(3);
-		gtk_widget_destroy(wid->window);
-		gtk_main_quit();
+		wid->m->command = mx_arrjoin(wid->m->command, "mx_update");
+		wid->m->command = mx_arrjoin(wid->m->command, "user");
+		wid->m->command = mx_arrjoin(wid->m->command, wid->log->logname);
+		wid->m->cmd = CHECK_PASS;
+		// gtk_main_quit();
 	}		
 }

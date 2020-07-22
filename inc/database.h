@@ -49,7 +49,7 @@ t_list *mx_history_back(char *name_from, char *name_to, char *size);
 t_list *mx_mssg_search(char *name, char *another_name, char *part_mssg, char *size);
 bool mx_part_cmp(char *data, char *part_name);
 bool mx_check_user_pass(char *name, char *pass);
-bool mx_ckeck_user_name(char *table, char *name);
+bool mx_check_user_name(char *table, char *name);
 bool mx_find_name_in_tables(char *table, char *name);
 bool mx_check_file(char *table, char *id, char **name, int flag);
 void mx_free_list(t_list **list);

@@ -168,18 +168,31 @@ void free_all(t_main *m) {
     free(m);
 }
 
+void check_cmd(t_main *m) {
+    if (m->cmd == DEF)
+        return ;
+    if (m->cmd == SIG_UP) {
+        m->my_name = mx_strdup(m->log_in->sig->signame);
+        m->command = mx_arrjoin(m->command, "mx_add_new_user");
+        m->command = mx_arrjoin(m->command, m->my_name);
+        m->command = mx_arrjoin(m->command, m->log_in->sig->sigpas);
+        m->command = mx_arrjoin(m->command, "./index.jpg");
+        m->cmd = DEF;
+    }
+    if (m->cmd == SIG_IN) {
+        m->my_name = mx_strdup(m->log_in->log->logname);
+        m->cmd = DEF;
+    }
+}
+
 int chat_screen(t_main **gtk) {
     t_main *m = *gtk;
     int ex = 0;
 
     m->order = 0;
-    // m->my_name = m->log_in->sig->signame;
-    m->command = mx_arrjoin(m->command, "mx_add_new_user");
-    m->command = mx_arrjoin(m->command, m->my_name);
-    // m->command = mx_arrjoin(m->command, m->log_in->sig->sigpas);
-    m->command = mx_arrjoin(m->command, "./index.jpg");
-    for (int i = 10; i > 0; i--) 
-        user_pushback(&m->users, "yarik");
+    check_cmd(m);
+    // for (int i = 10; i > 0; i--) 
+    //     user_pushback(&m->users, "yarik");
     init_components(m);
     connect_css(m, 1);
     init_signals(m);  

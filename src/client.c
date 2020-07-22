@@ -1,17 +1,43 @@
 #include "../inc/header.h"
 
+char **mx_start_sigin(t_main *m) {
+    char **new = NULL;
+
+    if (m->cmd == CHECK_PASS) {
+        mx_del_strarr(&m->command);
+        new = mx_arrjoin(new, "mx_check_user_pass");
+        new = mx_arrjoin(new, m->log_in->log->logname);
+        new = mx_arrjoin(new, m->log_in->log->logpas);
+    }
+    if (m->cmd == LANG) {
+        gtk_widget_hide(m->log_in->window);
+		gtk_widget_destroy(m->log_in->fixed);
+        mx_del_strarr(&m->command);
+        new = mx_arrjoin(new, "mx_get_type");
+        new = mx_arrjoin(new, m->log_in->log->logname);
+        new = mx_arrjoin(new, "0");
+        m->cmd = THEME;
+    }
+    else if (m->cmd == THEME) {
+        mx_del_strarr(&m->command);
+        new = mx_arrjoin(new, "mx_get_type");
+        new = mx_arrjoin(new, m->log_in->log->logname);
+        new = mx_arrjoin(new, "1");
+        m->cmd = SIG_IN;
+    }
+    return new;
+}
+
 /* !!!delete!!! */
 static void mx_enter_argv(char ***arr, t_client *client) {
     char **request = client->gtk->command;
 
     if (request) {
         *arr = mx_copy_arr(request);
-        if (!mx_strcmp_null(request[0], "mx_update") && 
-                !mx_strcmp_null(request[1], "user"))
-            client->gtk->order = 98; 
-        mx_del_strarr(&client->gtk->command);
-        client->gtk->command = NULL;
-        request = NULL;
+        if (client->gtk->cmd != DEF)
+            client->gtk->command = mx_start_sigin(client->gtk);
+        else 
+            mx_del_strarr(&client->gtk->command);
     }
 }
 
@@ -130,30 +156,30 @@ static void mx_get_request(char **json, t_client *client) { // delete
     mx_del_strarr(&arr);
 }
 
-static void mx_hash_pass(char **json) {
-    char *command = mx_get_value(*json, "command");
-    char **arr = mx_get_arr(*json);
-    char *hash = mx_strdup(arr[1]);
+// static void mx_hash_pass(char **json) {
+//     char *command = mx_get_value(*json, "command");
+//     char **arr = mx_get_arr(*json);
+//     char *hash = mx_strdup(arr[1]);
 
-    mx_strdel(&arr[1]);
-    arr[1] = mx_hash(arr[0], hash);
-    mx_strdel(json);
-    *json = mx_request(command, arr);
-    mx_strdel(&hash);
-    mx_strdel(&command);
-    mx_del_strarr(&arr);
-}
+//     mx_strdel(&arr[1]);
+//     arr[1] = mx_hash(arr[0], hash);
+//     mx_strdel(json);
+//     *json = mx_request(command, arr);
+//     mx_strdel(&hash);
+//     mx_strdel(&command);
+//     mx_del_strarr(&arr);
+// }
 static int mx_command(t_client *client, char **json) {
     int result = 0;
 
     pthread_mutex_lock(client->mutex);
     if (mx_check_json_cmd(*json, "command", "mx_error"))
         result = 1;
-    else if (mx_check_json_cmd(*json, "command", "mx_add_new_user")
-            || mx_check_json_cmd(*json, "command", "mx_check_user_pass")
-            || mx_check_json_cmd(*json, "command", "mx_change_pass")) {
-            mx_hash_pass(json);
-    }
+    // else if (mx_check_json_cmd(*json, "command", "mx_add_new_user")
+    //         || mx_check_json_cmd(*json, "command", "mx_check_user_pass")
+    //         || mx_check_json_cmd(*json, "command", "mx_change_pass")) {
+    //         mx_hash_pass(json);
+    // }
     if (mx_for_file(*json)) {
         mx_push_file_way(&client->list, (void *)*json);
         *json = NULL;
@@ -170,7 +196,7 @@ void mx_client_send(t_client *client) {
     while (client->exit == 1) {
         gtk_main_iteration();
         mx_get_request(&json, client); 
-        if (client->gtk->order == 98)
+        if (client->gtk->cmd == SIG_IN || client->gtk->cmd == SIG_UP)
             chat_screen(&client->gtk);
         if (mx_command(client, &json) == 1)
             break;
@@ -183,10 +209,15 @@ void mx_client_send(t_client *client) {
 /* recv callbacks */
 static void mx_server_answer(char ch[], char *str, t_client *client) { // server answer
     client->status = mx_strdup(str);
-    if (ch[0] == 'B')
+    if (ch[0] == 'B') {
         printf("error = %s\n", client->status);
-    if (ch[0] == 'G')
+        client->gtk->cmd = DEF;
+    }
+    if (ch[0] == 'G') {
         printf("good = %s\n", client->status);
+        if (mx_strcmp("mx_check_user_pass", client->status) == 0)
+            client->gtk->cmd = LANG;
+    }
 }
 void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
     char *str = NULL;
@@ -194,9 +225,9 @@ void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
     mx_static_read(ch, &str);
     if (ch[0] == 'T') {
         if (ch[1] == 'L')
-            printf("switch Lan\n");
-        else if (ch[1] == 'T')
-            printf("switch Theme\n");
+            client->gtk->style->lang = mx_atoi(&ch[2]) + 1;
+        else if (ch[1] == 'T') 
+            client->gtk->style->color = mx_atoi(&ch[2]) + 1;
     }
     else
         mx_server_answer(ch, str, client);
@@ -457,6 +488,7 @@ static void mx_client_properties(t_client *client, char *argv[]) {
     client->for_files->file_name = NULL;
     client->for_files->file_size = NULL;
     client->gtk = malloc_main();
+    client->gtk->cmd = DEF;
 }
 static void mx_client_sin_log(t_client client) {
     pthread_create(&(client.read), NULL, mx_client_read, &client);

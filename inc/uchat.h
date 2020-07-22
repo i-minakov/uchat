@@ -39,6 +39,16 @@
 #define MX_COLOR(flag) flag == 2 ? "Тема" : "Theme"
 #define MX_LANG(flag) flag == 2 ? "Язык" : "language"
 
+enum e_cmd {
+    DEF,
+    SIG_UP,
+    SIG_IN,
+    USERS,
+    THEME,
+    LANG,
+    CHECK_PASS
+};
+
 typedef struct s_add_msg {
     char *text;
     bool my; 

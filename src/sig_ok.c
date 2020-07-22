@@ -43,8 +43,8 @@ void sig_ok(GtkWidget *widget, t_wid *wid) {
 			wid->m->command = mx_arrjoin(wid->m->command, "user");
 			wid->m->command = mx_arrjoin(wid->m->command, wid->sig->signame);
 			gtk_widget_hide(wid->window);
-			gtk_widget_destroy(wid->window);
-			wid->m->order = 99;
+			gtk_widget_destroy(wid->fixed);
+			wid->m->cmd = SIG_UP;
 		}
 	}
 }

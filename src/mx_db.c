@@ -86,7 +86,7 @@ int mx_drop_table(char *table) {
     return 0;
 }
 /* check name in table */
-bool mx_ckeck_user_name(char *table, char *name) {
+bool mx_check_user_name(char *table, char *name) {
     if (!table || !name || mx_strcmp(name, "NULL") == 0)
         return false;
     t_db data;
@@ -451,7 +451,7 @@ static int mx_user_tables(char *name) {
     return result;
 }
 int mx_add_new_user(char *name, char *pass, char *img_name) {
-    if (!name || !pass || mx_ckeck_user_name("Users", name)) {
+    if (!name || !pass || mx_check_user_name("Users", name)) {
         mx_rm_if_error(name);
         return 1;
     }
@@ -544,7 +544,7 @@ static bool mx_ckeck_user_in_table(char *name, char *another_name, int flag) {
         table = mx_super_join(name, "_friends", 0);
     else if (flag == 2)
         table = mx_super_join(name, "_blacklist", 0);
-    if (mx_ckeck_user_name(table, another_name)) {
+    if (mx_check_user_name(table, another_name)) {
         mx_strdel(&table);
         return true;
     }
@@ -558,7 +558,7 @@ static bool mx_check_state(char *name, char *another_name, int flag) {
         table = mx_super_join(name, "_blacklist", 0);
     else if (flag == 2)
         table = mx_super_join(name, "_friends", 0);
-    if (mx_ckeck_user_name(table, another_name)) {
+    if (mx_check_user_name(table, another_name)) {
         mx_strdel(&table);
         return true;
     }
@@ -665,7 +665,7 @@ static int mx_delete_all(char *name, char *user, int flag) {
     return result;
 }
 int mx_delete_user(char *name) {
-    if (!name || !mx_ckeck_user_name("Users", name))
+    if (!name || !mx_check_user_name("Users", name))
         return 1;
     int result = 0;
     char *new_command = NULL;
@@ -701,7 +701,7 @@ static void mx_del_after(char *name, char * mssg) {
 static bool mx_check_blacklist(char *name_from, char *name_to) {
     char *table = mx_super_join(name_to, "_blacklist", 0);
 
-    if (mx_ckeck_user_name(table, name_from)) {
+    if (mx_check_user_name(table, name_from)) {
         mx_strdel(&table);
         return true;
     }
@@ -1086,7 +1086,7 @@ static int mx_in_other_tables(char *name, char *new_name) {
     t_list *list = mx_get_tables_list();
 
     for (t_list *node = list; node; node = node->next) {
-        if (mx_ckeck_user_name((char *)node->data, name)) {
+        if (mx_check_user_name((char *)node->data, name)) {
             char *command = NULL;
 
             command = mx_super_join("UPDATE ", (char *)node->data, 0);
@@ -1229,7 +1229,7 @@ int mx_change_log(char *name, char *new_name) {
 
 /* change pass */
 int mx_change_pass(char *name, char *new_pass) {
-    if (!name || !new_pass ||!mx_ckeck_user_name("Users", name))
+    if (!name || !new_pass ||!mx_check_user_name("Users", name))
         return 1;
     t_db data;
 
@@ -1288,7 +1288,7 @@ void mx_reply_forward(char *name_from, char *name_to, char *id, t_list **list) {
 
 /* check user pass */
 bool mx_check_user_pass(char *name, char *pass) {
-    if (!name || !pass || !mx_ckeck_user_name("Users", name))
+    if (!name || !pass || !mx_check_user_name("Users", name))
         return false;
     t_db data;
 
@@ -1304,12 +1304,15 @@ bool mx_check_user_pass(char *name, char *pass) {
         return false;
     }
     data.flag = sqlite3_step(data.res);
-    if (data.flag == SQLITE_ROW)
-        if (mx_strcmp((char *)sqlite3_column_text(data.res, 2), pass) == 0) {
+    if (data.flag == SQLITE_ROW) {
+        printf("%s\n", (char *)sqlite3_column_text(data.res, 4));
+        printf("%s\n", pass);
+        if (mx_strcmp((char *)sqlite3_column_text(data.res, 4), pass) == 0) {
             sqlite3_finalize(data.res);
             sqlite3_close(data.db);
             return true;
         }
+    }
     sqlite3_finalize(data.res);
     sqlite3_close(data.db);
     return false;
