@@ -118,7 +118,7 @@ void mx_send_answer_list(t_node **node, t_list *list, int hist_flag, char *cmd) 
     for (; i; i = i->next) {
         data = (t_table_list *)i->data;
         mx_bites_str((*node)->ssl, data->name, 'N');
-        if ((*node)->flag == 0 || mx_strcmp(cmd, "mx_regular_request") != 0)
+        if ((*node)->flag == 0 && mx_strcmp(cmd, "mx_regular_request") == 0)
             mx_send_user_file(data->path_img, node);
         else if ((*node)->flag >= (FLAG * mx_list_size(list)))
             (*node)->flag = 0;
@@ -130,6 +130,14 @@ void mx_send_answer_list(t_node **node, t_list *list, int hist_flag, char *cmd) 
 }
 
 /* not mutex */
+// void mx_send_your_photo(t_node **node) {
+//     char *img = mx_super_join("./source/cash/", (*node)->user, 0);
+
+//     img = mx_super_join(img, ".jpg", 1);
+//     mx_bites_str((*node)->ssl, "mx_your_photo", 'C');
+//     mx_send_user_file(img, node);
+//     mx_strdel(&img);
+// }
 static void mx_send_back(t_node **node, char **json) {
     char *command = mx_get_value(*json, "command");
     char **arr = mx_get_arr(*json);
@@ -154,10 +162,14 @@ static void mx_send_back(t_node **node, char **json) {
         pthread_mutex_unlock(&(*node)->files_mutex);
     }
     else if (mx_strcmp(command, "mx_check_user_pass") == 0) {
-        if (mx_check_user_pass(arr[0], arr[1]))
+        if (mx_check_user_pass(arr[0], arr[1])) {
+            // mx_send_your_photo(node);
             mx_bites_str((*node)->ssl, "mx_check_user_pass", 'G');
-        else
-            mx_bites_str((*node)->ssl, "Wrong pass", 'B');
+        }
+        else {
+            mx_bites_str((*node)->ssl, "Wrong pass or user name", 'B');
+            mx_strdel(&(*node)->user);
+        }
     }
     if (list) {
         mx_send_answer_list(node, list, hist_flagh, command);
@@ -194,14 +206,6 @@ void mx_not_mutex(t_node **node, char **json) {
 }
 
 /* mutex or not */
-// static void mx_send_your_photo(t_node **node) {
-//     char *img = mx_super_join("./source/cash/", (*node)->user, 0);
-
-//     img = mx_super_join(img, ".jpg", 1);
-//     mx_bites_str((*node)->ssl, "mx_your_photo", 'C');
-//     mx_send_user_file(img, node);
-//     mx_strdel(&img);
-// }
 static void mx_mutex_command(t_node **node, char *json) {
     char *command = mx_get_value(json, "command");
     char **arr = mx_get_arr(json);
@@ -209,9 +213,6 @@ static void mx_mutex_command(t_node **node, char *json) {
     if (mx_strcmp(command, "mx_error") == 0)
         (*node)->exit = 0;
     else if (mx_strcmp(command, "mx_add_new_user") == 0) {
-        printf("%s\n", arr[0]);
-        printf("%s\n", arr[1]);
-        printf("%s\n", arr[2]);
         if (mx_add_new_user(arr[0], arr[1], arr[2]) == 0) {
             // mx_send_your_photo(node);
             mx_bites_str((*node)->ssl, "mx_add_new_user", 'G');
@@ -282,16 +283,6 @@ static void mx_mutex_command(t_node **node, char *json) {
         mx_del_user_from_table(arr[0], arr[1], mx_atoi(arr[2])) == 0
             ? mx_bites_str((*node)->ssl, "mx_del_user_from_table", 'G')
             : mx_bites_str((*node)->ssl, "Can't delete user from table", 'B');
-    else if (mx_strcmp(command, "mx_check_user_pass") == 0) {
-        if (mx_check_user_pass(arr[0], arr[1]) == 0) {
-            // mx_send_your_photo(node);
-            mx_bites_str((*node)->ssl, "mx_check_user_pass", 'G');
-        }
-        else {
-            mx_bites_str((*node)->ssl, "Wrong pass or user name", 'B');
-            mx_strdel(&(*node)->user);
-        }
-    }
     else if (mx_strcmp(command, "mx_log_out") == 0) {
         mx_strdel(&(*node)->user);
         mx_strdel(&(*node)->chat);

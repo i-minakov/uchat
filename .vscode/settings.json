@@ -8,6 +8,7 @@
         "sstream": "cpp",
         "streambuf": "cpp",
         "utility": "cpp",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "uchat.h": "c"
     }
 }

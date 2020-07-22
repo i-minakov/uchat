@@ -10,8 +10,10 @@ static void reset_time(char *time, GtkWidget *label) {
     mx_del_strarr(&m);
     m = mx_strsplit(s, ':');
     res = mx_strpart(s, 5);
-    gtk_label_set_text(GTK_LABEL(label), res);
-    free(res);
+    if (res != NULL) {
+        gtk_label_set_text(GTK_LABEL(label), res);
+        free(res);
+    }
     free(s);
     mx_del_strarr(&m);
 }

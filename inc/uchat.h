@@ -1,6 +1,7 @@
 #ifndef UCHAT_H
 
 #include "../libmx/inc/libmx.h"
+#include "ssl.h"
 #include <gtk/gtk.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -40,6 +41,7 @@
 #define MX_LANG(flag) flag == 2 ? "Язык" : "language"
 
 enum e_cmd {
+    SRCH,
     DEF,
     SIG_UP,
     SIG_IN,
@@ -208,6 +210,7 @@ typedef struct s_forward {
 typedef struct s_search
 {
     char *name;
+    char *path;
     GtkWidget* but;
     struct s_main *m;
     struct s_search *next;
@@ -296,9 +299,10 @@ void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg);
 void command_msg(t_user *us, t_add_m *s, int flag);
 t_user *mx_user_by_name(char *name, t_main *m);
 void set_chat_grid(t_main *m, int flag);
-t_search *mx_create_node_search(char *name);
-void pushfront_search_contact(t_search **head, t_main *m, t_search *s);
+t_search *mx_create_node_search(char *name, char *path);
+void pushfront_search_contact(t_search **head, t_main *m, char *name, char *path);
 void user_pushfront(t_user **head, char *name);
+void show_result_of_search(t_list *list, t_main *m);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);
