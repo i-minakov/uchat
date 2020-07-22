@@ -60,16 +60,13 @@ void mx_send_answer_type(t_node **node, int type, int flag) {
     char *type_str = NULL;
     char send[SIZE_SEND];
 
-    send[0] = 'T';
-    if (flag == 0) {
-        type_str = mx_itoa(type);
-        send[1] = 'L';
-    }
-    if (flag == 1) {
-        type_str = mx_itoa(type);
-        send[1] = 'T';
-    }
     mx_memset(send, '\0', SIZE_SEND);
+    send[0] = 'T';
+    type_str = mx_itoa(type);
+    if (flag == 0)
+        send[1] = 'L';
+    if (flag == 1)
+        send[1] = 'T';
     mx_mom(send, type_str, mx_strlen(type_str), 0);
     SSL_write((*node)->ssl, send, SIZE_SEND);
     mx_strdel(&type_str);

@@ -52,6 +52,11 @@ void mx_show(GtkWidget *wid) {
     g_idle_remove_by_data(wid);
 }
 
+void mx_hide(GtkWidget *w) {
+    gtk_widget_hide(w);
+    g_idle_remove_by_data(w);
+}
+
 void user_pushback(t_user **head, char *name) {
     t_user *tmp = *head;
 
@@ -169,8 +174,6 @@ void free_all(t_main *m) {
 }
 
 void check_cmd(t_main *m) {
-    if (m->cmd == DEF)
-        return ;
     if (m->cmd == SIG_UP) {
         m->my_name = mx_strdup(m->log_in->sig->signame);
         m->command = mx_arrjoin(m->command, "mx_add_new_user");
@@ -201,6 +204,10 @@ int chat_screen(t_main **gtk) {
     g_idle_add((GSourceFunc)move_scrol, m);
     gtk_widget_show_all(m->window);
     hide_something(m);
+    if (m->style->color == 2)
+        change_color(NULL, m);
+    if (m->style->lang == 2)
+        change_lang(NULL, m);
     return ex;
 }
 

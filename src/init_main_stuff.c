@@ -5,8 +5,6 @@ static void builder_and_stule(t_main *m) {
     m->window = GTK_WIDGET(gtk_builder_get_object(m->builder, "window1"));
     g_signal_connect(m->window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
     gtk_builder_connect_signals(m->builder, m->builder);
-    m->style->color = 1;
-    m->style->lang = 1;
 }
 void init_main_stuff(t_main *m) {
     builder_and_stule(m);
@@ -27,7 +25,7 @@ void init_main_stuff(t_main *m) {
     m->adj = gtk_adjustment_new(1.0, 1.0, 10.0, 1.0, 10.0, 1.0);
     gtk_scrolled_window_set_vadjustment(GTK_SCROLLED_WINDOW(m->scrol_bar), m->adj);
     gtk_entry_set_icon_from_icon_name(GTK_ENTRY(m->sms), 
-        GTK_ENTRY_ICON_PRIMARY, "./src/resource/attach.png");
+        GTK_ENTRY_ICON_PRIMARY, MX_ICON_ENTRY_PR(m->style->color));
     gtk_entry_set_icon_from_icon_name(GTK_ENTRY(m->sms), 
         GTK_ENTRY_ICON_SECONDARY, MX_ICON_ENTRY_SEC(m->style->color));
 }

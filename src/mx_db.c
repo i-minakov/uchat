@@ -1470,6 +1470,7 @@ int mx_get_type(char *name, int flag) {
     }
     data.flag = sqlite3_step(data.res);
     if (data.flag == SQLITE_ROW) {
+        printf("%d\n", sqlite3_column_int(data.res, 0));
         result = sqlite3_column_int(data.res, 0);
         sqlite3_finalize(data.res);
         sqlite3_close(data.db);

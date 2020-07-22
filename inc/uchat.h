@@ -262,6 +262,7 @@ int chat_screen(t_main **gtk);
 int log_screen(t_main *m);
 int interface();
 
+void mx_hide(GtkWidget *w);
 void mx_show(GtkWidget *wid);
 t_main *malloc_main();
 t_user *mx_create_user(char *name);

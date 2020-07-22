@@ -13,6 +13,5 @@ void log_ok(GtkWidget *widget, t_wid *wid) {
 		wid->m->command = mx_arrjoin(wid->m->command, "user");
 		wid->m->command = mx_arrjoin(wid->m->command, wid->log->logname);
 		wid->m->cmd = CHECK_PASS;
-		// gtk_main_quit();
 	}		
 }
