@@ -1,46 +1,66 @@
 #include "../inc/header.h"
-/* check rcv list */
 
-void mx_check_activ(t_main *m, t_list *list, char *id) {
+/* check rcv list */
+bool mx_check_activ(t_main *m, t_list *list) {
+    t_data *data = NULL;
     t_user *us = NULL;
+    char **arr = NULL;
+    char *json = NULL;
+    char *id_new = NULL;
 
     for (t_user *i = m->users; i; i = i->next)
         i->check == true ? us = i : 0;
-    if (us == NULL)
-        return ;
-    for ( ; list; list = list->next)
-        if (!mx_strcmp(((t_data *)i->data)->name, us->name))
-            break;
-    for (t_msg *i = us->msg->next; i; i = i->next) {
-        if (mx_atoi(id) != us->next->msg)
+    if (us == NULL || mx_strcmp(us->name, ((t_data *)list->data)->name))
+        return true;
+    for (t_msg *i = us->msg->next; i && ((t_data *)list->data)->list->data; i = i->next) {
+        json = ((t_data *)list->data)->list->data;
+        id_new = mx_get_value(json, "command");
+        arr = mx_get_arr(json);
+        printf("new %s -- old %d\n", id_new, i->id);
+        if (mx_atoi(id_new) != i->id) {
+            add_message(mx_user_by_name(((t_data *)list->data)->name, m), 
+                create_struct(arr[0], !mx_strcmp(m->my_name, 
+                    arr[2]) ? true : false, 0, arr[1]));
+            m->users->msg->next->id = mx_atoi(id_new);
+        }
+        mx_del_strarr(&arr);
+        mx_strdel(&id_new);
+        ((t_data *)list->data)->list = ((t_data *)list->data)->list->next;
     }
-    
+    return false;
 }
 
 void mx_cmp_list(t_main *m, t_info *info) {
     t_user *us = m->users;
-    char *json = ((t_data *)info->list->data)->list->data;
-    char *cmd = mx_get_value(json, "command");
-    char **arr = mx_get_arr(json);
+    char *json = NULL;
+    char *cmd = NULL;
+    char **arr = NULL;
 
-    for (t_list *i = info->list; i; i = i->next) {
+    for (t_list *i = info->list; i; i = i->next) { 
+        if (mx_check_activ(m, i) == false) 
+            continue;
+        json = ((t_data *)i->data)->list->data;
+        cmd = mx_get_value(json, "command");
+        arr = mx_get_arr(json);
         if (m->users && !mx_strcmp_null(((t_data *)i->data)->name, m->users->name) && 
-            m->users->msg->next && !mx_strcmp(m->users->msg->next->text, arr[0]))
+            m->users->msg->next->id == mx_atoi(cmd))
                 break;
-        else if (mx_strcmp(((t_data *)i->data)->name, m->my_name)) {
+        else {
             add_message(mx_user_by_name(((t_data *)i->data)->name, m), 
-                create_struct(arr[0], false, 0, arr[1]));
+                create_struct(arr[0], !mx_strcmp(m->my_name, 
+                arr[2]) ? true : false , 0, arr[1]));
+            m->users->msg->next->id = mx_atoi(cmd);
         }
         m->users->next ? m->users = m->users->next : 0;
+        mx_strdel(&cmd); 
+        mx_del_strarr(&arr);
     }
-    free(cmd);  
-    mx_del_strarr(&arr);
 }
 
 void mx_check_rcv_list(t_info *info, t_main *m) {
     if (m->cmd == SRCH)
         show_result_of_search(info->list, m);
-    else 
+    else if (m->cmd == DEF)
         mx_cmp_list(m, info);
 }
 
@@ -50,7 +70,7 @@ void mx_check_sigin(t_main *m) {
         m->command = mx_arrjoin(m->command, "mx_check_user_pass");
         m->command = mx_arrjoin(m->command, m->log_in->log->logname);
         m->command = mx_arrjoin(m->command, m->log_in->log->logpas);
-        m->cmd = DEF;
+        m->cmd = BLCK;
     }
     if (m->cmd == LANG) {
         gtk_widget_hide(m->log_in->window);
@@ -58,13 +78,13 @@ void mx_check_sigin(t_main *m) {
         m->command = mx_arrjoin(m->command, "mx_get_type");
         m->command = mx_arrjoin(m->command, m->log_in->log->logname);
         m->command = mx_arrjoin(m->command, "0");
-        m->cmd = DEF;
+        m->cmd = BLCK;
     }
     else if (m->cmd == THEME) {
         m->command = mx_arrjoin(m->command, "mx_get_type");
         m->command = mx_arrjoin(m->command, m->log_in->log->logname);
         m->command = mx_arrjoin(m->command, "1");
-        m->cmd = DEF;
+        m->cmd = BLCK;
     }
 }
 

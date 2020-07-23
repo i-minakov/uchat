@@ -43,6 +43,7 @@
 
 enum e_cmd {
     SRCH,
+    BLCK,
     DEF,
     SIG_UP,
     SIG_IN,

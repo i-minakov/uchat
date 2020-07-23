@@ -187,12 +187,9 @@ void check_cmd(t_main *m) {
         m->command = mx_arrjoin(m->command, m->my_name);
         m->command = mx_arrjoin(m->command, m->log_in->sig->sigpas);
         m->command = mx_arrjoin(m->command, "./index.jpg");
-        m->cmd = DEF;
     }
-    if (m->cmd == SIG_IN) {
+    if (m->cmd == SIG_IN) 
         m->my_name = mx_strdup(m->log_in->log->logname);
-        m->cmd = DEF;
-    }
 }
 
 int chat_screen(t_main **gtk) {
@@ -215,6 +212,7 @@ int chat_screen(t_main **gtk) {
         change_color(NULL, m);
     if (m->style->lang == 2)
         change_lang(NULL, m);
+    m->cmd = DEF;
     return ex;
 }
 

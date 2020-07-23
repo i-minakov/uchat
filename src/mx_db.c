@@ -159,7 +159,7 @@ static int mx_tables(void *NotUsed, int argc, char **argv, char **azColName) {
     s = azColName;
     for (int i = 0; i < argc; i++)
         if (argv[i] && mx_strcmp(argv[i], "Users") != 0 && mx_strcmp(argv[i], "sqlite_sequence") != 0)
-            mx_push_back(((t_list **)NotUsed), (void *)mx_strdup(argv[i]));
+            mx_push_front(((t_list **)NotUsed), (void *)mx_strdup(argv[i]));
     return 0;
 }
 t_list *mx_get_tables_list(void) {
@@ -862,7 +862,7 @@ static int mx_history(void *NotUsed, int argc, char **argv, char **azColName) {
         node->flag = mx_strdup(argv[7]);
         node->r_f_mssg = NULL;
         node->r_f_time = NULL;
-        mx_push_back(((t_list **)NotUsed), (void *)node);
+        mx_push_front(((t_list **)NotUsed), (void *)node);
     }
     return 0;
 }
@@ -915,7 +915,7 @@ static int mx_list_back(void *NotUsed, int argc, char **argv, char **azColName) 
 
     s = azColName;
     for (int i = 0; i < argc; i++)
-        mx_push_back(((t_list **)NotUsed), (void *)mx_create_table_list(argv[0]));
+        mx_push_front(((t_list **)NotUsed), (void *)mx_create_table_list(argv[0]));
     return 0;
 }
 static void mx_find_last_mssg(char *table, char **message, char **time) {
@@ -1321,7 +1321,7 @@ static int mx_users(void *NotUsed, int argc, char **argv, char **azColName) {
 
     s = azColName;
     for (int i = 0; i < argc; i++)
-        mx_push_back(((t_list **)NotUsed), (void *)mx_strdup(argv[i]));
+        mx_push_front(((t_list **)NotUsed), (void *)mx_strdup(argv[i]));
     return 0;
 }
 static t_list *mx_get_user_list(void) {
@@ -1357,7 +1357,7 @@ t_list *mx_user_search(char *name, char *part_name, char *size) {
             transfer->path_img = mx_super_join(transfer->path_img, ".jpg", 1);
             transfer->last_mssg = NULL;
             transfer->last_mssg_time = NULL;
-            mx_push_back(&true_list, transfer);
+            mx_push_front(&true_list, transfer);
         }
     }
     mx_free_list(&list);
@@ -1390,7 +1390,7 @@ t_list *mx_mssg_search(char *name, char *another_name, char *part_mssg, char *si
             t_history *copy = NULL;
 
             mx_copy_struct(&copy, (t_history *)node->data);
-            mx_push_back(&true_list, (void *)copy);
+            mx_push_front(&true_list, (void *)copy);
         }
         mx_free_history((t_history *)node->data);
     }
