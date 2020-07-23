@@ -46,6 +46,7 @@
 
 enum e_cmd {
     SRCH,
+    BLCK,
     DEF,
     SIG_UP,
     SIG_IN,
@@ -89,6 +90,7 @@ typedef struct s_style {
 }              t_style;
 
 typedef struct s_message {
+    int id;
     int count;
     char *text;
     char *filename;

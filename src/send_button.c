@@ -78,6 +78,8 @@ void send_but(GtkWidget *wid, t_main *m) {
     for (t_user *i = m->users; i; i = i->next) {
         if (i->check == true) {
             add_message(i, s);
+            if (i->msg->next->next)
+                i->msg->next->id = i->msg->next->next->id + 1;
             command_msg(i, s, 0);
             free(s->time_m);
             free(s);

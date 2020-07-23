@@ -9,7 +9,11 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/uio.h>
-#include <malloc.h>
+#ifdef __APPLE
+	#include <malloc.h>
+#else
+	#include <malloc/malloc.h>
+#endif
 
 typedef struct s_list {
 	void *data;
