@@ -41,7 +41,8 @@ t_user *mx_user_by_name(char *name, t_main *m) {
         !mx_strcmp(i->name, name) ? us = i : 0;
     if (us == NULL) {
         user_pushfront(&m->users, name);
-        reset_users(m);
+        gtk_widget_destroy(m->grid_user);
+        set_users(m);
         set_chat_grid(m, 1);
         g_idle_add((GSourceFunc)mx_show, m->fix_for_users);
         for (t_user *i = m->users; i; i = i->next) 

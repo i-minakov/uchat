@@ -86,6 +86,7 @@ typedef struct s_style {
 }              t_style;
 
 typedef struct s_message {
+    int id;
     int count;
     char *text;
     char *filename;

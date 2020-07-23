@@ -121,14 +121,22 @@ void show_search_contacts(GtkWidget *w, t_main *m) {
 }
 
 void free_srch(t_search **s) {
-    t_search *list = *s;
-    t_search *tmp = NULL;
+    if (!s || !*s)
+        return;
+    t_search *i = *s;
+    t_search *j = NULL;
 
-    for (t_search *i = list; i; i = tmp) {
-        tmp = i->next;
+    for (; i; ) {
+        j = NULL;
+        if (i->next)
+            j = i->next;
         mx_strdel(&i->name);
+        i->next = NULL;
         free(i);
+        i = NULL;
+        i = j;
     }
+    *s = NULL;
 }
 
 void close_search(GtkEntry *entry, GtkEntryIconPosition icon_pos, 

@@ -33,7 +33,7 @@ void reset_l_mess(t_user *i) {
         gtk_label_set_text(GTK_LABEL(i->l_mess), s);
         free(s);
     }
-    else 
+    else if (t)
         gtk_label_set_text(GTK_LABEL(i->l_mess), t);
     reset_time(i->msg->next->time, i->l_time);
 }

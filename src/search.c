@@ -56,7 +56,7 @@ bool mx_user_exist(t_main *m, char *name) {
 GtkWidget *create_contacts(char *name, char *path, t_main *m, t_search *s) {
     GtkWidget *fix = gtk_fixed_new(); 
     char *img = "./src/resource/index.jpg";//path;
-    char *markup = g_markup_printf_escaped(MX_NAME_COLOR(m->style->color), name);
+    char *markup = g_markup_printf_escaped(MX_NAME_COLOR(m->style->color), s->name);
     GtkWidget *l = gtk_label_new(NULL);
 
     s->but = gtk_button_new_with_label("Add");

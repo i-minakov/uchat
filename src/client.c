@@ -1,29 +1,47 @@
 #include "../inc/header.h"
 /* check rcv list */
-void mx_cmp_list(t_main *m, t_info *info) {
-    t_user *us = m->users;
 
+void mx_check_activ(t_main *m, t_list *list, char *id) {
+    t_user *us = NULL;
+
+    for (t_user *i = m->users; i; i = i->next)
+        i->check == true ? us = i : 0;
     if (us == NULL)
-    for (t_list *i = info->list; i; i = i->next) {
-
-        us = us->next;
+        return ;
+    for ( ; list; list = list->next)
+        if (!mx_strcmp(((t_data *)i->data)->name, us->name))
+            break;
+    for (t_msg *i = us->msg->next; i; i = i->next) {
+        if (mx_atoi(id) != us->next->msg)
     }
-
+    
 }
 
-void mx_check_rcv_list(t_info *info, t_main *m) {
+void mx_cmp_list(t_main *m, t_info *info) {
+    t_user *us = m->users;
     char *json = ((t_data *)info->list->data)->list->data;
     char *cmd = mx_get_value(json, "command");
     char **arr = mx_get_arr(json);
 
+    for (t_list *i = info->list; i; i = i->next) {
+        if (m->users && !mx_strcmp_null(((t_data *)i->data)->name, m->users->name) && 
+            m->users->msg->next && !mx_strcmp(m->users->msg->next->text, arr[0]))
+                break;
+        else if (mx_strcmp(((t_data *)i->data)->name, m->my_name)) {
+            add_message(mx_user_by_name(((t_data *)i->data)->name, m), 
+                create_struct(arr[0], false, 0, arr[1]));
+        }
+        m->users->next ? m->users = m->users->next : 0;
+    }
+    free(cmd);  
+    mx_del_strarr(&arr);
+}
+
+void mx_check_rcv_list(t_info *info, t_main *m) {
     if (m->cmd == SRCH)
         show_result_of_search(info->list, m);
-    else if (mx_strcmp(arr[2], m->my_name) != 0) {
-        add_message(mx_user_by_name(((t_data *)info->list->data)->name, m), 
-            create_struct(arr[0], false, 0, arr[1]));
-    }
-    free(cmd);
-    mx_del_strarr(&arr);
+    else 
+        mx_cmp_list(m, info);
 }
 
 /* check sigin */
