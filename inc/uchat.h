@@ -1,4 +1,5 @@
 #ifndef UCHAT_H
+#define UCHAT_H
 
 #include "../libmx/inc/libmx.h"
 #include "ssl.h"
@@ -264,7 +265,7 @@ typedef struct s_main {
     char **command;
     int exit;
     int order;
-    int cmd; // 1 - theme; 2 - lang; 3 - search; 
+    int cmd;
     int flag_search; // 1 - msg, 2 - users, 3 - contacts
     char *text;
     char *my_name;
@@ -323,6 +324,7 @@ t_search *mx_create_node_search(char *name, char *path);
 void pushfront_search_contact(t_search **head, t_main *m, char *name, char *path);
 void user_pushfront(t_user **head, char *name);
 void show_result_of_search(t_list *list, t_main *m);
+void clear_history(GtkWidget *wid, t_main *m);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);

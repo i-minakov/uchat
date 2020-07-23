@@ -26,8 +26,8 @@ static void insert_component(t_user *i) {
     gtk_fixed_put(GTK_FIXED(i->fix), (i->backg_us_slept), 11, 0);
     gtk_widget_set_opacity(i->but, 0.0);
     gtk_fixed_put(GTK_FIXED(i->fix), (i->img), 23, 14);
-    gtk_fixed_put(GTK_FIXED(i->fix), (i->frame_photo_slept), 23, 14);
     gtk_fixed_put(GTK_FIXED(i->fix), (i->frame_photo_act), 23, 14);
+    gtk_fixed_put(GTK_FIXED(i->fix), (i->frame_photo_slept), 23, 14);
     gtk_widget_set_size_request(i->but, 305, 79);
     gtk_fixed_put(GTK_FIXED(i->fix), (i->but), 11, 0);
     markup = g_markup_printf_escaped(MX_NAME_COLOR(i->m->style->color), i->name);

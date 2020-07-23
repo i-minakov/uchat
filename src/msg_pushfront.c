@@ -18,6 +18,8 @@ void save_file(GtkMenuItem *item, t_msg *msg) {
 
 void delete_msg(GtkMenuItem *item, t_msg *msg) {
     t_msg *t = NULL;
+    t_main *m = msg->user->m;
+    char *id = mx_itoa(msg->id);
 
     gtk_grid_remove_row(GTK_GRID(msg->user->text_grid), msg->count);
     for (t_msg *i = msg->prev; i->prev; i = i->prev)
@@ -27,6 +29,10 @@ void delete_msg(GtkMenuItem *item, t_msg *msg) {
     msg->prev->next = t;
     reset_l_mess(msg->user);
     msg->count > 0 ? msg->user->row-- : 0;
+    m->command = mx_arrjoin(m->command, "mx_del_mssg");
+    m->command = mx_arrjoin(m->command, m->my_name);
+    m->command = mx_arrjoin(m->command, msg->user->name);
+    m->command = mx_arrjoin(m->command, id);
     free(msg);
     msg = NULL;
 }

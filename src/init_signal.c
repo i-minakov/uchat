@@ -71,6 +71,9 @@ void clear_history(GtkWidget *wid, t_main *m) {
     gtk_fixed_put(GTK_FIXED(m->fix_for_text), us->text_grid, 0, 0);
     gtk_widget_show(us->text_grid);
     reset_l_mess(us);
+    m->command = mx_arrjoin(m->command, "mx_del_history");
+    m->command = mx_arrjoin(m->command, m->my_name);
+    m->command = mx_arrjoin(m->command, us->name);
 }   
 
 void block_user(GtkWidget *wid, t_main *m) {

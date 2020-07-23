@@ -10,9 +10,9 @@
 #include <sys/types.h>
 #include <sys/uio.h>
 #ifdef __APPLE
-	#include <malloc.h>
-#else
 	#include <malloc/malloc.h>
+#else
+	#include <malloc.h>
 #endif
 
 typedef struct s_list {

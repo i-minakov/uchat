@@ -1,5 +1,16 @@
 #include "../inc/uchat.h"
 
+static void command_edit(t_main *m, t_msg *msg) {
+    char *id = mx_itoa(msg->id);
+
+    m->command = mx_arrjoin(m->command, "mx_edit");
+    m->command = mx_arrjoin(m->command, m->my_name);
+    m->command = mx_arrjoin(m->command, msg->user->name);
+    m->command = mx_arrjoin(m->command, msg->text);
+    m->command = mx_arrjoin(m->command, id);
+    mx_strdel(&id);
+}
+
 static void dialog_delete(t_msg *msg) {
     GtkWidget *dialog;
     GtkDialogFlags flags = GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT;
@@ -29,6 +40,8 @@ static void edit_done(GtkEntry *e, t_msg *msg) {
     gtk_widget_show(msg->user->m->sms);
     if (msg->text == NULL || !mx_strlen(msg->text))
         dialog_delete(msg);
+    else 
+        command_edit(msg->user->m, msg);
     free(str);
     g_signal_handlers_disconnect_by_func(e, G_CALLBACK(edit_done), msg);
 }
