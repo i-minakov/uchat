@@ -234,7 +234,7 @@ static void mx_server_answer(char ch[], char *str, t_client *client) { // server
         if (mx_strcmp(client->status, "Wrong pass or user name") == 0)
             bad_act(client->gtk->log_in, 1, 2);
         if (mx_strcmp(client->status, "User already exist") == 0)
-            puts("----\n");
+            bad_act(client->gtk->log_in, 8, 2);
         client->gtk->cmd = DEF;
     }
     if (ch[0] == 'G') {
@@ -245,6 +245,7 @@ static void mx_server_answer(char ch[], char *str, t_client *client) { // server
         }
     }
 }
+
 void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
     char *str = NULL;
 

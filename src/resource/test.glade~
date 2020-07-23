@@ -7,7 +7,7 @@
     <property name="resizable">False</property>
     <property name="default_width">1000</property>
     <property name="default_height">700</property>
-    <child>
+    <child type="titlebar">
       <placeholder/>
     </child>
     <child>
@@ -162,8 +162,6 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="max_length">300</property>
-            <property name="primary_icon_pixbuf">attach.png</property>
-            <property name="secondary_icon_pixbuf">smile.png</property>
             <style>
               <class name="entry"/>
             </style>
@@ -516,8 +514,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="max_length">300</property>
+                <property name="secondary_icon_pixbuf">cancel.png</property>
                 <property name="primary_icon_name">edit-find-symbolic</property>
-                <property name="secondary_icon_name">application-exit</property>
                 <style>
                   <class name="entry"/>
                 </style>

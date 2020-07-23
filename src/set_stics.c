@@ -40,6 +40,6 @@ void set_stics(t_main *m) {
         else col++;
         row = (i + 1)/3; 
     }
-    gtk_fixed_put(GTK_FIXED(m->fix_for_stic), m->grid_stic, 15, 8);
+    gtk_fixed_put(GTK_FIXED(m->fix_for_stic), m->grid_stic, 15, 50);
     init_signals_stics(m);
 }

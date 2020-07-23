@@ -41,6 +41,9 @@
 #define MX_COLOR(flag) flag == 2 ? "Тема" : "Theme"
 #define MX_LANG(flag) flag == 2 ? "Язык" : "language"
 
+#define MX_EMOJI(flag) flag == 2 ? "Емоджи" : "Emoji"
+#define MX_STICS(flag) flag == 2 ? "Стикеры" : "Stickers"
+
 enum e_cmd {
     SRCH,
     DEF,
@@ -107,6 +110,12 @@ typedef struct s_sticker {
     GtkWidget **but;
     char **way;
 }              t_sticker;
+
+typedef struct s_emoji {
+    GtkWidget **img;
+    GtkWidget **but;
+    char **utf;
+}              t_emoji;
 
 typedef struct s_data_users {
     GtkWidget *but;
@@ -234,8 +243,12 @@ typedef struct s_main {
 
     GtkWidget *stic_fix_img;
     GtkWidget *grid_stic;
+    GtkWidget *grid_emo;
     GtkWidget *fix_for_stic;
     GtkWidget *stic_scrol;
+    GtkWidget *stic_smile;
+    GtkWidget *stic_stic;
+    GtkWidget *stic_line;
 
     GtkWidget *fix_for_users;
     GtkWidget *fix_for_text;
@@ -258,6 +271,7 @@ typedef struct s_main {
     struct s_cap *cap;
     struct s_data_users *users;
     struct s_sticker *stic;
+    struct s_emoji *emo;
     struct s_menu *menu;
     struct s_style *style;
     struct s_setting *set;
@@ -335,7 +349,11 @@ void backto_pas(GtkEntry *entry, GtkEntryIconPosition icon_pos,
                 GdkEvent *event, t_main *m);
 void enter_pas(GtkWidget *widget, t_main *m);
 
+void set_emo_tab(t_main *m);
 void set_stics(t_main *m);
+void set_emoji(t_main *m);
+void stic_on(GtkWidget *w, t_main *m);
+void emo_on(GtkWidget *w, t_main *m);
 void stic_click(GtkWidget *w, t_main *m);
 void stic_free(t_main *m);
 void the_ic(int flag, t_main *m);

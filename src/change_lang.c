@@ -14,6 +14,10 @@ void ch_lang(t_main *m) {
 
     gtk_label_set_text(GTK_LABEL(m->set->color_text), MX_COLOR(m->style->lang));
     gtk_label_set_text(GTK_LABEL(m->set->lang_text), MX_LANG(m->style->lang));
+
+    gtk_button_set_label(GTK_BUTTON(m->stic_smile), MX_EMOJI(m->style->lang));
+    gtk_button_set_label(GTK_BUTTON(m->stic_stic),  MX_STICS(m->style->lang));
+
 }
 
 void change_lang(GtkToggleButton *togglebutton, t_main *m) {

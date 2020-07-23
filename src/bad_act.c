@@ -66,5 +66,7 @@ void bad_act(t_wid *wid, int flag, int thred) {
 		tmp = "Login must start with letters";
 	if(flag == 7)
 		tmp = "Password can only contains chars and numbers";
+	if(flag == 8)
+		tmp = "User already exist";
 	show_wid(wid, flag, thred, tmp);
 }

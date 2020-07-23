@@ -139,6 +139,7 @@ void hide_something(t_main *m) {
 
     gtk_widget_hide(m->set->chan_name);
     gtk_widget_hide(m->set->chan_pas);
+    gtk_widget_hide(m->grid_stic);
     gtk_widget_hide(m->stic_scrol);
     gtk_widget_hide(m->dots->fix_dot_menu);
     gtk_widget_hide(m->forw->fix_forw);
@@ -156,6 +157,7 @@ t_main *malloc_main() {
     m->dots = (t_dots *)malloc(sizeof(t_dots) * 10);
     m->forw = (t_forw *)malloc(sizeof(t_forw) * 10);
     m->stic = (t_sticker *)malloc(sizeof (t_sticker *) * 100);
+    m->emo = (t_emoji *)malloc(sizeof (t_emoji *) * 100);
     m->srch= NULL;
     m->users = NULL;
     m->command = NULL;
@@ -200,8 +202,8 @@ int chat_screen(t_main **gtk) {
 
     m->order = 0;
     check_cmd(m);
-    // for (int i = 10; i > 0; i--) 
-    //     user_pushback(&m->users, "yarik");
+    for (int i = 10; i > 0; i--) 
+        user_pushback(&m->users, "yarik");
     init_components(m);
     connect_css(m, 1);
     init_signals(m);  

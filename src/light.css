@@ -85,3 +85,15 @@ window {
     color: whitesmoke;
     background-image: none;
 }
+#stic {
+    background-image: none;
+	border: none;
+    box-shadow: none;
+    color: #13171f;
+}
+#stic2 {
+    background-image: none;
+	border: none;
+    box-shadow: none;
+    color: #F88161;
+}
