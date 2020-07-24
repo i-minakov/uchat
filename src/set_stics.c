@@ -1,7 +1,12 @@
 #include "../inc/uchat.h"
 
 void stic_click(GtkWidget *w, t_main *m) {
-    add_file(m, create_struct((char *)gtk_widget_get_name(w), true, 0, NULL), 2);
+    t_user *us = NULL;
+
+    for (t_user *i = m->users; i; i = i->next)
+        i->check == true ? us = i : 0;
+    add_file(us, create_struct((char *)gtk_widget_get_name(w),
+         true, 0, NULL), 2, us->msg->next ? us->msg->next->id + 1 : 1);
 }
 
 static void init_signals_stics(t_main *m) {

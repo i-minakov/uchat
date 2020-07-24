@@ -25,8 +25,9 @@ bool mx_check_activ(t_user *us, t_list *list) {
     int last_id_new = 0;
     int last_id_old = 0;
 
-    if (!us || us->check == false || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0) 
-        return true;
+    if (!us || us->check == false 
+        || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
+        return false;
     printf("\n\n%s\n\n", us->name);
     for (t_list *k = ((t_data *)list->data)->list; k->data; k = k->next) {
         if (k->next->data == NULL) {
@@ -47,7 +48,7 @@ bool mx_check_activ(t_user *us, t_list *list) {
         }
         mx_new_msg_back(us, new_ms);
         mx_free_list(&new_ms);
-        return false;
+        return true;
     }
     id_new = mx_get_value(((t_data *)list->data)->list->data, "command");
     if (us->msg->next->id != mx_atoi(id_new)) {
@@ -57,7 +58,7 @@ bool mx_check_activ(t_user *us, t_list *list) {
         mx_del_strarr(&arr);
         mx_strdel(&id_new);
     }
-    return false;
+    return true;
 }
 
 void mx_cmp_list(t_main *m, t_info *info) {
@@ -67,14 +68,11 @@ void mx_cmp_list(t_main *m, t_info *info) {
     char **arr = NULL;
 
     for (t_list *i = info->list; i; i = i->next) { 
-        if (mx_check_activ(m->users, i) == true) {
+        if (mx_check_activ(us, i) == false) {
             json = ((t_data *)i->data)->list->data;
             cmd = mx_get_value(json, "command");
             arr = mx_get_arr(json);
-            if (m->users && !mx_strcmp_null(((t_data *)i->data)->name, m->users->name) && 
-                m->users->msg->next->id == mx_atoi(cmd))
-                    break;
-            else {
+            if (us && us->msg->next->id != mx_atoi(cmd)) {
                 add_message(mx_user_by_name(((t_data *)i->data)->name, m), 
                     create_struct(arr[0], !mx_strcmp(m->my_name, 
                     arr[2]) ? true : false , 0, arr[1]), mx_atoi(cmd));
@@ -82,7 +80,7 @@ void mx_cmp_list(t_main *m, t_info *info) {
             mx_strdel(&cmd); 
             mx_del_strarr(&arr);
         }
-        m->users->next ? m->users = m->users->next : 0;
+        us->next ? us = us->next : 0;
     }
 }
 

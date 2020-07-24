@@ -10,6 +10,8 @@
 #include <stdbool.h>
 #include <time.h>
 
+#define MX_IDLE_HIDE(flag, wid) flag == true ? gtk_widget_hide(wid) : g_idle_add((GSourceFunc)mx_hide, wid)
+#define MX_IDLE_SHOW(flag, wid) flag == true ? gtk_widget_show_all(wid) : g_idle_add((GSourceFunc)mx_show, wid)
 #define MX_SET_NAME_MSG(flag, label) flag == true ? gtk_widget_set_name(label, "lm") : gtk_widget_set_name(label, "lm2")
 #define MX_SHOW_HIDE(flag, widget) flag == 1 ? gtk_widget_show(widget) : gtk_widget_hide(widget) 
 #define MX_BOX_END(wid, label) gtk_box_pack_end(GTK_BOX(wid), label, FALSE, FALSE, 0)
@@ -309,7 +311,7 @@ void free_msg(t_msg **list);
 t_msg *create_msg(char *text, char *filename);
 void delete_msg(GtkMenuItem *item, t_msg *msg);
 void forward_msg(GtkMenuItem *item, t_msg *msg);
-void add_file(t_main *m, t_add_m *s, int stic);
+void add_file(t_user *us, t_add_m *s, int stic, int id);
 void init_signals(t_main *m);
 void save_file(GtkMenuItem *item, t_msg *msg);
 void add_message(t_user *i, t_add_m *s, int id);

@@ -13,41 +13,6 @@ static void entry_activate(GtkEntry *e, t_main *m) {
     send_but(m->but1, m);
 }
 
-// void mx_new_msg_back(t_user *us, t_list *list) {
-//     int c = 0;
-//     char *id_new = NULL;
-//     char **arr = NULL;
-
-//     for (t_msg *j = us->msg; j; j = j->next) 
-//         j->next == NULL ? c = j->count - 1 : 0;
-//     for (t_list *i = list; i; i = i->next) {
-//         id_new = mx_get_value(i->data, "command");
-//         arr = mx_get_arr(i->data);
-//         add_message_back(us, create_struct(arr[0], !mx_strcmp(m->my_name,
-//                  arr[2]) ? true : false, 0, arr[1]), c, mx_atoi(id_new));
-//         mx_del_strarr(&arr);
-//         c--;
-//     }
-// }
-
-// void mx_new_msg_back(t_main *m, t_list *list) {
-//     t_user *us = NULL;
-//     int adj = 0;
-//     int c = 0;
-
-//     for (t_user *i = m->users; i; i = i->next) 
-//         i->check == true ? us = i : 0;
-//     for (t_msg *j = us->msg; j; j = j->next) 
-//         j->next == NULL ? c = j->count - 1 : 0;
-//     for {
-//         add_message_back(us, create_struct(s, j%2 == 0 ? false : true, 0, NULL), c);
-//         mx_strdel(&s);
-//         j++;
-//         c--;
-//     }
-// }
-
-/////////////////////////////////////////////////////////////////////////////////////
 void show_hide_dots_menu(GtkWidget *wid, t_dots *d) {
     MX_SHOW_HIDE(d->visible, d->fix_dot_menu);
     if (d->visible == 1) 
@@ -82,7 +47,6 @@ void clear_history(GtkWidget *wid, t_main *m) {
 void block_user(GtkWidget *wid, t_main *m) {
 
 }
-//////////////////////////////////////////////////////////////////////////////////
 
 void set_dots_signal(t_dots *d) {
     
@@ -173,7 +137,17 @@ void exit_chat(GtkWidget *w, t_main *m) {
 void change_photo(GtkWidget *w, t_main *m) {
     attach_file(NULL, 2, NULL, m);
 }
-//////////////////////////////////////////////////////////////////////////////////
+
+void mx_increase_msg_list(GtkScrolledWindow *scrol_bar, 
+                        GtkPositionType pos, t_main *m) {
+    if (pos == GTK_POS_BOTTOM)
+        return;
+    t_user *us = NULL;
+    m->command = mx_arrjoin(m->command, "mx_update");
+    m->command = mx_arrjoin(m->command, "size");
+    // m->command = mx_arrjoin(m->command, m->size_request + 20);
+
+}
 
 void init_signals(t_main *m) {
     g_signal_connect(m->cap->burger_but, "enter-notify-event", G_CALLBACK(burger_notify), m);
@@ -183,7 +157,7 @@ void init_signals(t_main *m) {
     g_signal_connect(m->sms, "activate", G_CALLBACK(entry_activate), m);
     g_signal_connect(m->sms, "icon-press", G_CALLBACK(attach_file), m);
     g_signal_connect(m->dots->search_msg_but, "clicked", G_CALLBACK(show_search_msg), m);
-    // g_signal_connect(m->scrol_bar, "edge-reached", G_CALLBACK(fun), m);
+    g_signal_connect(m->scrol_bar, "edge-overshot", G_CALLBACK(mx_increase_msg_list), m);
     g_signal_connect(m->search, "activate", G_CALLBACK(search_activ), m);
     g_signal_connect(m->search, "icon-press", G_CALLBACK(close_search), m);
 

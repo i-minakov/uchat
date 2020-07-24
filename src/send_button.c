@@ -58,10 +58,7 @@ void add_message(t_user *i, t_add_m *s, int id) {
     add_time(i, s);
     MX_MSG_PACK(s->my, i->msg->next->label, wid);
     gtk_grid_attach(GTK_GRID(i->text_grid), wid, 0, i->row++, 1, 1);
-    if (s->my == false) 
-        g_idle_add((GSourceFunc)mx_show, wid);
-    else 
-        gtk_widget_show_all(wid);
+    MX_IDLE_SHOW(s->my, wid);
     reset_l_mess(i);
     free(str);
     i->m->order = 1;

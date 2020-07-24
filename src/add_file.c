@@ -29,7 +29,7 @@ static void msg_file_pushfront(t_msg **head, t_add_m *s, int sticer) {
     }
 }
 
-static void file_check(gchar *tmp, t_msg **msg, char *name) {
+static void file_check(gchar *tmp, t_msg **msg, char *name, bool my) {
     t_msg *t = *msg;
 
     if (mx_strstr(tmp, ".jpg") || mx_strstr(tmp, ".jpeg")
@@ -45,7 +45,7 @@ static void file_check(gchar *tmp, t_msg **msg, char *name) {
         MX_BOX_START(t->file, gtk_image_new_from_file("./source/resource/load image.png"));
         gtk_box_pack_start(GTK_BOX(t->file), gtk_label_new(name), FALSE, FALSE, 10); 
         gtk_container_add(GTK_CONTAINER(t->label), t->file);
-        gtk_widget_show(t->label);
+        MX_IDLE_SHOW(my, t->label);
     }
 }
 
@@ -57,28 +57,25 @@ static void send_file(t_user *us, t_add_m *s, t_msg *t, int flag) {
     MX_MSG_PACK(s->my, t->label, wid);
     MX_SET_NAME_MSG(s->my, t->label);
     gtk_grid_attach(GTK_GRID(us->text_grid), wid, 0, t->count, 1, 1);
-    gtk_widget_show_all(wid);
+    MX_IDLE_SHOW(s->my, wid);   
     us->row++;
     if (s->my == true) 
         command_msg(us, s, flag);
 }
 
-void add_file(t_main *m, t_add_m *s, int stic) {
-    t_user *us = NULL;
+void add_file(t_user *us, t_add_m *s, int stic, int id) {
     t_msg *t = NULL;
     char **p = mx_strsplit(s->text, '/');
     char *name = NULL;
 
-    for (t_user *i = m->users; i; i = i->next)
-        i->check == true ? us = i : 0;
     for (int i = 0; p[i]; i++)
-        if (p[i + 1] == NULL)
-            name = p[i];
+        p[i + 1] == NULL ? name = p[i] : 0;
     msg_file_pushfront(&us->msg, s, stic);
     t = us->msg->next;
     t->user = us;
+    t->id = id;
     if (stic == 0) {
-        file_check(s->text, &t, name);
+        file_check(s->text, &t, name, s->my);
         send_file(us, s, t, stic);
     }
     else {

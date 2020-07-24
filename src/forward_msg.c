@@ -18,7 +18,8 @@ static void user_recipient(GtkWidget *wid, t_user *us) {
         command_msg(us, s, fm->stic);
     }
     else 
-        add_file(us->m, s, fm->stic);
+        add_file(us, s, fm->stic, 
+            us->msg->next ? us->msg->next->id + 1 : 1);
     free(s);
     reset_users(us->m);
     gtk_widget_destroy(fm->f->grid_forw);
