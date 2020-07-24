@@ -5,7 +5,6 @@ static void user_recipient(GtkWidget *wid, t_user *us) {
     t_add_m *s = create_struct(fm->text ? NULL : fm->filename, true, 1, NULL);
 
     gtk_widget_hide(fm->f->fix_forw);
-    user_click(NULL, us);
     if (fm->text) {
         if (fm->was_forw == 0) 
             us->m->text = mx_delit_fre(mx_delit_fre(
@@ -15,7 +14,7 @@ static void user_recipient(GtkWidget *wid, t_user *us) {
         s->text = us->m->text;
         s->forw_from = mx_strdup(fm->autor);
         mx_del_strarr(&us->m->command);
-        add_message(us, s);
+        add_message(us, s, us->msg->next->id + 1);
         command_msg(us, s, fm->stic);
     }
     else 

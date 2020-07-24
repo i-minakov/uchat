@@ -43,7 +43,7 @@ static void msg_pushback(t_msg **head, char *text, bool my, int forw) {
     }
 }
 
-void add_message_back(t_user *i, t_add_m *s, int count) {
+void add_message_back(t_user *i, t_add_m *s, int count, int id) {
     GtkWidget *wid;
     char *str = mx_strnew(mx_strlen(s->text) + ((mx_strlen(s->text)/50) + 1));
     int k = 0;
@@ -59,7 +59,7 @@ void add_message_back(t_user *i, t_add_m *s, int count) {
             msg = k;
             k->user = i;
         }
-    msg->count = count;
+    msg->id = id;
     wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_widget_set_size_request(wid, 650, 30);
     add_time(i, s);

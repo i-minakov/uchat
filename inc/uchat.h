@@ -312,7 +312,7 @@ void forward_msg(GtkMenuItem *item, t_msg *msg);
 void add_file(t_main *m, t_add_m *s, int stic);
 void init_signals(t_main *m);
 void save_file(GtkMenuItem *item, t_msg *msg);
-void add_message(t_user *i, t_add_m *s);
+void add_message(t_user *i, t_add_m *s, int id);
 void forward_msg(GtkMenuItem *item, t_msg *msg);
 void edit_msg(GtkMenuItem *item, t_msg *msg);
 void search_activ(GtkEntry *e, t_main *m);
@@ -320,7 +320,7 @@ void show_hide_back_us(t_user *users);
 void reply_msg(GtkMenuItem *item, t_msg *msg);
 t_add_m *create_struct(char *text, bool my, int forw, char *time_m);
 void move_scrol(t_main *m);
-void add_message_back(t_user *i, t_add_m *s, int count);
+void add_message_back(t_user *i, t_add_m *s, int count, int id);
 void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg);
 void command_msg(t_user *us, t_add_m *s, int flag);
 t_user *mx_user_by_name(char *name, t_main *m);
@@ -330,6 +330,8 @@ void pushfront_search_contact(t_search **head, t_main *m, char *name, char *path
 void user_pushfront(t_user **head, char *name);
 void show_result_of_search(t_list *list, t_main *m);
 void clear_history(GtkWidget *wid, t_main *m);
+int mx_msg_size(t_msg *list);
+void mx_new_msg_back(t_user *us, t_list *new);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);

@@ -29,7 +29,7 @@ void delete_msg(GtkMenuItem *item, t_msg *msg) {
     msg->prev->next = t;
     reset_l_mess(msg->user);
     msg->count > 0 ? msg->user->row-- : 0;
-    m->command = mx_arrjoin(m->command, "mx_del_mssg");
+    m->command = mx_arrjoin(m->command, "mx_del_message");
     m->command = mx_arrjoin(m->command, m->my_name);
     m->command = mx_arrjoin(m->command, msg->user->name);
     m->command = mx_arrjoin(m->command, id);
@@ -56,7 +56,6 @@ t_msg *create_msg(char *text, char *filename) {
     new->user = NULL;
     new->filename = filename;
     new->text = NULL;
-    new->id = 1;
     new->time = NULL;
     if (!text && !filename)
         return new;
