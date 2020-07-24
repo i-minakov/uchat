@@ -68,7 +68,7 @@ void clear_history(GtkWidget *wid, t_main *m) {
     us->row = 0;
     us->text_grid = gtk_grid_new();
     gtk_grid_set_row_spacing(GTK_GRID(us->text_grid), 20);
-    gtk_fixed_put(GTK_FIXED(m->fix_for_text), us->text_grid, 0, 0);
+    gtk_fixed_put(GTK_FIXED(m->fix_for_text), us->text_grid, 0, 10);
     gtk_widget_show(us->text_grid);
     reset_l_mess(us);
     m->command = mx_arrjoin(m->command, "mx_del_history");

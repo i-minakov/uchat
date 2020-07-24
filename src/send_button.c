@@ -1,20 +1,20 @@
 #include "../inc/uchat.h"
 
 void command_msg(t_user *us, t_add_m *s, int flag) {
-    char *id = mx_itoa(flag);
+    char *r_id = mx_itoa(flag);
 
     us->m->command = mx_arrjoin(us->m->command, "mx_recv_new_mess");
     us->m->command = mx_arrjoin(us->m->command, us->m->my_name);
     us->m->command = mx_arrjoin(us->m->command, us->name);
     us->m->command = mx_arrjoin(us->m->command, s->text);
-    us->m->command = mx_arrjoin(us->m->command, id);
+    us->m->command = mx_arrjoin(us->m->command, r_id);
     us->m->command = mx_arrjoin(us->m->command, 
         s->forw == 1 ? s->forw_from : "NULL");
-    mx_strdel(&id);
+    mx_strdel(&r_id);
     if (s->reply_id != -1) {
-        id = mx_itoa(s->reply_id);
-        us->m->command = mx_arrjoin(us->m->command, id);
-        free(id);
+        r_id = mx_itoa(s->reply_id);
+        us->m->command = mx_arrjoin(us->m->command, r_id);
+        free(r_id);
     }
     else 
         us->m->command = mx_arrjoin(us->m->command, "NULL");
@@ -64,6 +64,8 @@ void add_message(t_user *i, t_add_m *s) {
     reset_l_mess(i);
     free(str);
     i->m->order = 1;
+    if (i->msg->next->next)
+        i->msg->next->id = i->msg->next->next->id + 1;
 }
 
 void send_but(GtkWidget *wid, t_main *m) {
@@ -78,8 +80,6 @@ void send_but(GtkWidget *wid, t_main *m) {
     for (t_user *i = m->users; i; i = i->next) {
         if (i->check == true) {
             add_message(i, s);
-            if (i->msg->next->next)
-                i->msg->next->id = i->msg->next->next->id + 1;
             command_msg(i, s, 0);
             free(s->time_m);
             free(s);

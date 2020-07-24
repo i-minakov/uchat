@@ -9,7 +9,7 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/uio.h>
-#ifdef __APPLE
+#ifndef __APPLE
 	#include <malloc/malloc.h>
 #else
 	#include <malloc.h>

@@ -12,7 +12,8 @@ static void other_users(t_user *users) {
         i->check = false;
     }
     users->check = true;
-    clear_history(NULL, users->m);
+    // clear_history(NULL, users->m);
+    mx_del_strarr(&users->m->command);
 }
 
 void user_click(GtkWidget *wid, t_user *users) {

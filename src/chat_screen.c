@@ -189,9 +189,11 @@ void check_cmd(t_main *m) {
         m->command = mx_arrjoin(m->command, m->my_name);
         m->command = mx_arrjoin(m->command, m->log_in->sig->sigpas);
         m->command = mx_arrjoin(m->command, "./index.jpg");
+        m->cmd = BLCK;
     }
     if (m->cmd == SIG_IN) 
         m->my_name = mx_strdup(m->log_in->log->logname);
+        m->cmd = BLCK;
 }
 
 int chat_screen(t_main **gtk) {

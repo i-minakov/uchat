@@ -4,29 +4,36 @@
 bool mx_check_activ(t_main *m, t_list *list) {
     t_data *data = NULL;
     t_user *us = NULL;
+    t_list *new_ms = NULL;
     char **arr = NULL;
     char *json = NULL;
     char *id_new = NULL;
 
     for (t_user *i = m->users; i; i = i->next)
         i->check == true ? us = i : 0;
-    if (us == NULL || mx_strcmp(us->name, ((t_data *)list->data)->name))
+    if (!us || mx_strcmp(us->name, ((t_data *)list->data)->name))
         return true;
     for (t_msg *i = us->msg->next; i && ((t_data *)list->data)->list->data; i = i->next) {
         json = ((t_data *)list->data)->list->data;
         id_new = mx_get_value(json, "command");
-        arr = mx_get_arr(json);
         printf("new %s -- old %d\n", id_new, i->id);
-        if (mx_atoi(id_new) != i->id) {
-            add_message(mx_user_by_name(((t_data *)list->data)->name, m), 
-                create_struct(arr[0], !mx_strcmp(m->my_name, 
-                    arr[2]) ? true : false, 0, arr[1]));
-            m->users->msg->next->id = mx_atoi(id_new);
-        }
-        mx_del_strarr(&arr);
+        if (mx_atoi(id_new) != i->id)
+            mx_push_front(&new_ms, mx_strdup(json));
         mx_strdel(&id_new);
         ((t_data *)list->data)->list = ((t_data *)list->data)->list->next;
     }
+    if (new_ms == NULL)
+        return false;
+    for (t_list *j = new_ms; j; j = j->next) {
+        id_new = mx_get_value(j->data, "command");
+        arr = mx_get_arr(json);
+        add_message(us, create_struct(arr[0], !mx_strcmp(m->my_name,
+                 arr[2]) ? true : false, 0, arr[1]));
+        m->users->msg->next->id = mx_atoi(id_new);
+        mx_strdel(&id_new);
+        mx_del_strarr(&arr);
+    }
+    mx_free_list(&new_ms);
     return false;
 }
 
@@ -49,7 +56,6 @@ void mx_cmp_list(t_main *m, t_info *info) {
             add_message(mx_user_by_name(((t_data *)i->data)->name, m), 
                 create_struct(arr[0], !mx_strcmp(m->my_name, 
                 arr[2]) ? true : false , 0, arr[1]));
-            m->users->msg->next->id = mx_atoi(cmd);
         }
         m->users->next ? m->users = m->users->next : 0;
         mx_strdel(&cmd); 
@@ -62,6 +68,7 @@ void mx_check_rcv_list(t_info *info, t_main *m) {
         show_result_of_search(info->list, m);
     else if (m->cmd == DEF)
         mx_cmp_list(m, info);
+    printf("%d\n", m->cmd);
 }
 
 /* check sigin */
@@ -288,6 +295,7 @@ void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
     char *str = NULL;
 
     mx_static_read(ch, &str);
+    printf("\nYES!!!!!!!!!!! --- %s\n", ch);
     if (ch[0] == 'T') {
         if (ch[1] == 'L') {
             client->gtk->style->lang = mx_atoi(&ch[2]) + 1;

@@ -33,7 +33,7 @@
 #include "uchat.h"
 
 #define FLAG 100
-#define TIMER 100
+#define TIMER 1000
 #define SIZE_SEND 1027
 #define FILE_SIZE 262144000
 #define SIZE_SEND_LESS 1024
