@@ -3,12 +3,11 @@
 void emo_click(GtkWidget *w, t_main *m) {
     char *cur;
     char *utf;
-   //char tmp[4] = {0xE2, 0x98, 0xBA, '\0'};
     utf = m->emo->utf[mx_atoi((char *) gtk_widget_get_name(w))];
-    cur = (char *)gtk_entry_get_text(GTK_ENTRY(m->edit_entry));
+    cur = (char *)gtk_entry_get_text(GTK_ENTRY(m->sms));
     cur = mx_strjoin(cur, utf);
-    gtk_entry_set_text (m->sms, cur);
-    //mx_printstr(emo);
+    gtk_entry_set_text (GTK_ENTRY(m->sms), cur);
+    free(cur);
 }
 
 static void init_signals_emo(t_main *m) {
@@ -16,7 +15,7 @@ static void init_signals_emo(t_main *m) {
         g_signal_connect(m->emo->but[i], "clicked", G_CALLBACK(emo_click), m); 
 }
 static void set_utf(t_main *m) {
-    char tmp[4] ={0xE2, 0x98, 0xBA, '\0'};
+    char tmp[5] ={0xF0, 0x9F, 0x98, 0xBA, '\0'};
     char tmp1[5] ={0xF0, 0x9F, 0x98, 0x84, '\0'};
     char tmp2[5] ={0xF0, 0x9F, 0x99, 0x83, '\0'};
     char tmp3[5] ={0xF0, 0x9F, 0x98, 0x86, '\0'};
@@ -40,15 +39,15 @@ static void set_utf(t_main *m) {
     char tmp18[5] ={0xF0, 0x9F, 0xA4, 0x94, '\0'};
     char tmp19[5] ={0xF0, 0x9F, 0x98, 0x8E, '\0'};
 
-    char tmp20[5] ={0xF0, 0x9F, 0xA4, 0xAC, '\0'};
-    char tmp21[5] ={0xF0, 0x9F, 0x98, 0xB3, '\0'};
-    char tmp22[5] ={0xF0, 0x9F, 0x98, 0x88, '\0'};
-    char tmp23[5] ={0xF0, 0x9F, 0xA4, 0x94, '\0'};
-    char tmp24[5] ={0xF0, 0x9F, 0x98, 0x8E, '\0'};
+    char tmp20[5] ={0xF0, 0x9F, 0x98, 0xB7, '\0'};
+    char tmp21[5] ={0xF0, 0x9F, 0xA4, 0xA9, '\0'};
+    char tmp22[5] ={0xF0, 0x9F, 0xA4, 0xAE, '\0'};
+    char tmp23[5] ={0xF0, 0x9F,0x91, 0xBB, '\0'};
+    char tmp24[5] ={0xF0, 0x9F, 0x92, 0xA9, '\0'};
 
-    char tmp25[5] ={0xF0, 0x9F, 0xA4, 0xAC, '\0'};
-    char tmp26[5] ={0xF0, 0x9F, 0x98, 0xB3, '\0'};
-    char tmp27[5] ={0xF0, 0x9F, 0x98, 0x88, '\0'};
+    char tmp25[5] ={0xF0, 0x9F, 0x91, 0xBD, '\0'};
+    char tmp26[5] ={0xF0, 0x9F, 0x99, 0x8F, '\0'};
+    char tmp27[5] ={0xF0, 0x9F, 0x91, 0x8D, '\0'};
 
     // char tmp[4] ={ {0xE2, 0x98, 0xBA, '\0'};}
     // char tmp[4] ={ {0xE2, 0x98, 0xBA, '\0'};}
@@ -76,15 +75,15 @@ static void set_utf(t_main *m) {
     m->emo->utf[18] = mx_strdup(tmp18); 
     m->emo->utf[19] = mx_strdup(tmp19); 
 
-    // m->emo->utf[20] = "U+1F637"; 0xF0 0x9F 0x98 0xB7
-    // m->emo->utf[21] = "U+1F929"; 0xF0 0x9F 0xA4 0xA9
-    // m->emo->utf[22] = "U+1F92E"; 0xF0 0x9F 0xA4 0xAE
-    // m->emo->utf[23] = "U+1F47B"; 	0xF0 0x9F 0x91 0xBB
-    // m->emo->utf[24] = "U+1F4A9"; 	0xF0 0x9F 0x92 0xA9
+    m->emo->utf[20] = mx_strdup(tmp20);
+    m->emo->utf[21] = mx_strdup(tmp21); 
+    m->emo->utf[22] = mx_strdup(tmp22);
+    m->emo->utf[23] = mx_strdup(tmp23);
+    m->emo->utf[24] = mx_strdup(tmp24);
 
-    // m->emo->utf[25] = "U+1F47D"; 0xF0 0x9F 0x91 0xBD
-    // m->emo->utf[26] = "U+1F64F"; 0xF0 0x9F 0x99 0x8F
-    // m->emo->utf[27] = "U+1F44D"; 	0xF0 0x9F 0x91 0x8D
+    m->emo->utf[25] = mx_strdup(tmp25);
+    m->emo->utf[26] = mx_strdup(tmp26);
+    m->emo->utf[27] = mx_strdup(tmp27);
 }
 
 // static void set_utf(t_main *m) {
@@ -120,7 +119,7 @@ static void set_utf(t_main *m) {
 
 static void init_component(int i, t_main *m, int row, int col) {
     char *name = mx_itoa(i);
-    char *tmp = mx_backjoin("./src/resource/emoji/", mx_itoa(i+1));
+    char *tmp = mx_backjoin("./source/resource/emoji/", mx_itoa(i+1));
 
     tmp = mx_delit_fre(tmp, ".png");
     m->emo->img[i] = resize_proportion(tmp, 35, 35);

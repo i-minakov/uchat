@@ -5,12 +5,12 @@ void switch_menu(GtkWidget *wid, t_main *m) {
     int y;
 
     if (m->menu->flag == 0 && m->set->flag == 0 ) { 
-        way = "./src/resource/cancel.png";
+        way = "./source/resource/cancel.png";
         y = 42;
         show_menu(m);
     }
     else {
-        way = "./src/resource/burger2.png";
+        way = "./source/resource/burger2.png";
         y = 37;
         if (m->set->flag == 1)
             hide_set(m);

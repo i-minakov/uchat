@@ -170,6 +170,7 @@ void exit_chat(GtkWidget *w, t_main *m) {
 void change_photo(GtkWidget *w, t_main *m) {
     attach_file(NULL, 2, NULL, m);
 }
+//////////////////////////////////////////////////////////////////////////////////
 
 void init_signals(t_main *m) {
     g_signal_connect(m->cap->burger_but, "enter-notify-event", G_CALLBACK(burger_notify), m);
@@ -198,6 +199,8 @@ void init_signals(t_main *m) {
     g_signal_connect(m->set->chan_pas, "icon-press", G_CALLBACK(backto_pas), m);
     g_signal_connect(m->set->chan_pas, "activate", G_CALLBACK(change_pas), m);
     g_signal_connect(m->set->chan_ph, "clicked", G_CALLBACK(change_photo), m);
+
+    g_signal_connect(m->micro_on_but, "clicked", G_CALLBACK(micro_click), m);
 
     set_dots_signal(m->dots);
 }

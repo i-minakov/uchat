@@ -42,7 +42,7 @@ static void file_check(gchar *tmp, t_msg **msg, char *name) {
     }
     else {
         t->file = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-        MX_BOX_START(t->file, gtk_image_new_from_file("./src/resource/load image.png"));
+        MX_BOX_START(t->file, gtk_image_new_from_file("./source/resource/load image.png"));
         gtk_box_pack_start(GTK_BOX(t->file), gtk_label_new(name), FALSE, FALSE, 10); 
         gtk_container_add(GTK_CONTAINER(t->label), t->file);
         gtk_widget_show(t->label);

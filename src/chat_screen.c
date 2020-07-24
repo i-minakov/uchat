@@ -95,10 +95,10 @@ void set_chat_grid(t_main *m, int flag) {
 static void set_cap(t_cap *c) {
     c->my_name = gtk_label_new(NULL);
     c->friend_name = gtk_label_new(NULL);
-    c->my_photo = resize_proportion("./src/resource/index.jpg", 51, 51);
-    c->frame_for_my_photo = gtk_image_new_from_file("./src/resource/my photo.png");
-    c->burger_but_img = gtk_image_new_from_file("./src/resource/burger.png");
-    c->dot_menu = gtk_image_new_from_file("./src/resource/dots.png");
+    c->my_photo = resize_proportion("./source/resource/index.jpg", 51, 51);
+    c->frame_for_my_photo = gtk_image_new_from_file("./source/resource/my photo.png");
+    c->burger_but_img = gtk_image_new_from_file("./source/resource/burger.png");
+    c->dot_menu = gtk_image_new_from_file("./source/resource/dots.png");
     char *markup = g_markup_printf_escaped("<span color=\"white\" font=\"14\">\%s</span>", c->m->my_name);
 
     gtk_fixed_put(GTK_FIXED(c->fix_cap), c->my_photo, 23, 20);
@@ -138,6 +138,7 @@ void hide_something(t_main *m) {
     hide_menu(m);
     hide_set(m);
 
+    gtk_widget_hide(m->micro_on);
     gtk_widget_hide(m->set->chan_name);
     gtk_widget_hide(m->set->chan_pas);
     gtk_widget_hide(m->grid_stic);
@@ -175,10 +176,9 @@ void free_all(t_main *m) {
     free(m->set);
     free(m->dots);
     free(m->forw);
-    free(m->stic->but);
-    free(m->stic->img);
-    mx_del_strarr(&m->stic->way);
+    stic_free(m);
     free(m->stic);
+    free(m->emo);
     free(m);
 }
 
@@ -200,8 +200,8 @@ int chat_screen(t_main **gtk) {
 
     m->order = 0;
     check_cmd(m);
-    // for (int i = 10; i > 0; i--) 
-    //     user_pushback(&m->users, "yarik");
+    for (int i = 10; i > 0; i--) 
+        user_pushback(&m->users, "yarik");
     init_components(m);
     connect_css(m, 1);
     init_signals(m);  

@@ -10,7 +10,7 @@ t_user *mx_create_user(char *name) {
     user->msg = create_msg(NULL, NULL);
     user->msg->count = -1;
     user->m = NULL;
-    user->photo_name = "./src/resource/index.jpg";
+    user->photo_name = "./source/resource/index.jpg";
     user->name = mx_strdup(name);
     return user;
 }

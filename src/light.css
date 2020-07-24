@@ -1,11 +1,7 @@
 window {
-	/* background:linear-gradient(0.25turn, #405170 10%, #09121D 100%); */
-	/* background-image: url("../img/фон2.png");
-    background-position: center; */
     background-color: #ffffff;
 }
 .top {
-    /* background-color: #ffffff; */
     border: none;
     box-shadow: -1px 0px 10px 0px #dddddd;
 
@@ -27,10 +23,6 @@ window {
     border: none;
     outline: none;
 }
-/* .blocks {
-    background-color: #121C2A;
-    box-shadow: px 2px 15px 3px #0E1723;
-} */
 .label {
     color: #13171f;
 }
@@ -45,9 +37,6 @@ window {
     box-shadow: 1px 0px 4px 2px #d6d5d5;
     caret-color: #13171f;
 }
-/* button * {
-    background-color: #34425A;
-} */
 .box{
     background-color: #34425A;
     color: white;
@@ -85,6 +74,9 @@ window {
     color: whitesmoke;
     background-image: none;
 }
+overshoot.top, overshoot.bottom, undershoot.top {
+    box-shadow: none;
+}
 #stic {
     background-image: none;
 	border: none;
@@ -96,4 +88,12 @@ window {
 	border: none;
     box-shadow: none;
     color: #F88161;
+}
+#rbut {
+    background:linear-gradient(0.45turn, #F88161 10%, #F54D64 100%);
+	border: none;
+    box-shadow: none;
+    border-radius: 7px;
+    box-shadow: none;
+    outline: none;
 }

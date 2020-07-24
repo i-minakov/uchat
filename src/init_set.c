@@ -23,9 +23,9 @@ void init_set(t_main *m) {
     m->set->set_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "set_but"));
     m->set->chan_name = GTK_WIDGET(gtk_builder_get_object(m->builder, "chan_name"));
     m->set->chan_pas = GTK_WIDGET(gtk_builder_get_object(m->builder, "chan_pas"));
-    m->set->my_photo = resize_proportion("./src/resource/index.jpg", 80, 80);
-    m->set->my_frame2 = gtk_image_new_from_file("./src/resource/my_fr2.png");
-    m->set->my_frame = gtk_image_new_from_file("./src/resource/my_fr1.png");
+    m->set->my_photo = resize_proportion("./source/resource/index.jpg", 80, 80);
+    m->set->my_frame2 = gtk_image_new_from_file("./source/resource/my_fr2.png");
+    m->set->my_frame = gtk_image_new_from_file("./source/resource/my_fr1.png");
     m->set->chan_ph = gtk_button_new();
     m->set->flag = 0;
     put_fix(m);

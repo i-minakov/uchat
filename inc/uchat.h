@@ -16,17 +16,17 @@
 #define MX_BOX_START(wid, label) gtk_box_pack_start(GTK_BOX(wid), label, FALSE, FALSE, 10)
 #define MX_MSG_PACK(flag, label, box) (flag == true ? MX_BOX_END(box, label) : MX_BOX_START(box, label))
 
-#define MX_MY_PHOTO(flag) flag == 1 ? "./src/resource/my photo.png" : "./src/resource/activated photo2.png"
+#define MX_MY_PHOTO(flag) flag == 1 ? "./source/resource/my photo.png" : "./source/resource/activated photo2.png"
 #define MX_NAME_COLOR(flag) flag == 1 ? "<span color=\"white\" font=\"14\">\%s</span>" : "<span color=\"black\" font=\"14\">\%s</span>"
 #define MX_CSS(flag) flag == 1 ? "./src/black.css" : "./src/light.css"
-#define MX_BOTTOM(flag) flag == 1 ? "./src/resource/bottom.png" : "./src/resource/bottom1.png"
-#define MX_TOP(flag) flag == 1 ? "./src/resource/top.png" : "./src/resource/top1.png"
-#define MX_ACTIVE(flag) flag == 1 ? "./src/resource/activated.png" : "./src/resource/activated2.png"
-#define MX_SLEPT(flag) flag == 1 ? "./src/resource/slept.png" : "./src/resource/slept22.png"
-#define MX_ACT_PH(flag) flag == 1 ? "./src/resource/activated photo.png" : "./src/resource/activated photo2.png"
-#define MX_SL_PH(flag) flag == 1 ? "./src/resource/slept photo.png" : "./src/resource/slept photo2.png"
-#define MX_ICON_ENTRY_PR(flag) flag == 1 ? "./src/resource/attach.png" : "./src/resource/attach1.png"
-#define MX_ICON_ENTRY_SEC(flag) flag == 1 ? "./src/resource/smile.png" : "./src/resource/smile1.png"
+#define MX_BOTTOM(flag) flag == 1 ? "./source/resource/bottom.png" : "./source/resource/bottom1.png"
+#define MX_TOP(flag) flag == 1 ? "./source/resource/top.png" : "./source/resource/top1.png"
+#define MX_ACTIVE(flag) flag == 1 ? "./source/resource/activated.png" : "./source/resource/activated2.png"
+#define MX_SLEPT(flag) flag == 1 ? "./source/resource/slept.png" : "./source/resource/slept22.png"
+#define MX_ACT_PH(flag) flag == 1 ? "./source/resource/activated photo.png" : "./source/resource/activated photo2.png"
+#define MX_SL_PH(flag) flag == 1 ? "./source/resource/slept photo.png" : "./source/resource/slept photo2.png"
+#define MX_ICON_ENTRY_PR(flag) flag == 1 ? "./source/resource/attach.png" : "./source/resource/attach1.png"
+#define MX_ICON_ENTRY_SEC(flag) flag == 1 ? "./source/resource/smile.png" : "./source/resource/smile1.png"
  
 #define MX_START(flag) flag == 2 ? "Выберите чат, чтобы начать переписку" : "Please select a chat to start messaging"
 #define MX_MENU_EX(flag) flag == 2 ? "Выход" : "Exit"
@@ -146,6 +146,7 @@ typedef struct s_data_users {
 
 typedef struct s_cap {
     GtkWidget *fix_cap;
+    GtkWidget *top_b;
     GtkWidget *burger_but;
     GtkWidget *burger_but_img;
     GtkWidget *my_photo;
@@ -253,13 +254,17 @@ typedef struct s_main {
     GtkWidget *stic_stic;
     GtkWidget *stic_line;
 
+    GtkWidget *micro_on;
+    GtkWidget *micro_of;
+    GtkWidget *micro_on_but;
+    int micro_flag;
+
     GtkWidget *fix_for_users;
     GtkWidget *fix_for_text;
     GtkWidget *lab_start;
     GtkWidget *scrol_bar;
     GtkWidget *edit_entry;
     GtkWidget *bottom_b;
-    GtkWidget *top_b;
     GtkAdjustment *adj; 
     GtkBuilder *builder;
     char **command;
@@ -353,6 +358,8 @@ void backto_pas(GtkEntry *entry, GtkEntryIconPosition icon_pos,
                 GdkEvent *event, t_main *m);
 void enter_pas(GtkWidget *widget, t_main *m);
 
+void micro_click(GtkWidget *w, t_main *m);
+void icon_entr_set(t_main *m);
 void set_emo_tab(t_main *m);
 void set_stics(t_main *m);
 void set_emoji(t_main *m);
@@ -392,6 +399,7 @@ typedef struct s_sign {
 	GtkWidget *sig_pas;
 	GtkWidget *sig_pas2;
 	GtkWidget *sig_photo;
+    GtkWidget *sig_add_img;
 	GtkWidget *sig_display;
 	int flagimg;
 	GtkWidget *sig_but;

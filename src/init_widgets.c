@@ -18,6 +18,7 @@ static void sig_widgets(t_wid *wid) {
 	wid->sig->sig_photo = GTK_WIDGET(gtk_builder_get_object(wid->builder, "sig_photo"));
 	wid->sig->flagimg = 0;
 	wid->sig->sig_but = GTK_WIDGET(gtk_builder_get_object(wid->builder, "sig_ok"));
+	wid->sig->sig_add_img = GTK_WIDGET(gtk_builder_get_object(wid->builder, "sig_add_img"));
 }
 
 static void valid_widgets(t_wid *wid) {

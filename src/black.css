@@ -5,7 +5,6 @@ window {
     background-color: #121C2A;
 }
 .top {
-    /* background-color: #2a1216; */
     border: none;
     box-shadow: 1px 0px 20px 2px #0a1018;
 
@@ -14,6 +13,7 @@ window {
     background-color: #121C2A;
     border: none;
     box-shadow: 1px 0px 20px 2px #0a1018;
+    /* box-shadow: inset 0px 10px 4px 0px #000000;  */
     outline: none;
 }
 .masage {
@@ -92,4 +92,11 @@ overshoot.top, undershoot.top {
 	border: none;
     box-shadow: none;
     color: #F88161;
+}
+#rbut {
+    background: whitesmoke;
+    color: #0a1018; 
+	border: none;
+    box-shadow: none;
+    border-radius: 7px;
 }

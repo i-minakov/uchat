@@ -67,6 +67,7 @@ t_msg *create_msg(char *text, char *filename) {
         gtk_button_set_label(GTK_BUTTON(new->label), new->text);
     } 
     new->menu = gtk_menu_new();
+    gtk_widget_set_name(new->menu, "rbut");
     g_signal_connect(new->label, "button_press_event", G_CALLBACK(popup_menu), new);
     return new;
 }

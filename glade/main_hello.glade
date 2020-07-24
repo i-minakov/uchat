@@ -27,7 +27,7 @@
             <property name="height_request">40</property>
             <property name="can_focus">True</property>
             <property name="buffer">entrybuffer1</property>
-            <property name="primary_icon_pixbuf">../img/dor.png</property>
+            <property name="primary_icon_pixbuf">../source/img/dor.png</property>
             <property name="secondary_icon_activatable">False</property>
             <property name="secondary_icon_sensitive">False</property>
             <property name="placeholder_text" translatable="yes">name</property>
@@ -47,8 +47,8 @@
             <property name="can_focus">True</property>
             <property name="buffer">entrybuffer2</property>
             <property name="visibility">False</property>
-            <property name="primary_icon_pixbuf">../img/lock.png</property>
-            <property name="secondary_icon_pixbuf">../img/eye .png</property>
+            <property name="primary_icon_pixbuf">../source/img/lock.png</property>
+            <property name="secondary_icon_pixbuf">../source/img/eye .png</property>
             <property name="primary_icon_activatable">False</property>
             <property name="primary_icon_sensitive">False</property>
             <property name="placeholder_text" translatable="yes">password</property>
@@ -72,7 +72,7 @@
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixbuf">../img/but1.png</property>
+                <property name="pixbuf">../source/img/but1.png</property>
               </object>
             </child>
             <style>
@@ -90,7 +90,7 @@
             <property name="height_request">40</property>
             <property name="can_focus">True</property>
             <property name="buffer">entrybuffer3</property>
-            <property name="primary_icon_pixbuf">../img/dor.png</property>
+            <property name="primary_icon_pixbuf">../source/img/dor.png</property>
             <property name="secondary_icon_activatable">False</property>
             <property name="secondary_icon_sensitive">False</property>
             <property name="placeholder_text" translatable="yes">name</property>
@@ -110,8 +110,8 @@
             <property name="can_focus">True</property>
             <property name="buffer">entrybuffer4</property>
             <property name="visibility">False</property>
-            <property name="primary_icon_pixbuf">../img/lock.png</property>
-            <property name="secondary_icon_pixbuf">../img/eye .png</property>
+            <property name="primary_icon_pixbuf">../source/img/lock.png</property>
+            <property name="secondary_icon_pixbuf">../source/img/eye .png</property>
             <property name="placeholder_text" translatable="yes">password</property>
             <style>
               <class name="entry"/>
@@ -129,8 +129,8 @@
             <property name="can_focus">True</property>
             <property name="buffer">entrybuffer5</property>
             <property name="visibility">False</property>
-            <property name="primary_icon_pixbuf">../img/lock.png</property>
-            <property name="secondary_icon_pixbuf">../img/eye .png</property>
+            <property name="primary_icon_pixbuf">../source/img/lock.png</property>
+            <property name="secondary_icon_pixbuf">../source/img/eye .png</property>
             <property name="placeholder_text" translatable="yes">confirm password</property>
             <style>
               <class name="entry"/>
@@ -143,13 +143,26 @@
         </child>
         <child>
           <object class="GtkFileChooserButton" id="sig_photo">
-            <property name="width_request">100</property>
+            <property name="width_request">180</property>
             <property name="height_request">40</property>
             <property name="can_focus">False</property>
             <property name="title" translatable="yes"/>
             <style>
               <class name="file"/>
             </style>
+          </object>
+          <packing>
+            <property name="x">600</property>
+            <property name="y">366</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="sig_add_img">
+            <property name="width_request">10</property>
+            <property name="height_request">20</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">../source/img/filead.png</property>
           </object>
           <packing>
             <property name="x">600</property>
@@ -166,7 +179,7 @@
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixbuf">../img/but2.png</property>
+                <property name="pixbuf">../source/img/but2.png</property>
               </object>
             </child>
             <style>
@@ -251,7 +264,7 @@
               <object class="GtkImage" id="main_but_image1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixbuf">../img/log.png</property>
+                <property name="pixbuf">../source/img/log.png</property>
                 <property name="icon_size">2</property>
               </object>
             </child>
@@ -276,7 +289,7 @@
               <object class="GtkImage" id="main_but_image2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixbuf">../img/sign.png</property>
+                <property name="pixbuf">../source/img/sign.png</property>
               </object>
             </child>
             <style>
@@ -298,7 +311,7 @@
               <object class="GtkImage" id="main_but_image3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixbuf">../img/1.png</property>
+                <property name="pixbuf">../source/img/1.png</property>
               </object>
             </child>
             <style>
@@ -320,7 +333,7 @@
               <object class="GtkImage" id="main_but_image4">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixbuf">../img/2.png</property>
+                <property name="pixbuf">../source/img/2.png</property>
                 <property name="icon_size">2</property>
               </object>
             </child>
@@ -344,7 +357,7 @@
               <object class="GtkImage" id="main_but_image5">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixbuf">../img/log2.png</property>
+                <property name="pixbuf">../source/img/log2.png</property>
                 <property name="icon_size">2</property>
               </object>
             </child>
@@ -368,7 +381,7 @@
               <object class="GtkImage" id="main_but_image6">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixbuf">../img/sign2.png</property>
+                <property name="pixbuf">../source/img/sign2.png</property>
               </object>
             </child>
             <style>
@@ -385,7 +398,7 @@
             <property name="width_request">100</property>
             <property name="height_request">80</property>
             <property name="can_focus">False</property>
-            <property name="pixbuf">../img/black.png</property>
+            <property name="pixbuf">../source/img/black.png</property>
           </object>
         </child>
         <child>
@@ -393,7 +406,7 @@
             <property name="width_request">100</property>
             <property name="height_request">80</property>
             <property name="can_focus">False</property>
-            <property name="pixbuf">../img/err back.png</property>
+            <property name="pixbuf">../source/img/err back.png</property>
           </object>
           <packing>
             <property name="x">300</property>
@@ -411,7 +424,7 @@
               <object class="GtkImage">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="pixbuf">../img/but3.png</property>
+                <property name="pixbuf">../source/img/but3.png</property>
               </object>
             </child>
             <style>

@@ -12,4 +12,5 @@ void show_fields(t_wid *wid) {
 	gtk_widget_show(wid->sig->sig_pas2);
 	gtk_widget_show(wid->sig->sig_photo);
 	gtk_widget_show(wid->sig->sig_but);
+	gtk_widget_show(wid->sig->sig_add_img);
 }

@@ -11,6 +11,7 @@ static bool show_photo (t_wid *wid) {
 	gtk_fixed_put(GTK_FIXED(wid->fixed), wid->sig->sig_display, 0, 0);
 	gtk_widget_show(wid->sig->sig_display);
 	wid->sig->flagimg = 1;
+	gtk_widget_hide(wid->sig->sig_add_img);
 	return true; 
 }
 

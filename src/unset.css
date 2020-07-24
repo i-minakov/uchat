@@ -29,3 +29,6 @@ window {
 .but {
 	all: unset;
 }
+#rbut {
+    all: unset;
+}

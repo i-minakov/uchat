@@ -1,8 +1,7 @@
 @define-color placeholder_text_color #a1b6c0;
 
 window {
-	/*background:linear-gradient(0.25turn, #405170 10%, #09121D 100%);*/
-	background-image: url("../img/фон3.png");
+	background-image: url("../source/img/фон3.png");
 	background-position: center;
 }
 .req {
@@ -18,8 +17,6 @@ window {
 	-gtk-icon-shadow: none;
 }
 .entry {
-	/*background-color: #ffffff  3f557a;
-	opacity: 0.15;*/
 	color: whitesmoke;
 	background-color: #3F4756;
 	border-radius: 30px;
@@ -31,20 +28,18 @@ window {
 	font-family: URW Gotic L Book;
   	font-size: 13px;
   	font-weight: normal;
-	/*outline-color: white;*/
 }
 .file {
-	background-color: #3F4756;
+	background-color: #253144;
 	border-radius: 30px;
 	border: none;
 	caret-color: white;
+	color: whitesmoke;
 	padding-left: 20px;
 	padding-right: 20px;
 	background-image: none;
 	box-shadow: none;
-	/*-gtk-icon-source: url("../img/dor.png");*/
 	-gtk-icon-shadow: none;
-	/*outline-color: white;*/
 }
 
 .heading{

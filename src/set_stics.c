@@ -10,7 +10,7 @@ static void init_signals_stics(t_main *m) {
 }
 
 static void init_component(int i, t_main *m, int row, int col) {
-    m->stic->way[i] = mx_backjoin("./src/resource/stic/", mx_itoa(i+1));
+    m->stic->way[i] = mx_backjoin("./source/resource/stic/", mx_itoa(i+1));
     m->stic->way[i] = mx_delit_fre(m->stic->way[i], ".png");
     m->stic->img[i] = resize_proportion(m->stic->way[i], 50, 50);
     m->stic->but[i] = gtk_button_new ();
