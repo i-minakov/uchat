@@ -1,5 +1,13 @@
 #include "../inc/uchat.h"
 
+int mx_msg_size(t_msg *list) {
+    int res = 0;
+
+    for (t_msg *i = list; i; i = i->next)
+        res++;
+    return res;
+}
+
 void user_pushfront(t_user **head, char *name) {
     t_user *tmp = *head;
 
@@ -212,19 +220,25 @@ int chat_screen(t_main **gtk) {
     g_idle_add((GSourceFunc)move_scrol, m);
     gtk_widget_show_all(m->window);
     hide_something(m);
-    if (m->style->color == 2)
+    if (m->style->color == 2) {
+        m->style->color = 1;
         change_color(NULL, m);
-    if (m->style->lang == 2)
+        mx_del_strarr(&m->command);
+    }
+    if (m->style->lang == 2) {
+        m->style->lang = 1;
         change_lang(NULL, m);
+        mx_del_strarr(&m->command);
+    }
     m->cmd = DEF;
     return ex;
 }
-
+ 
 int interface() {
     t_main *m = malloc_main();
     
     gtk_init(NULL, NULL);
-    log_screen(&m);
+    // log_screen(&m);
     chat_screen(&m);
     gtk_main();
     free_all(m);

@@ -13,37 +13,39 @@ static void entry_activate(GtkEntry *e, t_main *m) {
     send_but(m->but1, m);
 }
 
+// void mx_new_msg_back(t_user *us, t_list *list) {
+//     int c = 0;
+//     char *id_new = NULL;
+//     char **arr = NULL;
 
-void fun(GtkScrolledWindow *scrolled_window, GtkPositionType pos, t_main *m) {
-    if (pos == GTK_POS_TOP && m->order == 2 && m->users->msg->count < 15) 
-        printf("YES\n");
-    else 
-        return ;
-    
-    t_user *us = NULL;
-    int adj = 0;
-    int c = 0;
+//     for (t_msg *j = us->msg; j; j = j->next) 
+//         j->next == NULL ? c = j->count - 1 : 0;
+//     for (t_list *i = list; i; i = i->next) {
+//         id_new = mx_get_value(i->data, "command");
+//         arr = mx_get_arr(i->data);
+//         add_message_back(us, create_struct(arr[0], !mx_strcmp(m->my_name,
+//                  arr[2]) ? true : false, 0, arr[1]), c, mx_atoi(id_new));
+//         mx_del_strarr(&arr);
+//         c--;
+//     }
+// }
 
-    for (t_user *i = m->users; i; i = i->next) 
-        i->check == true ? us = i : 0;
-    for (t_msg *j = us->msg; j; j = j->next) 
-        j->next == NULL ? c = j->count - 1 : 0;
-    int buf;
-    char *s = NULL;
-    int j = 0;
-    int fd = open("./t.txt", O_RDWR);
-    while(read(fd, &buf, 1)) {
-        if (buf == 10) {
-            add_message_back(us, create_struct(s, j%2 == 0 ? false : true, 0, NULL), c);
-            mx_strdel(&s);
-            j++;
-            c--;
-        }
-        else s = mx_delit_fre(s, (char *)(&buf));
-        buf = 0;
-    }
-    close(fd);
-}
+// void mx_new_msg_back(t_main *m, t_list *list) {
+//     t_user *us = NULL;
+//     int adj = 0;
+//     int c = 0;
+
+//     for (t_user *i = m->users; i; i = i->next) 
+//         i->check == true ? us = i : 0;
+//     for (t_msg *j = us->msg; j; j = j->next) 
+//         j->next == NULL ? c = j->count - 1 : 0;
+//     for {
+//         add_message_back(us, create_struct(s, j%2 == 0 ? false : true, 0, NULL), c);
+//         mx_strdel(&s);
+//         j++;
+//         c--;
+//     }
+// }
 
 /////////////////////////////////////////////////////////////////////////////////////
 void show_hide_dots_menu(GtkWidget *wid, t_dots *d) {
@@ -65,6 +67,7 @@ void clear_history(GtkWidget *wid, t_main *m) {
     free_msg(&us->msg);
     us->msg = create_msg(NULL, NULL);
     us->msg->count = -1;
+    us->msg->id = 0;
     us->row = 0;
     us->text_grid = gtk_grid_new();
     gtk_grid_set_row_spacing(GTK_GRID(us->text_grid), 20);
@@ -179,7 +182,7 @@ void init_signals(t_main *m) {
     g_signal_connect(m->sms, "activate", G_CALLBACK(entry_activate), m);
     g_signal_connect(m->sms, "icon-press", G_CALLBACK(attach_file), m);
     g_signal_connect(m->dots->search_msg_but, "clicked", G_CALLBACK(show_search_msg), m);
-    g_signal_connect(m->scrol_bar, "edge-reached", G_CALLBACK(fun), m);
+    // g_signal_connect(m->scrol_bar, "edge-reached", G_CALLBACK(fun), m);
     g_signal_connect(m->search, "activate", G_CALLBACK(search_activ), m);
     g_signal_connect(m->search, "icon-press", G_CALLBACK(close_search), m);
 

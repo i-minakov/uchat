@@ -14,7 +14,7 @@ static void user_recipient(GtkWidget *wid, t_user *us) {
         s->text = us->m->text;
         s->forw_from = mx_strdup(fm->autor);
         mx_del_strarr(&us->m->command);
-        add_message(us, s);
+        add_message(us, s, us->msg->next->id + 1);
         command_msg(us, s, fm->stic);
     }
     else 

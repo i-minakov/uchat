@@ -56,7 +56,6 @@ t_msg *create_msg(char *text, char *filename) {
     new->user = NULL;
     new->filename = filename;
     new->text = NULL;
-    new->id = 1;
     new->time = NULL;
     if (!text && !filename)
         return new;
