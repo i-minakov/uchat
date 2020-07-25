@@ -65,7 +65,7 @@ void *mx_server_files(void *data);
 void *mx_server_handel(void *data);
 int mx_server(int argc, char *argv[]);
 
-// help
+// Help
 void mx_del_if_exist(char *name);
 void mx_del_file(FILE *file, char **size, char **name);
 void mx_check_file_size(FILE *file, char **size, char **name);
@@ -88,6 +88,7 @@ void mx_file_size_close(SSL *ssl, char *str, char ch1, char ch2);
 void *mx_mom(void *restrict dst, const void *restrict src, size_t n, size_t i);
 int mx_arr_size(char **arr);
 
+// Ilay
 int chat_screen(t_main **gtk);
 
 #endif

@@ -1,22 +1,5 @@
 #include "../inc/uchat.h"
 
-static void add_time(t_user *i, t_add_m *s) {
-    char **m = NULL;
-    time_t rawtime;
-    struct tm * timeinfo;
-
-    if (s->time_m == NULL) {
-        time(&rawtime);
-        timeinfo = localtime(&rawtime);
-        s->time_m = asctime(timeinfo);
-        m = mx_strsplit(s->time_m, '\n');
-        gtk_widget_set_tooltip_text(i->msg->next->label, m[0]);
-        mx_del_strarr(&m);
-    }
-    else
-        gtk_widget_set_tooltip_text(i->msg->next->label, s->time_m);
-}
-
 static void msg_pushback(t_msg **head, char *text, bool my, int forw) {
     t_msg *tmp = NULL;
     GtkWidget *item[4];
@@ -60,14 +43,16 @@ void add_message_back(t_user *i, t_add_m *s, int count, int id) {
             k->user = i;
         }
     msg->id = id;
+    msg->count = count;
     wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_widget_set_size_request(wid, 650, 30);
     add_time(i, s);
     MX_MSG_PACK(s->my, msg->label, wid);
     MX_SET_NAME_MSG(s->my, msg->label);
     gtk_grid_attach_next_to(GTK_GRID(i->text_grid), wid, NULL, GTK_POS_TOP, 1, 1);
-    g_idle_add((GSourceFunc)mx_show, wid);
+    MX_IDLE_SHOW(false, wid);
     msg->adj_value = gtk_adjustment_get_value(i->m->adj);
     reset_l_mess(i);
     free(str);
+    free(s);
 }

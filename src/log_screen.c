@@ -67,7 +67,7 @@ int log_screen(t_main *m)
     // g_object_unref(wid->builder);
 
     gtk_widget_show(wid->window); 
-	g_idle_add((GSourceFunc)do_opening, wid);
+	//g_idle_add((GSourceFunc)do_opening, wid);
 
     // gtk_main();
 	// free(wid);

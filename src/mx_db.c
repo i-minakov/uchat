@@ -5,7 +5,6 @@ int mx_open_db(int flag, sqlite3 **db, char **err_msg) {
     flag = sqlite3_open("database.db", db);
 
     if (flag != SQLITE_OK) {
-        printf("sqlite3_open: %s\n", sqlite3_errmsg(*db));
         sqlite3_free(*err_msg);
         sqlite3_close(*db);
         flag = 1;
@@ -17,7 +16,6 @@ int mx_exe(int flag, sqlite3 **db, char **command, char **err_msg) {
     flag = sqlite3_exec(*db, *command, 0, 0, err_msg);
 
     if (flag != SQLITE_OK) {
-        printf("sqlite3_exec: %s\n", sqlite3_errmsg(*db));
         sqlite3_free(*err_msg);
         sqlite3_close(*db);
         flag = 1;
@@ -748,7 +746,7 @@ static int mx_move_file(char *name_from, char *name_to, char *message, char *fil
 static char *mx_other_mssg(char *name_from, char *name_to, char *message, int flag) {
     char *path = NULL;
 
-    if (flag == 0)
+    if (flag == 0 || flag == 2)
         path = mx_strdup(message);
     if (flag == 1) {
         path = mx_super_join("./database/", name_from, 0);
@@ -757,8 +755,6 @@ static char *mx_other_mssg(char *name_from, char *name_to, char *message, int fl
         path = mx_super_join(path, "/", 1);
         path = mx_super_join(path, mx_get_time(), 1);
     }
-    else if (flag == 2)
-        path = mx_super_join("./source/sticker_gif/", message, 0);
     return path;
 }
 static int mx_insert_mssg(t_input *node) {

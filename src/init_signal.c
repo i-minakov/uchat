@@ -143,10 +143,16 @@ void mx_increase_msg_list(GtkScrolledWindow *scrol_bar,
     if (pos == GTK_POS_BOTTOM)
         return;
     t_user *us = NULL;
+    char *new = NULL;
+
+    for (t_user *i = m->users; i; i = i->next)
+        i->check == true ? us = i : 0;
+    new = mx_itoa(us->size_request);
     m->command = mx_arrjoin(m->command, "mx_update");
     m->command = mx_arrjoin(m->command, "size");
-    // m->command = mx_arrjoin(m->command, m->size_request + 20);
-
+    us->size_request += 20;
+    m->command = mx_arrjoin(m->command, new);
+    mx_strdel(&new);
 }
 
 void init_signals(t_main *m) {

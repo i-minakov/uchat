@@ -33,7 +33,7 @@ static void valid_widgets(t_wid *wid) {
 
 	wid->start_gif = gtk_image_new_from_file ("source/resource/gif/start.gif");
 	gtk_fixed_put(GTK_FIXED(wid->fixed), wid->start_gif, 5, 0);
-	gtk_widget_show(wid->start_gif);
+	//gtk_widget_show(wid->start_gif);
 }
 
 void init_widgets_start(t_wid *wid, t_eye *eye) {

@@ -1,13 +1,5 @@
 #include "../inc/uchat.h"
 
-int mx_msg_size(t_msg *list) {
-    int res = 0;
-
-    for (t_msg *i = list; i; i = i->next)
-        res++;
-    return res;
-}
-
 void user_pushfront(t_user **head, char *name) {
     t_user *tmp = *head;
 
@@ -103,7 +95,7 @@ void set_chat_grid(t_main *m, int flag) {
 static void set_cap(t_cap *c) {
     c->my_name = gtk_label_new(NULL);
     c->friend_name = gtk_label_new(NULL);
-    c->my_photo = resize_proportion("./source/resource/index.jpg", 51, 51);
+    c->my_photo = resize_proportion(mx_backjoin("./source/cash/", mx_strjoin(c->m->my_name, ".jpg")), 51, 51);
     c->frame_for_my_photo = gtk_image_new_from_file("./source/resource/my photo.png");
     c->burger_but_img = gtk_image_new_from_file("./source/resource/burger.png");
     c->dot_menu = gtk_image_new_from_file("./source/resource/dots.png");
@@ -157,7 +149,7 @@ void hide_something(t_main *m) {
 }
 
 t_main *malloc_main() {
-    t_main *m = (t_main *)malloc(sizeof(t_main) * 100);
+    t_main *m = (t_main *)malloc(sizeof(t_main));
 
     m->exit = 0;
     m->cap = (t_cap *)malloc(sizeof(t_cap) * 100);
@@ -193,10 +185,6 @@ void free_all(t_main *m) {
 void check_cmd(t_main *m) {
     if (m->cmd == SIG_UP) {
         m->my_name = mx_strdup(m->log_in->sig->signame);
-        m->command = mx_arrjoin(m->command, "mx_add_new_user");
-        m->command = mx_arrjoin(m->command, m->my_name);
-        m->command = mx_arrjoin(m->command, m->log_in->sig->sigpas);
-        m->command = mx_arrjoin(m->command, "./index.jpg");
         m->cmd = BLCK;
     }
     if (m->cmd == SIG_IN) 
@@ -217,19 +205,9 @@ int chat_screen(t_main **gtk) {
     init_signals(m);  
     gtk_label_set_text(GTK_LABEL(m->lab_start),
                      "Please select a chat to start messaging");
-    g_idle_add((GSourceFunc)move_scrol, m);
     gtk_widget_show_all(m->window);
     hide_something(m);
-    if (m->style->color == 2) {
-        m->style->color = 1;
-        change_color(NULL, m);
-        mx_del_strarr(&m->command);
-    }
-    if (m->style->lang == 2) {
-        m->style->lang = 1;
-        change_lang(NULL, m);
-        mx_del_strarr(&m->command);
-    }
+    gtk_window_set_icon_from_file (GTK_WINDOW(m->window), "source/resource/logo.png", NULL);
     m->cmd = DEF;
     return ex;
 }

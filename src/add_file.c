@@ -29,7 +29,7 @@ static void msg_file_pushfront(t_msg **head, t_add_m *s, int sticer) {
     }
 }
 
-static void file_check(gchar *tmp, t_msg **msg, char *name, bool my) {
+void file_check(gchar *tmp, t_msg **msg, char *name, bool my) {
     t_msg *t = *msg;
 
     if (mx_strstr(tmp, ".jpg") || mx_strstr(tmp, ".jpeg")
@@ -70,7 +70,7 @@ void add_file(t_user *us, t_add_m *s, int stic, int id) {
 
     for (int i = 0; p[i]; i++)
         p[i + 1] == NULL ? name = p[i] : 0;
-    msg_file_pushfront(&us->msg, s, stic);
+    msg_file_pushfront(&us->msg, s, stic + 1);
     t = us->msg->next;
     t->user = us;
     t->id = id;
@@ -84,4 +84,5 @@ void add_file(t_user *us, t_add_m *s, int stic, int id) {
         send_file(us, s, t, stic);
     }
     mx_del_strarr(&p);
+    free(s);
 }

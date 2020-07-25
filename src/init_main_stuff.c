@@ -1,9 +1,14 @@
 #include "../inc/uchat.h"
 
+void mx_exit(GtkWidget *object, t_main *m) {
+    // m->command = mx_arrjoin(m->command, "mx_error");
+    // m->command = mx_arrjoin(m->command, "error");   
+}
+
 static void builder_and_style(t_main *m) {
     m->builder = gtk_builder_new_from_file("./source/resource/test.glade");
     m->window = GTK_WIDGET(gtk_builder_get_object(m->builder, "window1"));
-    g_signal_connect(m->window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
+    g_signal_connect(m->window, "destroy", G_CALLBACK(mx_exit), m);
     gtk_builder_connect_signals(m->builder, m->builder);
 }
 
@@ -26,8 +31,6 @@ void init_main_stuff(t_main *m) {
     m->cap->top_b = GTK_WIDGET(gtk_builder_get_object(m->builder, "top_b"));
     m->fix_for_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_text"));
     m->fix_for_users = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_for_user"));
-    // m->cap->top_b = gtk_image_new_from_file("./source/resource/top.png");
-    // gtk_fixed_put(m->cap->fix_cap, m->cap->top_b, 0, 0);
     m->cap->fix_cap = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix_cap"));
     m->fix1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "fix"));
     m->sms = GTK_WIDGET(gtk_builder_get_object(m->builder, "sms"));

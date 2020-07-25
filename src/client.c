@@ -1,34 +1,57 @@
 #include "../inc/header.h"
 
+// voice
+// sort seg
+
+/* Ilay */
+void mx_msg_or_file(char **arr, char *id, t_user *us) {
+    if (mx_atoi(arr[3]) == 0)
+        add_message(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
+            arr[2]) ? true : false, 
+                mx_atoi(arr[3]), arr[1]), mx_atoi(id));
+    else 
+        add_file(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
+            arr[2]) ? true : false, 
+                mx_atoi(arr[3]), arr[1]), mx_atoi(arr[3]), mx_atoi(id));
+}
+
+void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
+    t_add_m *s = NULL;
+
+    if (mx_atoi(arr[3]) == 0)
+            add_message_back(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
+                arr[2]) ? true : false, mx_atoi(arr[3]), arr[1]), count, mx_atoi(id));
+    else {
+        s = create_struct(arr[0], !mx_strcmp(us->m->my_name,
+            arr[2]) ? true : false, mx_atoi(arr[3]), arr[1]);
+        s->id = mx_atoi(id);
+        add_file_back(us, s, mx_atoi(arr[3]), count);
+    }
+}
+
 void mx_new_msg_back(t_user *us, t_list *list) {
     int c = 0;
     char *id_new = NULL;
     char **arr = NULL;
+    t_add_m *s = NULL;
 
     for (t_msg *j = us->msg; j; j = j->next) 
         j->next == NULL ? c = j->count - 1 : 0;
     for (t_list *i = list; i; i = i->next) {
         id_new = mx_get_value(i->data, "command");
         arr = mx_get_arr(i->data);
-        add_message_back(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
-                 arr[2]) ? true : false, 0, arr[1]), c, mx_atoi(id_new));
+        mx_msg_or_file_back(arr, id_new, us, c);
         mx_del_strarr(&arr);
+        mx_strdel(&id_new);
         c--;
     }
 }
 /* check rcv list */
-bool mx_check_activ(t_user *us, t_list *list) {
-    t_list *new_ms = NULL;
-    char **arr = NULL;
-    char *json = NULL;
+
+int find_last_ind_new(t_list *list) {
     char *id_new = NULL;
     int last_id_new = 0;
-    int last_id_old = 0;
 
-    if (!us || us->check == false 
-        || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
-        return false;
-    printf("\n\n%s\n\n", us->name);
     for (t_list *k = ((t_data *)list->data)->list; k->data; k = k->next) {
         if (k->next->data == NULL) {
             id_new = mx_get_value(k->data, "command");
@@ -36,9 +59,18 @@ bool mx_check_activ(t_user *us, t_list *list) {
             free(id_new);
         } 
     }
+    return last_id_new;
+}
+
+bool mx_check_last_index(t_user *us, t_list *list) {
+    char *arr = NULL;
+    char *id_new = NULL;
+    int last_id_new = find_last_ind_new(list);
+    int last_id_old = 0;
+    t_list *new_ms = NULL;
+
     for (t_msg *i = us->msg->next; i; i = i->next)
         i->next == NULL ? last_id_old = i->id : 0;
-    printf("\n\n\nnew %d --- old %d\n", last_id_new, last_id_old);
     if (last_id_new != last_id_old) {
         for (t_list *k = ((t_data *)list->data)->list; k->data; k = k->next) { 
             id_new = mx_get_value(k->data, "command");
@@ -50,48 +82,55 @@ bool mx_check_activ(t_user *us, t_list *list) {
         mx_free_list(&new_ms);
         return true;
     }
+    return false;
+}
+
+bool mx_check_activ(t_main *m, t_list *list) {
+    t_user *us = NULL;
+    char **arr = NULL;
+    char *json = NULL;
+    char *id_new = NULL;
+
+    for (t_user *i = m->users; i; i = i->next)
+        i->check == true ? us = i : 0;
+    if (!us || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
+        return false;
+    if (mx_check_last_index(us, list) == true)
+        return true;
     id_new = mx_get_value(((t_data *)list->data)->list->data, "command");
     if (us->msg->next->id != mx_atoi(id_new)) {
         arr = mx_get_arr(((t_data *)list->data)->list->data);
-        add_message(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
-                 arr[2]) ? true : false, 0, arr[1]), mx_atoi(id_new));
+        mx_msg_or_file(arr, id_new, us);
         mx_del_strarr(&arr);
-        mx_strdel(&id_new);
     }
+    mx_strdel(&id_new);
     return true;
 }
-
 void mx_cmp_list(t_main *m, t_info *info) {
-    t_user *us = m->users;
+    t_user *us = NULL;
     char *json = NULL;
     char *cmd = NULL;
     char **arr = NULL;
 
-    for (t_list *i = info->list; i; i = i->next) { 
-        if (mx_check_activ(us, i) == false) {
+    for (t_list *i = info->list; i; i = i->next) {
+        if (mx_check_activ(m, i) == false) {
+            us = mx_user_by_name(((t_data *)i->data)->name, m);
             json = ((t_data *)i->data)->list->data;
             cmd = mx_get_value(json, "command");
             arr = mx_get_arr(json);
-            if (us && us->msg->next->id != mx_atoi(cmd)) {
-                add_message(mx_user_by_name(((t_data *)i->data)->name, m), 
-                    create_struct(arr[0], !mx_strcmp(m->my_name, 
-                    arr[2]) ? true : false , 0, arr[1]), mx_atoi(cmd));
-            }
+            if (!us->msg->next || us->msg->next->id != mx_atoi(cmd)) 
+                mx_msg_or_file(arr, cmd, us);
             mx_strdel(&cmd); 
             mx_del_strarr(&arr);
         }
-        us->next ? us = us->next : 0;
     }
 }
-
 void mx_check_rcv_list(t_info *info, t_main *m) {
     if (m->cmd == SRCH)
         show_result_of_search(info->list, m);
     else if (m->cmd == DEF)
         mx_cmp_list(m, info);
 }
-
-/* check sigin */
 void mx_check_sigin(t_main *m) {
     if (m->cmd == CHECK_PASS) {
         m->command = mx_arrjoin(m->command, "mx_check_user_pass");
@@ -113,9 +152,16 @@ void mx_check_sigin(t_main *m) {
         m->command = mx_arrjoin(m->command, "1");
         m->cmd = BLCK;
     }
+    else if (m->cmd == CHECK_US) {
+        m->my_name = mx_strdup(m->log_in->sig->signame);
+        m->command = mx_arrjoin(m->command, "mx_add_new_user");
+        m->command = mx_arrjoin(m->command, m->my_name);
+        m->command = mx_arrjoin(m->command, m->log_in->sig->sigpas);
+        m->command = mx_arrjoin(m->command, 
+            m->log_in->sig->sigfile ? m->log_in->sig->sigfile : "./source/resource/default.jpg");
+        m->cmd = BLCK;
+    }
 }
-
-/* !!!delete!!! */
 static void mx_enter_argv(char ***arr, t_client *client) {
     char **request = client->gtk->command;
 
@@ -125,6 +171,9 @@ static void mx_enter_argv(char ***arr, t_client *client) {
     }
     mx_check_sigin(client->gtk);
 }
+
+
+
 
 /* sort */
 int mx_intcmp(char *str1, char *str2) {
@@ -182,6 +231,8 @@ static void mx_change_cmp(char ***arr) {
     *arr = shift;
 }
 static int mx_parse_time(char *str1, char *str2) {
+    if (!str1 || !str2)
+        return 0;
     int result = 0;
     char **arr1 = mx_strsplit(str1, ' ');
     char **arr2 = mx_strsplit(str2, ' ');
@@ -304,6 +355,8 @@ static void mx_server_answer(char ch[], char *str, t_client *client) { // server
     }
     if (ch[0] == 'G') {
         printf("good = %s\n", client->status);
+        if (!mx_strcmp("mx_add_new_user", client->status))
+            client->gtk->cmd = SIG_UP;
         if (mx_strcmp("mx_check_user_pass", client->status) == 0) {
             mx_del_strarr(&client->gtk->command);
             client->gtk->cmd = LANG;
@@ -321,7 +374,6 @@ void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
             client->gtk->cmd = THEME;
         }
         else if (ch[1] == 'T')  {
-            printf("%s\n", ch);
             client->gtk->style->color = mx_atoi(&ch[2]);
             client->gtk->cmd = SIG_IN;
         }
@@ -409,6 +461,10 @@ void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
         if (ch[1] == 'E')
             mx_push_front(&(*info)->list, (void *)mx_create_data());
         mx_static_read(ch, &((t_data *)(*info)->list->data)->name);
+        ((t_data *)(*info)->list->data)->path =
+            mx_super_join("./source/cash/chats/", ((t_data *)(*info)->list->data)->name, 0);
+        ((t_data *)(*info)->list->data)->path =
+            mx_super_join(((t_data *)(*info)->list->data)->path, ".jpg", 1);
     }
     else if (ch[0] == 'I')
         mx_recv_list_files(ch, info, files);
@@ -431,12 +487,6 @@ void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
                     printf("mssg = %s\n", (char *)j->data);
         }
         printf("\n");
-        // char *json = ((t_data *)(*info)->list->data)->list->data;
-        // char *cmd = mx_get_value(json, "command");
-        // char **arr = mx_get_arr(json);
-        // mx_check_rcv_list(arr, client->gtk);
-        // add_message(mx_user_by_name(((t_data *)(*info)->list->data)->name,
-        //      client->gtk), create_struct(arr[0], false, 0, arr[1]));
         mx_check_rcv_list(*info, client->gtk);
         mx_trim_full_list(info);
         *info = mx_create_info();
@@ -461,19 +511,19 @@ void mx_client_recv_file(char ch[], t_client *client) { // move to particular di
         // move to particular dir
     }
 }
-static void mx_del_cash(void) {
+static void mx_del_cash(t_client *client) {
     char *cmd = NULL;
 
     for (int i = 0; i < 3; i++) {
         if (i == 0)
             cmd = mx_super_join("./source/cash/", "chats", 0);
-        else if (i == 1)
-            cmd = mx_super_join("./source/cash/", "search", 0);
-        else if (i == 2)
-            cmd = mx_super_join("./source/cash/", "listback", 0);
         mx_del_files(cmd);
         mx_strdel(&cmd);
     }
+    cmd = mx_super_join("./source/", client->gtk->my_name, 0);
+    cmd = mx_super_join(cmd, ".jpg", 0);
+    remove(cmd);
+    mx_strdel(&cmd);
 }
 void *mx_client_read(void *client_pointer) {
     t_client *client = (t_client *)client_pointer;
@@ -494,7 +544,7 @@ void *mx_client_read(void *client_pointer) {
     }
     mx_del_file(client->for_files->file, &client->for_files->file_size,
                 &client->for_files->file_name);
-    mx_del_cash();
+    mx_del_cash(client);
     client->exit = 0;
     return NULL;
 }
@@ -620,5 +670,6 @@ int mx_client(int argc, char *argv[]) {
         return 1;
     mx_client_sin_log(client);
     pthread_mutex_destroy(&mutex);
+    gtk_main_quit();
     return 0;
 }

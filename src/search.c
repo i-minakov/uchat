@@ -11,14 +11,12 @@ static void search_msg(GtkEntry *e, t_main *m) {
     for (t_msg *i = us->msg; i; i = i->next) {
         if (!mx_strcmp_null(i->text, s)) {
            gtk_adjustment_set_value(m->adj, i->adj_value + 150.0);
-           printf("adj now === %f\n", gtk_adjustment_get_value(m->adj));
            return ;
         }
     }
     for (t_msg *i = us->msg; i; i = i->next) {
         if (mx_get_substr_index(i->text, s) > -1) {
            gtk_adjustment_set_value(m->adj, i->adj_value + 150.0);
-           printf("adj now === %f\n", gtk_adjustment_get_value(m->adj));
            return ;
         }
     }

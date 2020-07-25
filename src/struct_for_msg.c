@@ -5,6 +5,7 @@ t_add_m *create_struct(char *text, bool my, int forw, char *time_m) {
 
     new->text = text;
     new->my = my;
+    new->id = -1;
     new->forw = forw;
     new->time_m = time_m;
     new->forw_from = NULL;
