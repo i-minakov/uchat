@@ -62,6 +62,10 @@ void add_message(t_user *i, t_add_m *s, int id) {
     reset_l_mess(i);
     free(str);
     i->m->order = 1;
+<<<<<<< HEAD
+=======
+    // free(s);
+>>>>>>> f73c9f95da610f98ef92adb1588444665e0c5cbc
 }
 
 void send_but(GtkWidget *wid, t_main *m) {
