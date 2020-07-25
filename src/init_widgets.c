@@ -19,19 +19,21 @@ static void sig_widgets(t_wid *wid) {
 	wid->sig->flagimg = 0;
 	wid->sig->sig_but = GTK_WIDGET(gtk_builder_get_object(wid->builder, "sig_ok"));
 	wid->sig->sig_add_img = GTK_WIDGET(gtk_builder_get_object(wid->builder, "sig_add_img"));
+	gtk_widget_hide(wid->sig->sig_add_img);
 }
 
 static void valid_widgets(t_wid *wid) {
 	wid->log->no_fil_log = GTK_WIDGET(gtk_builder_get_object(wid->builder, "required1"));
 	wid->sig->no_fil_sig = GTK_WIDGET(gtk_builder_get_object(wid->builder, "required2"));
-	// wid->the_end = gtk_image_new_from_file ("./img/2.gif");
-	// gtk_fixed_put(wid->fixed, wid->the_end, 0, 0);
-	//gtk_widget_hide(wid->the_end);
 	wid->sig->sigfile = NULL;
 
 	wid->badact = GTK_WIDGET(gtk_builder_get_object(wid->builder, "bad_img"));
 	wid->badact_but = GTK_WIDGET(gtk_builder_get_object(wid->builder, "badbut"));
 	wid->black_back = GTK_WIDGET(gtk_builder_get_object(wid->builder, "black_back"));
+
+	wid->start_gif = gtk_image_new_from_file ("source/resource/gif/start.gif");
+	gtk_fixed_put(GTK_FIXED(wid->fixed), wid->start_gif, 5, 0);
+	gtk_widget_show(wid->start_gif);
 }
 
 void init_widgets_start(t_wid *wid, t_eye *eye) {

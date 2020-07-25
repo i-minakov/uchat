@@ -238,7 +238,7 @@ int interface() {
     t_main *m = malloc_main();
     
     gtk_init(NULL, NULL);
-    // log_screen(&m);
+    log_screen(&m);
     chat_screen(&m);
     gtk_main();
     free_all(m);

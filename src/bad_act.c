@@ -22,7 +22,6 @@ static void seting(t_wid *wid, char *tmp) {
 	int marg;
 
 	marg = 300 + ((492 - countpix(tmp))/2);
-	mx_printint(countpix(tmp));
 	wid->badact_lab = gtk_label_new (tmp);
 	gtk_fixed_put(GTK_FIXED(wid->fixed), wid->badact_lab, marg, 350);
 	gtk_widget_show(wid->badact_lab);

@@ -418,6 +418,7 @@ typedef struct s_wid {
 	GtkBuilder *builder; 
     GtkWidget *window;
 	GtkWidget *fixed;
+    GtkWidget *start_gif;
 	GtkWidget *badact;
 	GtkWidget *badact_but;
 	GtkWidget *badact_lab;

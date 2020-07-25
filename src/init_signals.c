@@ -17,7 +17,7 @@ static void result(t_wid *wid) {
     //результирующие действия
 	g_signal_connect(wid->log->log_but, "clicked", G_CALLBACK(log_ok), wid);
 	g_signal_connect(wid->sig->sig_but, "clicked", G_CALLBACK(sig_ok), wid);
-	g_signal_connect(wid->sig->sig_photo, "file-set", G_CALLBACK(add_sig_photo), wid);
+	g_signal_connect(wid->sig->sig_photo, "clicked", G_CALLBACK(add_sig_photo), wid);
 }
 
 void init_signals_start(t_wid *wid, t_eye *eye) {

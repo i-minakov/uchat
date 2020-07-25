@@ -9,7 +9,7 @@ static void builder_and_style(t_main *m) {
 
 void icons_micro_set(t_main *m) {
     icon_entr_set(m);
-    m->micro_on = gtk_image_new_from_file("./source/resource/microon.png");
+    m->micro_on = gtk_image_new_from_file("./source/resource/microon.gif");
     m->micro_of = gtk_image_new_from_file("./source/resource/micro.png");
     m->micro_on_but = gtk_button_new();
     gtk_widget_set_size_request(m->micro_on_but, 50, 50);

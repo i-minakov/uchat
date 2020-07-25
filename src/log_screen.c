@@ -27,16 +27,24 @@ void win_event(GtkWidget *widget, GdkEventButton *event, t_wid *wid) {
 
 void init_builder(t_wid *wid) {
 	wid->builder = gtk_builder_new();
-	gtk_builder_add_from_file (wid->builder, "glade/main_hello.glade", NULL);
+	gtk_builder_add_from_file (wid->builder, "source/resource/main_hello.glade", NULL);
 	wid->window = GTK_WIDGET(gtk_builder_get_object(wid->builder, "main_window"));
 	wid->fixed = GTK_WIDGET(gtk_builder_get_object(wid->builder, "fixed"));
 	
-
 	GtkCssProvider *cssProvider = gtk_css_provider_new();
-	gtk_css_provider_load_from_path(cssProvider, "css/style.css", NULL);
+	gtk_css_provider_load_from_path(cssProvider, "src/style.css", NULL);
 	gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
 								GTK_STYLE_PROVIDER(cssProvider),
 								GTK_STYLE_PROVIDER_PRIORITY_USER);
+}
+
+void do_opening(t_wid *wid) {
+	clock_t t;
+
+  	t = clock();
+	while(((clock() - t)/CLOCKS_PER_SEC) < 12);
+	gtk_widget_hide(wid->start_gif);
+	g_idle_remove_by_data(wid);
 }
 
 int log_screen(t_main *m)
@@ -59,6 +67,7 @@ int log_screen(t_main *m)
     // g_object_unref(wid->builder);
 
     gtk_widget_show(wid->window); 
+	g_idle_add((GSourceFunc)do_opening, wid);
 
     // gtk_main();
 	// free(wid);
