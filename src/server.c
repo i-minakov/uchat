@@ -97,7 +97,7 @@ static int mx_send_user_f_s(char *img_path, FILE *file, t_node **node) {
     mx_del_strarr(&slesh);
     return 0;
 }
-static void mx_send_user_file(char *img_path, t_node **node) {
+void mx_send_user_file(char *img_path, t_node **node) {
     FILE *file = NULL;
 
     file = fopen(img_path, "rb");
@@ -130,14 +130,19 @@ void mx_send_answer_list(t_node **node, t_list *list, int hist_flag, char *cmd) 
 }
 
 /* not mutex */
-// void mx_send_your_photo(t_node **node) {
-//     char *img = mx_super_join("./source/cash/", (*node)->user, 0);
+void mx_send_your_photo(t_node **node) {
+    char *img = mx_super_join("./source/cash/", (*node)->user, 0);
 
-//     img = mx_super_join(img, ".jpg", 1);
-//     mx_bites_str((*node)->ssl, "mx_your_photo", 'C');
-//     mx_send_user_file(img, node);
-//     mx_strdel(&img);
-// }
+    img = mx_super_join(img, ".jpg", 1);
+    mx_bites_str((*node)->ssl, "mx_your_photo", 'C');
+    mx_strdel(&img);
+    img = mx_super_join("./database/", (*node)->user, 0);
+    img = mx_super_join(img, "/", 1);
+    img = mx_super_join(img, (*node)->user, 1);
+    img = mx_super_join(img, ".jpg", 1);
+    mx_send_user_file(img, node);
+    mx_strdel(&img);
+}
 static void mx_send_back(t_node **node, char **json) {
     char *command = mx_get_value(*json, "command");
     char **arr = mx_get_arr(*json);
@@ -163,7 +168,7 @@ static void mx_send_back(t_node **node, char **json) {
     }
     else if (mx_strcmp(command, "mx_check_user_pass") == 0) {
         if (mx_check_user_pass(arr[0], arr[1])) {
-            // mx_send_your_photo(node);
+            mx_send_your_photo(node);
             mx_bites_str((*node)->ssl, "mx_check_user_pass", 'G');
         }
         else {
@@ -214,7 +219,7 @@ static void mx_mutex_command(t_node **node, char *json) {
         (*node)->exit = 0;
     else if (mx_strcmp(command, "mx_add_new_user") == 0) {
         if (mx_add_new_user(arr[0], arr[1], arr[2]) == 0) {
-            // mx_send_your_photo(node);
+            mx_send_your_photo(node);
             mx_bites_str((*node)->ssl, "mx_add_new_user", 'G');
         }
         else {
@@ -273,7 +278,7 @@ static void mx_mutex_command(t_node **node, char *json) {
             : mx_bites_str((*node)->ssl, "Can't change type", 'B');
     else if (mx_strcmp(command, "mx_change_img") == 0) {
         if (mx_change_img(arr[0], arr[1]) == 0) {
-            // mx_send_your_photo(node);
+            mx_send_your_photo(node);
             mx_bites_str((*node)->ssl, "mx_change_img", 'G');
         }
         else

@@ -1,6 +1,10 @@
 #include "../inc/header.h"
 
-bool mx_msg_or_file(char **arr, char *id, t_user *us) {
+// voice
+// sort seg
+
+/* Ilay */
+void mx_msg_or_file(char **arr, char *id, t_user *us) {
     if (mx_atoi(arr[3]) == 0)
         add_message(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
             arr[2]) ? true : false, 
@@ -10,7 +14,6 @@ bool mx_msg_or_file(char **arr, char *id, t_user *us) {
             arr[2]) ? true : false, 
                 mx_atoi(arr[3]), arr[1]), mx_atoi(arr[3]), mx_atoi(id));
 }
-
 void mx_new_msg_back(t_user *us, t_list *list) {
     int c = 0;
     char *id_new = NULL;
@@ -36,7 +39,6 @@ void mx_new_msg_back(t_user *us, t_list *list) {
         c--;
     }
 }
-/* check rcv list */
 bool mx_check_activ(t_main *m, t_list *list) {
     t_list *new_ms = NULL;
     t_user *us = NULL;
@@ -82,7 +84,6 @@ bool mx_check_activ(t_main *m, t_list *list) {
     mx_strdel(&id_new);
     return true;
 }
-
 void mx_cmp_list(t_main *m, t_info *info) {
     t_user *us = NULL;
     char *json = NULL;
@@ -105,15 +106,12 @@ void mx_cmp_list(t_main *m, t_info *info) {
         }
     }
 }
-
 void mx_check_rcv_list(t_info *info, t_main *m) {
     if (m->cmd == SRCH)
         show_result_of_search(info->list, m);
     else if (m->cmd == DEF)
         mx_cmp_list(m, info);
 }
-
-/* check sigin */
 void mx_check_sigin(t_main *m) {
     if (m->cmd == CHECK_PASS) {
         m->command = mx_arrjoin(m->command, "mx_check_user_pass");
@@ -136,8 +134,6 @@ void mx_check_sigin(t_main *m) {
         m->cmd = BLCK;
     }
 }
-
-/* !!!delete!!! */
 static void mx_enter_argv(char ***arr, t_client *client) {
     char **request = client->gtk->command;
 
@@ -147,6 +143,9 @@ static void mx_enter_argv(char ***arr, t_client *client) {
     }
     mx_check_sigin(client->gtk);
 }
+
+
+
 
 /* sort */
 int mx_intcmp(char *str1, char *str2) {
@@ -204,6 +203,8 @@ static void mx_change_cmp(char ***arr) {
     *arr = shift;
 }
 static int mx_parse_time(char *str1, char *str2) {
+    if (!str1 || !str2)
+        return 0;
     int result = 0;
     char **arr1 = mx_strsplit(str1, ' ');
     char **arr2 = mx_strsplit(str2, ' ');
@@ -431,6 +432,10 @@ void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
         if (ch[1] == 'E')
             mx_push_front(&(*info)->list, (void *)mx_create_data());
         mx_static_read(ch, &((t_data *)(*info)->list->data)->name);
+        ((t_data *)(*info)->list->data)->path =
+            mx_super_join("./source/cash/chats/", ((t_data *)(*info)->list->data)->name, 0);
+        ((t_data *)(*info)->list->data)->path =
+            mx_super_join(((t_data *)(*info)->list->data)->path, ".jpg", 1);
     }
     else if (ch[0] == 'I')
         mx_recv_list_files(ch, info, files);
@@ -448,6 +453,7 @@ void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
         printf("size = %s\n", (*info)->size);
         for (t_list *i = (*info)->list; i; i = i->next) {
             printf("name = %s\n", ((t_data *)i->data)->name);
+            printf("path = %s\n", ((t_data *)i->data)->path);
             for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
                 if ((char *)j->data)
                     printf("mssg = %s\n", (char *)j->data);
@@ -483,19 +489,19 @@ void mx_client_recv_file(char ch[], t_client *client) { // move to particular di
         // move to particular dir
     }
 }
-static void mx_del_cash(void) {
+static void mx_del_cash(t_client *client) {
     char *cmd = NULL;
 
     for (int i = 0; i < 3; i++) {
         if (i == 0)
             cmd = mx_super_join("./source/cash/", "chats", 0);
-        else if (i == 1)
-            cmd = mx_super_join("./source/cash/", "search", 0);
-        else if (i == 2)
-            cmd = mx_super_join("./source/cash/", "listback", 0);
         mx_del_files(cmd);
         mx_strdel(&cmd);
     }
+    cmd = mx_super_join("./source/", client->gtk->my_name, 0);
+    cmd = mx_super_join(cmd, ".jpg", 0);
+    remove(cmd);
+    mx_strdel(&cmd);
 }
 void *mx_client_read(void *client_pointer) {
     t_client *client = (t_client *)client_pointer;
@@ -516,7 +522,7 @@ void *mx_client_read(void *client_pointer) {
     }
     mx_del_file(client->for_files->file, &client->for_files->file_size,
                 &client->for_files->file_name);
-    mx_del_cash();
+    mx_del_cash(client);
     client->exit = 0;
     return NULL;
 }
