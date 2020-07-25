@@ -1,6 +1,6 @@
 #include "../inc/header.h"
 
-bool mx_msg_or_file(char **arr, char *id, t_user *us) {
+void mx_msg_or_file(char **arr, char *id, t_user *us) {
     if (mx_atoi(arr[3]) == 0)
         add_message(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
             arr[2]) ? true : false, 
@@ -9,6 +9,20 @@ bool mx_msg_or_file(char **arr, char *id, t_user *us) {
         add_file(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
             arr[2]) ? true : false, 
                 mx_atoi(arr[3]), arr[1]), mx_atoi(arr[3]), mx_atoi(id));
+}
+
+void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
+    t_add_m *s = NULL;
+
+    if (mx_atoi(arr[3]) == 0)
+            add_message_back(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
+                arr[2]) ? true : false, mx_atoi(arr[3]), arr[1]), count, mx_atoi(id));
+    else {
+        s = create_struct(arr[0], !mx_strcmp(us->m->my_name,
+            arr[2]) ? true : false, mx_atoi(arr[3]), arr[1]);
+        s->id = mx_atoi(id);
+        add_file_back(us, s, mx_atoi(arr[3]), count);
+    }
 }
 
 void mx_new_msg_back(t_user *us, t_list *list) {
@@ -22,34 +36,18 @@ void mx_new_msg_back(t_user *us, t_list *list) {
     for (t_list *i = list; i; i = i->next) {
         id_new = mx_get_value(i->data, "command");
         arr = mx_get_arr(i->data);
-        if (mx_atoi(arr[3]) == 0)
-            add_message_back(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
-                arr[2]) ? true : false, mx_atoi(arr[3]), arr[1]), c, mx_atoi(id_new));
-        else {
-            s = create_struct(arr[0], !mx_strcmp(us->m->my_name,
-                arr[2]) ? true : false, mx_atoi(arr[3]), arr[1]);
-            s->id = mx_atoi(id_new);
-            add_file_back(us, s, mx_atoi(arr[3]), c);
-        }
+        mx_msg_or_file_back(arr, id_new, us, c);
         mx_del_strarr(&arr);
         mx_strdel(&id_new);
         c--;
     }
 }
 /* check rcv list */
-bool mx_check_activ(t_main *m, t_list *list) {
-    t_list *new_ms = NULL;
-    t_user *us = NULL;
-    char **arr = NULL;
-    char *json = NULL;
+
+int find_last_ind_new(t_list *list) {
     char *id_new = NULL;
     int last_id_new = 0;
-    int last_id_old = 0;
 
-    for (t_user *i = m->users; i; i = i->next)
-        i->check == true ? us = i : 0;
-    if (!us || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
-        return false;
     for (t_list *k = ((t_data *)list->data)->list; k->data; k = k->next) {
         if (k->next->data == NULL) {
             id_new = mx_get_value(k->data, "command");
@@ -57,9 +55,18 @@ bool mx_check_activ(t_main *m, t_list *list) {
             free(id_new);
         } 
     }
+    return last_id_new;
+}
+
+bool mx_check_last_index(t_user *us, t_list *list) {
+    char *arr = NULL;
+    char *id_new = NULL;
+    int last_id_new = find_last_ind_new(list);
+    int last_id_old = 0;
+    t_list *new_ms = NULL;
+
     for (t_msg *i = us->msg->next; i; i = i->next)
         i->next == NULL ? last_id_old = i->id : 0;
-    printf("\n\n\nnew %d --- old %d\n", last_id_new, last_id_old);
     if (last_id_new != last_id_old) {
         for (t_list *k = ((t_data *)list->data)->list; k->data; k = k->next) { 
             id_new = mx_get_value(k->data, "command");
@@ -71,12 +78,25 @@ bool mx_check_activ(t_main *m, t_list *list) {
         mx_free_list(&new_ms);
         return true;
     }
+    return false;
+}
+
+bool mx_check_activ(t_main *m, t_list *list) {
+    t_user *us = NULL;
+    char **arr = NULL;
+    char *json = NULL;
+    char *id_new = NULL;
+
+    for (t_user *i = m->users; i; i = i->next)
+        i->check == true ? us = i : 0;
+    if (!us || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
+        return false;
+    if (mx_check_last_index(us, list) == true)
+        return true;
     id_new = mx_get_value(((t_data *)list->data)->list->data, "command");
     if (us->msg->next->id != mx_atoi(id_new)) {
         arr = mx_get_arr(((t_data *)list->data)->list->data);
-        add_message(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
-                 arr[2]) ? true : false, 
-                    mx_atoi(arr[3]), arr[1]), mx_atoi(id_new));
+        mx_msg_or_file(arr, id_new, us);
         mx_del_strarr(&arr);
     }
     mx_strdel(&id_new);
@@ -95,11 +115,8 @@ void mx_cmp_list(t_main *m, t_info *info) {
             json = ((t_data *)i->data)->list->data;
             cmd = mx_get_value(json, "command");
             arr = mx_get_arr(json);
-            if (!us->msg->next || us->msg->next->id != mx_atoi(cmd)) {
-                add_message(us, create_struct(arr[0], 
-                    !mx_strcmp(m->my_name, arr[2]) ? true : false,
-                        mx_atoi(arr[3]), arr[1]), mx_atoi(cmd));
-            }
+            if (!us->msg->next || us->msg->next->id != mx_atoi(cmd)) 
+                mx_msg_or_file(arr, cmd, us);
             mx_strdel(&cmd); 
             mx_del_strarr(&arr);
         }
@@ -133,6 +150,15 @@ void mx_check_sigin(t_main *m) {
         m->command = mx_arrjoin(m->command, "mx_get_type");
         m->command = mx_arrjoin(m->command, m->log_in->log->logname);
         m->command = mx_arrjoin(m->command, "1");
+        m->cmd = BLCK;
+    }
+    else if (m->cmd == CHECK_US) {
+        m->my_name = mx_strdup(m->log_in->sig->signame);
+        m->command = mx_arrjoin(m->command, "mx_add_new_user");
+        m->command = mx_arrjoin(m->command, m->my_name);
+        m->command = mx_arrjoin(m->command, m->log_in->sig->sigpas);
+        m->command = mx_arrjoin(m->command, 
+            m->log_in->sig->sigfile ? m->log_in->sig->sigfile : "./source/resource/default.jpg");
         m->cmd = BLCK;
     }
 }
@@ -326,6 +352,8 @@ static void mx_server_answer(char ch[], char *str, t_client *client) { // server
     }
     if (ch[0] == 'G') {
         printf("good = %s\n", client->status);
+        if (!mx_strcmp("mx_add_new_user", client->status))
+            client->gtk->cmd = SIG_UP;
         if (mx_strcmp("mx_check_user_pass", client->status) == 0) {
             mx_del_strarr(&client->gtk->command);
             client->gtk->cmd = LANG;
@@ -343,7 +371,6 @@ void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
             client->gtk->cmd = THEME;
         }
         else if (ch[1] == 'T')  {
-            printf("%s\n", ch);
             client->gtk->style->color = mx_atoi(&ch[2]);
             client->gtk->cmd = SIG_IN;
         }
@@ -444,21 +471,15 @@ void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
     }
     else if (ch[0] == 'E' && ch[1] == 'E') {
         mx_sort_recv_list(info);
-        printf("cmd = %s\n", (*info)->cmd);
-        printf("size = %s\n", (*info)->size);
-        for (t_list *i = (*info)->list; i; i = i->next) {
-            printf("name = %s\n", ((t_data *)i->data)->name);
-            for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
-                if ((char *)j->data)
-                    printf("mssg = %s\n", (char *)j->data);
-        }
-        printf("\n");
-        // char *json = ((t_data *)(*info)->list->data)->list->data;
-        // char *cmd = mx_get_value(json, "command");
-        // char **arr = mx_get_arr(json);
-        // mx_check_rcv_list(arr, client->gtk);
-        // add_message(mx_user_by_name(((t_data *)(*info)->list->data)->name,
-        //      client->gtk), create_struct(arr[0], false, 0, arr[1]));
+        // printf("cmd = %s\n", (*info)->cmd);
+        // printf("size = %s\n", (*info)->size);
+        // for (t_list *i = (*info)->list; i; i = i->next) {
+        //     printf("name = %s\n", ((t_data *)i->data)->name);
+        //     for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
+        //         if ((char *)j->data)
+        //             printf("mssg = %s\n", (char *)j->data);
+        // }
+        // printf("\n");
         mx_check_rcv_list(*info, client->gtk);
         mx_trim_full_list(info);
         *info = mx_create_info();
@@ -642,5 +663,6 @@ int mx_client(int argc, char *argv[]) {
         return 1;
     mx_client_sin_log(client);
     pthread_mutex_destroy(&mutex);
+    gtk_main_quit();
     return 0;
 }

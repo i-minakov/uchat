@@ -49,6 +49,7 @@ void add_file_back(t_user *us, t_add_m *s, int stic, int count) {
             k->user = us;
         }
     msg->id = s->id;
+    msg->count = count;
     if (stic == 0) {
         file_check(s->text, &msg, name, s->my);
         send_file_back(us, s, msg, stic);

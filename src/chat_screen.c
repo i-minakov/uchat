@@ -103,7 +103,7 @@ void set_chat_grid(t_main *m, int flag) {
 static void set_cap(t_cap *c) {
     c->my_name = gtk_label_new(NULL);
     c->friend_name = gtk_label_new(NULL);
-    c->my_photo = resize_proportion("./source/resource/index.jpg", 51, 51);
+    c->my_photo = resize_proportion(mx_backjoin("./source/cash/", mx_strjoin(c->m->my_name, ".jpg")), 51, 51);
     c->frame_for_my_photo = gtk_image_new_from_file("./source/resource/my photo.png");
     c->burger_but_img = gtk_image_new_from_file("./source/resource/burger.png");
     c->dot_menu = gtk_image_new_from_file("./source/resource/dots.png");
@@ -193,10 +193,6 @@ void free_all(t_main *m) {
 void check_cmd(t_main *m) {
     if (m->cmd == SIG_UP) {
         m->my_name = mx_strdup(m->log_in->sig->signame);
-        m->command = mx_arrjoin(m->command, "mx_add_new_user");
-        m->command = mx_arrjoin(m->command, m->my_name);
-        m->command = mx_arrjoin(m->command, m->log_in->sig->sigpas);
-        m->command = mx_arrjoin(m->command, "./index.jpg");
         m->cmd = BLCK;
     }
     if (m->cmd == SIG_IN) 

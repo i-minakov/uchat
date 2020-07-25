@@ -3,7 +3,7 @@
 void micro_click(GtkWidget *w, t_main *m) {
     if(m->micro_flag == 0) {
         m->micro_flag = 1;
-        puts("++++\n");
+        // puts("++++\n");
         //запуск микро
     }
     else {

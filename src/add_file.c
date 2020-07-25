@@ -70,7 +70,7 @@ void add_file(t_user *us, t_add_m *s, int stic, int id) {
 
     for (int i = 0; p[i]; i++)
         p[i + 1] == NULL ? name = p[i] : 0;
-    msg_file_pushfront(&us->msg, s, stic);
+    msg_file_pushfront(&us->msg, s, stic + 1);
     t = us->msg->next;
     t->user = us;
     t->id = id;

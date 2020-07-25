@@ -56,7 +56,8 @@ enum e_cmd {
     USERS,
     THEME,
     LANG,
-    CHECK_PASS
+    CHECK_PASS,
+    CHECK_US
 };
 
 typedef struct s_add_msg {
