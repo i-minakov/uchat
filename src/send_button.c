@@ -20,7 +20,7 @@ void command_msg(t_user *us, t_add_m *s, int flag) {
         us->m->command = mx_arrjoin(us->m->command, "NULL");
 }
 
-static void add_time(t_user *i, t_add_m *s) {
+void add_time(t_user *i, t_add_m *s) {
     char **m = NULL;
     time_t rawtime;
     struct tm * timeinfo;
@@ -61,11 +61,7 @@ void add_message(t_user *i, t_add_m *s, int id) {
     MX_IDLE_SHOW(s->my, wid);
     reset_l_mess(i);
     free(str);
-    i->m->order = 1;
-<<<<<<< HEAD
-=======
-    // free(s);
->>>>>>> f73c9f95da610f98ef92adb1588444665e0c5cbc
+    MX_SCROL_END(i->m);
 }
 
 void send_but(GtkWidget *wid, t_main *m) {

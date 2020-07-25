@@ -1,22 +1,5 @@
 #include "../inc/uchat.h"
 
-static void add_time(t_user *i, t_add_m *s) {
-    char **m = NULL;
-    time_t rawtime;
-    struct tm * timeinfo;
-
-    if (s->time_m == NULL) {
-        time(&rawtime);
-        timeinfo = localtime(&rawtime);
-        s->time_m = asctime(timeinfo);
-        m = mx_strsplit(s->time_m, '\n');
-        gtk_widget_set_tooltip_text(i->msg->next->label, m[0]);
-        mx_del_strarr(&m);
-    }
-    else
-        gtk_widget_set_tooltip_text(i->msg->next->label, s->time_m);
-}
-
 static void msg_pushback(t_msg **head, char *text, bool my, int forw) {
     t_msg *tmp = NULL;
     GtkWidget *item[4];

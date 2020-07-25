@@ -478,34 +478,15 @@ void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
     }
     else if (ch[0] == 'E' && ch[1] == 'E') {
         mx_sort_recv_list(info);
-<<<<<<< HEAD
-        // printf("cmd = %s\n", (*info)->cmd);
-        // printf("size = %s\n", (*info)->size);
-        // for (t_list *i = (*info)->list; i; i = i->next) {
-        //     printf("name = %s\n", ((t_data *)i->data)->name);
-        //     for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
-        //         if ((char *)j->data)
-        //             printf("mssg = %s\n", (char *)j->data);
-        // }
-        // printf("\n");
-=======
         printf("cmd = %s\n", (*info)->cmd);
         printf("size = %s\n", (*info)->size);
         for (t_list *i = (*info)->list; i; i = i->next) {
             printf("name = %s\n", ((t_data *)i->data)->name);
-            printf("path = %s\n", ((t_data *)i->data)->path);
             for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
                 if ((char *)j->data)
                     printf("mssg = %s\n", (char *)j->data);
         }
         printf("\n");
-        // char *json = ((t_data *)(*info)->list->data)->list->data;
-        // char *cmd = mx_get_value(json, "command");
-        // char **arr = mx_get_arr(json);
-        // mx_check_rcv_list(arr, client->gtk);
-        // add_message(mx_user_by_name(((t_data *)(*info)->list->data)->name,
-        //      client->gtk), create_struct(arr[0], false, 0, arr[1]));
->>>>>>> f73c9f95da610f98ef92adb1588444665e0c5cbc
         mx_check_rcv_list(*info, client->gtk);
         mx_trim_full_list(info);
         *info = mx_create_info();

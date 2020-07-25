@@ -1,13 +1,5 @@
 #include "../inc/uchat.h"
 
-int mx_msg_size(t_msg *list) {
-    int res = 0;
-
-    for (t_msg *i = list; i; i = i->next)
-        res++;
-    return res;
-}
-
 void user_pushfront(t_user **head, char *name) {
     t_user *tmp = *head;
 
@@ -157,7 +149,7 @@ void hide_something(t_main *m) {
 }
 
 t_main *malloc_main() {
-    t_main *m = (t_main *)malloc(sizeof(t_main) * 100);
+    t_main *m = (t_main *)malloc(sizeof(t_main));
 
     m->exit = 0;
     m->cap = (t_cap *)malloc(sizeof(t_cap) * 100);
@@ -206,26 +198,16 @@ int chat_screen(t_main **gtk) {
 
     m->order = 0;
     check_cmd(m);
-    // for (int i = 10; i > 0; i--) 
-    //     user_pushback(&m->users, "yarik");
+    for (int i = 10; i > 0; i--) 
+        user_pushback(&m->users, "yarik");
     init_components(m);
     connect_css(m, 1);
     init_signals(m);  
     gtk_label_set_text(GTK_LABEL(m->lab_start),
                      "Please select a chat to start messaging");
-    g_idle_add((GSourceFunc)move_scrol, m);
     gtk_widget_show_all(m->window);
     hide_something(m);
-    if (m->style->color == 2) {
-        m->style->color = 1;
-        change_color(NULL, m);
-        mx_del_strarr(&m->command);
-    }
-    if (m->style->lang == 2) {
-        m->style->lang = 1;
-        change_lang(NULL, m);
-        mx_del_strarr(&m->command);
-    }
+    gtk_window_set_icon_from_file (GTK_WINDOW(m->window), "source/resource/logo.png", NULL);
     m->cmd = DEF;
     return ex;
 }

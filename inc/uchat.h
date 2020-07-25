@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <time.h>
 
+#define MX_SCROL_END(m) g_idle_add((GSourceFunc)move_scrol, m)
 #define MX_IDLE_HIDE(flag, wid) flag == true ? gtk_widget_hide(wid) : g_idle_add((GSourceFunc)mx_hide, wid)
 #define MX_IDLE_SHOW(flag, wid) flag == true ? gtk_widget_show_all(wid) : g_idle_add((GSourceFunc)mx_show, wid)
 #define MX_SET_NAME_MSG(flag, label) flag == true ? gtk_widget_set_name(label, "lm") : gtk_widget_set_name(label, "lm2")
@@ -57,7 +58,8 @@ enum e_cmd {
     THEME,
     LANG,
     CHECK_PASS,
-    CHECK_US
+    CHECK_US,
+    UPDATE_SIZE,
 };
 
 typedef struct s_add_msg {
@@ -140,8 +142,8 @@ typedef struct s_data_users {
     bool check;
     int row;
     int count;
-    int y_chat;
     char *photo_name;
+    int size_request;
     struct s_main *m;
     struct s_message *msg;
     struct s_data_users *head;
@@ -338,6 +340,7 @@ int mx_msg_size(t_msg *list);
 void mx_new_msg_back(t_user *us, t_list *new);
 void file_check(gchar *tmp, t_msg **msg, char *name, bool my);
 void add_file_back(t_user *us, t_add_m *s, int stic, int count);
+void add_time(t_user *i, t_add_m *s);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);

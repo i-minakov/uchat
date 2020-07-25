@@ -191,8 +191,10 @@ static void mx_send_back(t_node **node, char **json) {
 static void mx_update(t_node **node, char **arr) {
     if (mx_strcmp(arr[0], "user") == 0)
         mx_replace(&(*node)->user, arr[1]);
-    else if (mx_strcmp(arr[0], "chat") == 0)
+    else if (mx_strcmp(arr[0], "chat") == 0) {
         mx_replace(&(*node)->chat, arr[1]);
+        mx_replace(&(*node)->size, "20");
+    }
     else if (mx_strcmp(arr[0], "size") == 0)
         mx_replace(&(*node)->size, arr[1]);
     else if (mx_strcmp(arr[0], "history") == 0)
