@@ -29,7 +29,7 @@ static void msg_file_pushfront(t_msg **head, t_add_m *s, int sticer) {
     }
 }
 
-static void file_check(gchar *tmp, t_msg **msg, char *name, bool my) {
+void file_check(gchar *tmp, t_msg **msg, char *name, bool my) {
     t_msg *t = *msg;
 
     if (mx_strstr(tmp, ".jpg") || mx_strstr(tmp, ".jpeg")
@@ -84,4 +84,5 @@ void add_file(t_user *us, t_add_m *s, int stic, int id) {
         send_file(us, s, t, stic);
     }
     mx_del_strarr(&p);
+    free(s);
 }

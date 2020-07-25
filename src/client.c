@@ -1,34 +1,55 @@
 #include "../inc/header.h"
 
+bool mx_msg_or_file(char **arr, char *id, t_user *us) {
+    if (mx_atoi(arr[3]) == 0)
+        add_message(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
+            arr[2]) ? true : false, 
+                mx_atoi(arr[3]), arr[1]), mx_atoi(id));
+    else 
+        add_file(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
+            arr[2]) ? true : false, 
+                mx_atoi(arr[3]), arr[1]), mx_atoi(arr[3]), mx_atoi(id));
+}
+
 void mx_new_msg_back(t_user *us, t_list *list) {
     int c = 0;
     char *id_new = NULL;
     char **arr = NULL;
+    t_add_m *s = NULL;
 
     for (t_msg *j = us->msg; j; j = j->next) 
         j->next == NULL ? c = j->count - 1 : 0;
     for (t_list *i = list; i; i = i->next) {
         id_new = mx_get_value(i->data, "command");
         arr = mx_get_arr(i->data);
-        add_message_back(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
-                 arr[2]) ? true : false, 0, arr[1]), c, mx_atoi(id_new));
+        if (mx_atoi(arr[3]) == 0)
+            add_message_back(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
+                arr[2]) ? true : false, mx_atoi(arr[3]), arr[1]), c, mx_atoi(id_new));
+        else {
+            s = create_struct(arr[0], !mx_strcmp(us->m->my_name,
+                arr[2]) ? true : false, mx_atoi(arr[3]), arr[1]);
+            s->id = mx_atoi(id_new);
+            add_file_back(us, s, mx_atoi(arr[3]), c);
+        }
         mx_del_strarr(&arr);
+        mx_strdel(&id_new);
         c--;
     }
 }
 /* check rcv list */
-bool mx_check_activ(t_user *us, t_list *list) {
+bool mx_check_activ(t_main *m, t_list *list) {
     t_list *new_ms = NULL;
+    t_user *us = NULL;
     char **arr = NULL;
     char *json = NULL;
     char *id_new = NULL;
     int last_id_new = 0;
     int last_id_old = 0;
 
-    if (!us || us->check == false 
-        || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
+    for (t_user *i = m->users; i; i = i->next)
+        i->check == true ? us = i : 0;
+    if (!us || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
         return false;
-    printf("\n\n%s\n\n", us->name);
     for (t_list *k = ((t_data *)list->data)->list; k->data; k = k->next) {
         if (k->next->data == NULL) {
             id_new = mx_get_value(k->data, "command");
@@ -54,33 +75,34 @@ bool mx_check_activ(t_user *us, t_list *list) {
     if (us->msg->next->id != mx_atoi(id_new)) {
         arr = mx_get_arr(((t_data *)list->data)->list->data);
         add_message(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
-                 arr[2]) ? true : false, 0, arr[1]), mx_atoi(id_new));
+                 arr[2]) ? true : false, 
+                    mx_atoi(arr[3]), arr[1]), mx_atoi(id_new));
         mx_del_strarr(&arr);
-        mx_strdel(&id_new);
     }
+    mx_strdel(&id_new);
     return true;
 }
 
 void mx_cmp_list(t_main *m, t_info *info) {
-    t_user *us = m->users;
+    t_user *us = NULL;
     char *json = NULL;
     char *cmd = NULL;
     char **arr = NULL;
 
-    for (t_list *i = info->list; i; i = i->next) { 
-        if (mx_check_activ(us, i) == false) {
+    for (t_list *i = info->list; i; i = i->next) {
+        if (mx_check_activ(m, i) == false) {
+            us = mx_user_by_name(((t_data *)i->data)->name, m);
             json = ((t_data *)i->data)->list->data;
             cmd = mx_get_value(json, "command");
             arr = mx_get_arr(json);
-            if (us && us->msg->next->id != mx_atoi(cmd)) {
-                add_message(mx_user_by_name(((t_data *)i->data)->name, m), 
-                    create_struct(arr[0], !mx_strcmp(m->my_name, 
-                    arr[2]) ? true : false , 0, arr[1]), mx_atoi(cmd));
+            if (!us->msg->next || us->msg->next->id != mx_atoi(cmd)) {
+                add_message(us, create_struct(arr[0], 
+                    !mx_strcmp(m->my_name, arr[2]) ? true : false,
+                        mx_atoi(arr[3]), arr[1]), mx_atoi(cmd));
             }
             mx_strdel(&cmd); 
             mx_del_strarr(&arr);
         }
-        us->next ? us = us->next : 0;
     }
 }
 

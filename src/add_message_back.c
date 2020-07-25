@@ -60,14 +60,16 @@ void add_message_back(t_user *i, t_add_m *s, int count, int id) {
             k->user = i;
         }
     msg->id = id;
+    msg->count = count;
     wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_widget_set_size_request(wid, 650, 30);
     add_time(i, s);
     MX_MSG_PACK(s->my, msg->label, wid);
     MX_SET_NAME_MSG(s->my, msg->label);
     gtk_grid_attach_next_to(GTK_GRID(i->text_grid), wid, NULL, GTK_POS_TOP, 1, 1);
-    g_idle_add((GSourceFunc)mx_show, wid);
+    MX_IDLE_SHOW(false, wid);
     msg->adj_value = gtk_adjustment_get_value(i->m->adj);
     reset_l_mess(i);
     free(str);
+    free(s);
 }
