@@ -31,9 +31,26 @@ static void valid_widgets(t_wid *wid) {
 	wid->badact_but = GTK_WIDGET(gtk_builder_get_object(wid->builder, "badbut"));
 	wid->black_back = GTK_WIDGET(gtk_builder_get_object(wid->builder, "black_back"));
 
-	wid->start_gif = gtk_image_new_from_file ("source/resource/gif/start.gif");
-	gtk_fixed_put(GTK_FIXED(wid->fixed), wid->start_gif, 5, 0);
-	//gtk_widget_show(wid->start_gif);
+	// wid->start_gif = gtk_image_new_from_file ("source/resource/gif/start.gif");
+	// gtk_fixed_put(GTK_FIXED(wid->fixed), wid->start_gif, 5, 0);
+	// //gtk_widget_show(wid->start_gif);
+	
+	// cairo_surface_t *s;
+	// cairo_t *cr;
+	// GdkPixbuf *pixbuf;
+	// s = cairo_image_surface_create (CAIRO_FORMAT_A1, 1000, 700);
+	// cr = cairo_create (s);
+	// cairo_fill (cr);
+	// cairo_destroy (cr);
+	// pixbuf = gdk_pixbuf_get_from_surface (s,
+    //                                   0, 0,
+    //                                   1000, 700);
+
+	// cairo_surface_destroy (s);
+	// wid->start_gif = gtk_image_new_from_pixbuf(pixbuf);
+	// g_object_unref (pixbuf);
+	// gtk_fixed_put(GTK_FIXED(wid->fixed), wid->start_gif, 5, 0);
+	// gtk_widget_show(wid->start_gif);
 }
 
 void init_widgets_start(t_wid *wid, t_eye *eye) {

@@ -139,6 +139,7 @@ void hide_something(t_main *m) {
     hide_set(m);
 
     gtk_widget_hide(m->micro_on);
+    gtk_widget_hide(m->micro_of_but);
     gtk_widget_hide(m->set->chan_name);
     gtk_widget_hide(m->set->chan_pas);
     gtk_widget_hide(m->grid_stic);

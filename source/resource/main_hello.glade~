@@ -212,13 +212,13 @@
             <property name="width_request">50</property>
             <property name="height_request">80</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Sign in</property>
+            <property name="label" translatable="yes">Sign up</property>
             <style>
               <class name="heading"/>
             </style>
           </object>
           <packing>
-            <property name="x">664</property>
+            <property name="x">660</property>
             <property name="y">127</property>
           </packing>
         </child>

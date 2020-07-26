@@ -12,6 +12,8 @@ void ch_lang(t_main *m) {
     gtk_button_set_label(GTK_BUTTON(m->dots->block_but), MX_DOT_BL(m->style->lang));
     gtk_button_set_label(GTK_BUTTON(m->dots->search_msg_but), MX_DOT_FI(m->style->lang));
 
+    gtk_button_set_label(GTK_BUTTON(m->set->my_name), MX_NAME(m->style->lang));
+    gtk_button_set_label(GTK_BUTTON(m->set->my_pas), MX_PAS(m->style->lang));
     gtk_label_set_text(GTK_LABEL(m->set->color_text), MX_COLOR(m->style->lang));
     gtk_label_set_text(GTK_LABEL(m->set->lang_text), MX_LANG(m->style->lang));
 
