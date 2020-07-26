@@ -189,8 +189,8 @@ void init_signals(t_main *m) {
     g_signal_connect(m->set->color1, "toggled", G_CALLBACK(change_color), m);
     g_signal_connect(m->set->lang1, "toggled", G_CALLBACK(change_lang), m);
     g_signal_connect(m->menu->exit, "clicked", G_CALLBACK(exit_chat), m);
-    g_signal_connect(m->menu->search, "clicked", G_CALLBACK(show_search_users), m);
-    g_signal_connect(m->menu->contacts, "clicked", G_CALLBACK(show_search_contacts), m);
+    g_signal_connect(m->menu->search, "clicked", G_CALLBACK(show_search_contacts), m);
+    g_signal_connect(m->menu->contacts, "clicked", G_CALLBACK(show_search_users), m);
 
     g_signal_connect(m->set->my_name, "clicked", G_CALLBACK(enter_name), m);
     g_signal_connect(m->set->chan_name, "icon-press", G_CALLBACK(backto_name), m);
