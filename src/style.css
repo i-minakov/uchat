@@ -1,7 +1,7 @@
 @define-color placeholder_text_color #a1b6c0;
 
 window {
-	background-image: url("../source/img/фон3.png");
+	background-image: url("../source/resource/img/фон3.png");
 	background-position: center;
 }
 .req {

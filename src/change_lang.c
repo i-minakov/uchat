@@ -23,6 +23,7 @@ void ch_lang(t_main *m) {
 void change_lang(GtkToggleButton *togglebutton, t_main *m) {
     char *str = NULL;
 
+    (void)togglebutton;
     if (m->style->lang == 1) 
         m->style->lang = 2;
     else 

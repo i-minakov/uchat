@@ -1,6 +1,6 @@
 #include "../inc/uchat.h"
 
-static void s_bigger_w(guint width, guint heigh, int *best_w, int *best_h) {
+static void s_bigger_w(guint width, guint heigh, guint *best_w, guint *best_h) {
 	if (heigh > (*best_h)) {
 			while(heigh > (*best_h) && width > (*best_w)) {
 				(*best_h)++;
@@ -15,7 +15,7 @@ static void s_bigger_w(guint width, guint heigh, int *best_w, int *best_h) {
 		}
 }
 
-static void S_bigger(guint width, guint heigh, int *best_w, int *best_h) {
+static void S_bigger(guint width, guint heigh, guint *best_w, guint *best_h) {
 	if (width > (*best_w)) {
 		s_bigger_w(width, heigh, best_w, best_h);
 	}
@@ -29,7 +29,7 @@ static void S_bigger(guint width, guint heigh, int *best_w, int *best_h) {
 	}
 }
 
-static void S_less(guint width, guint heigh, int *best_w, int *best_h) {
+static void S_less(guint width, guint heigh, guint *best_w, guint *best_h) {
 	if (width > (*best_w)) {
 			while(heigh < (*best_h)) {
 					(*best_h)--;
@@ -45,8 +45,8 @@ static void S_less(guint width, guint heigh, int *best_w, int *best_h) {
 }
 
 static void get_size(guint width, guint heigh, t_sizefoto *s) {
-	int best_w = 500;
-	int best_h = 700;
+	guint best_w = 500;
+	guint best_h = 700;
 
 	if(width*heigh >= best_h*best_w)
 		S_bigger(width, heigh, &best_w, &best_h);

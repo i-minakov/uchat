@@ -58,7 +58,7 @@ void add_message(t_user *i, t_add_m *s, int id) {
     add_time(i, s);
     MX_MSG_PACK(s->my, i->msg->next->label, wid);
     gtk_grid_attach(GTK_GRID(i->text_grid), wid, 0, i->row++, 1, 1);
-    MX_IDLE_SHOW(s->my, wid);
+    mx_idle_show(s->my, wid);
     reset_l_mess(i);
     free(str);
     MX_SCROL_END(i->m);
@@ -68,6 +68,7 @@ void send_but(GtkWidget *wid, t_main *m) {
     char *text = NULL;
     t_add_m *s = NULL;
 
+    (void)wid;
     text = (char *)gtk_entry_get_text(GTK_ENTRY(m->sms));
     if (text == NULL || !mx_strlen(text))
         return ;

@@ -4,11 +4,12 @@ SRC := $(wildcard src/*.c)
 OBJ = $(addprefix obj/, $(notdir $(SRC:%.c=%.o)))
 LIBMX = libmx/libmx.a
 SSL_PATH = -I/usr/local/opt/openssl/include
-FLAGS = $(SSL_PATH) `pkg-config --cflags gtk+-3.0 pkg-config --libs gtk+-3.0` $(SANFLAG) #-std=c11 -Wall -Wextra -Werror -Wpedantic 
+FLAGS = $(SSL_PATH) $(SANFLAG) -std=c11 -Wall -Wextra -Werror -Wpedantic 
 SANFLAG = -g -fsanitize=address
 SQLITE = -lsqlite3
 PTHREAD = -lpthread
 SSL = -L/usr/local/opt/openssl/lib/ -lssl -lcrypto
+INCD = inc
 
 all: $(NAME)
 
@@ -16,7 +17,7 @@ install: $(NAME)
 
 $(NAME): $(LIBMX) $(OBJ)
 	@make clean
-	@clang $(FLAGS) $(OBJ) $(LIBMX) -o $(NAME) $(SQLITE) $(SSL) $(PTHREAD)
+	@clang $(FLAGS) `pkg-config --cflags --libs gtk+-3.0` $(OBJ) $(LIBMX) -o $(NAME) $(SQLITE) $(SSL) $(PTHREAD)
 	@printf "\x1b[32;1m$(NAME) created\x1b[0m\n"
 
 $(LIBMX):
@@ -28,7 +29,7 @@ obj:
 	@mkdir obj
 
 obj/%.o: src/%.c $(INC)
-	@clang $(FLAGS) -c $< -o $@
+	@clang $(FLAGS) `pkg-config --cflags gtk+-3.0` -o $@ -c $< 
 	@printf "\x1b[32mcompiled: \x1b[0m[$<]\n"
 
 clean:

@@ -7,7 +7,8 @@ void free_msg(t_msg **list) {
     while(tmp) {
         hren = tmp->next;
         free(tmp->text);
-        tmp->time ? free(tmp->time) : 0;
+        if (tmp->time) 
+            free(tmp->time);
         free(tmp);
         tmp = NULL;
         tmp = hren;

@@ -3,9 +3,9 @@
 void save_file(GtkMenuItem *item, t_msg *msg) {
     GtkWidget *dialog;
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER;
-    gint res;
     gchar *tmp = NULL;
 
+    (void)item;
     dialog = gtk_file_chooser_dialog_new ("Save File", GTK_WINDOW(msg->user->m->window), action, ("_Cancel"), 
                         GTK_RESPONSE_CANCEL, ("_Save"), GTK_RESPONSE_ACCEPT, NULL);
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
@@ -21,6 +21,7 @@ void delete_msg(GtkMenuItem *item, t_msg *msg) {
     t_main *m = msg->user->m;
     char *id = mx_itoa(msg->id);
 
+    (void)item;
     gtk_grid_remove_row(GTK_GRID(msg->user->text_grid), msg->count);
     for (t_msg *i = msg->prev; i->prev; i = i->prev)
         i->count--;
@@ -38,6 +39,7 @@ void delete_msg(GtkMenuItem *item, t_msg *msg) {
 }
 
 void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg) {
+    (void)widget;
     if (event->button != 1) {
         gtk_menu_popup_at_widget(GTK_MENU(msg->menu), (msg->label), GDK_GRAVITY_SOUTH_WEST, 
             GDK_GRAVITY_SOUTH_EAST, (GdkEvent *)event);

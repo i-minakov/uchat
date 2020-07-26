@@ -4,6 +4,7 @@ static void user_recipient(GtkWidget *wid, t_user *us) {
     t_msg_forw *fm = us->m->forw->fm;
     t_add_m *s = create_struct(fm->text ? NULL : fm->filename, true, 1, NULL);
 
+    (void)wid;
     gtk_widget_hide(fm->f->fix_forw);
     if (fm->text) {
         if (fm->was_forw == 0) 
@@ -27,6 +28,7 @@ static void user_recipient(GtkWidget *wid, t_user *us) {
 }
 
 static void cancel_forw(GtkWidget *w, t_forw *f) {
+    (void)w;
     gtk_widget_destroy(f->grid_forw);
     gtk_widget_hide(f->fix_forw);
     free(f->fm);
@@ -35,7 +37,6 @@ static void cancel_forw(GtkWidget *w, t_forw *f) {
 static void create_window(t_forw *f, t_user *head, char *s) {
     int row = 0;
     GtkWidget *but;
-    GtkWidget *box;
     GtkWidget *fix;
 
     for (t_user *i = head; i; i = i->next) {
@@ -71,6 +72,7 @@ static void search_forw(GtkEntry *e, t_forw *f) {
 void forward_msg(GtkMenuItem *item, t_msg *msg) {
     t_forw *f = msg->user->m->forw;
 
+    (void)item;
     f->fm = (t_msg_forw *)malloc(sizeof(t_msg_forw) * 10);
     f->fm->f = f;    
     f->fm->text = msg->text;

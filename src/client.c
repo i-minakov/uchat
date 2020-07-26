@@ -33,7 +33,6 @@ void mx_new_msg_back(t_user *us, t_list *list) {
     int c = 0;
     char *id_new = NULL;
     char **arr = NULL;
-    t_add_m *s = NULL;
 
     for (t_msg *j = us->msg; j; j = j->next) 
         j->next == NULL ? c = j->count - 1 : 0;
@@ -63,7 +62,6 @@ int find_last_ind_new(t_list *list) {
 }
 
 bool mx_check_last_index(t_user *us, t_list *list) {
-    char *arr = NULL;
     char *id_new = NULL;
     int last_id_new = find_last_ind_new(list);
     int last_id_old = 0;
@@ -86,13 +84,10 @@ bool mx_check_last_index(t_user *us, t_list *list) {
 }
 
 bool mx_check_activ(t_main *m, t_list *list) {
-    t_user *us = NULL;
+    t_user *us = mx_activ_us(m);
     char **arr = NULL;
-    char *json = NULL;
     char *id_new = NULL;
 
-    for (t_user *i = m->users; i; i = i->next)
-        i->check == true ? us = i : 0;
     if (!us || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
         return false;
     if (mx_check_last_index(us, list) == true)
@@ -126,10 +121,31 @@ void mx_cmp_list(t_main *m, t_info *info) {
     }
 }
 void mx_check_rcv_list(t_info *info, t_main *m) {
+    char *size = NULL;
+
     if (m->cmd == SRCH)
         show_result_of_search(info->list, m);
     else if (m->cmd == DEF)
         mx_cmp_list(m, info);
+    else if (m->cmd == UPDATE_SIZE) {
+        size = mx_itoa(mx_activ_us(m)->size_request);
+        m->command = mx_arrjoin(m->command, "mx_update");
+        m->command = mx_arrjoin(m->command, "size");
+        m->command = mx_arrjoin(m->command, size);
+        mx_strdel(&size);
+        m->cmd = DEF;
+    }
+}
+void mx_check_sigup(t_main *m) {
+    if (m->cmd == CHECK_US) {
+        m->my_name = mx_strdup(m->log_in->sig->signame);
+        m->command = mx_arrjoin(m->command, "mx_add_new_user");
+        m->command = mx_arrjoin(m->command, m->my_name);
+        m->command = mx_arrjoin(m->command, m->log_in->sig->sigpas);
+        m->command = mx_arrjoin(m->command, 
+            m->log_in->sig->sigfile ? m->log_in->sig->sigfile : "./source/resource/default.jpg");
+        m->cmd = BLCK;
+    }
 }
 void mx_check_sigin(t_main *m) {
     if (m->cmd == CHECK_PASS) {
@@ -138,7 +154,7 @@ void mx_check_sigin(t_main *m) {
         m->command = mx_arrjoin(m->command, m->log_in->log->logpas);
         m->cmd = BLCK;
     }
-    if (m->cmd == LANG) {
+    else if (m->cmd == LANG) {
         gtk_widget_hide(m->log_in->window);
 		gtk_widget_destroy(m->log_in->fixed);
         m->command = mx_arrjoin(m->command, "mx_get_type");
@@ -152,15 +168,7 @@ void mx_check_sigin(t_main *m) {
         m->command = mx_arrjoin(m->command, "1");
         m->cmd = BLCK;
     }
-    else if (m->cmd == CHECK_US) {
-        m->my_name = mx_strdup(m->log_in->sig->signame);
-        m->command = mx_arrjoin(m->command, "mx_add_new_user");
-        m->command = mx_arrjoin(m->command, m->my_name);
-        m->command = mx_arrjoin(m->command, m->log_in->sig->sigpas);
-        m->command = mx_arrjoin(m->command, 
-            m->log_in->sig->sigfile ? m->log_in->sig->sigfile : "./source/resource/default.jpg");
-        m->cmd = BLCK;
-    }
+    mx_check_sigup(m);
 }
 static void mx_enter_argv(char ***arr, t_client *client) {
     char **request = client->gtk->command;
@@ -194,7 +202,7 @@ int mx_monthcmp(char *month1, char *month2) {
     int num1 = 0;
     int num2 = 0;
 
-    for (int i = 0; i < sizeof(map)/sizeof(map[0]); i++) {
+    for (int i = 0; i < (int)(sizeof(map)/sizeof(map[0])); i++) {
         if (mx_strcmp(month1, map[i].m) == 0)
             num1 = map[i].e;
         if (mx_strcmp(month2, map[i].m) == 0)
@@ -325,6 +333,18 @@ static int mx_command(t_client *client, char **json) {
     pthread_mutex_unlock(client->mutex);
     return result;
 }
+static void mx_check_status(t_client *client) {
+    if (client->gtk->cmd == LOG_OUT) {
+            gtk_widget_destroy(client->gtk->fix1);
+            gtk_widget_hide(client->gtk->window);
+            free_all(client->gtk);
+            client->gtk = malloc_main();
+            log_screen(client->gtk);
+            client->gtk->cmd = DEF;
+    }
+    if (client->gtk->cmd == SIG_IN || client->gtk->cmd == SIG_UP)
+        chat_screen(&client->gtk);
+}
 void mx_client_send(t_client *client) {
     char *json = NULL;
 
@@ -332,8 +352,7 @@ void mx_client_send(t_client *client) {
     while (client->exit == 1) {
         gtk_main_iteration();
         mx_get_request(&json, client); 
-        if (client->gtk->cmd == SIG_IN || client->gtk->cmd == SIG_UP)
-            chat_screen(&client->gtk);
+        mx_check_status(client);
         if (mx_command(client, &json) == 1)
             break;
         mx_strdel(&json);
@@ -351,6 +370,7 @@ static void mx_server_answer(char ch[], char *str, t_client *client) { // server
             bad_act(client->gtk->log_in, 1, 2);
         if (mx_strcmp(client->status, "User already exist") == 0)
             bad_act(client->gtk->log_in, 8, 2);
+        mx_idle_hide(false, client->gtk->log_in->wait_gif);
         client->gtk->cmd = DEF;
     }
     if (ch[0] == 'G') {
@@ -670,6 +690,6 @@ int mx_client(int argc, char *argv[]) {
         return 1;
     mx_client_sin_log(client);
     pthread_mutex_destroy(&mutex);
-    gtk_main_quit();
+    // gtk_main_quit();
     return 0;
 }

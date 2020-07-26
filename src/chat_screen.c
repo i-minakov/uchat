@@ -1,5 +1,27 @@
 #include "../inc/uchat.h"
 
+void mx_idle_show(bool flag, GtkWidget *wid) {
+    if (flag == true)
+        gtk_widget_show_all(wid);
+    else 
+        g_idle_add((GSourceFunc)mx_show, wid);
+}
+
+void mx_idle_hide(bool flag, GtkWidget *wid) {
+    if (flag == true)
+        gtk_widget_hide(wid);
+    else 
+        g_idle_add((GSourceFunc)mx_hide, wid);
+}
+
+t_user *mx_activ_us(t_main *m) {
+    t_user *us = NULL;
+
+    for (t_user *i = m->users; i; i = i->next)
+        i->check == true ? us = i : 0;
+    return us;
+}
+
 void user_pushfront(t_user **head, char *name) {
     t_user *tmp = *head;
 
@@ -99,7 +121,7 @@ static void set_cap(t_cap *c) {
     c->frame_for_my_photo = gtk_image_new_from_file("./source/resource/my photo.png");
     c->burger_but_img = gtk_image_new_from_file("./source/resource/burger.png");
     c->dot_menu = gtk_image_new_from_file("./source/resource/dots.png");
-    char *markup = g_markup_printf_escaped("<span color=\"white\" font=\"14\">\%s</span>", c->m->my_name);
+    char *markup = g_markup_printf_escaped("<span color=\"white\" font=\"14\">%s</span>", c->m->my_name);
 
     gtk_fixed_put(GTK_FIXED(c->fix_cap), c->my_photo, 23, 20);
     gtk_fixed_put(GTK_FIXED(c->fix_cap), c->frame_for_my_photo, 23, 20);
@@ -180,9 +202,12 @@ void free_all(t_main *m) {
     free(m->stic);
     free(m->emo);
     free(m);
+    m = NULL;
 }
 
 void check_cmd(t_main *m) {
+    gtk_widget_destroy(m->log_in->fixed);
+    gtk_widget_hide(m->log_in->window);
     if (m->cmd == SIG_UP) {
         m->my_name = mx_strdup(m->log_in->sig->signame);
         m->cmd = BLCK;
@@ -198,8 +223,8 @@ int chat_screen(t_main **gtk) {
 
     m->order = 0;
     check_cmd(m);
-    for (int i = 10; i > 0; i--) 
-        user_pushback(&m->users, "yarik");
+    // for (int i = 10; i > 0; i--) 
+    //     user_pushback(&m->users, "yarik"); 
     init_components(m);
     connect_css(m, 1);
     init_signals(m);  
@@ -207,7 +232,7 @@ int chat_screen(t_main **gtk) {
                      "Please select a chat to start messaging");
     gtk_widget_show_all(m->window);
     hide_something(m);
-    gtk_window_set_icon_from_file (GTK_WINDOW(m->window), "source/resource/logo.png", NULL);
+    gtk_window_set_icon_from_file(GTK_WINDOW(m->window), "source/resource/logo.png", NULL);
     m->cmd = DEF;
     return ex;
 }
@@ -216,7 +241,7 @@ int interface() {
     t_main *m = malloc_main();
     
     gtk_init(NULL, NULL);
-    log_screen(&m);
+    // log_screen(&m);
     chat_screen(&m);
     gtk_main();
     free_all(m);

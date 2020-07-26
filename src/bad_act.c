@@ -25,12 +25,12 @@ static void seting(t_wid *wid, char *tmp) {
 	wid->badact_lab = gtk_label_new (tmp);
 	gtk_fixed_put(GTK_FIXED(wid->fixed), wid->badact_lab, marg, 350);
 	gtk_widget_show(wid->badact_lab);
-	g_signal_handlers_block_by_func(wid->sig->sig_gif, log_enter_notify_event, wid);
-	g_signal_handlers_block_by_func(wid->log->log_gif, sig_enter_notify_event, wid);
+	g_signal_handlers_block_by_func((void *)wid->sig->sig_gif, (void *)log_enter_notify_event, (void *)wid);
+	g_signal_handlers_block_by_func((void *)wid->log->log_gif, (void *)sig_enter_notify_event, (void *)wid);
 }
 
 
-static void show_wid(t_wid *wid, int flag, int thred, char *tmp) {
+static void show_wid(t_wid *wid, int thred, char *tmp) {
 	if (thred == 1) {
 		gtk_widget_show(wid->badact);
 		gtk_widget_show(wid->badact_but);
@@ -67,5 +67,5 @@ void bad_act(t_wid *wid, int flag, int thred) {
 		tmp = "Password can only contains chars and numbers";
 	if(flag == 8)
 		tmp = "User already exist";
-	show_wid(wid, flag, thred, tmp);
+	show_wid(wid, thred, tmp);
 }

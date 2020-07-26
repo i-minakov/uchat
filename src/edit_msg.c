@@ -25,8 +25,6 @@ static void dialog_delete(t_msg *msg) {
 static void edit_done(GtkEntry *e, t_msg *msg) {
     char *str = NULL;
     int k = 0;
-    GtkWidget *dialog;
-    GtkDialogFlags flags;
 
     mx_strdel(&msg->text);
     msg->text = mx_strdup((char *)gtk_entry_get_text(GTK_ENTRY(msg->user->m->edit_entry)));
@@ -43,18 +41,11 @@ static void edit_done(GtkEntry *e, t_msg *msg) {
     else 
         command_edit(msg->user->m, msg);
     free(str);
-    g_signal_handlers_disconnect_by_func(e, G_CALLBACK(edit_done), msg);
+    g_signal_handlers_disconnect_by_func((void *)e, (void *)edit_done, (void *)msg);
 }
 
 void edit_msg(GtkMenuItem *item, t_msg *msg) {
-    // GtkWidget *lab = gtk_label_new(NULL);
-    // char *markup = g_markup_printf_escaped(
-    //         "<span color=\"white\" font=\"12\"> Editing: %s</span>", msg->text);
-
-    // gtk_label_set_markup(GTK_LABEL(lab), markup); 
-    // gtk_fixed_put(GTK_FIXED(msg->user->m->fix1), lab, 364, 610);
-    // gtk_widget_show(lab);
-    // g_free(markup);
+    (void)item;
     gtk_widget_hide(msg->user->m->sms);
     gtk_widget_show(msg->user->m->edit_entry);
     gtk_entry_set_text(GTK_ENTRY(msg->user->m->edit_entry), msg->text);

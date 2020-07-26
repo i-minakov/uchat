@@ -13,13 +13,15 @@ static void other_users(t_user *users) {
     }
     users->check = true;
     mx_del_strarr(&users->m->command);
+    users->m->cmd = UPDATE_SIZE;
 }
 
 void user_click(GtkWidget *wid, t_user *users) {
     char *markup = g_markup_printf_escaped
-            ("<span color=\"white\" font=\"14\">\%s</span>",
+            ("<span color=\"white\" font=\"14\">%s</span>",
                  gtk_label_get_text(GTK_LABEL(users->l_name)));
 
+    (void)wid;
     gtk_widget_hide(users->m->lab_start);
     gtk_widget_show(users->m->sms);
     other_users(users);

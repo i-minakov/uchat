@@ -11,8 +11,6 @@
 #include <time.h>
 
 #define MX_SCROL_END(m) g_idle_add((GSourceFunc)move_scrol, m)
-#define MX_IDLE_HIDE(flag, wid) flag == true ? gtk_widget_hide(wid) : g_idle_add((GSourceFunc)mx_hide, wid)
-#define MX_IDLE_SHOW(flag, wid) flag == true ? gtk_widget_show_all(wid) : g_idle_add((GSourceFunc)mx_show, wid)
 #define MX_SET_NAME_MSG(flag, label) flag == true ? gtk_widget_set_name(label, "lm") : gtk_widget_set_name(label, "lm2")
 #define MX_SHOW_HIDE(flag, widget) flag == 1 ? gtk_widget_show(widget) : gtk_widget_hide(widget) 
 #define MX_BOX_END(wid, label) gtk_box_pack_end(GTK_BOX(wid), label, FALSE, FALSE, 0)
@@ -20,7 +18,7 @@
 #define MX_MSG_PACK(flag, label, box) (flag == true ? MX_BOX_END(box, label) : MX_BOX_START(box, label))
 
 #define MX_MY_PHOTO(flag) flag == 1 ? "./source/resource/my photo.png" : "./source/resource/activated photo2.png"
-#define MX_NAME_COLOR(flag) flag == 1 ? "<span color=\"white\" font=\"14\">\%s</span>" : "<span color=\"black\" font=\"14\">\%s</span>"
+#define MX_NAME_COLOR(flag) flag == 1 ? "<span color=\"white\" font=\"14\">%s</span>" : "<span color=\"black\" font=\"14\">%s</span>"
 #define MX_CSS(flag) flag == 1 ? "./src/black.css" : "./src/light.css"
 #define MX_BOTTOM(flag) flag == 1 ? "./source/resource/bottom.png" : "./source/resource/bottom1.png"
 #define MX_TOP(flag) flag == 1 ? "./source/resource/top.png" : "./source/resource/top1.png"
@@ -60,6 +58,7 @@ enum e_cmd {
     CHECK_PASS,
     CHECK_US,
     UPDATE_SIZE,
+    LOG_OUT
 };
 
 typedef struct s_add_msg {
@@ -284,6 +283,7 @@ typedef struct s_main {
     struct s_dot_menu *dots;
     struct s_cap *cap;
     struct s_data_users *users;
+    struct s_data_users *search_user;
     struct s_sticker *stic;
     struct s_emoji *emo;
     struct s_menu *menu;
@@ -341,6 +341,10 @@ void mx_new_msg_back(t_user *us, t_list *new);
 void file_check(gchar *tmp, t_msg **msg, char *name, bool my);
 void add_file_back(t_user *us, t_add_m *s, int stic, int count);
 void add_time(t_user *i, t_add_m *s);
+t_user *mx_activ_us(t_main *m);
+void free_all(t_main *m);
+void mx_idle_show(bool flag, GtkWidget *wid);
+void mx_idle_hide(bool flag, GtkWidget *wid);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);
@@ -426,6 +430,7 @@ typedef struct s_wid {
     GtkWidget *window;
 	GtkWidget *fixed;
     GtkWidget *start_gif;
+    GtkWidget *wait_gif;
 	GtkWidget *badact;
 	GtkWidget *badact_but;
 	GtkWidget *badact_lab;

@@ -3,7 +3,6 @@
 static void file_pushback(t_msg **head, t_add_m *s, int sticer) {
     t_msg *tmp = NULL;
     GtkWidget *item[4];
-    int i = 0;
     char *func[] = {"Save", "Forward", "Delete", NULL};
     void (*menu_option[])(GtkMenuItem *item, t_msg *msg) = 
         {save_file, forward_msg, delete_msg};
@@ -26,7 +25,7 @@ static void file_pushback(t_msg **head, t_add_m *s, int sticer) {
     }
 }
 
-static void send_file_back(t_user *us, t_add_m *s, t_msg *t, int flag) {
+static void send_file_back(t_user *us, t_add_m *s, t_msg *t) {
     GtkWidget *wid;
 
     wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 900);
@@ -34,7 +33,8 @@ static void send_file_back(t_user *us, t_add_m *s, t_msg *t, int flag) {
     MX_MSG_PACK(s->my, t->label, wid);
     MX_SET_NAME_MSG(s->my, t->label);
     gtk_grid_attach_next_to(GTK_GRID(us->text_grid), wid, NULL, GTK_POS_TOP, 1, 1);
-    MX_IDLE_SHOW(s->my, wid);   
+    mx_idle_show(s->my, wid);
+    
 }
 
 void add_file_back(t_user *us, t_add_m *s, int stic, int count) {
@@ -52,12 +52,12 @@ void add_file_back(t_user *us, t_add_m *s, int stic, int count) {
     msg->count = count;
     if (stic == 0) {
         file_check(s->text, &msg, name, s->my);
-        send_file_back(us, s, msg, stic);
+        send_file_back(us, s, msg);
     }
     else {
         msg->file = gtk_image_new_from_file(s->text);
         gtk_button_set_image(GTK_BUTTON(msg->label), msg->file);
-        send_file_back(us, s, msg, stic);
+        send_file_back(us, s, msg);
     }
     mx_del_strarr(&p);
     free(s);

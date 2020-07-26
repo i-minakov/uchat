@@ -23,6 +23,8 @@ static void sig_widgets(t_wid *wid) {
 }
 
 static void valid_widgets(t_wid *wid) {
+	GdkPixbufAnimation *wait = gdk_pixbuf_animation_new_from_file("source/resource/gif/end.gif", NULL);
+
 	wid->log->no_fil_log = GTK_WIDGET(gtk_builder_get_object(wid->builder, "required1"));
 	wid->sig->no_fil_sig = GTK_WIDGET(gtk_builder_get_object(wid->builder, "required2"));
 	wid->sig->sigfile = NULL;
@@ -33,7 +35,10 @@ static void valid_widgets(t_wid *wid) {
 
 	wid->start_gif = gtk_image_new_from_file ("source/resource/gif/start.gif");
 	gtk_fixed_put(GTK_FIXED(wid->fixed), wid->start_gif, 5, 0);
-	//gtk_widget_show(wid->start_gif);
+	wid->wait_gif = gtk_image_new_from_animation(wait);
+	gtk_fixed_put(GTK_FIXED(wid->fixed), wid->wait_gif, 5, 0);
+	// gtk_widget_show(wid->start_gif);
+	// gtk_widget_show(wid->wait_gif);
 }
 
 void init_widgets_start(t_wid *wid, t_eye *eye) {

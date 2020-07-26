@@ -35,7 +35,6 @@ static void rem(t_main *m) {
 }
 
 void connect_css(t_main *m, int flag) {
-    char *way = NULL;
     if (flag != 1)
         rem(m);
     con(m);

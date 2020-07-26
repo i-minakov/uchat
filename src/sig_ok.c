@@ -30,6 +30,7 @@ bool valid(t_wid *wid) {
 }
 
 void sig_ok(GtkWidget *widget, t_wid *wid) {
+	(void)widget;
   	wid->sig->signame = (char *)gtk_entry_get_text (GTK_ENTRY (wid->sig->sig_name));
 	wid->sig->sigpas = (char *)gtk_entry_get_text (GTK_ENTRY (wid->sig->sig_pas));
 	wid->sig->sigpas2 = (char *)gtk_entry_get_text (GTK_ENTRY (wid->sig->sig_pas2));
@@ -42,8 +43,7 @@ void sig_ok(GtkWidget *widget, t_wid *wid) {
 			wid->m->command = mx_arrjoin(wid->m->command, "mx_update");
 			wid->m->command = mx_arrjoin(wid->m->command, "user");
 			wid->m->command = mx_arrjoin(wid->m->command, wid->sig->signame);
-			gtk_widget_hide(wid->window);
-			gtk_widget_destroy(wid->fixed);
+			gtk_widget_show(wid->wait_gif);
 			wid->m->cmd = CHECK_US;
 		}
 	}

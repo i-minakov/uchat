@@ -1,9 +1,10 @@
 #include "../inc/uchat.h"
 
-void make_vis(GtkEntry            *entry,
-               GtkEntryIconPosition icon_pos,
-               GdkEvent            *event,
-               t_eye *eye) {	   
+void make_vis(GtkEntry *entry, GtkEntryIconPosition icon_pos,
+    			GdkEvent *event, t_eye *eye) {
+	(void)entry;
+	(void)event;	
+	(void)icon_pos;   
 	if (eye->log == false) {
 		eye->log = true;
 		gtk_entry_set_visibility (GTK_ENTRY(entry), TRUE);

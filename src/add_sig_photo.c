@@ -1,10 +1,8 @@
 #include "../inc/uchat.h"
 
-
 gchar *make_chooser(t_wid *wid) {
     GtkWidget *dialog;
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
-    gint res;
     gchar *tmp = NULL;
 
     dialog = gtk_file_chooser_dialog_new ("Open File", GTK_WINDOW(wid->window), action, ("_Cancel"), 
@@ -33,7 +31,8 @@ static bool show_photo (t_wid *wid) {
 
 void add_sig_photo(GtkWidget *widget, t_wid *wid) {
 	gchar *tmp = make_chooser(wid);
-	// puts(tmp);
+	
+	(void)widget;
 	for (int i = 0; tmp[i]; i++) {
 		if(tmp[i] == '.') {
 			if (mx_strcmp(&tmp[i], ".png") == 0 || mx_strcmp(&tmp[i], ".jpg") == 0

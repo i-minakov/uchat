@@ -18,12 +18,12 @@ void hide_all(t_wid *wid) {
 }
 
 void win_event(GtkWidget *widget, GdkEventButton *event, t_wid *wid) {
+	(void)widget;
+	(void)event;
 	gtk_widget_show(wid->log->log_hower);
 	gtk_widget_show(wid->sig->sig_hower);
 	hide_all(wid);
 }
-
-///////////////////////////////////////
 
 void init_builder(t_wid *wid) {
 	wid->builder = gtk_builder_new();

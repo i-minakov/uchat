@@ -50,7 +50,7 @@ void add_message_back(t_user *i, t_add_m *s, int count, int id) {
     MX_MSG_PACK(s->my, msg->label, wid);
     MX_SET_NAME_MSG(s->my, msg->label);
     gtk_grid_attach_next_to(GTK_GRID(i->text_grid), wid, NULL, GTK_POS_TOP, 1, 1);
-    MX_IDLE_SHOW(false, wid);
+    mx_idle_show(false, wid);
     msg->adj_value = gtk_adjustment_get_value(i->m->adj);
     reset_l_mess(i);
     free(str);

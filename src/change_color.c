@@ -20,6 +20,7 @@ void wid_ch(t_main *m) {
 void change_color(GtkToggleButton *togglebutton, t_main *m) {
     char *str = NULL;
 
+    (void)togglebutton;
     if (m->style->color == 1) 
         m->style->color = 2;
     else 

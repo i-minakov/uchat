@@ -1,19 +1,24 @@
 #include "../inc/uchat.h"
 
 void show_setings(GtkWidget *wid, t_main *m) {
+    (void)wid;
     show_set(m);
 }
 
 void hide_setings(GtkWidget *wid, t_main *m) {
-    //провека данных
+    (void)wid;
     hide_set(m);
 }
 
 static void entry_activate(GtkEntry *e, t_main *m) {
+    (void)e;
     send_but(m->but1, m);
 }
 
 void show_hide_dots_menu(GtkWidget *wid, t_dots *d) {
+    (void)wid;
+    if (mx_activ_us(d->m) == NULL)
+        return;
     MX_SHOW_HIDE(d->visible, d->fix_dot_menu);
     if (d->visible == 1) 
         d->visible = 0;
@@ -24,6 +29,7 @@ void show_hide_dots_menu(GtkWidget *wid, t_dots *d) {
 void clear_history(GtkWidget *wid, t_main *m) {
     t_user *us = NULL;
 
+    (void)wid;
     for (t_user *i = m->users; i; i = i->next) 
         i->check == true ? us = i : 0;
     if (us == NULL)
@@ -45,17 +51,21 @@ void clear_history(GtkWidget *wid, t_main *m) {
 }   
 
 void block_user(GtkWidget *wid, t_main *m) {
-
+    (void)wid;
+    m->command = mx_arrjoin(m->command, "mx_add_user_to_table");
+    m->command = mx_arrjoin(m->command, m->my_name);
+    m->command = mx_arrjoin(m->command, mx_activ_us(m)->name);
+    m->command = mx_arrjoin(m->command, "2");
 }
 
 void set_dots_signal(t_dots *d) {
-    
     g_signal_connect(d->dot_but, "clicked", G_CALLBACK(show_hide_dots_menu), d);
     g_signal_connect(d->clear_msg_but, "clicked", G_CALLBACK(clear_history), d->m);
     g_signal_connect(d->block_but, "clicked", G_CALLBACK(block_user), d->m);
 }
 
 void show_search_msg(GtkWidget *w, t_main *m) {
+    (void)w;
     m->flag_search = 1;
     gtk_widget_hide(m->cap->burger_but_img);
     gtk_widget_hide(m->cap->burger_but);
@@ -67,6 +77,7 @@ void show_search_msg(GtkWidget *w, t_main *m) {
 }
 
 void show_search_users(GtkWidget *w, t_main *m) {
+    (void)w;
     m->flag_search = 2;
     gtk_widget_hide(m->cap->burger_but_img);
     gtk_widget_hide(m->cap->burger_but);
@@ -79,6 +90,7 @@ void show_search_users(GtkWidget *w, t_main *m) {
 }
 
 void show_search_contacts(GtkWidget *w, t_main *m) {
+    (void)w;
     m->flag_search = 3;
     gtk_widget_hide(m->cap->burger_but_img);
     gtk_widget_hide(m->cap->burger_but);
@@ -113,6 +125,8 @@ void close_search(GtkEntry *entry, GtkEntryIconPosition icon_pos,
                 GdkEvent *event, t_main *m) {
     if (icon_pos == GTK_ENTRY_ICON_PRIMARY)
         return ;
+    (void)entry;
+    (void)event;
     gtk_widget_show(m->cap->burger_but_img);
     gtk_widget_show(m->cap->burger_but);
     gtk_widget_show(m->cap->my_photo);
@@ -129,12 +143,14 @@ void close_search(GtkEntry *entry, GtkEntryIconPosition icon_pos,
 }
 
 void exit_chat(GtkWidget *w, t_main *m) {
-    m->exit = 1;
-    gtk_widget_destroy(m->window);
-    gtk_main_quit();
+    (void)w;
+    m->command = mx_arrjoin(m->command, "mx_log_out");
+    m->command = mx_arrjoin(m->command, "log_out");
+    m->cmd = LOG_OUT;
 }
 
 void change_photo(GtkWidget *w, t_main *m) {
+    (void)w;
     attach_file(NULL, 2, NULL, m);
 }
 
@@ -142,6 +158,7 @@ void mx_increase_msg_list(GtkScrolledWindow *scrol_bar,
                         GtkPositionType pos, t_main *m) {
     if (pos == GTK_POS_BOTTOM)
         return;
+    (void)scrol_bar;    
     t_user *us = NULL;
     char *new = NULL;
 

@@ -3,6 +3,7 @@
 void change_pas(GtkEntry *e, t_main *m) {
     gchar *tmp = NULL;
 
+    (void)e;
     tmp = (char *)gtk_entry_get_text (GTK_ENTRY (m->set->chan_pas));
     if(tmp != NULL){
         gtk_button_set_label(GTK_BUTTON(m->set->my_pas), tmp);
