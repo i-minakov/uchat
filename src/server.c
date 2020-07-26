@@ -410,6 +410,8 @@ static void mx_free_struct(t_node **node) {
     if ((*node)->for_files->file)
         fclose((*node)->for_files->file);
     free((*node)->for_files);
+    free(*node);
+    *node = NULL;
 }
 static void mx_unset_node(t_way **list, void *data) {
     t_way *next = NULL;
@@ -438,6 +440,8 @@ static void mx_unset_node(t_way **list, void *data) {
 void mx_del_client(t_way **list, t_node **node, void *data) {
     mx_free_struct(node);
     mx_unset_node(list, data);
+    free(*list);
+    *list = NULL;
 }
 void *mx_server_handel(void *data) {
     t_way *list = *((t_way **)data);
@@ -550,7 +554,8 @@ int mx_server(int argc, char *argv[]) {
         listen(server.server, 1);
         t_node *node = mx_create_t_node(server);
 
-        node->client = accept(server.server, (struct sockaddr *)&node->client_addr, &addr_size);
+        node->client = accept(server.server, (struct sockaddr *)&node->client_addr, &addr_size);        
+        server.list = NULL;
         mx_push_back_t_way(&(server.list), (void *)node);
         if (mx_server_handshake(&server) == 1)
             mx_del_client(&server.list, (t_node **)&server.list->data, &server.list);

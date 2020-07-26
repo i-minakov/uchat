@@ -1,7 +1,6 @@
 #include "../inc/header.h"
 
-// voice
-// sort seg
+// ./source/cash_(user_name)/
 
 /* Ilay */
 void mx_msg_or_file(char **arr, char *id, t_user *us) {
@@ -14,7 +13,6 @@ void mx_msg_or_file(char **arr, char *id, t_user *us) {
             arr[2]) ? true : false, 
                 mx_atoi(arr[3]), arr[1]), mx_atoi(arr[3]), mx_atoi(id));
 }
-
 void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
     t_add_m *s = NULL;
 
@@ -28,12 +26,10 @@ void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
         add_file_back(us, s, mx_atoi(arr[3]), count);
     }
 }
-
 void mx_new_msg_back(t_user *us, t_list *list) {
     int c = 0;
     char *id_new = NULL;
     char **arr = NULL;
-    t_add_m *s = NULL;
 
     for (t_msg *j = us->msg; j; j = j->next) 
         j->next == NULL ? c = j->count - 1 : 0;
@@ -47,7 +43,6 @@ void mx_new_msg_back(t_user *us, t_list *list) {
     }
 }
 /* check rcv list */
-
 int find_last_ind_new(t_list *list) {
     char *id_new = NULL;
     int last_id_new = 0;
@@ -61,9 +56,7 @@ int find_last_ind_new(t_list *list) {
     }
     return last_id_new;
 }
-
 bool mx_check_last_index(t_user *us, t_list *list) {
-    char *arr = NULL;
     char *id_new = NULL;
     int last_id_new = find_last_ind_new(list);
     int last_id_old = 0;
@@ -84,17 +77,33 @@ bool mx_check_last_index(t_user *us, t_list *list) {
     }
     return false;
 }
-
-bool mx_check_activ(t_main *m, t_list *list) {
-    t_user *us = NULL;
+void check_edited(t_user *us, t_list *list) {
+    char *cmd = NULL;
     char **arr = NULL;
-    char *json = NULL;
+    t_msg *edited = NULL;
+
+    for (t_list *i = list; i; i = i->next) {
+        cmd = mx_get_value(((t_data *)i->data)->list->data, "command");
+        arr = mx_get_arr(((t_data *)i->data)->list->data);
+        if (mx_strstr(arr[2], "edited")) {
+            edited = mx_msg_by_id(us, mx_atoi(cmd));
+            mx_strdel(&edited->text);
+            edited->text = mx_strdup(arr[0]);
+            gtk_label_set_text(GTK_LABEL(edited->label), edited->text);
+            gtk_widget_set_tooltip_text(edited->label, arr[2]);
+        }
+        mx_strdel(&cmd); 
+        mx_del_strarr(&arr);
+    }
+}
+bool mx_check_activ(t_main *m, t_list *list) {
+    t_user *us = mx_activ_us(m);
+    char **arr = NULL;
     char *id_new = NULL;
 
-    for (t_user *i = m->users; i; i = i->next)
-        i->check == true ? us = i : 0;
     if (!us || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
         return false;
+    check_edited(us, list);
     if (mx_check_last_index(us, list) == true)
         return true;
     id_new = mx_get_value(((t_data *)list->data)->list->data, "command");
@@ -126,10 +135,31 @@ void mx_cmp_list(t_main *m, t_info *info) {
     }
 }
 void mx_check_rcv_list(t_info *info, t_main *m) {
+    char *size = NULL;
+
     if (m->cmd == SRCH)
         show_result_of_search(info->list, m);
     else if (m->cmd == DEF)
         mx_cmp_list(m, info);
+    else if (m->cmd == UPDATE_SIZE) {
+        size = mx_itoa(mx_activ_us(m)->size_request);
+        m->command = mx_arrjoin(m->command, "mx_update");
+        m->command = mx_arrjoin(m->command, "size");
+        m->command = mx_arrjoin(m->command, size);
+        mx_strdel(&size);
+        m->cmd = DEF;
+    }
+}
+void mx_check_sigup(t_main *m) {
+    if (m->cmd == CHECK_US) {
+        m->my_name = mx_strdup(m->log_in->sig->signame);
+        m->command = mx_arrjoin(m->command, "mx_add_new_user");
+        m->command = mx_arrjoin(m->command, m->my_name);
+        m->command = mx_arrjoin(m->command, m->log_in->sig->sigpas);
+        m->command = mx_arrjoin(m->command, 
+            m->log_in->sig->sigfile ? m->log_in->sig->sigfile : "./source/resource/default.jpg");
+        m->cmd = BLCK;
+    }
 }
 void mx_check_sigin(t_main *m) {
     if (m->cmd == CHECK_PASS) {
@@ -138,7 +168,7 @@ void mx_check_sigin(t_main *m) {
         m->command = mx_arrjoin(m->command, m->log_in->log->logpas);
         m->cmd = BLCK;
     }
-    if (m->cmd == LANG) {
+    else if (m->cmd == LANG) {
         gtk_widget_hide(m->log_in->window);
 		gtk_widget_destroy(m->log_in->fixed);
         m->command = mx_arrjoin(m->command, "mx_get_type");
@@ -152,15 +182,7 @@ void mx_check_sigin(t_main *m) {
         m->command = mx_arrjoin(m->command, "1");
         m->cmd = BLCK;
     }
-    else if (m->cmd == CHECK_US) {
-        m->my_name = mx_strdup(m->log_in->sig->signame);
-        m->command = mx_arrjoin(m->command, "mx_add_new_user");
-        m->command = mx_arrjoin(m->command, m->my_name);
-        m->command = mx_arrjoin(m->command, m->log_in->sig->sigpas);
-        m->command = mx_arrjoin(m->command, 
-            m->log_in->sig->sigfile ? m->log_in->sig->sigfile : "./source/resource/default.jpg");
-        m->cmd = BLCK;
-    }
+    mx_check_sigup(m);
 }
 static void mx_enter_argv(char ***arr, t_client *client) {
     char **request = client->gtk->command;
@@ -174,6 +196,26 @@ static void mx_enter_argv(char ***arr, t_client *client) {
 
 
 
+/* cash */
+void mx_del_cash(t_client *client) {
+    DIR *dir;
+    char *cmd = NULL;
+    struct dirent *entry;
+
+    dir = opendir("./source/cash/chats");
+    while ((entry = readdir(dir)) != NULL)
+        if (mx_strcmp(entry->d_name, ".") != 0
+            && mx_strcmp(entry->d_name, "..") != 0) {
+            cmd = mx_super_join("./source/cash/chats/", entry->d_name, 0);
+            remove(cmd);
+            mx_strdel(&cmd);
+        }
+    closedir(dir);
+    cmd = mx_super_join("./source/cash/", client->gtk->my_name, 0);
+    cmd = mx_super_join(cmd, ".jpg", 0);
+    remove(cmd);
+    mx_strdel(&cmd);
+}
 
 /* sort */
 int mx_intcmp(char *str1, char *str2) {
@@ -194,7 +236,7 @@ int mx_monthcmp(char *month1, char *month2) {
     int num1 = 0;
     int num2 = 0;
 
-    for (int i = 0; i < sizeof(map)/sizeof(map[0]); i++) {
+    for (int i = 0; i < (int)(sizeof(map)/sizeof(map[0])); i++) {
         if (mx_strcmp(month1, map[i].m) == 0)
             num1 = map[i].e;
         if (mx_strcmp(month2, map[i].m) == 0)
@@ -280,7 +322,7 @@ void mx_sort_mssg(t_list **list, int flag) {
 }
 
 /* send request */
-static void mx_get_request(char **json, t_client *client) { // delete
+static void mx_get_request(char **json, t_client *client) {
     char *command = NULL;
     char **arr = NULL;
 
@@ -291,7 +333,6 @@ static void mx_get_request(char **json, t_client *client) { // delete
     mx_strdel(&command);
     mx_del_strarr(&arr);
 }
-
 static void mx_hash_pass(char **json) {
     char *command = mx_get_value(*json, "command");
     char **arr = mx_get_arr(*json);
@@ -325,6 +366,18 @@ static int mx_command(t_client *client, char **json) {
     pthread_mutex_unlock(client->mutex);
     return result;
 }
+static void mx_check_status(t_client *client) {
+    if (client->gtk->cmd == LOG_OUT) {
+            gtk_widget_destroy(client->gtk->fix1);
+            gtk_widget_hide(client->gtk->window);
+            free_all(client->gtk);
+            client->gtk = malloc_main();
+            log_screen(client->gtk);
+            client->gtk->cmd = DEF;
+    }
+    if (client->gtk->cmd == SIG_IN || client->gtk->cmd == SIG_UP)
+        chat_screen(&client->gtk);
+}
 void mx_client_send(t_client *client) {
     char *json = NULL;
 
@@ -332,8 +385,9 @@ void mx_client_send(t_client *client) {
     while (client->exit == 1) {
         gtk_main_iteration();
         mx_get_request(&json, client); 
-        if (client->gtk->cmd == SIG_IN || client->gtk->cmd == SIG_UP)
-            chat_screen(&client->gtk);
+        mx_check_status(client);
+        if (mx_check_json_cmd(json, "command", "mx_log_out"))
+            mx_del_cash(client);
         if (mx_command(client, &json) == 1)
             break;
         mx_strdel(&json);
@@ -346,15 +400,16 @@ void mx_client_send(t_client *client) {
 static void mx_server_answer(char ch[], char *str, t_client *client) { // server answer
     client->status = mx_strdup(str);
     if (ch[0] == 'B') {
-        printf("error = %s\n", client->status);
+        // printf("error = %s\n", client->status);
         if (mx_strcmp(client->status, "Wrong pass or user name") == 0)
             bad_act(client->gtk->log_in, 1, 2);
         if (mx_strcmp(client->status, "User already exist") == 0)
             bad_act(client->gtk->log_in, 8, 2);
+        mx_idle_hide(false, client->gtk->log_in->wait_gif);
         client->gtk->cmd = DEF;
     }
     if (ch[0] == 'G') {
-        printf("good = %s\n", client->status);
+        // printf("good = %s\n", client->status);
         if (!mx_strcmp("mx_add_new_user", client->status))
             client->gtk->cmd = SIG_UP;
         if (mx_strcmp("mx_check_user_pass", client->status) == 0) {
@@ -363,7 +418,6 @@ static void mx_server_answer(char ch[], char *str, t_client *client) { // server
         }
     }
 }
-
 void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
     char *str = NULL;
 
@@ -403,12 +457,8 @@ static t_info *mx_create_info(void) {
 char *mx_right_path(t_info **info, t_files *files) {
     char *path = NULL;
 
-    if (mx_strcmp((*info)->cmd, "mx_send_list_back") == 0)
-        path = mx_super_join("./source/cash/listback/", files->file_name, 0);
-    else if (mx_strcmp((*info)->cmd, "mx_regular_request") == 0)
+    if (mx_strcmp((*info)->cmd, "mx_regular_request") == 0)
         path = mx_super_join("./source/cash/chats/", files->file_name, 0);
-    else if (mx_strcmp((*info)->cmd, "mx_user_search") == 0)
-        path = mx_super_join("./source/cash/search/", files->file_name, 0);
     else if (mx_strcmp((*info)->cmd, "mx_your_photo") == 0)
         path = mx_super_join("./source/cash/", files->file_name, 0);
     return path;
@@ -453,8 +503,10 @@ static void mx_sort_recv_list(t_info **info) {
         mx_sort_mssg(&(*info)->list, 0);
 }
 void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
-    if (ch[0] == 'C')
+    if (ch[0] == 'C') {
+        mx_strdel(&(*info)->cmd);
         mx_static_read(ch, &(*info)->cmd);
+    }
     else if (ch[0] == 'S')
         mx_static_read(ch, &(*info)->size);
     else if (ch[0] == 'N') {
@@ -478,15 +530,15 @@ void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
     }
     else if (ch[0] == 'E' && ch[1] == 'E') {
         mx_sort_recv_list(info);
-        printf("cmd = %s\n", (*info)->cmd);
-        printf("size = %s\n", (*info)->size);
-        for (t_list *i = (*info)->list; i; i = i->next) {
-            printf("name = %s\n", ((t_data *)i->data)->name);
-            for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
-                if ((char *)j->data)
-                    printf("mssg = %s\n", (char *)j->data);
-        }
-        printf("\n");
+        // printf("cmd = %s\n", (*info)->cmd);
+        // printf("size = %s\n", (*info)->size);
+        // for (t_list *i = (*info)->list; i; i = i->next) {
+        //     printf("name = %s\n", ((t_data *)i->data)->name);
+        //     for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
+        //         if ((char *)j->data)
+        //             printf("mssg = %s\n", (char *)j->data);
+        // }
+        // printf("\n");
         mx_check_rcv_list(*info, client->gtk);
         mx_trim_full_list(info);
         *info = mx_create_info();
@@ -511,20 +563,8 @@ void mx_client_recv_file(char ch[], t_client *client) { // move to particular di
         // move to particular dir
     }
 }
-static void mx_del_cash(t_client *client) {
-    char *cmd = NULL;
 
-    for (int i = 0; i < 3; i++) {
-        if (i == 0)
-            cmd = mx_super_join("./source/cash/", "chats", 0);
-        mx_del_files(cmd);
-        mx_strdel(&cmd);
-    }
-    cmd = mx_super_join("./source/", client->gtk->my_name, 0);
-    cmd = mx_super_join(cmd, ".jpg", 0);
-    remove(cmd);
-    mx_strdel(&cmd);
-}
+/* read recv */
 void *mx_client_read(void *client_pointer) {
     t_client *client = (t_client *)client_pointer;
     t_info *info = mx_create_info();
@@ -670,6 +710,6 @@ int mx_client(int argc, char *argv[]) {
         return 1;
     mx_client_sin_log(client);
     pthread_mutex_destroy(&mutex);
-    gtk_main_quit();
+    // gtk_main_quit();
     return 0;
 }

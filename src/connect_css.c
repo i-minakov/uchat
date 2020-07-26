@@ -8,7 +8,7 @@ static void con(t_main *m) {
                                 GTK_STYLE_PROVIDER(m->css),
                                 GTK_STYLE_PROVIDER_PRIORITY_USER);
     }
-    else{
+    else {
         m->css2 = gtk_css_provider_new();
         gtk_css_provider_load_from_path(m->css2, "./src/light.css", NULL);
         gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
@@ -35,7 +35,6 @@ static void rem(t_main *m) {
 }
 
 void connect_css(t_main *m, int flag) {
-    char *way = NULL;
     if (flag != 1)
         rem(m);
     con(m);

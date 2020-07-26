@@ -1,6 +1,7 @@
 #include "../inc/uchat.h"
 
 void log_ok(GtkWidget *widget, t_wid *wid) {
+	(void)widget;
 	wid->log->logname = (char *)gtk_entry_get_text (GTK_ENTRY (wid->log->log_name));
 	wid->log->logpas = (char *)gtk_entry_get_text (GTK_ENTRY (wid->log->log_pas));
 	
@@ -12,6 +13,7 @@ void log_ok(GtkWidget *widget, t_wid *wid) {
 		wid->m->command = mx_arrjoin(wid->m->command, "mx_update");
 		wid->m->command = mx_arrjoin(wid->m->command, "user");
 		wid->m->command = mx_arrjoin(wid->m->command, wid->log->logname);
+		gtk_widget_show(wid->wait_gif);
 		wid->m->cmd = CHECK_PASS;
 	}		
 }

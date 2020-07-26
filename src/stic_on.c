@@ -1,6 +1,7 @@
 #include "../inc/uchat.h"
 
 void stic_on(GtkWidget *w, t_main *m) {
+    (void)w;
     if (gtk_widget_is_visible(m->grid_emo)) {
         gtk_widget_hide(m->grid_emo);
         gtk_widget_show(m->grid_stic);

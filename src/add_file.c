@@ -1,8 +1,10 @@
 #include "../inc/uchat.h"
 
-static void save_but(GtkWidget *widget, GdkEvent *event, t_msg *msg) {
-    save_file(NULL, msg);
-}
+// static void save_but(GtkWidget *widget, GdkEvent *event, t_msg *msg) {
+//     (void)event;
+//     (void)widget;
+//     save_file(NULL, msg);
+// }
 
 static void msg_file_pushfront(t_msg **head, t_add_m *s, int sticer) {
     t_msg *tmp = NULL;
@@ -45,7 +47,7 @@ void file_check(gchar *tmp, t_msg **msg, char *name, bool my) {
         MX_BOX_START(t->file, gtk_image_new_from_file("./source/resource/load image.png"));
         gtk_box_pack_start(GTK_BOX(t->file), gtk_label_new(name), FALSE, FALSE, 10); 
         gtk_container_add(GTK_CONTAINER(t->label), t->file);
-        MX_IDLE_SHOW(my, t->label);
+        mx_idle_show(my, t->label);
     }
 }
 
@@ -57,7 +59,7 @@ static void send_file(t_user *us, t_add_m *s, t_msg *t, int flag) {
     MX_MSG_PACK(s->my, t->label, wid);
     MX_SET_NAME_MSG(s->my, t->label);
     gtk_grid_attach(GTK_GRID(us->text_grid), wid, 0, t->count, 1, 1);
-    MX_IDLE_SHOW(s->my, wid);   
+    mx_idle_show(s->my, wid);   
     us->row++;
     if (s->my == true) 
         command_msg(us, s, flag);

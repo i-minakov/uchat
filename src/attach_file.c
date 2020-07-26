@@ -11,10 +11,11 @@ void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos,
                 GdkEvent *event, t_main *m) {
     GtkWidget *dialog;
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
-    gint res;
     gchar *tmp = NULL;
     t_user *us = NULL;
 
+    (void)entry;
+    (void)event;
     if (icon_pos == GTK_ENTRY_ICON_SECONDARY) {
         show_sticer(m);
         return ;

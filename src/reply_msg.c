@@ -1,6 +1,7 @@
 #include "../inc/uchat.h"
 
 void reply_msg(GtkMenuItem *item, t_msg *msg) {
+    (void)item;
     if (msg->text) {
         if (msg->forward != 2) 
            msg->user->m->text = mx_backjoin("Replied at:\n", msg->text);
