@@ -1,5 +1,13 @@
 #include "../inc/uchat.h"
 
+t_msg *mx_msg_by_id(t_user *us, int id) {
+    t_msg *msg = NULL;
+
+    for (t_msg *i = us->msg->next; i; i = i->next)
+        i->id == id ? msg = i : 0;
+    return msg;
+}
+
 void mx_idle_show(bool flag, GtkWidget *wid) {
     if (flag == true)
         gtk_widget_show_all(wid);
@@ -117,7 +125,9 @@ void set_chat_grid(t_main *m, int flag) {
 static void set_cap(t_cap *c) {
     c->my_name = gtk_label_new(NULL);
     c->friend_name = gtk_label_new(NULL);
-    c->my_photo = resize_proportion(mx_backjoin("./source/cash/", mx_strjoin(c->m->my_name, ".jpg")), 51, 51);
+    c->my_photo = resize_proportion(mx_cooljoin(mx_delit_fre 
+        (mx_strjoin("./source/cash_", c->m->my_name), "/"),  
+            mx_strjoin(c->m->my_name, ".jpg")), 51, 51);
     c->frame_for_my_photo = gtk_image_new_from_file("./source/resource/my photo.png");
     c->burger_but_img = gtk_image_new_from_file("./source/resource/burger.png");
     c->dot_menu = gtk_image_new_from_file("./source/resource/dots.png");
@@ -206,8 +216,6 @@ void free_all(t_main *m) {
 }
 
 void check_cmd(t_main *m) {
-    gtk_widget_destroy(m->log_in->fixed);
-    gtk_widget_hide(m->log_in->window);
     if (m->cmd == SIG_UP) {
         m->my_name = mx_strdup(m->log_in->sig->signame);
         m->cmd = BLCK;
@@ -230,6 +238,8 @@ int chat_screen(t_main **gtk) {
     init_signals(m);  
     gtk_label_set_text(GTK_LABEL(m->lab_start),
                      "Please select a chat to start messaging");
+    gtk_widget_destroy(m->log_in->fixed);
+    gtk_widget_hide(m->log_in->window);
     gtk_widget_show_all(m->window);
     hide_something(m);
     gtk_window_set_icon_from_file(GTK_WINDOW(m->window), "source/resource/logo.png", NULL);

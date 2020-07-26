@@ -345,6 +345,7 @@ t_user *mx_activ_us(t_main *m);
 void free_all(t_main *m);
 void mx_idle_show(bool flag, GtkWidget *wid);
 void mx_idle_hide(bool flag, GtkWidget *wid);
+t_msg *mx_msg_by_id(t_user *us, int id);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);
