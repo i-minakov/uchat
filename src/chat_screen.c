@@ -198,8 +198,8 @@ int chat_screen(t_main **gtk) {
 
     m->order = 0;
     check_cmd(m);
-    for (int i = 10; i > 0; i--) 
-        user_pushback(&m->users, "yarik");
+    // for (int i = 10; i > 0; i--) 
+    //     user_pushback(&m->users, "yarik");
     init_components(m);
     connect_css(m, 1);
     init_signals(m);  

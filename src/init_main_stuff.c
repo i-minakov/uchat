@@ -1,8 +1,8 @@
 #include "../inc/uchat.h"
 
 void mx_exit(GtkWidget *object, t_main *m) {
-    // m->command = mx_arrjoin(m->command, "mx_error");
-    // m->command = mx_arrjoin(m->command, "error");   
+    m->command = mx_arrjoin(m->command, "mx_error");
+    m->command = mx_arrjoin(m->command, "error");   
 }
 
 static void builder_and_style(t_main *m) {

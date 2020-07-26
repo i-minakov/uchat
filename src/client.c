@@ -1,8 +1,5 @@
 #include "../inc/header.h"
 
-// voice
-// sort seg
-
 /* Ilay */
 void mx_msg_or_file(char **arr, char *id, t_user *us) {
     if (mx_atoi(arr[3]) == 0)
@@ -14,7 +11,6 @@ void mx_msg_or_file(char **arr, char *id, t_user *us) {
             arr[2]) ? true : false, 
                 mx_atoi(arr[3]), arr[1]), mx_atoi(arr[3]), mx_atoi(id));
 }
-
 void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
     t_add_m *s = NULL;
 
@@ -28,7 +24,6 @@ void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
         add_file_back(us, s, mx_atoi(arr[3]), count);
     }
 }
-
 void mx_new_msg_back(t_user *us, t_list *list) {
     int c = 0;
     char *id_new = NULL;
@@ -47,7 +42,6 @@ void mx_new_msg_back(t_user *us, t_list *list) {
     }
 }
 /* check rcv list */
-
 int find_last_ind_new(t_list *list) {
     char *id_new = NULL;
     int last_id_new = 0;
@@ -61,7 +55,6 @@ int find_last_ind_new(t_list *list) {
     }
     return last_id_new;
 }
-
 bool mx_check_last_index(t_user *us, t_list *list) {
     char *arr = NULL;
     char *id_new = NULL;
@@ -84,7 +77,6 @@ bool mx_check_last_index(t_user *us, t_list *list) {
     }
     return false;
 }
-
 bool mx_check_activ(t_main *m, t_list *list) {
     t_user *us = NULL;
     char **arr = NULL;
@@ -174,6 +166,26 @@ static void mx_enter_argv(char ***arr, t_client *client) {
 
 
 
+/* cash */
+void mx_del_cash(t_client *client) {
+    DIR *dir;
+    char *cmd = NULL;
+    struct dirent *entry;
+
+    dir = opendir("./source/cash/chats");
+    while ((entry = readdir(dir)) != NULL)
+        if (mx_strcmp(entry->d_name, ".") != 0
+            && mx_strcmp(entry->d_name, "..") != 0) {
+            cmd = mx_super_join("./source/cash/chats/", entry->d_name, 0);
+            remove(cmd);
+            mx_strdel(&cmd);
+        }
+    closedir(dir);
+    cmd = mx_super_join("./source/cash/", client->gtk->my_name, 0);
+    cmd = mx_super_join(cmd, ".jpg", 0);
+    remove(cmd);
+    mx_strdel(&cmd);
+}
 
 /* sort */
 int mx_intcmp(char *str1, char *str2) {
@@ -280,7 +292,7 @@ void mx_sort_mssg(t_list **list, int flag) {
 }
 
 /* send request */
-static void mx_get_request(char **json, t_client *client) { // delete
+static void mx_get_request(char **json, t_client *client) {
     char *command = NULL;
     char **arr = NULL;
 
@@ -291,7 +303,6 @@ static void mx_get_request(char **json, t_client *client) { // delete
     mx_strdel(&command);
     mx_del_strarr(&arr);
 }
-
 static void mx_hash_pass(char **json) {
     char *command = mx_get_value(*json, "command");
     char **arr = mx_get_arr(*json);
@@ -334,6 +345,8 @@ void mx_client_send(t_client *client) {
         mx_get_request(&json, client); 
         if (client->gtk->cmd == SIG_IN || client->gtk->cmd == SIG_UP)
             chat_screen(&client->gtk);
+        if (mx_check_json_cmd(json, "command", "mx_log_out"))
+            mx_del_cash(client);
         if (mx_command(client, &json) == 1)
             break;
         mx_strdel(&json);
@@ -363,7 +376,6 @@ static void mx_server_answer(char ch[], char *str, t_client *client) { // server
         }
     }
 }
-
 void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
     char *str = NULL;
 
@@ -511,20 +523,8 @@ void mx_client_recv_file(char ch[], t_client *client) { // move to particular di
         // move to particular dir
     }
 }
-static void mx_del_cash(t_client *client) {
-    char *cmd = NULL;
 
-    for (int i = 0; i < 3; i++) {
-        if (i == 0)
-            cmd = mx_super_join("./source/cash/", "chats", 0);
-        mx_del_files(cmd);
-        mx_strdel(&cmd);
-    }
-    cmd = mx_super_join("./source/", client->gtk->my_name, 0);
-    cmd = mx_super_join(cmd, ".jpg", 0);
-    remove(cmd);
-    mx_strdel(&cmd);
-}
+/* read recv */
 void *mx_client_read(void *client_pointer) {
     t_client *client = (t_client *)client_pointer;
     t_info *info = mx_create_info();
@@ -670,6 +670,6 @@ int mx_client(int argc, char *argv[]) {
         return 1;
     mx_client_sin_log(client);
     pthread_mutex_destroy(&mutex);
-    gtk_main_quit();
+    // gtk_main_quit();
     return 0;
 }
