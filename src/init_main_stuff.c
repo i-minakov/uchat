@@ -19,6 +19,7 @@ void icons_micro_set(t_main *m) {
     m->micro_of = gtk_image_new_from_file("./source/resource/micro.png");
     m->micro_on_but = gtk_button_new();
     m->micro_of_but = gtk_button_new();
+    m->micro_flag = 0;
     gtk_widget_set_size_request(m->micro_on_but, 50, 50);
     gtk_widget_set_opacity(m->micro_on_but, 0.0);
     gtk_widget_set_size_request(m->micro_of_but, 50, 50);

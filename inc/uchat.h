@@ -268,6 +268,7 @@ typedef struct s_main {
     GtkWidget *micro_of;
     GtkWidget *micro_on_but;
     GtkWidget *micro_of_but;
+    int micro_flag;
 
     GtkWidget *fix_for_users;
     GtkWidget *fix_for_text;
