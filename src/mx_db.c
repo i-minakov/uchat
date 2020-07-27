@@ -2,7 +2,7 @@
 
 /* open database database.db */
 int mx_open_db(int flag, sqlite3 **db, char **err_msg) {
-    flag = sqlite3_open("./database.db", db);
+    flag = sqlite3_open("./../database.db", db);
 
     if (flag != SQLITE_OK) {
         sqlite3_free(*err_msg);
@@ -117,7 +117,7 @@ int mx_folder(char *name) {
     int result = 0;
     char *folder_name = NULL;
 
-    folder_name = mx_super_join("./database/", name, 0);
+    folder_name = mx_super_join("./../database/", name, 0);
     result = mkdir(folder_name, 0777);
     free(folder_name);
     folder_name = NULL;
@@ -384,12 +384,12 @@ int mx_change_img(char *name, char *img_name) {
     char *command = NULL;
     char *old = NULL;
 
-    command = mx_super_join("./database/", name, 0);
+    command = mx_super_join("./../database/", name, 0);
     command = mx_super_join(command, "/", 1);
     command = mx_super_join(command, name, 1);
     command = mx_super_join(command, ".jpg", 1);
     old = mx_super_join("./", img_name, 0);
-    remove(command);
+    // remove(command);
     result += rename(old, command);
     mx_strdel(&old);
     mx_strdel(&command);
@@ -411,21 +411,21 @@ int mx_create_table_users(void) {
     new_command = mx_super_join(new_command, "Img TEXT NOT NULL);", 1);
     result += mx_exe_command(new_command);
     mx_strdel(&new_command);
-    dir = mkdir("./database", 0700);
+    dir = mkdir("./../database", 0700);
     if (!dir)
         result = 1;
     return result;
 }
 
 /* new user */
-static void mx_rm_if_error(char *name) {
-    char *img_path = NULL;
+// static void mx_rm_if_error(char *name) {
+//     char *img_path = NULL;
 
-    img_path = mx_super_join("./", name, 0);
-    img_path = mx_super_join(img_path, ".jpg", 1);
-    remove(img_path);
-    mx_strdel(&img_path);
-}
+//     img_path = mx_super_join("./", name, 0);
+//     img_path = mx_super_join(img_path, ".jpg", 1);
+//     remove(img_path);
+//     mx_strdel(&img_path);
+// }
 static int mx_user_tables(char *name) {
     int result = 0;
     char *new_command = NULL;
@@ -450,7 +450,9 @@ static int mx_user_tables(char *name) {
 }
 int mx_add_new_user(char *name, char *pass, char *img_name) {
     if (!name || !pass || mx_check_user_name("Users", name)) {
-        mx_rm_if_error(name);
+        // mx_rm_if_error(name);
+        char *s = NULL;
+        s = img_name;
         return 1;
     }
     t_db data;
@@ -484,8 +486,8 @@ int mx_add_new_user(char *name, char *pass, char *img_name) {
     if (data.flag != SQLITE_DONE
         || mx_user_tables(name) != 0
         || mx_folder(name) != 0
-        || mx_change_img(name , img_name) != 0) {
-        mx_rm_if_error(name);
+        /*|| mx_change_img(name , img_name) != 0*/) {
+        // mx_rm_if_error(name);
         return 1;
     }
     return 0;

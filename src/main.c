@@ -1,14 +1,14 @@
 #include "../inc/header.h"
 
-int main(int argc, char *argv[]) {
-    if (!strcmp(argv[1], "server"))
-        return mx_server(argc, argv);
-    else if (!strcmp(argv[1], "client"))
-        return mx_client(argc, argv);
-    else if (!strcmp(argv[1], "chat"))
-        return interface();
-    return 0;
-}
+// int main(int argc, char *argv[]) {
+//     if (!strcmp(argv[1], "server"))
+//         return mx_server(argc, argv);
+//     else if (!strcmp(argv[1], "client"))
+//         return mx_client(argc, argv);
+//     else if (!strcmp(argv[1], "chat"))
+//         return interface();
+//     return 0;
+// }
 
 /*static void mx_print_list(t_list *list, char *name, char *another_name) {
     for (t_list *node = list; node; node = node->next) {
@@ -119,23 +119,25 @@ int main(int argc, char *argv[]) {
     return result;
 }*/
 
-/*static int mx_bot_start(char *name, char *pass, char *img_path) {
-    int result = 0;
 
-    result = mx_add_new_user(name, pass, img_path);
-    return result;
-}
+
 
 int main() {
     int result = 0;
 
-    result += mx_create_table_users();
-    result += mx_bot_start("Yaroslav", "Yaroslav", "../source/resource/Yaroslav.jpg");
-    result += mx_bot_start("Ilya", "Ilya", "../source/resource/Ilya.jpg");
-    result += mx_bot_start("Olya", "Olya", "../source/resource/Olya.jpg");
-    result += mx_bot_start("PetFriend", "PetFriend", "../source/resource/PetFriend.jpg");
+    result += mx_add_new_user("Yarik", "Yarik", "Yarik.jpg");
+    result += mx_add_new_user("Ilya", "Ilya", "Ilya.jpg");
+    result += mx_add_new_user("Olya", "Olya", "Olya.jpg");
+    result += mx_add_new_user("PetFriend", "PetFriend", "PetFriend.jpg");
+
+    result += mx_copy("./Yarik.jpg", "./../database/Yarik/Yarik.jpg");
+    result += mx_copy("./Ilya.jpg", "./../database/Ilya/Ilya.jpg");
+    result += mx_copy("./Olya.jpg", "./../database/Olya/Olya.jpg");
+    result += mx_copy("./PetFriend.jpg", "./../database/PetFriend/PetFriend.jpg");
     return result;
-}*/
+}
+
+
 
 /*static void mx_del_cash(void) {
     char *path = "./";
