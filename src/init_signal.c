@@ -151,7 +151,21 @@ void exit_chat(GtkWidget *w, t_main *m) {
 
 void change_photo(GtkWidget *w, t_main *m) {
     (void)w;
-    attach_file(NULL, 2, NULL, m);
+    GtkWidget *dialog;
+    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
+    gchar *tmp = NULL;
+
+    dialog = gtk_file_chooser_dialog_new ("Open File", GTK_WINDOW(m->window), action, ("_Cancel"), 
+                        GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
+    if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
+        GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
+        tmp = gtk_file_chooser_get_filename (chooser);
+    }
+    gtk_widget_destroy(dialog);
+    m->command = mx_arrjoin(m->command, "mx_change_img");
+    m->command = mx_arrjoin(m->command, m->my_name);
+    m->command = mx_arrjoin(m->command, (char *)tmp);
+    g_free(tmp);
 }
 
 void mx_increase_msg_list(GtkScrolledWindow *scrol_bar, 
@@ -188,6 +202,7 @@ void init_signals(t_main *m) {
     g_signal_connect(m->set->set_but, "clicked", G_CALLBACK(hide_setings), m);
     g_signal_connect(m->set->color1, "toggled", G_CALLBACK(change_color), m);
     g_signal_connect(m->set->lang1, "toggled", G_CALLBACK(change_lang), m);
+    g_signal_connect(m->set->notif1, "toggled", G_CALLBACK(change_notif), m);
     g_signal_connect(m->menu->exit, "clicked", G_CALLBACK(exit_chat), m);
     g_signal_connect(m->menu->search, "clicked", G_CALLBACK(show_search_contacts), m);
     g_signal_connect(m->menu->contacts, "clicked", G_CALLBACK(show_search_users), m);
@@ -200,7 +215,8 @@ void init_signals(t_main *m) {
     g_signal_connect(m->set->chan_pas, "activate", G_CALLBACK(change_pas), m);
     g_signal_connect(m->set->chan_ph, "clicked", G_CALLBACK(change_photo), m);
 
-    g_signal_connect(m->micro_on_but, "clicked", G_CALLBACK(micro_click), m);
+    g_signal_connect(m->micro_on_but, "clicked", G_CALLBACK(micro_start), m);
+    g_signal_connect(m->micro_of_but, "clicked", G_CALLBACK(micro_end), m);
 
     set_dots_signal(m->dots);
 }

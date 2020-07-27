@@ -9,6 +9,9 @@ void change_name(GtkEntry *e, t_main *m) {
         gtk_button_set_label(GTK_BUTTON(m->set->my_name), tmp);
         gtk_widget_hide(m->set->chan_name);
         gtk_widget_show(m->set->my_name);
+        m->command = mx_arrjoin(m->command, "mx_change_log");
+        m->command = mx_arrjoin(m->command, m->my_name);
+        m->command = mx_arrjoin(m->command, (char *)tmp);
     }
 }
 

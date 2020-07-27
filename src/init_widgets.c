@@ -32,7 +32,6 @@ static void valid_widgets(t_wid *wid) {
 	wid->badact = GTK_WIDGET(gtk_builder_get_object(wid->builder, "bad_img"));
 	wid->badact_but = GTK_WIDGET(gtk_builder_get_object(wid->builder, "badbut"));
 	wid->black_back = GTK_WIDGET(gtk_builder_get_object(wid->builder, "black_back"));
-
 	wid->start_gif = gtk_image_new_from_file ("source/resource/gif/start.gif");
 	gtk_fixed_put(GTK_FIXED(wid->fixed), wid->start_gif, 5, 0);
 	wid->wait_gif = gtk_image_new_from_animation(wait);

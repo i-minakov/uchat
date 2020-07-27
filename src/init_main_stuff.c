@@ -18,12 +18,16 @@ void icons_micro_set(t_main *m) {
     m->micro_on = gtk_image_new_from_file("./source/resource/microon.gif");
     m->micro_of = gtk_image_new_from_file("./source/resource/micro.png");
     m->micro_on_but = gtk_button_new();
+    m->micro_of_but = gtk_button_new();
+    m->micro_flag = 0;
     gtk_widget_set_size_request(m->micro_on_but, 50, 50);
     gtk_widget_set_opacity(m->micro_on_but, 0.0);
+    gtk_widget_set_size_request(m->micro_of_but, 50, 50);
+    gtk_widget_set_opacity(m->micro_of_but, 0.0);
     gtk_fixed_put(GTK_FIXED(m->fix1), m->micro_on, 925, 629);
     gtk_fixed_put(GTK_FIXED(m->fix1), m->micro_of, 925, 629);
     gtk_fixed_put(GTK_FIXED(m->fix1), m->micro_on_but, 925, 629);
-    m->micro_flag = 0;
+    gtk_fixed_put(GTK_FIXED(m->fix1), m->micro_of_but, 925, 629);
 }
 
 void init_main_stuff(t_main *m) {

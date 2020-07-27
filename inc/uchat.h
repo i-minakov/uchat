@@ -40,6 +40,9 @@
 #define MX_DOT_BL(flag) flag == 2 ? "Заблокировать" : "Block user"
 #define MX_DOT_FI(flag) flag == 2 ? "Поиск по сообщениям" : "Find massage"
 
+#define MX_NOT(flag) flag == 2 ? "Уведомления" : "Notifications"
+#define MX_NAME(flag) flag == 2 ? "Имя" : "Name"
+#define MX_PAS(flag) flag == 2 ? "Пароль" : "Password"
 #define MX_COLOR(flag) flag == 2 ? "Тема" : "Theme"
 #define MX_LANG(flag) flag == 2 ? "Язык" : "language"
 
@@ -168,6 +171,8 @@ typedef struct s_setting {
     GtkWidget *sett_fix;
     GtkWidget *color_text;
     GtkWidget *lang_text;
+    GtkWidget *notif_text;
+    GtkWidget *notif1;
     GtkWidget *lang1;
     GtkWidget *lang2;
     GtkWidget *color1;
@@ -262,6 +267,7 @@ typedef struct s_main {
     GtkWidget *micro_on;
     GtkWidget *micro_of;
     GtkWidget *micro_on_but;
+    GtkWidget *micro_of_but;
     int micro_flag;
 
     GtkWidget *fix_for_users;
@@ -307,7 +313,7 @@ void set_users(t_main *m);
 void reset_users(t_main *m);
 void send_but(GtkWidget *wid, t_main *m);
 void user_click(GtkWidget *wid, t_user *users);
-GtkWidget *resize_image(const char *path_to_image, uint width, uint heigh);
+GtkWidget *resize_image(const char *path_to_image, guint width, guint heigh);
 void msg_pushfront(t_msg **head, char *text, bool my, int forw);
 void reset_l_mess(t_user *i);
 char *mx_strpart(char *str, int index);
@@ -345,6 +351,7 @@ t_user *mx_activ_us(t_main *m);
 void free_all(t_main *m);
 void mx_idle_show(bool flag, GtkWidget *wid);
 void mx_idle_hide(bool flag, GtkWidget *wid);
+t_msg *mx_msg_by_id(t_user *us, int id);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);
@@ -363,7 +370,8 @@ void show_set(t_main *m);
 
 void connect_css(t_main *m, int flag);
 void change_color(GtkToggleButton *togglebutton, t_main *m);
-void change_lang(GtkToggleButton *togglebutton, t_main *m); 
+void change_lang(GtkToggleButton *togglebutton, t_main *m);
+void change_notif(GtkToggleButton *togglebutton, t_main *m);
 void change_name(GtkEntry *e, t_main *m);
 void backto_name(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
                 GdkEvent *event, t_main *m);
@@ -373,7 +381,8 @@ void backto_pas(GtkEntry *entry, GtkEntryIconPosition icon_pos,
                 GdkEvent *event, t_main *m);
 void enter_pas(GtkWidget *widget, t_main *m);
 
-void micro_click(GtkWidget *w, t_main *m);
+void micro_start(GtkWidget *w, t_main *m);
+void micro_end(GtkWidget *w, t_main *m);
 void icon_entr_set(t_main *m);
 void set_emo_tab(t_main *m);
 void set_stics(t_main *m);
@@ -439,50 +448,6 @@ typedef struct s_wid {
     struct s_login *log;
     struct s_main *m;
 } 			t_wid;
-
-// typedef struct s_wid {
-// 	GtkBuilder *builder; 
-//     GtkWidget *window;
-// 	GtkWidget *fixed;
-
-// 	GtkWidget *log_hower;
-// 	GtkWidget *sig_hower;
-// 	GtkWidget *log_hower2;
-// 	GtkWidget *sig_hower2;
-
-// 	GtkWidget *log_gif;
-// 	GtkWidget *sig_gif;
-
-// 	GtkWidget *log_text;
-// 	GtkWidget *log_name;
-// 	GtkWidget *log_pas;
-// 	GtkWidget *log_but;
-
-// 	GtkWidget *sig_text;
-// 	GtkWidget *sig_name;
-// 	GtkWidget *sig_pas;
-// 	GtkWidget *sig_pas2;
-// 	GtkWidget *sig_photo;
-// 	GtkWidget *sig_display;
-// 	int flagimg;
-// 	GtkWidget *sig_but;
-
-// 	GtkWidget *no_fil_log;
-// 	GtkWidget *no_fil_sig;
-// 	GtkWidget *the_end;
-
-// 	GtkWidget *badact;
-// 	GtkWidget *badact_but;
-// 	GtkWidget *badact_lab;
-// 	GtkWidget *black_back;
-
-// 	char *logname;
-// 	char *logpas;
-// 	char *signame;
-// 	char *sigpas;
-// 	char *sigpas2;
-// 	char *sigfile;
-// } 			t_wid;
 
 typedef struct s_eye {
 	bool log;

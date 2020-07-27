@@ -1,6 +1,6 @@
 #include "../inc/uchat.h"
 
-GtkWidget *resize_image(const char *path_to_image, uint width, uint heigh) {
+GtkWidget *resize_image(const char *path_to_image, guint width, guint heigh) {
     GtkWidget *img;
     GdkPixbuf *pix;
 

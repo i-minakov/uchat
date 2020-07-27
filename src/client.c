@@ -2,6 +2,7 @@
 
 // mx sound notification
 // edit for both
+// ./source/cash_(user_name)/
 
 /* Ilay */
 void mx_msg_or_file(char **arr, char *id, t_user *us) {
@@ -78,6 +79,25 @@ bool mx_check_last_index(t_user *us, t_list *list) {
     }
     return false;
 }
+void check_edited(t_user *us, t_list *list) {
+    char *cmd = NULL;
+    char **arr = NULL;
+    t_msg *edited = NULL;
+
+    for (t_list *i = list; i; i = i->next) {
+        cmd = mx_get_value(((t_data *)i->data)->list->data, "command");
+        arr = mx_get_arr(((t_data *)i->data)->list->data);
+        if (mx_strstr(arr[2], "edited")) {
+            edited = mx_msg_by_id(us, mx_atoi(cmd));
+            mx_strdel(&edited->text);
+            edited->text = mx_strdup(arr[0]);
+            gtk_label_set_text(GTK_LABEL(edited->label), edited->text);
+            gtk_widget_set_tooltip_text(edited->label, arr[2]);
+        }
+        mx_strdel(&cmd); 
+        mx_del_strarr(&arr);
+    }
+}
 bool mx_check_activ(t_main *m, t_list *list) {
     t_user *us = mx_activ_us(m);
     char **arr = NULL;
@@ -85,6 +105,7 @@ bool mx_check_activ(t_main *m, t_list *list) {
 
     if (!us || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
         return false;
+    check_edited(us, list);
     if (mx_check_last_index(us, list) == true)
         return true;
     id_new = mx_get_value(((t_data *)list->data)->list->data, "command");

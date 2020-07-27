@@ -14,10 +14,12 @@ void init_set(t_main *m) {
     m->set->sett_fix = GTK_WIDGET(gtk_builder_get_object(m->builder, "setting_bar"));
     m->set->color_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "Colorlab"));
     m->set->lang_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "Langlab"));
+    m->set->notif_text = GTK_WIDGET(gtk_builder_get_object(m->builder, "Notiflab"));
+    m->set->notif1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Not1"));
     m->set->lang1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Lang1"));
-    m->set->lang2 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Lang2"));
     m->set->color1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color1"));
-    m->set->color2 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color2"));
+     m->set->lang1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "Lang2"));
+    m->set->color1 = GTK_WIDGET(gtk_builder_get_object(m->builder, "color2"));
     m->set->my_name = GTK_WIDGET(gtk_builder_get_object(m->builder, "my_name"));
     m->set->my_pas = GTK_WIDGET(gtk_builder_get_object(m->builder, "my_pas"));
     m->set->set_but = GTK_WIDGET(gtk_builder_get_object(m->builder, "set_but"));
