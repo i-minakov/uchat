@@ -118,3 +118,43 @@ int main(int argc, char *argv[]) {
     // system("leaks -q uchat");
     return result;
 }*/
+
+/*static int mx_bot_start(char *name, char *pass, char *img_path) {
+    int result = 0;
+
+    result = mx_add_new_user(name, pass, img_path);
+    return result;
+}
+
+int main() {
+    int result = 0;
+
+    result += mx_create_table_users();
+    result += mx_bot_start("Yaroslav", "Yaroslav", "../source/resource/Yaroslav.jpg");
+    result += mx_bot_start("Ilya", "Ilya", "../source/resource/Ilya.jpg");
+    result += mx_bot_start("Olya", "Olya", "../source/resource/Olya.jpg");
+    result += mx_bot_start("PetFriend", "PetFriend", "../source/resource/PetFriend.jpg");
+    return result;
+}*/
+
+/*static void mx_del_cash(void) {
+    char *path = "./";
+    DIR *dir;
+    struct dirent *entry;
+
+    dir = opendir(path);
+    while ((entry = readdir(dir)) != NULL)
+        if (mx_strstr(entry->d_name, "cash_") != NULL) {
+            char *full_path = mx_super_join(path, entry->d_name, 0);
+
+            mx_del_files(full_path);
+            remove(full_path);
+            mx_strdel(&full_path);
+        }
+    closedir(dir);
+}
+
+int main() {
+    mx_del_cash();
+    return 0;
+}*/

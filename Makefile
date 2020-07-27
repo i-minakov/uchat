@@ -4,7 +4,7 @@ SRC := $(wildcard src/*.c)
 OBJ = $(addprefix obj/, $(notdir $(SRC:%.c=%.o)))
 LIBMX = libmx/libmx.a
 SSL_PATH = -I/usr/local/opt/openssl/include
-FLAGS = $(SSL_PATH) $(SANFLAG) #-std=c11 -Wall -Wextra -Werror -Wpedantic 
+FLAGS = $(SSL_PATH) $(SANFLAG) -std=c11 -Wall -Wextra -Werror -Wpedantic 
 SANFLAG = -g -fsanitize=address
 SQLITE = -lsqlite3
 PTHREAD = -lpthread
@@ -51,6 +51,9 @@ keys:
 db:
 	@chmod 777 ./source/create_database.sh
 	@./source/create_database.sh
+
+del_cash:
+	@./source/del_cash.sh
 
 del_keys:
 	@rm -rf keys

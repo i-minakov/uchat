@@ -13,7 +13,7 @@ void mx_msg_or_file(char **arr, char *id, t_user *us) {
     else 
         add_file(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
             arr[2]) ? true : false, 
-                mx_atoi(arr[3]), arr[1]), mx_atoi(arr[3]), mx_atoi(id));
+                mx_atoi(arr[3]), arr[1]), mx_atoi(arr[3]) - 1, mx_atoi(id));
 }
 void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
     t_add_m *s = NULL;
@@ -25,7 +25,7 @@ void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
         s = create_struct(arr[0], !mx_strcmp(us->m->my_name,
             arr[2]) ? true : false, mx_atoi(arr[3]), arr[1]);
         s->id = mx_atoi(id);
-        add_file_back(us, s, mx_atoi(arr[3]), count);
+        add_file_back(us, s, mx_atoi(arr[3]) - 1, count);
     }
 }
 void mx_new_msg_back(t_user *us, t_list *list) {
@@ -460,7 +460,7 @@ char *mx_right_path(t_info **info, t_files *files, t_client *client, char *name)
     char **arr = mx_strsplit(name, '.');
 
     if (mx_strcmp((*info)->cmd, "mx_regular_request") == 0) {
-        path = mx_super_join("./source/cash_", client->gtk->my_name, 0);
+        path = mx_super_join("./source/cash_", client->gtk->log_in->log->logname, 0);
         path = mx_super_join(path, "/chats/", 1);
         path = mx_super_join(path, files->file_name, 1);
     }
