@@ -2,14 +2,14 @@
 
 static bool sigcheck(gchar *login) {
 	for(int i = 0; login[i]; i++) {
-		if(login[i] < 48 || (login[i] > 57 && login[i] < 65) || (login[i] > 90 && login[i] < 97)
-			|| login[i] > 122)
+		if(login[i] < 48 || (login[i] > 57 && login[i] < 65) 
+			|| (login[i] > 90 && login[i] < 97) || login[i] > 122)
 			return false;
 	}
 	return true;
 }
 
-bool valid(t_wid *wid) {
+static bool valid(t_wid *wid) {
 	int f = 0;
 
 	if(gtk_widget_is_visible(wid->sig->no_fil_sig))

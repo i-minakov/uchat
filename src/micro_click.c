@@ -7,5 +7,7 @@ void micro_start(GtkWidget *w, t_main *m) {
     gtk_widget_show(m->micro_on);
     gtk_widget_show(m->micro_of_but);
     puts("++++\n");
+    mx_voice(m);
 }
+
 

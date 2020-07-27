@@ -1,6 +1,6 @@
 #include "../inc/uchat.h"
 
-void show_sticer(t_main *m) {
+static void show_sticer(t_main *m) {
     if (!gtk_widget_get_visible(m->stic_scrol))
         gtk_widget_show(m->stic_scrol);
     else 

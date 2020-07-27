@@ -16,11 +16,13 @@ void b_ic(t_main *m) {
 }
 
 void l_ic(t_main *m) {
-    gtk_widget_show(m->menu->setic2);
-    gtk_widget_show(m->menu->searchic2);
-    gtk_widget_show(m->menu->contic2);
-    gtk_widget_show(m->menu->exic2);
-    gtk_widget_show(m->menu->blackic2);
+     if (!gtk_widget_is_visible(m->menu->setic2)) {
+        gtk_widget_show(m->menu->setic2);
+        gtk_widget_show(m->menu->searchic2);
+        gtk_widget_show(m->menu->contic2);
+        gtk_widget_show(m->menu->exic2);
+        gtk_widget_show(m->menu->blackic2);
+    }
     gtk_widget_hide(m->menu->setic);
     gtk_widget_hide(m->menu->searchic);
     gtk_widget_hide(m->menu->contic);

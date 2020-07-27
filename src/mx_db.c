@@ -2,7 +2,7 @@
 
 /* open database database.db */
 int mx_open_db(int flag, sqlite3 **db, char **err_msg) {
-    flag = sqlite3_open("database.db", db);
+    flag = sqlite3_open("./database.db", db);
 
     if (flag != SQLITE_OK) {
         sqlite3_free(*err_msg);
