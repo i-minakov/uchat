@@ -1,6 +1,4 @@
 #include "../inc/header.h"
-#include "portaudio.h"
-#include "sndfile.h"
 
 #define SAMPLE_RATE (44100)
 #define FRAMES_PER_BUFFER (512)
@@ -140,7 +138,7 @@ static void mx_voice_check(t_paTestData *data, PaError *err, PaStream *stream, t
 }
 
 void mx_voice(t_main *m) {
-    m->micro_flag = 1
+    m->micro_flag = 1;
     PaStreamParameters inputParameters;
     PaStream *stream;
     PaError err = paNoError;
