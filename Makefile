@@ -52,9 +52,6 @@ db:
 	@chmod 777 ./source/create_database.sh
 	@./source/create_database.sh
 
-del_cash:
-	@./source/del_cash.sh
-
 del_keys:
 	@rm -rf keys
 

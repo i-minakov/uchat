@@ -1,6 +1,6 @@
 #include "../inc/uchat.h"
 
-void show_sticer(t_main *m) {
+static void show_sticer(t_main *m) {
     if (!gtk_widget_get_visible(m->stic_scrol))
         gtk_widget_show(m->stic_scrol);
     else 
@@ -27,7 +27,7 @@ void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos,
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         tmp = gtk_file_chooser_get_filename (chooser);
-        add_file(us, create_struct((char *)tmp, true, 0, NULL), 0, 
+        add_file(us, create_struct((char *)tmp, true, 0, NULL), 1, 
             us->msg->next ? us->msg->next->id + 1 : 1);
     }
     gtk_widget_destroy (dialog);

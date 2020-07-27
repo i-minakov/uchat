@@ -1,29 +1,29 @@
 #include "../inc/uchat.h"
 
-void hide_all(t_wid *wid) {
-	gtk_widget_hide(wid->log->log_gif);
-	gtk_widget_hide(wid->log->log_text);
-	gtk_widget_hide(wid->log->log_name);
-	gtk_widget_hide(wid->log->log_pas);
-	gtk_widget_hide(wid->log->log_but);
+// void hide_all(t_wid *wid) {
+// 	gtk_widget_hide(wid->log->log_gif);
+// 	gtk_widget_hide(wid->log->log_text);
+// 	gtk_widget_hide(wid->log->log_name);
+// 	gtk_widget_hide(wid->log->log_pas);
+// 	gtk_widget_hide(wid->log->log_but);
 
-	gtk_widget_hide(wid->sig->sig_gif);
-	gtk_widget_hide(wid->sig->sig_text);
-	gtk_widget_hide(wid->sig->sig_name);
-	gtk_widget_hide(wid->sig->sig_pas);
-	gtk_widget_hide(wid->sig->sig_pas2);
-	gtk_widget_hide(wid->sig->sig_photo);
-	gtk_widget_hide(wid->sig->sig_but);
-	gtk_widget_hide(wid->sig->sig_add_img);
-}
+// 	gtk_widget_hide(wid->sig->sig_gif);
+// 	gtk_widget_hide(wid->sig->sig_text);
+// 	gtk_widget_hide(wid->sig->sig_name);
+// 	gtk_widget_hide(wid->sig->sig_pas);
+// 	gtk_widget_hide(wid->sig->sig_pas2);
+// 	gtk_widget_hide(wid->sig->sig_photo);
+// 	gtk_widget_hide(wid->sig->sig_but);
+// 	gtk_widget_hide(wid->sig->sig_add_img);
+// }
 
-void win_event(GtkWidget *widget, GdkEventButton *event, t_wid *wid) {
-	(void)widget;
-	(void)event;
-	gtk_widget_show(wid->log->log_hower);
-	gtk_widget_show(wid->sig->sig_hower);
-	hide_all(wid);
-}
+// void win_event(GtkWidget *widget, GdkEventButton *event, t_wid *wid) {
+// 	(void)widget;
+// 	(void)event;
+// 	gtk_widget_show(wid->log->log_hower);
+// 	gtk_widget_show(wid->sig->sig_hower);
+// 	hide_all(wid);
+// }
 
 void init_builder(t_wid *wid) {
 	wid->builder = gtk_builder_new();

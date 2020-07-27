@@ -14,6 +14,8 @@ static void other_users(t_user *users) {
     users->check = true;
     mx_del_strarr(&users->m->command);
     users->m->cmd = UPDATE_SIZE;
+    if (gtk_widget_is_visible(users->newmsg) == true)
+        gtk_widget_hide(users->newmsg);
 }
 
 void user_click(GtkWidget *wid, t_user *users) {

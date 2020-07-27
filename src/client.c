@@ -1,9 +1,5 @@
 #include "../inc/header.h"
 
-// mx sound notification
-// edit for both
-// ./source/cash_(user_name)/
-
 /* Ilay */
 void mx_msg_or_file(char **arr, char *id, t_user *us) {
     if (mx_atoi(arr[3]) == 0)
@@ -13,7 +9,7 @@ void mx_msg_or_file(char **arr, char *id, t_user *us) {
     else 
         add_file(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
             arr[2]) ? true : false, 
-                mx_atoi(arr[3]), arr[1]), mx_atoi(arr[3]) - 1, mx_atoi(id));
+                mx_atoi(arr[3]), arr[1]), mx_atoi(arr[3]), mx_atoi(id));
 }
 void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
     t_add_m *s = NULL;
@@ -25,7 +21,7 @@ void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
         s = create_struct(arr[0], !mx_strcmp(us->m->my_name,
             arr[2]) ? true : false, mx_atoi(arr[3]), arr[1]);
         s->id = mx_atoi(id);
-        add_file_back(us, s, mx_atoi(arr[3]) - 1, count);
+        add_file_back(us, s, mx_atoi(arr[3]), count);
     }
 }
 void mx_new_msg_back(t_user *us, t_list *list) {
@@ -66,7 +62,7 @@ bool mx_check_last_index(t_user *us, t_list *list) {
 
     for (t_msg *i = us->msg->next; i; i = i->next)
         i->next == NULL ? last_id_old = i->id : 0;
-    if (last_id_new != last_id_old) {
+    if (last_id_new < last_id_old) {
         for (t_list *k = ((t_data *)list->data)->list; k->data; k = k->next) { 
             id_new = mx_get_value(k->data, "command");
             if (mx_atoi(id_new) < us->msg->next->id)
@@ -79,33 +75,53 @@ bool mx_check_last_index(t_user *us, t_list *list) {
     }
     return false;
 }
-void check_edited(t_user *us, t_list *list) {
+void check_edited(t_user *us, t_list *list, int size) {
     char *cmd = NULL;
     char **arr = NULL;
     t_msg *edited = NULL;
+    (void)size;
 
-    for (t_list *i = list; i; i = i->next) {
-        cmd = mx_get_value(((t_data *)i->data)->list->data, "command");
-        arr = mx_get_arr(((t_data *)i->data)->list->data);
-        if (mx_strstr(arr[2], "edited")) {
+    if (size/10 != us->m->count_reqw_edit)
+        return;
+    for (t_list *i = list; i->data; i = i->next) {
+        cmd = mx_get_value(i->data, "command");
+        arr = mx_get_arr(i->data);
+        if (mx_get_substr_index(arr[1], "edit") > -1) {
+            printf("YES111\n");
             edited = mx_msg_by_id(us, mx_atoi(cmd));
-            mx_strdel(&edited->text);
-            edited->text = mx_strdup(arr[0]);
-            gtk_label_set_text(GTK_LABEL(edited->label), edited->text);
-            gtk_widget_set_tooltip_text(edited->label, arr[2]);
+            if (edited) {
+                mx_strdel(&edited->text);
+                edited->text = mx_strdup(arr[0]);
+                gtk_widget_destroy(edited->label);
+                edited->label = gtk_button_new_with_label(edited->text);
+                gtk_widget_set_size_request(edited->label, 100, 30);
+                MX_SET_NAME_MSG(false, edited->label);
+                mx_idle_show(false, edited->label);
+                gtk_widget_set_tooltip_text(edited->label, arr[2]);
+            }
         }
         mx_strdel(&cmd); 
         mx_del_strarr(&arr);
     }
+    us->m->count_reqw_edit = 0;
 }
-bool mx_check_activ(t_main *m, t_list *list) {
+void mx_reset_photo(t_user *us, char *path) {
+    mx_strdel(&us->photo_name);
+    us->photo_name = mx_strdup(path);
+    gtk_widget_destroy(us->img);
+    set_users(us->m);
+    us->m->count_reqw = 0;
+}
+bool mx_check_activ(t_main *m, t_list *list, int size) {
     t_user *us = mx_activ_us(m);
     char **arr = NULL;
     char *id_new = NULL;
 
     if (!us || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
         return false;
-    check_edited(us, list);
+    // check_edited(us, ((t_data *)list->data)->list, size); // EDIT
+    if (size == m->count_reqw)
+        mx_reset_photo(us, ((t_data *)list->data)->path);
     if (mx_check_last_index(us, list) == true)
         return true;
     id_new = mx_get_value(((t_data *)list->data)->list->data, "command");
@@ -117,6 +133,20 @@ bool mx_check_activ(t_main *m, t_list *list) {
     mx_strdel(&id_new);
     return true;
 }
+void mx_check_rename(t_main *m, t_info *info) {
+    char *name = NULL;
+    bool flag = false;
+
+    for (t_list *i = info->list; i; i = i->next) {
+        name = ((t_data *)i->data)->name;
+        for (t_user *j = m->users; j; j = j->next) {
+            !mx_strcmp(name, j->name) ? flag = true : 0;
+        }
+        if (flag == false)
+            mx_remove_user_by_name(&m->users, name);
+        flag = true;
+    }
+}
 void mx_cmp_list(t_main *m, t_info *info) {
     t_user *us = NULL;
     char *json = NULL;
@@ -124,23 +154,38 @@ void mx_cmp_list(t_main *m, t_info *info) {
     char **arr = NULL;
 
     for (t_list *i = info->list; i; i = i->next) {
-        if (mx_check_activ(m, i) == false) {
-            us = mx_user_by_name(((t_data *)i->data)->name, m);
+        if (mx_check_activ(m, i, (mx_list_size(info->list) * FLAG)) == false) {
+            us = mx_user_by_name(((t_data *)i->data)->name, ((t_data *)i->data)->path, m);
             json = ((t_data *)i->data)->list->data;
             cmd = mx_get_value(json, "command");
             arr = mx_get_arr(json);
             if (!us->msg->next || us->msg->next->id != mx_atoi(cmd)) 
                 mx_msg_or_file(arr, cmd, us);
+            // if ((mx_list_size(info->list) * FLAG) == m->count_reqw) // RESET PHOTO
+            //     mx_reset_photo(us, ((t_data *)i->data)->path);
             mx_strdel(&cmd); 
             mx_del_strarr(&arr);
         }
     }
+    mx_check_rename(m, info);
+    m->count_reqw++;
+    m->count_reqw_edit++;
 }
 void mx_check_rcv_list(t_info *info, t_main *m) {
     char *size = NULL;
 
-    if (m->cmd == SRCH)
+    if (m->cmd == SRCH_US || m->cmd == SRCH_MSG) {
+        printf("cmd = %s\n", (info)->cmd);
+        printf("size = %s\n", (info)->size);
+        for (t_list *i = (info)->list; i; i = i->next) {
+            printf("name = %s\n", ((t_data *)i->data)->name);
+            for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
+                if ((char *)j->data)
+                    printf("mssg = %s\n", (char *)j->data);
+        }
+        printf("\n");
         show_result_of_search(info->list, m);
+    }
     else if (m->cmd == DEF)
         mx_cmp_list(m, info);
     else if (m->cmd == UPDATE_SIZE) {
@@ -151,15 +196,25 @@ void mx_check_rcv_list(t_info *info, t_main *m) {
         mx_strdel(&size);
         m->cmd = DEF;
     }
+    else if (m->cmd == BLACK_LIST)
+        mx_blacklist(m, info->list);
 }
+
 void mx_check_sigup(t_main *m) {
+    if (m->cmd == SRCH_MSG) {
+        m->command = mx_arrjoin(m->command, "mx_mssg_search");
+        m->command = mx_arrjoin(m->command, m->my_name);
+        m->command = mx_arrjoin(m->command, m->search_str);
+        mx_strdel(&m->search_str);
+        m->cmd = SRCH_US;
+    }
     if (m->cmd == CHECK_US) {
         m->my_name = mx_strdup(m->log_in->sig->signame);
         m->command = mx_arrjoin(m->command, "mx_add_new_user");
         m->command = mx_arrjoin(m->command, m->my_name);
         m->command = mx_arrjoin(m->command, m->log_in->sig->sigpas);
         m->command = mx_arrjoin(m->command, 
-            m->log_in->sig->sigfile ? m->log_in->sig->sigfile : "./source/resource/default.jpg");
+            m->log_in->sig->sigfile ? m->log_in->sig->sigfile : MX_DEF_PHOTO);
         m->cmd = BLCK;
     }
 }
@@ -359,6 +414,8 @@ static int mx_command(t_client *client, char **json) {
             || mx_check_json_cmd(*json, "command", "mx_change_pass")) {
             mx_hash_pass(json);
     }
+    else if (mx_check_json_cmd(*json, "command", "mx_log_out"))
+        mx_strdel(&client->user);
     if (mx_for_file(*json)) {
         mx_push_file_way(&client->list, (void *)*json);
         *json = NULL;
@@ -460,12 +517,13 @@ char *mx_right_path(t_info **info, t_files *files, t_client *client, char *name)
     char **arr = mx_strsplit(name, '.');
 
     if (mx_strcmp((*info)->cmd, "mx_regular_request") == 0) {
-        path = mx_super_join("./source/cash_", client->gtk->log_in->log->logname, 0);
+        path = mx_super_join("./source/cash_", client->user, 0);
         path = mx_super_join(path, "/chats/", 1);
         path = mx_super_join(path, files->file_name, 1);
     }
     else if (mx_strcmp((*info)->cmd, "mx_your_photo") == 0) {
         path = mx_super_join("./source/cash_", arr[0], 0);
+        client->user = mx_strdup(arr[0]);
         path = mx_super_join(path, "/", 1);
         path = mx_super_join(path, files->file_name, 1);
     }
@@ -678,6 +736,7 @@ static void mx_client_properties(t_client *client, char *argv[]) {
     client->addr.sin_family = AF_INET;
     client->addr.sin_port = htons(mx_atoi(argv[3]));
     client->list = NULL;
+    client->user = NULL;
     client->exit = 1;
     client->status = NULL;
     client->for_files = (t_files *)malloc(sizeof(t_files));
@@ -699,6 +758,7 @@ static void mx_client_sin_log(t_client client) {
     mx_strdel(&client.for_files->file_name);
     mx_strdel(&client.for_files->file_size);
     mx_strdel(&client.status);
+    mx_strdel(&client.user);
     SSL_free(client.ssl);
     SSL_CTX_free(client.ctx);
     free(client.for_files);

@@ -14,6 +14,7 @@ static void init_component(t_user *i, t_main *m) {
     i->backg_us_slept = gtk_image_new_from_file(MX_SLEPT(m->style->color));
     i->frame_photo_act = gtk_image_new_from_file(MX_ACT_PH(m->style->color));
     i->frame_photo_slept = gtk_image_new_from_file(MX_SL_PH(m->style->color));
+    i->newmsg = gtk_image_new_from_file("source/resource/newmsg.png");
     i->l_name = gtk_label_new(NULL);
     i->l_mess = gtk_label_new(NULL);
     i->l_time = gtk_label_new(NULL);
@@ -30,6 +31,8 @@ static void insert_component(t_user *i) {
     gtk_fixed_put(GTK_FIXED(i->fix), (i->frame_photo_slept), 23, 14);
     gtk_widget_set_size_request(i->but, 305, 79);
     gtk_fixed_put(GTK_FIXED(i->fix), (i->but), 11, 0);
+    gtk_fixed_put(GTK_FIXED(i->fix), (i->newmsg), 269, 40);
+    mx_idle_hide(false, i->newmsg);
     markup = g_markup_printf_escaped(MX_NAME_COLOR(i->m->style->color), i->name);
     gtk_label_set_markup(GTK_LABEL(i->l_name), markup); 
     reset_l_mess(i);

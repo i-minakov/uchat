@@ -2,7 +2,7 @@
 
 static void file_pushback(t_msg **head, t_add_m *s, int sticer) {
     t_msg *tmp = NULL;
-    GtkWidget *item[4];
+    GtkWidget *item[3];
     char *func[] = {"Save", "Forward", "Delete", NULL};
     void (*menu_option[])(GtkMenuItem *item, t_msg *msg) = 
         {save_file, forward_msg, delete_msg};

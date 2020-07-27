@@ -25,8 +25,10 @@ static void seting(t_wid *wid, char *tmp) {
 	wid->badact_lab = gtk_label_new (tmp);
 	gtk_fixed_put(GTK_FIXED(wid->fixed), wid->badact_lab, marg, 350);
 	gtk_widget_show(wid->badact_lab);
-	g_signal_handlers_block_by_func((void *)wid->sig->sig_gif, (void *)log_enter_notify_event, (void *)wid);
-	g_signal_handlers_block_by_func((void *)wid->log->log_gif, (void *)sig_enter_notify_event, (void *)wid);
+	g_signal_handlers_block_by_func((void *)wid->sig->sig_gif, 
+		(void *)log_enter_notify_event, (void *)wid);
+	g_signal_handlers_block_by_func((void *)wid->log->log_gif, 
+		(void *)sig_enter_notify_event, (void *)wid);
 }
 
 

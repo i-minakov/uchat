@@ -42,6 +42,7 @@ typedef struct s_info{
 }              t_info;
 
 typedef struct s_client {
+    char *user;
     SSL *ssl;
     SSL_CTX *ctx;
     pthread_t send;

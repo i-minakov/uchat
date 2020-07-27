@@ -1,7 +1,4 @@
 window {
-	/* background:linear-gradient(0.25turn, #405170 10%, #09121D 100%); */
-	/* background-image: url("../img/фон2.png");
-    background-position: center; */
     background-color: #121C2A;
 }
 .top {
@@ -13,7 +10,6 @@ window {
     background-color: #121C2A;
     border: none;
     box-shadow: 1px 0px 20px 2px #0a1018;
-    /* box-shadow: inset 0px 10px 4px 0px #000000;  */
     outline: none;
 }
 .masage {
@@ -24,10 +20,6 @@ window {
     outline: none;
     animation: none;
 }
-/* .blocks {
-    background-color: #121C2A;
-    box-shadow: px 2px 15px 3px #0E1723;
-} */
 .label {
     color: white;
 }

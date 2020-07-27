@@ -47,6 +47,7 @@ void init_main_stuff(t_main *m) {
     m->edit_entry = GTK_WIDGET(gtk_builder_get_object(m->builder, "entry_edit"));
     m->search = GTK_WIDGET(gtk_builder_get_object(m->builder, "entry_search"));
     m->adj = gtk_adjustment_new(1.0, 1.0, 10.0, 1.0, 10.0, 1.0);
+    m->bl = 0;
     gtk_scrolled_window_set_vadjustment(GTK_SCROLLED_WINDOW(m->scrol_bar), m->adj);
     icons_micro_set(m);
 }

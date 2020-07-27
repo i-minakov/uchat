@@ -1,12 +1,13 @@
 #include "../inc/uchat.h"
 
-gchar *make_chooser(t_wid *wid) {
+static gchar *make_chooser(t_wid *wid) {
     GtkWidget *dialog;
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
     gchar *tmp = NULL;
 
-    dialog = gtk_file_chooser_dialog_new ("Open File", GTK_WINDOW(wid->window), action, ("_Cancel"), 
-                        GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
+    dialog = gtk_file_chooser_dialog_new ("Open File", 
+		GTK_WINDOW(wid->window), action, ("_Cancel"), 
+        	GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         tmp = gtk_file_chooser_get_filename (chooser);
