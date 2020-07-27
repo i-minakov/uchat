@@ -1,11 +1,5 @@
 #include "../inc/uchat.h"
 
-// static void save_but(GtkWidget *widget, GdkEvent *event, t_msg *msg) {
-//     (void)event;
-//     (void)widget;
-//     save_file(NULL, msg);
-// }
-
 static void msg_file_pushfront(t_msg **head, t_add_m *s, int sticer) {
     t_msg *tmp = NULL;
     GtkWidget *item[3];
@@ -23,6 +17,7 @@ static void msg_file_pushfront(t_msg **head, t_add_m *s, int sticer) {
         tmp->next->prev = tmp;
         tmp->count = tmp->next->count + 1;
     }
+    printf("%d\n", sticer);
     for (int i = sticer - 1; i < 3; i++) {
         item[i] = gtk_menu_item_new_with_label(func[i]);
         g_signal_connect(item[i], "activate", G_CALLBACK(menu_option[i]), tmp);
@@ -72,7 +67,7 @@ void add_file(t_user *us, t_add_m *s, int stic, int id) {
 
     for (int i = 0; p[i]; i++)
         p[i + 1] == NULL ? name = p[i] : 0;
-    msg_file_pushfront(&us->msg, s, stic + 1);
+    msg_file_pushfront(&us->msg, s, stic);
     t = us->msg->next;
     t->user = us;
     t->id = id;

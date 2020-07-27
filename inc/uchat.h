@@ -10,6 +10,7 @@
 #include <stdbool.h>
 #include <time.h>
 
+#define MX_DEF_PHOTO "source/resource/default.jpg"
 #define MX_SCROL_END(m) g_idle_add((GSourceFunc)move_scrol, m)
 #define MX_SET_NAME_MSG(flag, label) flag == true ? gtk_widget_set_name(label, "lm") : gtk_widget_set_name(label, "lm2")
 #define MX_SHOW_HIDE(flag, widget) flag == 1 ? gtk_widget_show(widget) : gtk_widget_hide(widget) 
@@ -50,7 +51,8 @@
 #define MX_STICS(flag) flag == 2 ? "Стикеры" : "Stickers"
 
 enum e_cmd {
-    SRCH,
+    SRCH_MSG, 
+    SRCH_US,
     BLCK,
     DEF,
     SIG_UP,
@@ -61,7 +63,8 @@ enum e_cmd {
     CHECK_PASS,
     CHECK_US,
     UPDATE_SIZE,
-    LOG_OUT
+    LOG_OUT,
+    BLACK_LIST
 };
 
 typedef struct s_add_msg {
@@ -129,23 +132,24 @@ typedef struct s_emoji {
 }              t_emoji;
 
 typedef struct s_data_users {
+    int row;
+    int count;
+    bool check;
+    char *name;
     GtkWidget *but;
     GtkWidget *fix;
+    GtkWidget *img;
+    int size_request;
+    char *photo_name;
+    GtkWidget *newmsg;
     GtkWidget *l_name;
     GtkWidget *l_mess;
-    GtkWidget *img;
     GtkWidget *l_time;
     GtkWidget *text_grid;
     GtkWidget *backg_us_slept;
     GtkWidget *backg_us_activ;
     GtkWidget *frame_photo_act;
     GtkWidget *frame_photo_slept;
-    char *name;
-    bool check;
-    int row;
-    int count;
-    char *photo_name;
-    int size_request;
     struct s_main *m;
     struct s_message *msg;
     struct s_data_users *head;
@@ -285,11 +289,14 @@ typedef struct s_main {
     int flag_search; // 1 - msg, 2 - users, 3 - contacts
     char *text;
     char *my_name;
+    char *search_str;
+    int count_reqw;
+    int count_reqw_edit;
+    int bl;
     struct s_forward *forw;
     struct s_dot_menu *dots;
     struct s_cap *cap;
     struct s_data_users *users;
-    struct s_data_users *search_user;
     struct s_sticker *stic;
     struct s_emoji *emo;
     struct s_menu *menu;
@@ -306,7 +313,7 @@ int interface();
 void mx_hide(GtkWidget *w);
 void mx_show(GtkWidget *wid);
 t_main *malloc_main();
-t_user *mx_create_user(char *name);
+t_user *mx_create_user(char *name, char *path);
 void user_pushback(t_user **head, char *name);
 void free_users(t_user **list);
 void set_users(t_main *m);
@@ -335,11 +342,11 @@ void move_scrol(t_main *m);
 void add_message_back(t_user *i, t_add_m *s, int count, int id);
 void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg);
 void command_msg(t_user *us, t_add_m *s, int flag);
-t_user *mx_user_by_name(char *name, t_main *m);
+t_user *mx_user_by_name(char *name, char *path, t_main *m);
 void set_chat_grid(t_main *m, int flag);
 t_search *mx_create_node_search(char *name, char *path);
 void pushfront_search_contact(t_search **head, t_main *m, char *name, char *path);
-void user_pushfront(t_user **head, char *name);
+void user_pushfront(t_user **head, char *name, char *path);
 void show_result_of_search(t_list *list, t_main *m);
 void clear_history(GtkWidget *wid, t_main *m);
 int mx_msg_size(t_msg *list);
@@ -352,6 +359,12 @@ void free_all(t_main *m);
 void mx_idle_show(bool flag, GtkWidget *wid);
 void mx_idle_hide(bool flag, GtkWidget *wid);
 t_msg *mx_msg_by_id(t_user *us, int id);
+void mx_blacklist(t_main *m, t_list *list);
+void mx_destroy(GtkWidget *wid);
+void mx_idle_destroy(bool flag, GtkWidget *wid);
+void mx_remove_user_by_name(t_user **users, char *name);
+void mx_msg_or_file(char **arr, char *id, t_user *us);
+void result_msg(t_list *list, t_main *m);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);
@@ -395,6 +408,7 @@ void the_ic(int flag, t_main *m);
 
 void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
                 GdkEvent *event, t_main *m);
+void mx_exit(GtkWidget *object, t_main *m);
 
 
 /////////////////////////////////////////////////////////////////////////////

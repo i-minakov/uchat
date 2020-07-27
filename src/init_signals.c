@@ -22,6 +22,7 @@ static void result(t_wid *wid) {
 
 void init_signals_start(t_wid *wid, t_eye *eye) {
 	gtk_builder_connect_signals(wid->builder, wid->builder);
+	g_signal_connect(wid->window, "destroy", G_CALLBACK(mx_exit), wid->m);
     first_choise(wid);
     result(wid);
     g_signal_connect(wid->log->log_pas, "icon_press", G_CALLBACK(make_vis), eye);
