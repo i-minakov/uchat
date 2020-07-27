@@ -1059,20 +1059,26 @@ int mx_edit(char *name_from, char *name_to, char *new_mssg, char *id) {
     mx_strdel(&table);
     char *command = NULL;
     int result = 0;
+    char *str_switch = NULL;
 
-    command = mx_super_join("UPDATE ", name_from, 0);
-    command = mx_super_join(command, "_", 1);
-    command = mx_super_join(command, name_to, 1);
-    command = mx_super_join(command, " SET Message = '", 1);
-    command = mx_super_join(command, new_mssg, 1);
-    command = mx_super_join(command, "', Time = ", 1);
-    command = mx_super_join(command, "'edit ", 1);
-    command = mx_super_join(command, mx_get_time(), 1);
-    command = mx_super_join(command, "' WHERE Id = ", 1);
-    command = mx_super_join(command, id, 1);
-    command = mx_super_join(command, ";", 1);
-    result += mx_exe_command(command);
-    mx_strdel(&command);
+    for (int i = 0; i < 2; i++) {
+        command = mx_super_join("UPDATE ", name_from, 0);
+        command = mx_super_join(command, "_", 1);
+        command = mx_super_join(command, name_to, 1);
+        command = mx_super_join(command, " SET Message = '", 1);
+        command = mx_super_join(command, new_mssg, 1);
+        command = mx_super_join(command, "', Time = ", 1);
+        command = mx_super_join(command, "'edit ", 1);
+        command = mx_super_join(command, mx_get_time(), 1);
+        command = mx_super_join(command, "' WHERE Id = ", 1);
+        command = mx_super_join(command, id, 1);
+        command = mx_super_join(command, ";", 1);
+        result += mx_exe_command(command);
+        mx_strdel(&command);
+        str_switch = name_from;
+        name_from = name_to;
+        name_to = str_switch;
+    }
     return result;
 }
 

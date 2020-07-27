@@ -39,14 +39,14 @@
 #define SIZE_SEND_LESS 1024
 
 // Client
-char *mx_right_path(t_info **info, t_files *files);
+char *mx_right_path(t_info **info, t_files *files, t_client *client, char *name);
 void mx_client_send(t_client *client);
 void mx_sort_mssg(t_list **list, int flag);
 void mx_send_command(char *json, t_client *client);
 void mx_recv_len_theme(char ch[], t_client *client);
 void mx_client_recv_file(char ch[], t_client *client);
 void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client);
-void mx_recv_list_files(char ch[], t_info **info, t_files *files);
+void mx_recv_list_files(char ch[], t_info **info, t_files *files, t_client *client);
 void *mx_files(void *client_pointer);
 void *mx_client_read(void *client_pointer);
 int mx_monthcmp(char *month1, char *month2);
@@ -59,7 +59,7 @@ void mx_not_mutex(t_node **node, char **json);
 void mx_exe_request(t_node **node, char **json);
 void mx_send_history_list(t_node **node, char *name);
 void mx_send_answer_type(t_node **node, int type, int flag);
-void mx_del_client(t_way **list, t_node **node, void *data);
+void mx_del_client(t_way **list, t_node **node, void *data, int flag);
 void mx_send_answer_list(t_node **node, t_list *list, int hist_flag, char *cmd);
 void *mx_server_files(void *data);
 void *mx_server_handel(void *data);

@@ -390,7 +390,7 @@ void mx_choose(t_node *node, char **json) { // timer?
 }
 
 /* delete node */
-static void mx_free_struct(t_node **node) {
+static void mx_free_struct(t_node **node, int flag) {
     if (!node || !*node)
         return;
 
@@ -401,9 +401,9 @@ static void mx_free_struct(t_node **node) {
     mx_strdel(&(*node)->history);
     mx_strdel(&(*node)->for_files->file_size);
     mx_strdel(&(*node)->for_files->file_name);
-    if ((*node)->ssl)
+    if ((*node)->ssl && flag != 1)
         SSL_free((*node)->ssl);
-    if ((*node)->ctx)
+    if ((*node)->ctx && flag != 1)
         SSL_CTX_free((*node)->ctx);
     if ((*node)->client != -1)
         close((*node)->client);
@@ -437,8 +437,8 @@ static void mx_unset_node(t_way **list, void *data) {
     else
         *((t_way **)data) = NULL;
 }
-void mx_del_client(t_way **list, t_node **node, void *data) {
-    mx_free_struct(node);
+void mx_del_client(t_way **list, t_node **node, void *data, int flag) {
+    mx_free_struct(node, flag);
     mx_unset_node(list, data);
     free(*list);
     *list = NULL;
@@ -456,7 +456,7 @@ void *mx_server_handel(void *data) {
         mx_strdel(&json);
     }
     mx_strdel(&json);
-    mx_del_client(&list, &node, data);
+    mx_del_client(&list, &node, data, 0);
     return NULL;
 }
 
@@ -558,7 +558,7 @@ int mx_server(int argc, char *argv[]) {
         server.list = NULL;
         mx_push_back_t_way(&(server.list), (void *)node);
         if (mx_server_handshake(&server) == 1)
-            mx_del_client(&server.list, (t_node **)&server.list->data, &server.list);
+            mx_del_client(&server.list, (t_node **)&server.list->data, &server.list, 1);
         else
             mx_server_sin_log(server);
     }
