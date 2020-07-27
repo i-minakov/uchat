@@ -48,8 +48,10 @@ void mx_send_history_list(t_node **node, char *name) {
         size = mx_strdup((*node)->size);
     else
         size = mx_strdup("1");
-    if (mx_strcmp((*node)->history, "normal") != 0 && mx_strcmp(name, (*node)->chat) == 0)
+    if (mx_strcmp((*node)->history, "normal") != 0 && mx_strcmp(name, (*node)->chat) == 0) {
         list = mx_mssg_search((*node)->user, (*node)->chat, (*node)->history, size);
+        mx_replace(&(*node)->history, "normal");
+    }
     else
         list = mx_history_back((*node)->user, name, size);
     mx_send_history_line(&list, (*node)->user, (*node)->chat, (*node)->ssl);

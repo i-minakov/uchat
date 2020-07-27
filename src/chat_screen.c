@@ -1,11 +1,45 @@
 #include "../inc/uchat.h"
 
+void mx_add_popup_menu() {
+
+}
+
+void mx_remove_user_by_name(t_user **users, char *name) {
+    t_user *us = *users;
+    t_user *tmp = NULL;
+
+    if (!mx_strcmp(name, us->name)) {
+        *users = us->next;
+        mx_strdel(&us->name);
+        free_msg(&us->msg);
+        free(us);
+        return;
+    }
+    for (t_user *i = us; i->next; i = i->next) {
+        if (!mx_strcmp(name, i->next->name)) {
+            tmp = i->next->next;
+            mx_strdel(&i->next->name);
+            free_msg(&i->next->msg);
+            free(i->next);
+            i->next = tmp;
+            break;
+        }
+    }
+}
+
 t_msg *mx_msg_by_id(t_user *us, int id) {
     t_msg *msg = NULL;
 
     for (t_msg *i = us->msg->next; i; i = i->next)
         i->id == id ? msg = i : 0;
     return msg;
+}
+
+void mx_idle_destroy(bool flag, GtkWidget *wid) {
+    if (flag == true)
+        gtk_widget_destroy(wid);
+    else 
+        g_idle_add((GSourceFunc)mx_show, wid);
 }
 
 void mx_idle_show(bool flag, GtkWidget *wid) {
@@ -30,10 +64,10 @@ t_user *mx_activ_us(t_main *m) {
     return us;
 }
 
-void user_pushfront(t_user **head, char *name) {
+void user_pushfront(t_user **head, char *name, char *path) {
     t_user *tmp = *head;
 
-    *head = mx_create_user(name);
+    *head = mx_create_user(name, path);
     (*head)->next = tmp;
     (*head)->head = *head;
     for (t_user *i = tmp; i; i = i->next) {
@@ -64,13 +98,13 @@ void pushfront_search_contact(t_search **head, t_main *m, char *name, char *path
     (*head)->m = m;
 }
 
-t_user *mx_user_by_name(char *name, t_main *m) {
+t_user *mx_user_by_name(char *name, char *path, t_main *m) {
     t_user *us = NULL;
 
     for (t_user *i = m->users; i; i = i->next) 
         !mx_strcmp(i->name, name) ? us = i : 0;
     if (us == NULL) {
-        user_pushfront(&m->users, name);
+        user_pushfront(&m->users, name, path);
         gtk_widget_destroy(m->grid_user);
         set_users(m);
         set_chat_grid(m, 1);
@@ -79,6 +113,11 @@ t_user *mx_user_by_name(char *name, t_main *m) {
             i->next == NULL ? us = i : 0;
     }
     return us;
+}
+
+void mx_destroy(GtkWidget *wid) {
+    gtk_widget_destroy(wid);
+    g_idle_remove_by_data(wid);
 }
 
 void mx_show(GtkWidget *wid) {
@@ -95,13 +134,13 @@ void user_pushback(t_user **head, char *name) {
     t_user *tmp = *head;
 
     if (tmp == NULL) {
-        *head = mx_create_user(name);
+        *head = mx_create_user(name, "./source/resource/index.jpg");
         (*head)->head = *head;
         return ;
     }
     while (tmp->next)
         tmp = tmp->next;
-    tmp->next = mx_create_user(name);
+    tmp->next = mx_create_user(name, "./source/resource/index.jpg");
     tmp->next->head = *head;
 }
 
@@ -193,6 +232,8 @@ t_main *malloc_main() {
     m->forw = (t_forw *)malloc(sizeof(t_forw) * 10);
     m->stic = (t_sticker *)malloc(sizeof (t_sticker *) * 100);
     m->emo = (t_emoji *)malloc(sizeof (t_emoji *) * 100);
+    m->count_reqw = 0;
+    m->count_reqw_edit = 0;
     m->srch= NULL;
     m->users = NULL;
     m->command = NULL;

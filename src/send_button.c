@@ -67,6 +67,9 @@ void add_message(t_user *i, t_add_m *s, int id) {
     reset_l_mess(i);
     free(str);
     MX_SCROL_END(i->m);
+    if (s->my == false && i->check == false &&
+         gtk_widget_is_visible(i->newmsg) == false)
+        mx_idle_show(false, i->newmsg);
 }
 
 void send_but(GtkWidget *wid, t_main *m) {

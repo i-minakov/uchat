@@ -140,6 +140,10 @@ void close_search(GtkEntry *entry, GtkEntryIconPosition icon_pos,
     burger_leave(NULL, NULL, m);
     if (m->flag_search == 3) 
         free_srch(&m->srch);
+    if (m->flag_search == 1) {
+        gtk_widget_destroy(m->grid_search);
+        gtk_widget_show_all(mx_activ_us(m)->text_grid);
+    }
 }
 
 void exit_chat(GtkWidget *w, t_main *m) {
@@ -147,6 +151,17 @@ void exit_chat(GtkWidget *w, t_main *m) {
     m->command = mx_arrjoin(m->command, "mx_log_out");
     m->command = mx_arrjoin(m->command, "log_out");
     m->cmd = LOG_OUT;
+}
+
+void mx_reset_my_photo(char *path, t_main *m) {
+    gtk_widget_destroy(m->cap->my_photo);
+    m->cap->my_photo = resize_proportion(path, 51, 51);
+    gtk_fixed_put(GTK_FIXED(m->cap->fix_cap), m->cap->my_photo, 23, 20);
+    gtk_widget_show(m->cap->my_photo);
+    gtk_widget_destroy(m->set->my_photo);
+    m->set->my_photo = resize_proportion(path, 80, 80);
+    gtk_fixed_put(GTK_FIXED(m->set->sett_fix), m->set->my_photo, 30, 30);
+    gtk_widget_show(m->set->my_photo);
 }
 
 void change_photo(GtkWidget *w, t_main *m) {
@@ -159,12 +174,13 @@ void change_photo(GtkWidget *w, t_main *m) {
                         GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
-        tmp = gtk_file_chooser_get_filename (chooser);
+        tmp = gtk_file_chooser_get_filename(chooser);
+        mx_reset_my_photo((char *)tmp, m);
+        m->command = mx_arrjoin(m->command, "mx_change_img");
+        m->command = mx_arrjoin(m->command, m->my_name);
+        m->command = mx_arrjoin(m->command, (char *)tmp);
     }
     gtk_widget_destroy(dialog);
-    m->command = mx_arrjoin(m->command, "mx_change_img");
-    m->command = mx_arrjoin(m->command, m->my_name);
-    m->command = mx_arrjoin(m->command, (char *)tmp);
     g_free(tmp);
 }
 
@@ -173,17 +189,28 @@ void mx_increase_msg_list(GtkScrolledWindow *scrol_bar,
     if (pos == GTK_POS_BOTTOM)
         return;
     (void)scrol_bar;    
-    t_user *us = NULL;
+    t_user *us = mx_activ_us(m);
     char *new = NULL;
 
-    for (t_user *i = m->users; i; i = i->next)
-        i->check == true ? us = i : 0;
     new = mx_itoa(us->size_request);
     m->command = mx_arrjoin(m->command, "mx_update");
     m->command = mx_arrjoin(m->command, "size");
     us->size_request += 20;
     m->command = mx_arrjoin(m->command, new);
     mx_strdel(&new);
+}
+
+void mx_reqw_for_bl(GtkWidget *wid, t_main *m) {
+    (void)wid;
+    hide_menu(m);
+    gtk_widget_destroy(m->cap->burger_but_img);
+    m->cap->burger_but_img = gtk_image_new_from_file("./source/resource/cancel.png");
+    gtk_fixed_put(GTK_FIXED(m->cap->fix_cap), m->cap->burger_but_img, 267, 42);
+    gtk_widget_show(m->cap->burger_but_img);
+    m->command = mx_arrjoin(m->command, "mx_send_list_back");
+    m->command = mx_arrjoin(m->command, m->my_name);
+    m->command = mx_arrjoin(m->command, "2");
+    m->cmd = BLACK_LIST;
 }
 
 void init_signals(t_main *m) {
@@ -197,6 +224,7 @@ void init_signals(t_main *m) {
     g_signal_connect(m->scrol_bar, "edge-overshot", G_CALLBACK(mx_increase_msg_list), m);
     g_signal_connect(m->search, "activate", G_CALLBACK(search_activ), m);
     g_signal_connect(m->search, "icon-press", G_CALLBACK(close_search), m);
+    g_signal_connect(m->menu->black_list, "clicked", G_CALLBACK(mx_reqw_for_bl), m);
 
     g_signal_connect(m->menu->settings, "clicked", G_CALLBACK(show_setings), m);
     g_signal_connect(m->set->set_but, "clicked", G_CALLBACK(hide_setings), m);
