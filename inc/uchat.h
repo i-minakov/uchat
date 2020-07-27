@@ -187,6 +187,7 @@ typedef struct s_setting {
     GtkWidget *chan_name;
     GtkWidget *chan_pas;
     int flag; 
+    int notif_flag; 
 }              t_setting;
 
 typedef struct s_menu {

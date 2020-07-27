@@ -40,6 +40,11 @@ void add_time(t_user *i, t_add_m *s) {
     }
 }
 
+static void beeeb(t_add_m *s, t_user *i) {
+    if (s->my == false && i->m->set->notif_flag == 1) 
+        system("echo -n \"\a\"");
+}
+
 void add_message(t_user *i, t_add_m *s, int id) {
     GtkWidget *wid;
     char *str = mx_strnew(mx_strlen(s->text) + ((mx_strlen(s->text)/50) + 1));
