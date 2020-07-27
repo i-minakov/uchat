@@ -33,7 +33,6 @@ window {
 	padding-right: 20px;
     border-radius: 50px;
     border: none;
-    /* box-shadow: inset 1px 0px 4px 0px #dddddd; */
     box-shadow: 1px 0px 4px 2px #d6d5d5;
     caret-color: #13171f;
 }

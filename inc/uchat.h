@@ -384,6 +384,7 @@ void enter_pas(GtkWidget *widget, t_main *m);
 void micro_start(GtkWidget *w, t_main *m);
 void micro_end(GtkWidget *w, t_main *m);
 void icon_entr_set(t_main *m);
+void first_emo_set(t_main *m);
 void set_emo_tab(t_main *m);
 void set_stics(t_main *m);
 void set_emoji(t_main *m);
@@ -395,7 +396,8 @@ void the_ic(int flag, t_main *m);
 
 void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
                 GdkEvent *event, t_main *m);
-
+void mx_exit(GtkWidget *object, t_main *m);
+void mx_voice(t_main *m);
 
 /////////////////////////////////////////////////////////////////////////////
 // Olya login screen

@@ -239,8 +239,8 @@ int chat_screen(t_main **gtk) {
     init_signals(m);  
     gtk_label_set_text(GTK_LABEL(m->lab_start),
                      "Please select a chat to start messaging");
-    gtk_widget_destroy(m->log_in->fixed);
-    gtk_widget_hide(m->log_in->window);
+    //gtk_widget_destroy(m->log_in->fixed);
+    //gtk_widget_hide(m->log_in->window);
     gtk_widget_show_all(m->window);
     hide_something(m);
     gtk_window_set_icon_from_file(GTK_WINDOW(m->window), "source/resource/logo.png", NULL);
@@ -252,7 +252,7 @@ int interface() {
     t_main *m = malloc_main();
     
     gtk_init(NULL, NULL);
-    // log_screen(&m);
+    log_screen(m);
     chat_screen(&m);
     gtk_main();
     free_all(m);

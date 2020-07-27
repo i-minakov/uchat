@@ -11,7 +11,8 @@ void stic_click(GtkWidget *w, t_main *m) {
 
 static void init_signals_stics(t_main *m) {
     for (int i = 0; i < 37; i++)
-        g_signal_connect(m->stic->but[i], "clicked", G_CALLBACK(stic_click), m); 
+        g_signal_connect(m->stic->but[i], "clicked", 
+            G_CALLBACK(stic_click), m); 
 }
 
 static void init_component(int i, t_main *m, int row, int col) {
@@ -25,8 +26,10 @@ static void init_component(int i, t_main *m, int row, int col) {
     gtk_widget_set_size_request(m->stic->but[i], 50, 50);
     gtk_widget_set_opacity (m->stic->but[i], 0.0);
     gtk_widget_set_name(m->stic->but[i], m->stic->way[i]);
-    gtk_grid_attach(GTK_GRID(m->grid_stic), m->stic->img[i], col, row, 1, 1);
-    gtk_grid_attach(GTK_GRID(m->grid_stic), m->stic->but[i], col, row, 1, 1);
+    gtk_grid_attach(GTK_GRID(m->grid_stic), 
+        m->stic->img[i], col, row, 1, 1);
+    gtk_grid_attach(GTK_GRID(m->grid_stic), 
+        m->stic->but[i], col, row, 1, 1);
 }
 
 void set_stics(t_main *m) {
