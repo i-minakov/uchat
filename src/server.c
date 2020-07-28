@@ -73,7 +73,8 @@ void mx_send_answer_type(t_node **node, int type, int flag) {
     if (flag == 1)
         send[1] = 'T';
     mx_mom(send, type_str, mx_strlen(type_str), 0);
-    SSL_write((*node)->ssl, send, SIZE_SEND);
+    if (SSL_write((*node)->ssl, send, SIZE_SEND) != -1)
+        return ;
     mx_strdel(&type_str);
 }
 static void mx_send_size_list(t_node **node, t_list *list) {
@@ -463,7 +464,6 @@ void *mx_server_handel(void *data) {
         mx_strdel(&json);
     }
     mx_strdel(&json);
-    mx_del_client(&list, &node, data, 0);
     return NULL;
 }
 
@@ -511,6 +511,7 @@ void *mx_server_files(void *data) {
             pthread_mutex_unlock(&node->files_mutex);
         }
     }
+    mx_del_client(&list, &node, data, 0);
     return NULL;
 }
 
