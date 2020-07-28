@@ -1378,7 +1378,8 @@ static int mx_change_log_adt(t_db *data, char *name, char *new_name) {
 int mx_change_log(char *name, char *new_name) {
     if (!name
         || !new_name
-        || isdigit(new_name[0]))
+        || isdigit(new_name[0])
+        || mx_check_user_name("Users", name))
         return 1;
     t_db data;
 
