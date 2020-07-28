@@ -144,7 +144,7 @@ void mx_check_rename(t_main *m, t_info *info) {
         }
         if (flag == false)
             mx_remove_user_by_name(&m->users, name);
-        flag = true;
+        flag = false;
     }
 }
 void mx_cmp_list(t_main *m, t_info *info) {
@@ -476,17 +476,30 @@ static void mx_server_answer(char ch[], char *str, t_client *client) { // server
         }
     }
 }
+///////////////////////////////////////////////////////////
+
 void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
     char *str = NULL;
+    int tmp;
 
     mx_static_read(ch, &str);
     if (ch[0] == 'T') {
         if (ch[1] == 'L') {
-            client->gtk->style->lang = mx_atoi(&ch[2]);
+            tmp = mx_atoi(&ch[2]);
+            mx_printint(tmp);
+            if (tmp == 1 || tmp == 0)
+                client->gtk->style->lang = 2;
+            else 
+                client->gtk->style->lang = 1;
             client->gtk->cmd = THEME;
         }
         else if (ch[1] == 'T')  {
-            client->gtk->style->color = mx_atoi(&ch[2]);
+            tmp = mx_atoi(&ch[2]);
+                mx_printint(tmp);
+            if (tmp == 1 || tmp == 0)
+                client->gtk->style->color = 2;
+            else 
+                client->gtk->style->color = 1;
             client->gtk->cmd = SIG_IN;
         }
     }
@@ -494,6 +507,27 @@ void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
         mx_server_answer(ch, str, client);
     mx_strdel(&str);
 }
+
+// void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
+//     char *str = NULL;
+
+//     mx_static_read(ch, &str);
+//     if (ch[0] == 'T') {
+//         if (ch[1] == 'L') {
+//             client->gtk->style->lang = mx_atoi(&ch[2]);
+//             client->gtk->cmd = THEME;
+//         }
+//         else if (ch[1] == 'T')  {
+//             client->gtk->style->color = mx_atoi(&ch[2]);
+//             client->gtk->cmd = SIG_IN;
+//         }
+//     }
+//     else
+//         mx_server_answer(ch, str, client);
+//     mx_strdel(&str);
+// }
+///////////////////////////////////////////////////////////
+
 static t_data *mx_create_data(void) {
     t_data *node = (t_data *)malloc(sizeof(t_data));
     char *str = NULL;

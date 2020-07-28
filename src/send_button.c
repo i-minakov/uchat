@@ -41,8 +41,10 @@ void add_time(t_user *i, t_add_m *s) {
 }
 
 static void beeeb(t_add_m *s, t_user *i) {
-    if (s->my == false && i->m->set->notif_flag == 1) 
-        system("echo -n \"\a\"");
+    if (s->my == false && i->m->set->notif_flag == 1) {
+        system("echo \"\a\"");
+        system("echo \"\a\"");
+    }
 }
 
 void add_message(t_user *i, t_add_m *s, int id) {
@@ -70,6 +72,7 @@ void add_message(t_user *i, t_add_m *s, int id) {
     if (s->my == false && i->check == false &&
          gtk_widget_is_visible(i->newmsg) == false)
         mx_idle_show(false, i->newmsg);
+    beeeb(s, i);
 }
 
 void send_but(GtkWidget *wid, t_main *m) {
