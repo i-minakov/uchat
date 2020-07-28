@@ -286,13 +286,12 @@ int chat_screen(t_main **gtk) {
     hide_something(m);
     gtk_window_set_icon_from_file(GTK_WINDOW(m->window), "source/resource/logo.png", NULL);
     m->cmd = DEF;
-    mx_printint(m->style->lang);
     mx_printint(m->style->color);
     change_lang(NULL, m);
     change_color(NULL, m);
     return ex;
 }
- 
+
 int interface() {
     t_main *m = malloc_main();
     

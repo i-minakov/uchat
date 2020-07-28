@@ -99,6 +99,7 @@ typedef struct s_size {
 typedef struct s_style {
     int lang;
     int color;
+    int start;
 }              t_style;
 
 typedef struct s_message {
@@ -451,6 +452,8 @@ typedef struct s_sign {
 } 			t_sign;
 
 typedef struct s_wid {
+    int start_flag;
+    GtkCssProvider *cssProvider;
 	GtkBuilder *builder; 
     GtkWidget *window;
 	GtkWidget *fixed;

@@ -31,16 +31,29 @@ static void wid_ch(t_main *m) {
 
 void change_color(GtkToggleButton *togglebutton, t_main *m) {
     (void)togglebutton;
-    if (m->style->color == 1) 
-        m->style->color = 2;
-    else 
-        m->style->color = 1;
+    if (m->style->start == 0) {
+        if (m->style->color == 1) 
+            m->style->color = 2;
+        else 
+            m->style->color = 1;
+    }
     connect_css(m, 2);
     gtk_widget_destroy(m->grid_user);
     set_users(m);
     gtk_widget_show_all(m->fix_for_users);
     show_hide_back_us(m->users);
     wid_ch(m);
-    sent_reqw(m);
+    if (m->style->start == 0)
+        sent_reqw(m);
+    else {
+        m->style->start = 0;
+        // if (m->style->color == 2) {
+        //     g_signal_handlers_block_by_func(m->set->color1, (gpointer) change_color, m);
+        //     gtk_toggle_button_toggled(GTK_TOGGLE_BUTTON(m->set->color2));
+        //     gtk_toggle_button_set_mode  (GTK_TOGGLE_BUTTON(m->set->color2), TRUE);
+        //     gtk_toggle_button_set_mode  (GTK_TOGGLE_BUTTON(m->set->color1), FALSE);
+        //     g_signal_handlers_unblock_by_func(m->set->color1, (gpointer) change_color, m);
+        // }
+    }
 }
 

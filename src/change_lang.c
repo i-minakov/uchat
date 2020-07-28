@@ -40,15 +40,21 @@ void change_lang(GtkToggleButton *togglebutton, t_main *m) {
     char *str = NULL;
 
     (void)togglebutton;
-    if (m->style->lang == 1) 
-        m->style->lang = 2;
-    else 
-        m->style->lang = 1;
+    if (m->style->start == 0) {
+        if (m->style->lang == 1) 
+            m->style->lang = 2;
+        else 
+            m->style->lang = 1;
+    }
     ch_lang(m);
-    str = mx_itoa(m->style->color - 1);
-    m->command = mx_arrjoin(m->command, "mx_set_type");
-    m->command = mx_arrjoin(m->command, m->my_name);
-    m->command = mx_arrjoin(m->command, str);
-    m->command = mx_arrjoin(m->command, "0");
-    free(str);
+    if (m->style->start == 0) {
+        str = mx_itoa(m->style->color - 1);
+        m->command = mx_arrjoin(m->command, "mx_set_type");
+        m->command = mx_arrjoin(m->command, m->my_name);
+        m->command = mx_arrjoin(m->command, str);
+        m->command = mx_arrjoin(m->command, "0");
+        free(str);
+    }
+    else 
+        m->style->start = 0;
 }

@@ -38,8 +38,6 @@ static void secodn_init(t_main *m) {
 }
 
 void init_menu(t_main *m) {
-    m->style->color = 1;
-    m->style->lang = 1;
     m->menu->menu_box = GTK_WIDGET(gtk_builder_get_object
         (m->builder, "menu_img"));
     m->menu->menu_fix = GTK_WIDGET(gtk_builder_get_object

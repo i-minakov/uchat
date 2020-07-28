@@ -31,10 +31,18 @@ void init_builder(t_wid *wid) {
 	wid->window = GTK_WIDGET(gtk_builder_get_object(wid->builder, "main_window"));
 	wid->fixed = GTK_WIDGET(gtk_builder_get_object(wid->builder, "fixed"));
 	
-	GtkCssProvider *cssProvider = gtk_css_provider_new();
-	gtk_css_provider_load_from_path(cssProvider, "src/style.css", NULL);
+	if (wid->start_flag  == 1) {
+		wid->cssProvider = gtk_css_provider_new();
+        gtk_css_provider_load_from_path(wid->cssProvider, "./src/unset.css", NULL);
+        gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
+                                GTK_STYLE_PROVIDER(wid->cssProvider),
+                                GTK_STYLE_PROVIDER_PRIORITY_USER);
+		wid->start_flag = 0;
+	}
+	wid->cssProvider = gtk_css_provider_new();
+	gtk_css_provider_load_from_path(wid->cssProvider, "src/style.css", NULL);
 	gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
-								GTK_STYLE_PROVIDER(cssProvider),
+								GTK_STYLE_PROVIDER(wid->cssProvider),
 								GTK_STYLE_PROVIDER_PRIORITY_USER);
 }
 

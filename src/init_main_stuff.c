@@ -9,9 +9,10 @@ void mx_exit(GtkWidget *object, t_main *m) {
 static void builder_and_style(t_main *m) {
     m->builder = gtk_builder_new_from_file("./source/resource/test.glade");
     m->window = GTK_WIDGET(gtk_builder_get_object(m->builder, "window1"));
-    if (m->style->lang != 2)
+    m->style->start = 1;
+    if (m->style->lang != 2 && m->style->lang != 1)
         m->style->lang = 1;
-    if (m->style->color != 2)
+    if (m->style->color != 2 && m->style->color != 1)
         m->style->color = 1;
     g_signal_connect(m->window, "destroy", G_CALLBACK(mx_exit), m);
     gtk_builder_connect_signals(m->builder, m->builder);
