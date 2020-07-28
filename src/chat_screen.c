@@ -4,20 +4,12 @@ void mx_remove_user_by_name(t_user **users, char *name) {
     t_user *us = *users;
     t_user *tmp = NULL;
 
-    if (!mx_strcmp(name, us->name)) {
-        *users = us->next;
-        mx_strdel(&us->name);
-        free_msg(&us->msg);
-        gtk_grid_remove_row(GTK_GRID(us->m->fix_for_users), tmp->count);
-        free(us);
-        return;
-    }
     for (t_user *i = us; i->next; i = i->next) {
         if (!mx_strcmp(name, i->next->name)) {
             tmp = i->next->next;
             mx_strdel(&i->next->name);
             free_msg(&i->next->msg);
-            gtk_grid_remove_row(GTK_GRID(us->m->fix_for_users), i->next->count);
+            gtk_grid_remove_row(GTK_GRID(us->m->grid_user), i->next->count);
             free(i->next);
             i->next = tmp;
             break;
@@ -103,7 +95,7 @@ t_user *mx_user_by_name(char *name, char *path, t_main *m) {
         !mx_strcmp(i->name, name) ? us = i : 0;
     if (us == NULL) {
         user_pushfront(&m->users, name, path);
-        gtk_widget_destroy(m->grid_user);
+        mx_idle_destroy(false, m->grid_user);
         set_users(m);
         set_chat_grid(m, 1);
         g_idle_add((GSourceFunc)mx_show, m->fix_for_users);
