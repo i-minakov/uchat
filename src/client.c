@@ -127,9 +127,9 @@ void check_edited(t_user *us, t_list *list, int size) {
     char *cmd = NULL;
     char **arr = NULL;
     t_msg *edited = NULL;
-    (void)size;
-    // if (size/10 != us->m->count_reqw_edit)
-    //     return;
+
+    if (size/10 != us->m->count_reqw_edit)
+        return;
     for (t_list *i = list; i->data; i = i->next) {
         cmd = mx_get_value(i->data, "command");
         arr = mx_get_arr(i->data);
@@ -160,19 +160,19 @@ bool mx_check_activ(t_main *m, t_list *list, int size) {
 
     if (!us || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
         return false;
-    // check_edited(us, ((t_data *)list->data)->list, size); // EDIT
+    check_edited(us, ((t_data *)list->data)->list, size); // EDIT
     if (mx_check_last_index(us, list) == true)
         return true;
     id_new = mx_get_value(((t_data *)list->data)->list->data, "command");
-    if (!us->msg->next || us->msg->next->id < mx_atoi(id_new)) {
+    if (!us->msg->next || us->msg->next->id < mx_atoi(us->exist_id->data)) {
         arr = mx_get_arr(((t_data *)list->data)->list->data);
         mx_msg_or_file(arr, id_new, us);
         mx_del_strarr(&arr);
     }
-    // else if (us->msg->next && (us->msg->next->id > mx_atoi(id_new)))
-    //     delete_msg(NULL, mx_msg_by_id(us, us->msg->next->id));
+    else if (us->msg->next && (us->msg->next->id > mx_atoi(us->exist_id->data)))
+        delete_msg(NULL, mx_msg_by_id(us, us->msg->next->id));
     mx_strdel(&id_new);
-    // check_deleted(us, list, size);
+    check_deleted(us, list, size);
     return true;
 }
 void mx_check_rename(t_main *m, t_info *info) {
@@ -235,7 +235,6 @@ void mx_check_sigup(t_main *m) {
         m->command = mx_arrjoin(m->command, m->my_name);
         m->command = mx_arrjoin(m->command, mx_activ_us(m)->name);
         m->command = mx_arrjoin(m->command, m->search_str);
-        mx_strdel(&m->search_str);
         m->cmd = SRCH_US;
     }
     if (m->cmd == CHECK_US) {

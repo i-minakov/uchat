@@ -332,6 +332,7 @@ static void mx_mutex_fourth_adt(t_node **node, char *command, char **arr) {
             : mx_bites_str((*node)->ssl, "Can't delete user from table", 'B');
 }
 void mx_mutex_command(t_node **node, char *json) {
+    printf("json = %s\n", json);
     char *command = mx_get_value(json, "command");
     char **arr = mx_get_arr(json);
 
@@ -362,6 +363,7 @@ static bool mx_check_command(char *json) {
         || mx_check_json_cmd(json, "command", "mx_edit")
         || mx_check_json_cmd(json, "command", "mx_change_log")
         || mx_check_json_cmd(json, "command", "mx_change_pass")
+        || mx_check_json_cmd(json, "command", "mx_del_user_from_table")
         || mx_check_json_cmd(json, "command", "mx_set_type"))
         return true;
     return false;
@@ -502,7 +504,7 @@ void *mx_server_handel(void *data) { // delete
 
     while (node->exit == 1) {
         mx_choose(node, &json);
-        // if (json) {system("clear"); printf("%s\n", json);}                       // delete
+        if (json) {system("clear"); printf("%s\n", json);}                       // delete
         // if (json) {printf("%d\n", node->client); printf("%s\n", json);}          // delete
         mx_exe_request(&node, &json);
         mx_strdel(&json);

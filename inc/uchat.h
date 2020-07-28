@@ -158,6 +158,7 @@ typedef struct s_data_users {
     GtkWidget *backg_us_activ;
     GtkWidget *frame_photo_act;
     GtkWidget *frame_photo_slept;
+    struct s_list *exist_id;
     struct s_main *m;
     struct s_message *msg;
     struct s_data_users *head;
@@ -375,6 +376,7 @@ void mx_remove_user_by_name(t_user **users, char *name);
 void mx_msg_or_file(char **arr, char *id, t_user *us);
 void result_msg(t_list *list, t_main *m);
 void mx_add_popup_menu(int flag, t_msg *msg);
+int mx_id_for_msg(t_user *us);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);

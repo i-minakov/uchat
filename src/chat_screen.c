@@ -274,10 +274,7 @@ int chat_screen(t_main **gtk) {
     gtk_widget_hide(m->log_in->window);
     gtk_widget_show_all(m->window);
     hide_something(m);
-    // gtk_window_set_icon_from_file(GTK_WINDOW(m->window), "source/resource/logo.png", NULL);
     m->cmd = DEF;
-    // mx_printint(m->style->lang);
-    // mx_printint(m->style->color);
     change_lang(NULL, m);
     change_color(NULL, m);
     mx_del_strarr(&m->command);

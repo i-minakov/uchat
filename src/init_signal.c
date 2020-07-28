@@ -143,7 +143,9 @@ void close_search(GtkEntry *entry, GtkEntryIconPosition icon_pos,
     if (m->flag_search == 1) {
         gtk_widget_destroy(m->grid_search);
         gtk_widget_show_all(mx_activ_us(m)->text_grid);
+        mx_strdel(&m->search_str);
     }
+    m->cmd = DEF;
 }
 
 void exit_chat(GtkWidget *w, t_main *m) {
@@ -181,7 +183,6 @@ void change_photo(GtkWidget *w, t_main *m) {
         m->command = mx_arrjoin(m->command, (char *)tmp);
     }
     gtk_widget_destroy(dialog);
-    g_free(tmp);
 }
 
 void mx_increase_msg_list(GtkScrolledWindow *scrol_bar, 
@@ -211,8 +212,6 @@ void mx_reqw_for_bl(GtkWidget *wid, t_main *m) {
     m->command = mx_arrjoin(m->command, m->my_name);
     m->command = mx_arrjoin(m->command, "2");
     m->cmd = BLACK_LIST;
-    for (int i = 0; m->command[i]; i++)
-        printf("%s\n", m->command[i]);
 }
 
 void init_signals(t_main *m) {
