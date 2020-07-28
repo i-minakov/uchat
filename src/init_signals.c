@@ -4,9 +4,9 @@ static void first_choise(t_wid *wid) {
     //изначальный выбор нажатием + анимация
 	g_signal_connect(wid->log->log_hower, "enter_notify_event", 
 		G_CALLBACK(log_hover), wid);
-	g_signal_connect(wid->sig->sig_hower2, "enter_notify_event", 
+	g_signal_connect(wid->sig->sig_hower, "enter_notify_event", 
 		G_CALLBACK(sig_hover), wid);
-	g_signal_connect(wid->log->log_hower2, "clicked", 
+	g_signal_connect(wid->log->log_hower, "clicked", 
 		G_CALLBACK(log_click), wid);
 	g_signal_connect(wid->sig->sig_hower, "clicked", 
 		G_CALLBACK(sign_click), wid);
@@ -15,7 +15,6 @@ static void first_choise(t_wid *wid) {
 		G_CALLBACK(log_enter_notify_event), wid);
 	g_signal_connect(wid->log->log_gif, "enter_notify_event", 
 		G_CALLBACK(sig_enter_notify_event), wid);
-
 }
 
 static void result(t_wid *wid) {

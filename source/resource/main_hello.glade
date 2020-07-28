@@ -13,7 +13,6 @@
     <property name="window_position">center-always</property>
     <property name="default_width">1000</property>
     <property name="default_height">700</property>
-    <signal name="destroy" handler="gtk_main_quit" swapped="no"/>
     <child>
       <placeholder/>
     </child>
@@ -253,144 +252,49 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="login">
+          <object class="GtkImage" id="siggif_pic">
             <property name="width_request">100</property>
             <property name="height_request">80</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="focus_on_click">False</property>
-            <property name="receives_default">True</property>
-            <child>
-              <object class="GtkImage" id="main_but_image1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pixbuf">img/log.png</property>
-                <property name="icon_size">2</property>
-              </object>
-            </child>
-            <style>
-              <class name="but"/>
-            </style>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">img/1.png</property>
           </object>
-          <packing>
-            <property name="x">-5</property>
-            <property name="y">-2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="sigin">
-            <property name="width_request">100</property>
-            <property name="height_request">80</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="focus_on_click">False</property>
-            <property name="receives_default">True</property>
-            <child>
-              <object class="GtkImage" id="main_but_image2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pixbuf">img/sign.png</property>
-              </object>
-            </child>
-            <style>
-              <class name="but"/>
-            </style>
-          </object>
-          <packing>
-            <property name="x">505</property>
-            <property name="y">-2</property>
-          </packing>
         </child>
         <child>
           <object class="GtkButton" id="siggif">
-            <property name="width_request">495</property>
-            <property name="height_request">700</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <child>
-              <object class="GtkImage" id="main_but_image3">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pixbuf">img/1.png</property>
-              </object>
-            </child>
-            <style>
-              <class name="but"/>
-            </style>
-          </object>
-          <packing>
-            <property name="x">-5</property>
-            <property name="y">-2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="loggif">
+            <property name="label" translatable="yes">button</property>
             <property name="width_request">500</property>
             <property name="height_request">700</property>
             <property name="can_focus">True</property>
             <property name="receives_default">True</property>
-            <child>
-              <object class="GtkImage" id="main_but_image4">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pixbuf">img/2.png</property>
-                <property name="icon_size">2</property>
-              </object>
-            </child>
             <style>
               <class name="but"/>
             </style>
           </object>
+        </child>
+        <child>
+          <object class="GtkImage" id="loggif_pic">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">img/2.png</property>
+          </object>
           <packing>
-            <property name="x">505</property>
-            <property name="y">-2</property>
+            <property name="x">500</property>
           </packing>
         </child>
         <child>
-          <object class="GtkButton" id="login1">
-            <property name="width_request">100</property>
-            <property name="height_request">80</property>
+          <object class="GtkButton" id="loggif">
+            <property name="label" translatable="yes">button</property>
+            <property name="width_request">500</property>
+            <property name="height_request">700</property>
             <property name="can_focus">True</property>
-            <property name="focus_on_click">False</property>
             <property name="receives_default">True</property>
-            <child>
-              <object class="GtkImage" id="main_but_image5">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pixbuf">img/log2.png</property>
-                <property name="icon_size">2</property>
-              </object>
-            </child>
             <style>
               <class name="but"/>
             </style>
           </object>
           <packing>
-            <property name="x">-5</property>
-            <property name="y">-2</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton" id="sigin1">
-            <property name="width_request">100</property>
-            <property name="height_request">80</property>
-            <property name="can_focus">True</property>
-            <property name="focus_on_click">False</property>
-            <property name="receives_default">True</property>
-            <child>
-              <object class="GtkImage" id="main_but_image6">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pixbuf">img/sign2.png</property>
-              </object>
-            </child>
-            <style>
-              <class name="but"/>
-            </style>
-          </object>
-          <packing>
-            <property name="x">505</property>
-            <property name="y">-2</property>
+            <property name="x">500</property>
           </packing>
         </child>
         <child>
@@ -446,6 +350,77 @@
           <packing>
             <property name="x">-5</property>
             <property name="y">-2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="login1">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">img/log.png</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkImage" id="login2">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">img/log2.png</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="login">
+            <property name="label" translatable="yes">button</property>
+            <property name="width_request">500</property>
+            <property name="height_request">700</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="focus_on_click">False</property>
+            <property name="receives_default">True</property>
+            <style>
+              <class name="but"/>
+            </style>
+          </object>
+        </child>
+        <child>
+          <object class="GtkImage" id="sigin2">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">img/sign2.png</property>
+          </object>
+          <packing>
+            <property name="x">500</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="sigin1">
+            <property name="width_request">100</property>
+            <property name="height_request">80</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="pixbuf">img/sign.png</property>
+          </object>
+          <packing>
+            <property name="x">500</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton" id="sigin">
+            <property name="label" translatable="yes">button</property>
+            <property name="width_request">500</property>
+            <property name="height_request">700</property>
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="focus_on_click">False</property>
+            <property name="receives_default">True</property>
+            <style>
+              <class name="but"/>
+            </style>
+          </object>
+          <packing>
+            <property name="x">500</property>
           </packing>
         </child>
       </object>

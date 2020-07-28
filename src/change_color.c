@@ -29,6 +29,17 @@ static void wid_ch(t_main *m) {
     gtk_widget_show(m->cap->frame_for_my_photo);
 }
 
+static void change_toggle(t_main *m) {
+    m->style->start_l = 0;
+    if (m->style->color == 2) {
+        g_signal_handlers_block_by_func(m->set->color1, 
+            (gpointer) change_color, m);
+        gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(m->set->color2), TRUE);
+        g_signal_handlers_unblock_by_func(m->set->color1, 
+            (gpointer) change_color, m);
+    }
+}
+
 void change_color(GtkToggleButton *togglebutton, t_main *m) {
     (void)togglebutton;
     if (m->style->start_l == 0) {
@@ -45,13 +56,7 @@ void change_color(GtkToggleButton *togglebutton, t_main *m) {
     wid_ch(m);
     if (m->style->start_l == 0)
         sent_reqw(m);
-    else {
-        m->style->start_l = 0;
-        if (m->style->color == 2) {
-            g_signal_handlers_block_by_func(m->set->color1, (gpointer) change_color, m);
-            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(m->set->color2), TRUE);
-            g_signal_handlers_unblock_by_func(m->set->color1, (gpointer) change_color, m);
-        }
-    }
+    else
+        change_toggle(m);
 }
 

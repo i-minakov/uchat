@@ -55,8 +55,10 @@ void init_set(t_main *m) {
         (m->builder, "Lang1"));
     m->set->color1 = GTK_WIDGET(gtk_builder_get_object
         (m->builder, "color1"));
-     m->set->lang2 = GTK_WIDGET(gtk_builder_get_object
+    m->set->lang2 = GTK_WIDGET(gtk_builder_get_object
         (m->builder, "Lang2"));
+    m->set->del_me = GTK_WIDGET(gtk_builder_get_object
+        (m->builder, "del_acc"));
     secondary_init(m);
     put_fix(m);
 }

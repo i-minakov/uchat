@@ -3,6 +3,10 @@
 static void log_widgets(t_wid *wid) {
 	wid->log->log_gif = GTK_WIDGET(gtk_builder_get_object
 		(wid->builder, "loggif"));
+	gtk_widget_set_opacity(GTK_WIDGET(wid->log->log_gif), 0.0);
+	wid->log->log_gif_pic = GTK_WIDGET(gtk_builder_get_object
+		(wid->builder, "loggif_pic"));
+
 	wid->log->log_text = GTK_WIDGET(gtk_builder_get_object
 		(wid->builder, "log_text"));
 	wid->log->log_name = GTK_WIDGET(gtk_builder_get_object
@@ -17,6 +21,10 @@ static void log_widgets(t_wid *wid) {
 static void sig_widgets(t_wid *wid) {
 	wid->sig->sig_gif = GTK_WIDGET(gtk_builder_get_object
 		(wid->builder, "siggif"));
+	gtk_widget_set_opacity(GTK_WIDGET(wid->sig->sig_gif), 0.0);
+	wid->sig->sig_gif_pic = GTK_WIDGET(gtk_builder_get_object
+		(wid->builder, "siggif_pic"));
+
 	wid->sig->sig_text = GTK_WIDGET(gtk_builder_get_object
 		(wid->builder, "sig_text"));
 	wid->sig->sig_name = GTK_WIDGET(gtk_builder_get_object
@@ -63,12 +71,19 @@ static void valid_widgets(t_wid *wid) {
 void init_widgets_start(t_wid *wid, t_eye *eye) {
 	wid->log->log_hower = GTK_WIDGET(gtk_builder_get_object
 		(wid->builder, "login"));
+	gtk_widget_set_opacity(GTK_WIDGET(wid->log->log_hower), 0.0);
+	wid->log->log_hower_pic1 = GTK_WIDGET(gtk_builder_get_object
+		(wid->builder, "login1"));
+	wid->log->log_hower_pic2 = GTK_WIDGET(gtk_builder_get_object
+		(wid->builder, "login2"));
+
 	wid->sig->sig_hower = GTK_WIDGET(gtk_builder_get_object
 		(wid->builder, "sigin"));
-	wid->log->log_hower2 = GTK_WIDGET(gtk_builder_get_object
-		(wid->builder, "login1"));
-	wid->sig->sig_hower2 = GTK_WIDGET(gtk_builder_get_object
+	gtk_widget_set_opacity(GTK_WIDGET(wid->sig->sig_hower), 0.0);
+	wid->sig->sig_hower_pic1 = GTK_WIDGET(gtk_builder_get_object
 		(wid->builder, "sigin1"));
+	wid->sig->sig_hower_pic2 = GTK_WIDGET(gtk_builder_get_object
+		(wid->builder, "sigin2"));
 	log_widgets(wid);
 	sig_widgets(wid);
 	valid_widgets(wid);

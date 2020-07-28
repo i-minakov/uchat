@@ -48,7 +48,7 @@
 #define MX_PAS(flag) flag == 2 ? "Пароль" : "Password"
 #define MX_COLOR(flag) flag == 2 ? "Тема" : "Theme"
 #define MX_LANG(flag) flag == 2 ? "Язык" : "language"
-
+#define MX_DEL_ACC(flag) flag == 2 ? "Удалить этот профиль" : "Delete this account"
 #define MX_EMOJI(flag) flag == 2 ? "Емоджи" : "Emoji"
 #define MX_STICS(flag) flag == 2 ? "Стикеры" : "Stickers"
 
@@ -208,6 +208,7 @@ typedef struct s_setting {
     GtkWidget *chan_ph;
     GtkWidget *chan_name;
     GtkWidget *chan_pas;
+    GtkWidget *del_me;
     int flag; 
     int notif_flag; 
 }              t_setting;
@@ -441,8 +442,10 @@ void mx_voice(t_main *m);
 
 typedef struct s_login {
 	GtkWidget *log_hower;
-	GtkWidget *log_hower2;
+	GtkWidget *log_hower_pic1;
+    GtkWidget *log_hower_pic2;
 	GtkWidget *log_gif;
+    GtkWidget *log_gif_pic;
 	GtkWidget *log_text;
 	GtkWidget *log_name;
 	GtkWidget *log_pas;
@@ -454,8 +457,10 @@ typedef struct s_login {
 
 typedef struct s_sign {
 	GtkWidget *sig_hower;
-	GtkWidget *sig_hower2;
+    GtkWidget *sig_hower_pic1;
+    GtkWidget *sig_hower_pic2;
 	GtkWidget *sig_gif;
+    GtkWidget *sig_gif_pic;
 	GtkWidget *sig_text;
 	GtkWidget *sig_name;
 	GtkWidget *sig_pas;
