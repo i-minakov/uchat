@@ -101,7 +101,7 @@ void check_edited(t_user *us, t_list *list, int size) {
     for (t_list *i = list; i->data; i = i->next) {
         cmd = mx_get_value(i->data, "command");
         arr = mx_get_arr(i->data);
-        if (mx_get_substr_index(arr[1], "edit") > -1) {
+        if (mx_strcmp(arr[2], us->m->my_name) && mx_get_substr_index(arr[1], "edit") > -1) {
             edited = mx_msg_by_id(us, mx_atoi(cmd));
             if (edited) {
                 mx_strdel(&edited->text);
@@ -110,8 +110,9 @@ void check_edited(t_user *us, t_list *list, int size) {
                 edited->label = gtk_button_new_with_label(edited->text);
                 gtk_widget_set_size_request(edited->label, 100, 30);
                 MX_SET_NAME_MSG(false, edited->label);
+                MX_MSG_PACK(false, edited->label, edited->box);
                 mx_idle_show(false, edited->label);
-                gtk_widget_set_tooltip_text(edited->label, arr[2]);
+                gtk_widget_set_tooltip_text(edited->label, arr[3]);
             }
         }
         mx_strdel(&cmd); 
@@ -175,8 +176,6 @@ void mx_cmp_list(t_main *m, t_info *info) {
             arr = mx_get_arr(json);
             if (!us->msg->next || us->msg->next->id != mx_atoi(cmd)) 
                 mx_msg_or_file(arr, cmd, us);
-            // if ((mx_list_size(info->list) * FLAG) == m->count_reqw) // RESET PHOTO
-            //     mx_reset_photo(us, ((t_data *)i->data)->path);
             mx_strdel(&cmd); 
             mx_del_strarr(&arr);
         }
@@ -489,7 +488,6 @@ void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
     if (ch[0] == 'T') {
         if (ch[1] == 'L') {
             tmp = mx_atoi(&ch[2]);
-            mx_printint(tmp);
             if (tmp == 1 || tmp == 0)
                 client->gtk->style->lang = 2;
             else 
@@ -498,7 +496,6 @@ void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
         }
         else if (ch[1] == 'T')  {
             tmp = mx_atoi(&ch[2]);
-                mx_printint(tmp);
             if (tmp == 1 || tmp == 0)
                 client->gtk->style->color = 2;
             else 
@@ -615,15 +612,15 @@ void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
     }
     else if (ch[0] == 'E' && ch[1] == 'E') {
         mx_sort_recv_list(info);
-        // printf("cmd = %s\n", (*info)->cmd);
-        // printf("size = %s\n", (*info)->size);
-        // for (t_list *i = (*info)->list; i; i = i->next) {
-        //     printf("name = %s\n", ((t_data *)i->data)->name);
-        //     for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
-        //         if ((char *)j->data)
-        //             printf("mssg = %s\n", (char *)j->data);
-        // }
-        // printf("\n");
+        printf("cmd = %s\n", (*info)->cmd);
+        printf("size = %s\n", (*info)->size);
+        for (t_list *i = (*info)->list; i; i = i->next) {
+            printf("name = %s\n", ((t_data *)i->data)->name);
+            for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
+                if ((char *)j->data)
+                    printf("mssg = %s\n", (char *)j->data);
+        }
+        printf("\n");
         mx_check_rcv_list(*info, client->gtk);
         mx_trim_full_list(info);
         *info = mx_create_info();

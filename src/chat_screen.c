@@ -1,8 +1,8 @@
 #include "../inc/uchat.h"
 
-void mx_add_popup_menu() {
+// void mx_add_popup_menu(int flag, , t_main *m) {
 
-}
+// }
 
 void mx_remove_user_by_name(t_user **users, char *name) {
     t_user *us = *users;
@@ -12,6 +12,7 @@ void mx_remove_user_by_name(t_user **users, char *name) {
         *users = us->next;
         mx_strdel(&us->name);
         free_msg(&us->msg);
+        gtk_grid_remove_row(GTK_GRID(us->m->fix_for_users), tmp->count);
         free(us);
         return;
     }
@@ -20,6 +21,7 @@ void mx_remove_user_by_name(t_user **users, char *name) {
             tmp = i->next->next;
             mx_strdel(&i->next->name);
             free_msg(&i->next->msg);
+            gtk_grid_remove_row(GTK_GRID(us->m->fix_for_users), i->next->count);
             free(i->next);
             i->next = tmp;
             break;

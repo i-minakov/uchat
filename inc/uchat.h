@@ -110,6 +110,7 @@ typedef struct s_message {
     GtkWidget *menu;
     GtkWidget *file;
     GtkWidget *label;
+    GtkWidget *box;
     bool my;
     int stic;
     int forward;
