@@ -1,9 +1,5 @@
 #include "../inc/uchat.h"
 
-// void mx_add_popup_menu(int flag, , t_main *m) {
-
-// }
-
 void mx_remove_user_by_name(t_user **users, char *name) {
     t_user *us = *users;
     t_user *tmp = NULL;

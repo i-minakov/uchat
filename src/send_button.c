@@ -62,14 +62,14 @@ void add_message(t_user *i, t_add_m *s, int id) {
     i->msg->next->box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_widget_set_size_request(i->msg->next->box, 650, 30);
     add_time(i, s);
-    MX_MSG_PACK(s->my, i->msg->next->label, i->msg->next->box);
+    MX_MSG_PACK(s->my, i->msg->next->label, i->msg->next->box); // SEG
     gtk_grid_attach(GTK_GRID(i->text_grid), i->msg->next->box, 0, i->row++, 1, 1);
     mx_idle_show(s->my, i->msg->next->box);
     reset_l_mess(i);
     free(str);
     MX_SCROL_END(i->m);
     if (s->my == false && i->check == false &&
-         gtk_widget_is_visible(i->newmsg) == false)
+            gtk_widget_is_visible(i->newmsg) == false)
         mx_idle_show(false, i->newmsg);
     beeeb(s, i);
 }

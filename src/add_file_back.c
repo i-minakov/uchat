@@ -2,10 +2,6 @@
 
 static void file_pushback(t_msg **head, t_add_m *s, int sticer) {
     t_msg *tmp = NULL;
-    GtkWidget *item[3];
-    char *func[] = {"Save", "Forward", "Delete", NULL};
-    void (*menu_option[])(GtkMenuItem *item, t_msg *msg) = 
-        {save_file, forward_msg, delete_msg};
 
     tmp = create_msg(NULL, s->text);
     tmp->my = s->my;
@@ -17,12 +13,7 @@ static void file_pushback(t_msg **head, t_add_m *s, int sticer) {
             break ;
         }
     }
-    for (int i = sticer - 1; i < 3; i++) {
-        item[i] = gtk_menu_item_new_with_label(func[i]);
-        g_signal_connect(item[i], "activate", G_CALLBACK(menu_option[i]), tmp);
-        gtk_menu_shell_append(GTK_MENU_SHELL(tmp->menu), item[i]);
-        gtk_widget_show(item[i]);
-    }
+    mx_add_popup_menu(sticer, tmp);
 }
 
 static void send_file_back(t_user *us, t_add_m *s, t_msg *t) {
