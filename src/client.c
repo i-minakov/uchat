@@ -501,19 +501,15 @@ void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
         if (ch[1] == 'L') {
             tmp = mx_atoi(&ch[2]);
             mx_printint(tmp);
-            if (tmp == 1 || tmp == 0)
+            if (tmp == 0)
                 client->gtk->style->lang = 2;
-            else 
-                client->gtk->style->lang = 1;
             client->gtk->cmd = THEME;
         }
         else if (ch[1] == 'T')  {
             tmp = mx_atoi(&ch[2]);
                 mx_printint(tmp);
-            if (tmp == 1 || tmp == 0)
+            if (tmp == 0)
                 client->gtk->style->color = 2;
-            else 
-                client->gtk->style->color = 1;
             client->gtk->cmd = SIG_IN;
         }
     }
