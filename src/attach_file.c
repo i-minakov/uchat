@@ -13,6 +13,7 @@ void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos,
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_OPEN;
     gchar *tmp = NULL;
     t_user *us = NULL;
+    t_add_m *s = NULL;
 
     (void)entry;
     (void)event;
@@ -25,10 +26,13 @@ void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos,
     dialog = gtk_file_chooser_dialog_new ("Open File", GTK_WINDOW(m->window), action, ("_Cancel"), 
                         GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
+        s = create_struct((char *)tmp, true, 0, NULL);
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         tmp = gtk_file_chooser_get_filename (chooser);
-        add_file(us, create_struct((char *)tmp, true, 0, NULL), 1, 
+        add_file(us, s, 1, 
             us->msg->next ? us->msg->next->id + 1 : 1);
+        command_msg(us, s, 1);
+        free(s);
     }
     gtk_widget_destroy (dialog);
 }

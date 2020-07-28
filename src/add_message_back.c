@@ -2,11 +2,6 @@
 
 static void msg_pushback(t_msg **head, char *text, bool my, int forw) {
     t_msg *tmp = NULL;
-    GtkWidget *item[4];
-    int i = 0;
-    char *s[] = {"Edit", "Reply", "Forward", "Delete", NULL};
-    void (*menu_option[])(GtkMenuItem *item, t_msg *msg) = 
-        {edit_msg, reply_msg, forward_msg, delete_msg};
 
     tmp = create_msg(text, NULL);
     tmp->my = my;
@@ -18,12 +13,7 @@ static void msg_pushback(t_msg **head, char *text, bool my, int forw) {
             break ;
         }
     }
-    for (my == false || forw == 1 ? i = 1 : 0; i < 4; i++) {
-        item[i] = gtk_menu_item_new_with_label(s[i]);
-        g_signal_connect(item[i], "activate", G_CALLBACK(menu_option[i]), tmp);
-        gtk_menu_shell_append(GTK_MENU_SHELL(tmp->menu), item[i]);
-        gtk_widget_show(item[i]);
-    }
+    mx_add_popup_menu(0, tmp);
 }
 
 void add_message_back(t_user *i, t_add_m *s, int count, int id) {

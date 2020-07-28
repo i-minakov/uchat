@@ -17,26 +17,26 @@ bool mx_check_file_format(char *path) {
 
 /* Ilay */
 void mx_msg_or_file(char **arr, char *id, t_user *us) {
-    if (mx_atoi(arr[3]) == 0)
-        add_message(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
-            arr[2]) ? true : false, 
-                mx_atoi(arr[3]), arr[1]), mx_atoi(id));
+    if (mx_atoi(arr[FLG]) == 0)
+        add_message(us, create_struct(arr[TXT], !mx_strcmp(us->m->my_name,
+            arr[NAME]) ? true : false, 
+                !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(id));
     else 
         add_file(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
             arr[2]) ? true : false, 
-                mx_atoi(arr[3]), arr[1]), mx_atoi(arr[3]), mx_atoi(id));
+                !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(arr[FLG]), mx_atoi(id));
 }
 void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
     t_add_m *s = NULL;
 
     if (mx_atoi(arr[3]) == 0)
-            add_message_back(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
-                arr[2]) ? true : false, mx_atoi(arr[3]), arr[1]), count, mx_atoi(id));
+            add_message_back(us, create_struct(arr[TXT], !mx_strcmp(us->m->my_name,
+                arr[NAME]) ? true : false, !arr[RPL_FORW] ? 0 : 1, arr[TIME]), count, mx_atoi(id));
     else {
-        s = create_struct(arr[0], !mx_strcmp(us->m->my_name,
-            arr[2]) ? true : false, mx_atoi(arr[3]), arr[1]);
+        s = create_struct(arr[TXT], !mx_strcmp(us->m->my_name,
+            arr[NAME]) ? true : false, !arr[RPL_FORW] ? 0 : 1, arr[TIME]);
         s->id = mx_atoi(id);
-        add_file_back(us, s, mx_atoi(arr[3]), count);
+        add_file_back(us, s, mx_atoi(arr[FLG]), count);
     }
 }
 void mx_new_msg_back(t_user *us, t_list *list) {
@@ -101,17 +101,18 @@ void check_edited(t_user *us, t_list *list, int size) {
     for (t_list *i = list; i->data; i = i->next) {
         cmd = mx_get_value(i->data, "command");
         arr = mx_get_arr(i->data);
-        if (mx_get_substr_index(arr[1], "edit") > -1) {
+        if (mx_strcmp(arr[NAME], us->m->my_name) && mx_get_substr_index(arr[TIME], "edit") > -1) {
             edited = mx_msg_by_id(us, mx_atoi(cmd));
             if (edited) {
                 mx_strdel(&edited->text);
-                edited->text = mx_strdup(arr[0]);
+                edited->text = mx_strdup(arr[TXT]);
                 gtk_widget_destroy(edited->label);
                 edited->label = gtk_button_new_with_label(edited->text);
                 gtk_widget_set_size_request(edited->label, 100, 30);
+                MX_MSG_PACK(false, edited->label, edited->box);
                 MX_SET_NAME_MSG(false, edited->label);
                 mx_idle_show(false, edited->label);
-                gtk_widget_set_tooltip_text(edited->label, arr[2]);
+                gtk_widget_set_tooltip_text(edited->label, arr[TIME]);
             }
         }
         mx_strdel(&cmd); 
@@ -119,13 +120,13 @@ void check_edited(t_user *us, t_list *list, int size) {
     }
     us->m->count_reqw_edit = 0;
 }
-void mx_reset_photo(t_user *us, char *path) {
-    mx_strdel(&us->photo_name);
-    us->photo_name = mx_strdup(path);
-    gtk_widget_destroy(us->img);
-    set_users(us->m);
-    us->m->count_reqw = 0;
-}
+// void mx_reset_photo(t_user *us, char *path) {
+//     mx_strdel(&us->photo_name);
+//     us->photo_name = mx_strdup(path);
+//     gtk_widget_destroy(us->img);
+//     set_users(us->m);
+//     us->m->count_reqw = 0;
+// }
 bool mx_check_activ(t_main *m, t_list *list, int size) {
     t_user *us = mx_activ_us(m);
     char **arr = NULL;
@@ -133,9 +134,9 @@ bool mx_check_activ(t_main *m, t_list *list, int size) {
 
     if (!us || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
         return false;
-    // check_edited(us, ((t_data *)list->data)->list, size); // EDIT
-    if (size == m->count_reqw)
-        mx_reset_photo(us, ((t_data *)list->data)->path);
+    check_edited(us, ((t_data *)list->data)->list, size); // EDIT
+    // if (size == m->count_reqw)
+    //     mx_reset_photo(us, ((t_data *)list->data)->path);
     if (mx_check_last_index(us, list) == true)
         return true;
     id_new = mx_get_value(((t_data *)list->data)->list->data, "command");
@@ -175,8 +176,6 @@ void mx_cmp_list(t_main *m, t_info *info) {
             arr = mx_get_arr(json);
             if (!us->msg->next || us->msg->next->id != mx_atoi(cmd)) 
                 mx_msg_or_file(arr, cmd, us);
-            // if ((mx_list_size(info->list) * FLAG) == m->count_reqw) // RESET PHOTO
-            //     mx_reset_photo(us, ((t_data *)i->data)->path);
             mx_strdel(&cmd); 
             mx_del_strarr(&arr);
         }
@@ -188,18 +187,8 @@ void mx_cmp_list(t_main *m, t_info *info) {
 void mx_check_rcv_list(t_info *info, t_main *m) {
     char *size = NULL;
 
-    if (m->cmd == SRCH_US || m->cmd == SRCH_MSG) {
-        printf("cmd = %s\n", (info)->cmd);
-        printf("size = %s\n", (info)->size);
-        for (t_list *i = (info)->list; i; i = i->next) {
-            printf("name = %s\n", ((t_data *)i->data)->name);
-            for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
-                if ((char *)j->data)
-                    printf("mssg = %s\n", (char *)j->data);
-        }
-        printf("\n");
+    if (m->cmd == SRCH_US || m->cmd == SRCH_MSG) 
         show_result_of_search(info->list, m);
-    }
     else if (m->cmd == DEF)
         mx_cmp_list(m, info);
     else if (m->cmd == UPDATE_SIZE) {
@@ -446,7 +435,7 @@ static void mx_check_status(t_client *client) {
         free_all(client->gtk);
         client->gtk = malloc_main();
         log_screen(client->gtk);
-        client->gtk->cmd = DEF;
+        client->gtk->cmd = BLCK;
     }
     if (client->gtk->cmd == SIG_IN || client->gtk->cmd == SIG_UP)
         chat_screen(&client->gtk);
@@ -499,7 +488,6 @@ void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
     if (ch[0] == 'T') {
         if (ch[1] == 'L') {
             tmp = mx_atoi(&ch[2]);
-            mx_printint(tmp);
             if (tmp == 1 || tmp == 0)
                 client->gtk->style->lang = 2;
             else 
@@ -508,7 +496,6 @@ void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
         }
         else if (ch[1] == 'T')  {
             tmp = mx_atoi(&ch[2]);
-                mx_printint(tmp);
             if (tmp == 1 || tmp == 0)
                 client->gtk->style->color = 2;
             else 

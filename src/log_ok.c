@@ -18,5 +18,6 @@ void log_ok(GtkWidget *widget, t_wid *wid) {
 		wid->m->command = mx_arrjoin(wid->m->command, wid->log->logname);
 		gtk_widget_show(wid->wait_gif);
 		wid->m->cmd = CHECK_PASS;
+		gtk_widget_hide(wid->log->log_but);
 	}		
 }

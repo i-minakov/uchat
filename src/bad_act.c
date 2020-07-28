@@ -44,6 +44,10 @@ static void show_wid(t_wid *wid, int thred, char *tmp) {
 		g_idle_add((GSourceFunc)mx_show, wid->badact);
 		g_idle_add((GSourceFunc)mx_show, wid->badact_but);
 		g_idle_add((GSourceFunc)mx_show, wid->black_back);
+		if (gtk_widget_is_visible(wid->log->log_but) == false)
+			mx_idle_show(false, wid->log->log_but);
+		else
+			mx_idle_show(false, wid->sig->sig_but);
 		if(wid->sig->flagimg == 1)
 			g_idle_add((GSourceFunc)mx_hide, wid->sig->sig_display);
 	}

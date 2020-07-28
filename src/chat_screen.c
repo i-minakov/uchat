@@ -1,9 +1,5 @@
 #include "../inc/uchat.h"
 
-void mx_add_popup_menu() {
-
-}
-
 void mx_remove_user_by_name(t_user **users, char *name) {
     t_user *us = *users;
     t_user *tmp = NULL;
@@ -12,6 +8,7 @@ void mx_remove_user_by_name(t_user **users, char *name) {
         *users = us->next;
         mx_strdel(&us->name);
         free_msg(&us->msg);
+        gtk_grid_remove_row(GTK_GRID(us->m->fix_for_users), tmp->count);
         free(us);
         return;
     }
@@ -20,6 +17,7 @@ void mx_remove_user_by_name(t_user **users, char *name) {
             tmp = i->next->next;
             mx_strdel(&i->next->name);
             free_msg(&i->next->msg);
+            gtk_grid_remove_row(GTK_GRID(us->m->fix_for_users), i->next->count);
             free(i->next);
             i->next = tmp;
             break;
@@ -284,12 +282,13 @@ int chat_screen(t_main **gtk) {
     gtk_widget_hide(m->log_in->window);
     gtk_widget_show_all(m->window);
     hide_something(m);
-    gtk_window_set_icon_from_file(GTK_WINDOW(m->window), "source/resource/logo.png", NULL);
+    // gtk_window_set_icon_from_file(GTK_WINDOW(m->window), "source/resource/logo.png", NULL);
     m->cmd = DEF;
     // mx_printint(m->style->lang);
     // mx_printint(m->style->color);
     change_lang(NULL, m);
     change_color(NULL, m);
+    mx_del_strarr(&m->command);
     return ex;
 }
  

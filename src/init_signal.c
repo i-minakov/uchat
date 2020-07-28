@@ -211,6 +211,8 @@ void mx_reqw_for_bl(GtkWidget *wid, t_main *m) {
     m->command = mx_arrjoin(m->command, m->my_name);
     m->command = mx_arrjoin(m->command, "2");
     m->cmd = BLACK_LIST;
+    for (int i = 0; m->command[i]; i++)
+        printf("%s\n", m->command[i]);
 }
 
 void init_signals(t_main *m) {
