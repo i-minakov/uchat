@@ -155,39 +155,51 @@ void mx_send_your_photo(t_node **node) {
     mx_send_user_file(img, node);
     mx_strdel(&img);
 }
-static void mx_send_back(t_node **node, char **json) {
-    char *command = mx_get_value(*json, "command");
-    char **arr = mx_get_arr(*json);
-    int hist_flagh = 0;
-    int type = -1;
+static void mx_check_user_pass_adt(char **arr, t_node **node) {
+    if (mx_check_user_pass(arr[0], arr[1])) {
+        mx_send_your_photo(node);
+        mx_bites_str((*node)->ssl, "mx_check_user_pass", 'G');
+    }
+    else {
+        mx_bites_str((*node)->ssl, "Wrong pass or user name", 'B');
+        mx_strdel(&(*node)->user);
+    }
+}
+static t_list *mx_list_adition(char *command, char **arr, int *hist_flagh) {
     t_list *list = NULL;
 
     if (mx_strcmp(command, "mx_send_list_back") == 0)
         list = mx_send_list_back(arr[0], mx_atoi(arr[1]));
     else if (mx_strcmp(command, "mx_regular_request") == 0 || mx_strcmp(command, "mx_mssg_search") == 0) {
         list = mx_send_list_back(arr[0], 0);
-        hist_flagh = 1;
+        *hist_flagh = 1;
     }
     else if (mx_strcmp(command, "mx_user_search") == 0)
         list = mx_user_search(arr[0], arr[1], arr[2]);
-    else if (mx_strcmp(command, "mx_get_type") == 0)
-        type = mx_get_type(arr[0], mx_atoi(arr[1]));
+    return list;
+}
+static int mx_type_adition(char *command, char **arr, t_node **node, char **json) {
+    if (mx_strcmp(command, "mx_get_type") == 0)
+        return mx_get_type(arr[0], mx_atoi(arr[1]));
     else if (mx_strcmp(command, "mx_get_img_path") == 0) {
         pthread_mutex_lock(&(*node)->files_mutex);
         mx_push_file_way(&(*node)->list, *json);
         *json = NULL;
         pthread_mutex_unlock(&(*node)->files_mutex);
     }
-    else if (mx_strcmp(command, "mx_check_user_pass") == 0) {
-        if (mx_check_user_pass(arr[0], arr[1])) {
-            mx_send_your_photo(node);
-            mx_bites_str((*node)->ssl, "mx_check_user_pass", 'G');
-        }
-        else {
-            mx_bites_str((*node)->ssl, "Wrong pass or user name", 'B');
-            mx_strdel(&(*node)->user);
-        }
-    }
+    else if (mx_strcmp(command, "mx_check_user_pass") == 0)
+        mx_check_user_pass_adt(arr, node);
+    return -1;
+}
+void mx_send_back(t_node **node, char **json) {
+    char *command = mx_get_value(*json, "command");
+    char **arr = mx_get_arr(*json);
+    int hist_flagh = 0;
+    int type = -1;
+    t_list *list = NULL;
+
+    list = mx_list_adition(command, arr, &hist_flagh);
+    type = mx_type_adition(command, arr, node, json);
     if (list) {
         mx_send_answer_list(node, list, hist_flagh, *json);
         mx_del_list(&list, 0);
@@ -225,10 +237,20 @@ void mx_not_mutex(t_node **node, char **json) {
 }
 
 /* mutex or not */
-static void mx_mutex_command(t_node **node, char *json) {
-    char *command = mx_get_value(json, "command");
-    char **arr = mx_get_arr(json);
+void mx_log_out_fie_del(t_way **list) {
+    if (!list || !*list)
+        return ;
+    t_way *i = *list;
+    int j = 0;
 
+    for (; i->next; i = i->next);
+    for (; i->back; i = i->back)
+        j++;
+    for (; j > 0; j--)
+        mx_unset_file_node(&i);
+    i = NULL;
+}
+static void mx_mutex_first_adt(t_node **node, char *command, char **arr) {
     if (mx_strcmp(command, "mx_error") == 0)
         (*node)->exit = 0;
     else if (mx_strcmp(command, "mx_add_new_user") == 0) {
@@ -249,7 +271,9 @@ static void mx_mutex_command(t_node **node, char *json) {
         mx_delete_user(arr[0]) == 0
             ? mx_bites_str((*node)->ssl, "mx_delete_user", 'G')
             : mx_bites_str((*node)->ssl, "Can't delete user", 'B');
-    else if (mx_strcmp(command, "mx_recv_new_mess") == 0) {
+}
+static void mx_mutex_second_adt(t_node **node, char *command, char **arr) {
+    if (mx_strcmp(command, "mx_recv_new_mess") == 0) {
         t_input data;
 
         data.name_from = arr[0];
@@ -266,7 +290,9 @@ static void mx_mutex_command(t_node **node, char *json) {
             ? mx_bites_str((*node)->ssl, "mx_recv_new_mess", 'G')
             : mx_bites_str((*node)->ssl, "Can't send message", 'B');
     }
-    else if (mx_strcmp(command, "mx_del_history") == 0)
+}
+static void mx_mutex_third_adt(t_node **node, char *command, char **arr) {
+    if (mx_strcmp(command, "mx_del_history") == 0)
         mx_del_history(arr[0], arr[1]) == 0
             ? mx_bites_str((*node)->ssl, "mx_del_history", 'G')
             : mx_bites_str((*node)->ssl, "Can't delete history", 'B');
@@ -286,7 +312,9 @@ static void mx_mutex_command(t_node **node, char *json) {
         mx_change_pass(arr[0], arr[1]) == 0
             ? mx_bites_str((*node)->ssl, "mx_change_pass", 'G')
             : mx_bites_str((*node)->ssl, "Can't change password", 'B');
-    else if (mx_strcmp(command, "mx_set_type") == 0)
+}
+static void mx_mutex_fourth_adt(t_node **node, char *command, char **arr) {
+    if (mx_strcmp(command, "mx_set_type") == 0)
         mx_set_type(arr[0], arr[1], mx_atoi(arr[2])) == 0
             ? mx_bites_str((*node)->ssl, "mx_set_type", 'G')
             : mx_bites_str((*node)->ssl, "Can't change type", 'B');
@@ -302,13 +330,23 @@ static void mx_mutex_command(t_node **node, char *json) {
         mx_del_user_from_table(arr[0], arr[1], mx_atoi(arr[2])) == 0
             ? mx_bites_str((*node)->ssl, "mx_del_user_from_table", 'G')
             : mx_bites_str((*node)->ssl, "Can't delete user from table", 'B');
-    else if (mx_strcmp(command, "mx_log_out") == 0) {
-        mx_strdel(&(*node)->user);
-        mx_strdel(&(*node)->chat);
-        mx_strdel(&(*node)->size);
-        mx_strdel(&(*node)->history);
-        (*node)->size = mx_strdup("20");
-        (*node)->history = mx_strdup("normal");
+}
+void mx_mutex_command(t_node **node, char *json) {
+    char *command = mx_get_value(json, "command");
+    char **arr = mx_get_arr(json);
+
+    mx_mutex_first_adt(node, command, arr);
+    mx_mutex_second_adt(node, command, arr);
+    mx_mutex_third_adt(node, command, arr);
+    mx_mutex_fourth_adt(node, command, arr);
+    if (mx_strcmp(command, "mx_log_out") == 0) {
+        pthread_mutex_lock(&(*node)->files_mutex);
+        mx_log_out_fie_del(&(*node)->list);
+        pthread_mutex_unlock(&(*node)->files_mutex);
+        mx_replace(&(*node)->user, "NULL");
+        mx_replace(&(*node)->chat, "NULL");
+        mx_replace(&(*node)->size, "20");
+        mx_replace(&(*node)->history, "normal");
     }
     mx_strdel(&command);
     mx_del_strarr(&arr);
@@ -390,7 +428,7 @@ static void mx_recv_request(t_node *node, char **json) {
         *json = mx_strdup("mx_error");
     }
 }
-void mx_choose(t_node *node, char **json) { // timer?
+void mx_choose(t_node *node, char **json) {
     struct pollfd ufds;
 
     ufds.fd = node->client;
@@ -405,7 +443,6 @@ void mx_choose(t_node *node, char **json) { // timer?
 static void mx_free_struct(t_node **node, int flag) {
     if (!node || !*node)
         return;
-
     mx_strdel(&(*node)->json);
     mx_strdel(&(*node)->user);
     mx_strdel(&(*node)->chat);
@@ -425,22 +462,25 @@ static void mx_free_struct(t_node **node, int flag) {
     free(*node);
     *node = NULL;
 }
+static void mx_unset_node_adt(t_way **list, t_way **next, t_way **back) {
+    if ((*list)->next)
+        (*next) = (*list)->next;
+    if ((*list)->back)
+        (*back) = (*list)->back;
+    if (*next && *back)
+        (*next)->back = *back;
+    else if (*next)
+        (*next)->back = NULL;
+    if (*back && *next)
+        (*back)->next = *next;
+    else if (*back)
+        (*back)->next = NULL;
+}
 static void mx_unset_node(t_way **list, void *data) {
     t_way *next = NULL;
     t_way *back = NULL;
 
-    if ((*list)->next)
-        next = (*list)->next;
-    if ((*list)->back)
-        back = (*list)->back;
-    if (next && back)
-        next->back = back;
-    else if (next)
-        next->back = NULL;
-    if (back && next)
-        back->next = next;
-    else if (back)
-        back->next = NULL;
+    mx_unset_node_adt(list, &next, &back);
     mx_free_node(list);
     if (next)
         *((t_way **)data) = next;
@@ -455,7 +495,7 @@ void mx_del_client(t_way **list, t_node **node, void *data, int flag) {
     free(*list);
     *list = NULL;
 }
-void *mx_server_handel(void *data) {
+void *mx_server_handel(void *data) { // delete
     t_way *list = *((t_way **)data);
     t_node *node = (t_node *)list->data;
     char *json = NULL;
@@ -488,7 +528,8 @@ static int mx_send_size_name(t_node *node, FILE *file, char *img_name) {
 static void mx_server_files_send(char *json, t_node *node) {
     char **arr = mx_get_arr(json);
     char *img_name = NULL;
-    char *img_path = mx_get_img_path(arr[0], arr[1], mx_atoi(arr[2]), &img_name);
+    char *img_path = mx_get_img_path(arr[0], arr[1],
+                                     mx_atoi(arr[2]), &img_name);
     FILE *file = fopen(img_path, "rb");
 
     if (file) {
@@ -519,21 +560,24 @@ void *mx_server_files(void *data) {
     return NULL;
 }
 
+static void mx_create_t_node_adt(t_node **node) {
+    (*node)->ssl = NULL;
+    (*node)->ctx = NULL;
+    (*node)->json = NULL;
+    (*node)->list = NULL;
+    (*node)->for_files = (t_files *)malloc(sizeof(t_files));
+    (*node)->for_files->file = NULL;
+    (*node)->for_files->file_size = NULL;
+    (*node)->for_files->file_name = NULL;
+    (*node)->chat = mx_strdup("NULL");
+    (*node)->user = mx_strdup("NULL");
+    (*node)->size = mx_strdup("20");
+    (*node)->history = mx_strdup("normal");
+}
 static t_node *mx_create_t_node(t_server server) {
     t_node *node = (t_node *)malloc(sizeof(t_node));
 
-    node->ssl = NULL;
-    node->ctx = NULL;
-    node->json = NULL;
-    node->list = NULL;
-    node->for_files = (t_files *)malloc(sizeof(t_files));
-    node->for_files->file = NULL;
-    node->for_files->file_size = NULL;
-    node->for_files->file_name = NULL;
-    node->chat = mx_strdup("NULL");
-    node->user = mx_strdup("NULL");
-    node->size = mx_strdup("20");
-    node->history = mx_strdup("normal");
+    mx_create_t_node_adt(&node);
     node->client = -1;
     node->exit = 1;
     node->flag = 0;

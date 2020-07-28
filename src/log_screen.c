@@ -58,14 +58,15 @@ void do_opening(t_wid *wid) {
 int log_screen(t_main *m)
 {
 	int ex = 0;
-	t_wid *wid = (t_wid *)malloc(sizeof(t_wid) * 10);
-	wid->sig = (t_sign *)malloc(sizeof(t_sign) * 16);
-	wid->log = (t_login *)malloc(sizeof(t_login) * 10);
+	t_wid *wid = m->log_in;
+	// t_wid *wid = (t_wid *)malloc(sizeof(t_wid) * 10);
+	// wid->sig = (t_sign *)malloc(sizeof(t_sign) * 16);
+	// wid->log = (t_login *)malloc(sizeof(t_login) * 10);
 	t_eye *eye = (t_eye *)malloc(sizeof(t_eye) * 4);
     eye->wid = wid;
-	wid->m = m;
-	wid->m->log_in = wid;
-	wid->sig->sigfile = NULL;
+	// wid->m = m;
+	// wid->m->log_in = wid;
+	// wid->sig->sigfile = NULL;
 
 	gtk_init(NULL, NULL);
 	init_builder(wid);

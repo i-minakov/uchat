@@ -29,7 +29,9 @@
 #define MX_SL_PH(flag) flag == 1 ? "./source/resource/slept photo.png" : "./source/resource/slept photo2.png"
 #define MX_ICON_ENTRY_PR(flag) flag == 1 ? "./source/resource/attach.png" : "./source/resource/attach1.png"
 #define MX_ICON_ENTRY_SEC(flag) flag == 1 ? "./source/resource/smile.png" : "./source/resource/smile1.png"
- 
+#define MX_ICON_ENTRY_LOOP(flag) flag == 1 ? "./source/resource/searchic.png" : "./source/resource/searchic2.png"
+#define MX_ICON_ENTRY_CANS(flag) flag == 1 ? "./source/resource/cancel.png" : "./source/resource/cancel1.png"
+
 #define MX_START(flag) flag == 2 ? "Выберите чат, чтобы начать переписку" : "Please select a chat to start messaging"
 #define MX_MENU_EX(flag) flag == 2 ? "Выход" : "Exit"
 #define MX_MENU_SET(flag) flag == 2 ? "Настройки" : "Settings"
@@ -50,20 +52,27 @@
 #define MX_EMOJI(flag) flag == 2 ? "Емоджи" : "Emoji"
 #define MX_STICS(flag) flag == 2 ? "Стикеры" : "Stickers"
 
+enum e_arr {
+    TXT,
+    TIME,
+    NAME,
+    FLG,
+    RPL_FORW,
+};
+
 enum e_cmd {
-    SRCH_MSG, 
-    SRCH_US,
+    SIG_UP = -3,
+    SIG_IN,
+    LOG_OUT,
     BLCK,
     DEF,
-    SIG_UP,
-    SIG_IN,
-    USERS,
-    THEME,
     LANG,
+    THEME,
+    SRCH_MSG, 
+    SRCH_US,
     CHECK_PASS,
     CHECK_US,
     UPDATE_SIZE,
-    LOG_OUT,
     BLACK_LIST
 };
 
@@ -99,7 +108,8 @@ typedef struct s_size {
 typedef struct s_style {
     int lang;
     int color;
-    int start;
+    int start_l;
+    int start_c;
 }              t_style;
 
 typedef struct s_message {
@@ -112,6 +122,7 @@ typedef struct s_message {
     GtkWidget *menu;
     GtkWidget *file;
     GtkWidget *label;
+    GtkWidget *box;
     bool my;
     int stic;
     int forward;
@@ -367,6 +378,7 @@ void mx_idle_destroy(bool flag, GtkWidget *wid);
 void mx_remove_user_by_name(t_user **users, char *name);
 void mx_msg_or_file(char **arr, char *id, t_user *us);
 void result_msg(t_list *list, t_main *m);
+void mx_add_popup_menu(int flag, t_msg *msg);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);
@@ -383,7 +395,7 @@ void hide_menu(t_main *m);
 void hide_set(t_main *m);
 void show_set(t_main *m);
 
-void connect_css(t_main *m, int flag);
+void connect_css(t_main *m);
 void change_color(GtkToggleButton *togglebutton, t_main *m);
 void change_lang(GtkToggleButton *togglebutton, t_main *m);
 void change_notif(GtkToggleButton *togglebutton, t_main *m);

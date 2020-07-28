@@ -67,19 +67,11 @@ t_msg *create_msg(char *text, char *filename) {
         new->text = mx_strdup(text);
         gtk_button_set_label(GTK_BUTTON(new->label), new->text);
     } 
-    new->menu = gtk_menu_new();
-    gtk_widget_set_name(new->menu, "rbut");
-    g_signal_connect(new->label, "button_press_event", G_CALLBACK(popup_menu), new);
     return new;
 }
 
 void msg_pushfront(t_msg **head, char *text, bool my, int forw) {
     t_msg *tmp = NULL;
-    GtkWidget *item[4];
-    int i = 0;
-    char *s[] = {"Edit", "Reply", "Forward", "Delete", NULL};
-    void (*menu_option[])(GtkMenuItem *item, t_msg *msg) = 
-        {edit_msg, reply_msg, forward_msg, delete_msg};
 
     tmp = create_msg(text, NULL);
     tmp->my = my;
@@ -92,11 +84,6 @@ void msg_pushfront(t_msg **head, char *text, bool my, int forw) {
         tmp->next->prev = tmp;
         tmp->count = tmp->next->count + 1;
     }
-    for (my == false || forw == 1 ? i = 1 : 0; i < 4; i++) {
-        item[i] = gtk_menu_item_new_with_label(s[i]);
-        g_signal_connect(item[i], "activate", G_CALLBACK(menu_option[i]), tmp);
-        gtk_menu_shell_append(GTK_MENU_SHELL(tmp->menu), item[i]);
-        gtk_widget_show(item[i]);
-    }
+    mx_add_popup_menu(0, tmp);
 }
 

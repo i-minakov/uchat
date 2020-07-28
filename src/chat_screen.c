@@ -1,9 +1,5 @@
 #include "../inc/uchat.h"
 
-void mx_add_popup_menu() {
-
-}
-
 void mx_remove_user_by_name(t_user **users, char *name) {
     t_user *us = *users;
     t_user *tmp = NULL;
@@ -12,6 +8,7 @@ void mx_remove_user_by_name(t_user **users, char *name) {
         *users = us->next;
         mx_strdel(&us->name);
         free_msg(&us->msg);
+        gtk_grid_remove_row(GTK_GRID(us->m->fix_for_users), tmp->count);
         free(us);
         return;
     }
@@ -20,6 +17,7 @@ void mx_remove_user_by_name(t_user **users, char *name) {
             tmp = i->next->next;
             mx_strdel(&i->next->name);
             free_msg(&i->next->msg);
+            gtk_grid_remove_row(GTK_GRID(us->m->fix_for_users), i->next->count);
             free(i->next);
             i->next = tmp;
             break;
@@ -223,6 +221,15 @@ void hide_something(t_main *m) {
 t_main *malloc_main() {
     t_main *m = (t_main *)malloc(sizeof(t_main));
 
+	m->log_in = (t_wid *)malloc(sizeof(t_wid) * 10);
+	m->log_in->sig = (t_sign *)malloc(sizeof(t_sign) * 16);
+	m->log_in->log = (t_login *)malloc(sizeof(t_login) * 10);
+	// t_eye *eye = (t_eye *)malloc(sizeof(t_eye) * 4);
+    // eye->wid = m->log_in;
+	m->log_in->m = m;
+	m->log_in->m->log_in = m->log_in;
+	m->log_in->sig->sigfile = NULL;
+
     m->exit = 0;
     m->cap = (t_cap *)malloc(sizeof(t_cap) * 100);
     m->menu = (t_menu *)malloc(sizeof(t_menu) * 100);
@@ -276,7 +283,6 @@ int chat_screen(t_main **gtk) {
     // for (int i = 10; i > 0; i--) 
     //     user_pushback(&m->users, "yarik"); 
     init_components(m);
-    connect_css(m, 1);
     init_signals(m);  
     gtk_label_set_text(GTK_LABEL(m->lab_start),
                      "Please select a chat to start messaging");
@@ -284,11 +290,11 @@ int chat_screen(t_main **gtk) {
     gtk_widget_hide(m->log_in->window);
     gtk_widget_show_all(m->window);
     hide_something(m);
-    gtk_window_set_icon_from_file(GTK_WINDOW(m->window), "source/resource/logo.png", NULL);
+    // gtk_window_set_icon_from_file(GTK_WINDOW(m->window), "source/resource/logo.png", NULL);
     m->cmd = DEF;
-    mx_printint(m->style->color);
     change_lang(NULL, m);
     change_color(NULL, m);
+    mx_del_strarr(&m->command);
     return ex;
 }
 

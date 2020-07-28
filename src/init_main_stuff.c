@@ -9,7 +9,8 @@ void mx_exit(GtkWidget *object, t_main *m) {
 static void builder_and_style(t_main *m) {
     m->builder = gtk_builder_new_from_file("./source/resource/test.glade");
     m->window = GTK_WIDGET(gtk_builder_get_object(m->builder, "window1"));
-    m->style->start = 1;
+    m->style->start_l = 1;
+    m->style->start_c = 1;
     if (m->style->lang != 2 && m->style->lang != 1)
         m->style->lang = 1;
     if (m->style->color != 2 && m->style->color != 1)

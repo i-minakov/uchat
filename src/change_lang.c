@@ -9,6 +9,8 @@ static void set_and_stic(t_main *m) {
     MX_COLOR(m->style->lang));
     gtk_label_set_text(GTK_LABEL(m->set->lang_text), 
     MX_LANG(m->style->lang));
+    gtk_label_set_text(GTK_LABEL(m->set->notif_text), 
+    MX_NOT(m->style->lang));
     gtk_button_set_label(GTK_BUTTON(m->stic_smile), 
     MX_EMOJI(m->style->lang));
     gtk_button_set_label(GTK_BUTTON(m->stic_stic),  
@@ -40,14 +42,14 @@ void change_lang(GtkToggleButton *togglebutton, t_main *m) {
     char *str = NULL;
 
     (void)togglebutton;
-    if (m->style->start == 0) {
+    if (m->style->start_c == 0) {
         if (m->style->lang == 1) 
             m->style->lang = 2;
         else 
             m->style->lang = 1;
     }
     ch_lang(m);
-    if (m->style->start == 0) {
+    if (m->style->start_c == 0) {
         str = mx_itoa(m->style->color - 1);
         m->command = mx_arrjoin(m->command, "mx_set_type");
         m->command = mx_arrjoin(m->command, m->my_name);
@@ -55,6 +57,13 @@ void change_lang(GtkToggleButton *togglebutton, t_main *m) {
         m->command = mx_arrjoin(m->command, "0");
         free(str);
     }
-    else 
-        m->style->start = 0;
+    else {
+        m->style->start_c = 0;
+        if (m->style->lang == 2) {
+            g_signal_handlers_block_by_func(m->set->lang1, (gpointer) change_lang, m);
+            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(m->set->lang2), TRUE);
+            g_signal_handlers_unblock_by_func(m->set->lang1, (gpointer) change_lang, m);
+        }
+    }
 }
+

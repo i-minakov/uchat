@@ -34,9 +34,7 @@ static void rem(t_main *m) {
     }
 }
 
-void connect_css(t_main *m, int flag) {
-    if (flag != 1)
-    puts("++++\n");
-        rem(m);
+void connect_css(t_main *m) {
+    rem(m);
     con(m);
 }
