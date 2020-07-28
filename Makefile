@@ -3,8 +3,13 @@ INC = inc/*.h
 SRC := $(wildcard src/*.c)
 OBJ = $(addprefix obj/, $(notdir $(SRC:%.c=%.o)))
 LIBMX = libmx/libmx.a
+PA = ./source/libportaudio/libportaudio.a
+SF = -L./source/libsndfile/lib -lsndfile
 SSL_PATH = -I/usr/local/opt/openssl/include
-FLAGS = $(SSL_PATH) $(SANFLAG) -std=c11 -Wall -Wextra -Werror -Wpedantic 
+PA_PATH = -I./source/libportaudio/include
+SF_PATH = -I./source/libsndfile/include
+ADD_FLAG = -framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon
+FLAGS = $(SSL_PATH) $(SANFLAG) $(PA_PATH) $(SF_PATH) -std=c11 -Wall -Wextra -Werror -Wpedantic 
 SANFLAG = -g -fsanitize=address
 SQLITE = -lsqlite3
 PTHREAD = -lpthread
@@ -17,7 +22,7 @@ install: $(NAME)
 
 $(NAME): $(LIBMX) $(OBJ)
 	@make clean
-	@clang $(FLAGS) `pkg-config --cflags --libs gtk+-3.0` $(OBJ) $(LIBMX) -o $(NAME) $(SQLITE) $(SSL) $(PTHREAD)
+	@clang $(FLAGS) `pkg-config --cflags --libs gtk+-3.0` $(OBJ) $(LIBMX) $(PA) $(SF) -o $(NAME) $(SQLITE) $(SSL) $(PTHREAD) $(ADD_FLAG)
 	@printf "\x1b[32;1m$(NAME) created\x1b[0m\n"
 
 $(LIBMX):
