@@ -51,6 +51,7 @@ void add_file(t_user *us, t_add_m *s, int stic, int id) {
     t_msg *t = NULL;
     char **p = mx_strsplit(s->text, '/');
     char *name = NULL;
+    (void)id;
 
     if (p)
         name = p[mx_len_of_array(p) - 1];
@@ -59,7 +60,7 @@ void add_file(t_user *us, t_add_m *s, int stic, int id) {
     msg_file_pushfront(&us->msg, s);
     t = us->msg->next;
     t->user = us;
-    t->id = id;
+    t->id = mx_id_for_msg(us, id);
     t->stic = stic;
     if (stic == 1) {
         file_check(&t, name, s->my);

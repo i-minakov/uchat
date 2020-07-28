@@ -4,6 +4,9 @@ void save_file(GtkMenuItem *item, t_msg *msg) {
     GtkWidget *dialog;
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER;
     gchar *tmp = NULL;
+    char *str = NULL;
+    t_main *m = msg->user->m;
+    t_save *save = m->save;
 
     (void)item;
     dialog = gtk_file_chooser_dialog_new ("Save File", GTK_WINDOW(msg->user->m->window), action, ("_Cancel"), 
@@ -11,7 +14,15 @@ void save_file(GtkMenuItem *item, t_msg *msg) {
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         tmp = gtk_file_chooser_get_filename (chooser);
-        g_free(tmp);
+        str = mx_itoa(msg->id);
+        m->command = mx_arrjoin(m->command, "mx_get_img_path");
+        m->command = mx_arrjoin(m->command, m->my_name);
+        m->command = mx_arrjoin(m->command, msg->user->name);
+        m->command = mx_arrjoin(m->command, str);
+        mx_strdel(&str);
+        save = (t_save *)malloc(sizeof(t_save) * 2);
+        save->path = mx_strdup(tmp);
+        save->filename = mx_strdup(msg->text);
     }
     gtk_widget_destroy(dialog);
 }

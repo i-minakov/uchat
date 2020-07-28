@@ -808,6 +808,7 @@ int mx_move_file(char *name_from, char *name_to, char *message, char *file_name)
 }
 static char *mx_other_mssg(char *name_from, char *name_to, char *message, int flag) {
     char *path = NULL;
+    char **arr = NULL;
 
     if (flag == 0 || flag == 2)
         path = mx_strdup(message);
@@ -817,6 +818,10 @@ static char *mx_other_mssg(char *name_from, char *name_to, char *message, int fl
         path = mx_super_join(path, name_to, 1);
         path = mx_super_join(path, "/", 1);
         path = mx_super_join(path, mx_get_time(), 1);
+        path = mx_super_join(path, ".", 1);
+        arr = mx_strsplit(message, '.');
+        path = mx_super_join(path, arr[mx_arr_size(arr) - 1], 1);
+        mx_del_strarr(&arr);
     }
     return path;
 }

@@ -11,8 +11,6 @@ static void mx_rep_for_mssg(char ***arr, t_list *node, int flag) {
                             ? ((t_history *)node->data)->forward : "NULL"));
 }
 static void mx_send_history_line_adt(t_list *node, char *from, char *to, char ***arr) {
-    if (mx_strcmp(((t_history *)node->data)->flag, "1") == 0)
-        *arr = mx_arrjoin(*arr, ((t_history *)node->data)->file_name);
     if (mx_strcmp(((t_history *)node->data)->mssg_id, "NULL") != 0
         && mx_strcmp(((t_history *)node->data)->forward, "NULL") == 0) {
         mx_reply_forward(from, to, ((t_history *)node->data)->mssg_id, &node);
@@ -31,7 +29,10 @@ static void mx_send_history_line(t_list **list, char *from, char *to, SSL *ssl) 
 
     for (t_list *node = *list; node; node = node->next) {
         command = mx_itoa(((t_history *)node->data)->id);
-        arr = mx_arrjoin(arr, ((t_history *)node->data)->message);
+        if (mx_strcmp(((t_history *)node->data)->flag, "1") == 0)
+            arr = mx_arrjoin(arr, ((t_history *)node->data)->file_name);
+        else
+            arr = mx_arrjoin(arr, ((t_history *)node->data)->message);
         arr = mx_arrjoin(arr, ((t_history *)node->data)->time);
         arr = mx_arrjoin(arr, ((t_history *)node->data)->name);
         arr = mx_arrjoin(arr, ((t_history *)node->data)->flag);
@@ -414,14 +415,13 @@ static void mx_recv_file(t_node *node, char ch[]) {
     }
     else if (ch[1] == 'S')
         mx_static_read(ch, &node->for_files->file_size);
-    else if (node->for_files->file && ch[1] == 'B') {
-        if ((int)fwrite(&ch[2], 1, 1, node->for_files->file) == -1)
-            return ;
-    }
-    else if (node->for_files->file && ch[1] == 'C')
+    else if (node->for_files->file && ch[1] == 'B')
+        fwrite(&ch[2], 1, 1, node->for_files->file);
+    else if (node->for_files->file && ch[1] == 'C') {
         mx_check_file_size(node->for_files->file,
                            &node->for_files->file_size,
                            &node->for_files->file_name);
+    }
 }
 static void mx_recv_request(t_node *node, char **json) {
     char ch[SIZE_SEND];
@@ -518,6 +518,8 @@ void *mx_server_handel(void *data) {
 
     while (node->exit == 1) {
         mx_choose(node, &json);
+        // if (json) {system("clear"); printf("%s\n", json);}                       // delete
+        // if (json) {printf("%d\n", node->client); printf("%s\n", json);}          // delete
         mx_exe_request(&node, &json);
         mx_strdel(&json);
     }
