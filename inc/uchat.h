@@ -76,6 +76,11 @@ enum e_cmd {
     BLACK_LIST
 };
 
+typedef struct s_save {
+    char *path;
+    char *filename;
+}              t_save;
+
 typedef struct s_add_msg {
     char *text;
     bool my; 
@@ -318,6 +323,7 @@ typedef struct s_main {
     struct s_setting *set;
     struct s_search *srch;
     struct s_wid *log_in;
+    struct s_save *save;
 }              t_main;
 
 int chat_screen(t_main **gtk);
@@ -380,7 +386,8 @@ void mx_remove_user_by_name(t_user **users, char *name);
 void mx_msg_or_file(char **arr, char *id, t_user *us);
 void result_msg(t_list *list, t_main *m);
 void mx_add_popup_menu(int flag, t_msg *msg);
-int mx_id_for_msg(t_user *us);
+int mx_id_for_msg(t_user *us, int id);
+bool mx_check_file_format(char *path);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);

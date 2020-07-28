@@ -47,19 +47,14 @@ static void beeeb(t_add_m *s, t_user *i) {
     }
 }
 
-int mx_id_for_msg(t_user *us) {
-    int new = 1;
-
-    if (us->exist_id)
-        new = mx_atoi(us->exist_id->data) + 1;
-    mx_push_front(&us->exist_id, mx_itoa(new));
-    return new;
+int mx_id_for_msg(t_user *us, int id) {
+    mx_push_front(&us->exist_id, mx_itoa(id));
+    return id;
 }
 
 void add_message(t_user *i, t_add_m *s, int id) {
     char *str = mx_strnew(mx_strlen(s->text) + ((mx_strlen(s->text)/50) + 1));
     int k = 0;
-    (void)id;
 
     for (int j = 0; s->text[j]; j++) {
         str[k++] = s->text[j];
@@ -68,7 +63,7 @@ void add_message(t_user *i, t_add_m *s, int id) {
     msg_pushfront(&i->msg, str, s->my, s->forw);
     gtk_grid_insert_row(GTK_GRID(i->text_grid), i->row);
     i->msg->next->user = i;
-    i->msg->next->id = mx_id_for_msg(i);
+    i->msg->next->id = mx_id_for_msg(i, id);
     i->msg->next->box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_widget_set_size_request(i->msg->next->box, 650, 30);
     add_time(i, s);
@@ -96,8 +91,7 @@ void send_but(GtkWidget *wid, t_main *m) {
     s = create_struct(text, true, 0, NULL);
     for (t_user *i = m->users; i; i = i->next) {
         if (i->check == true) {
-            add_message(i, s, i->msg->next 
-                ? i->msg->next->id + 1 : 1);
+            add_message(i, s, i->exist_id ? mx_atoi(i->exist_id->data) + 1 : 1);
             command_msg(i, s, 0);
             free(s->time_m);
             free(s);

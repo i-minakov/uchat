@@ -60,7 +60,7 @@ void add_file(t_user *us, t_add_m *s, int stic, int id) {
     msg_file_pushfront(&us->msg, s);
     t = us->msg->next;
     t->user = us;
-    t->id = mx_id_for_msg(us);
+    t->id = mx_id_for_msg(us, id);
     t->stic = stic;
     if (stic == 1) {
         file_check(&t, name, s->my);

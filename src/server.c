@@ -415,8 +415,10 @@ static void mx_recv_file(t_node *node, char ch[]) {
     }
     else if (ch[1] == 'S')
         mx_static_read(ch, &node->for_files->file_size);
-    else if (node->for_files->file && ch[1] == 'B')
-        fwrite(&ch[2], 1, 1, node->for_files->file);
+    else if (node->for_files->file && ch[1] == 'B') {
+        if ((int)fwrite(&ch[2], 1, 1, node->for_files->file) == -1)
+            return ;
+    }
     else if (node->for_files->file && ch[1] == 'C')
         mx_check_file_size(node->for_files->file, &node->for_files->file_size,
                            &node->for_files->file_name);

@@ -26,6 +26,7 @@ void mx_move_to_part_dir(char *name, char *path) {
     old = mx_super_join(old, name, 1);
     new = mx_super_join(path, "/", 0);
     new = mx_super_join(new, name, 1);
+    remove(new);
     rename(old, new);
     mx_strdel(&old);
     mx_strdel(&new);
@@ -40,8 +41,8 @@ void mx_msg_or_file(char **arr, char *id, t_user *us) {
             arr[NAME]) ? true : false, 
                 !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(id));
     else 
-        add_file(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
-            arr[2]) ? true : false, 
+        add_file(us, create_struct(arr[TXT], !mx_strcmp(us->m->my_name,
+            arr[NAME]) ? true : false, 
                 !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(arr[FLG]), mx_atoi(id));
 }
 void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
@@ -108,38 +109,19 @@ bool mx_check_last_index(t_user *us, t_list *list) {
     }
     return false;
 }
-int *id_of_msgs(t_user *us) {
-    int len = 0;
-    int *res = NULL;
-    int j = 0;
+// void check_deleted(t_user *us, t_list *list, int size) {
+//     char *cmd = NULL;
 
-    for (t_msg *i = us->msg->next; i; i = i->next)
-        len++;
-    res = (int *)malloc(sizeof(int) * (len + 1));
-    res[len] = -1;
-    for (t_msg *i = us->msg->next; i; i = i->next) {
-        res[j] = i->id;
-        j++;
-    }
-    return res;
-}
-void check_deleted(t_user *us, t_list *list, int size) {
-    char *cmd = NULL;
-    int j = 1;
-    int *mas = id_of_msgs(us);
-
-    if (list == NULL || list->next == NULL || 
-            size/10 != us->m->count_reqw_edit)
-        return;
-    for (t_list *i = list; i->data && mas[j] != -1; i = i->next) {
-        cmd = mx_get_value(i->data, "command");
-        if (mas[j] != mx_atoi(cmd))
-            delete_msg(NULL, mx_msg_by_id(us, mas[j]));
-        mx_strdel(&cmd); 
-        j++;
-    }
-    free(mas);
-}
+//     if (list == NULL || list->next == NULL || size/10 != us->m->count_reqw_edit)
+//         return;
+//     for (t_list *i = list->next; i->data && mas[j] != -1; i = i->next) {
+//         cmd = mx_get_value(i->data, "command");
+//         if (mas[j] != mx_atoi(cmd))
+//             delete_msg(NULL, mx_msg_by_id(us, mas[j]));
+//         mx_strdel(&cmd); 
+//         j++;
+//     }
+// }
 void check_edited(t_user *us, t_list *list, int size) {
     char *cmd = NULL;
     char **arr = NULL;
@@ -162,6 +144,7 @@ void check_edited(t_user *us, t_list *list, int size) {
                 MX_SET_NAME_MSG(false, edited->label);
                 mx_idle_show(false, edited->label);
                 gtk_widget_set_tooltip_text(edited->label, arr[TIME]);
+                mx_add_popup_menu(0, edited);
             }
         }
         mx_strdel(&cmd); 
@@ -181,15 +164,13 @@ bool mx_check_activ(t_main *m, t_list *list, int size) {
     if (mx_check_last_index(us, list) == true)
         return true;
     id_new = mx_get_value(((t_data *)list->data)->list->data, "command");
-    if (!us->msg->next || us->msg->next->id < mx_atoi(us->exist_id->data)) {
+    if (!us->msg->next || mx_atoi(id_new) > mx_atoi(us->exist_id->data)) {
         arr = mx_get_arr(((t_data *)list->data)->list->data);
         mx_msg_or_file(arr, id_new, us);
         mx_del_strarr(&arr);
     }
-    // else if (us->msg->next && (us->msg->next->id > mx_atoi(us->exist_id->data)))
-    //     delete_msg(NULL, mx_msg_by_id(us, us->msg->next->id));
     mx_strdel(&id_new);
-    check_deleted(us, list, size);
+    // check_deleted(us, list, size);
     return true;
 }
 void mx_check_rename(t_main *m, t_info *info) {
@@ -699,6 +680,12 @@ void mx_client_recv_file(char ch[], t_client *client) {
         mx_check_file_size(client->for_files->file,
                            &client->for_files->file_size,
                            &client->for_files->file_name);
+        printf("YES\n");
+        // mx_move_to_part_dir(client->gtk->save->filename,
+        //      client->gtk->save->path);
+        // mx_strdel(&client->gtk->save->filename);
+        // mx_strdel(&client->gtk->save->path);
+        // free(client->gtk->save);
     }
 }
 
