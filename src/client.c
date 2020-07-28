@@ -92,12 +92,13 @@ void check_edited(t_user *us, t_list *list, int size) {
             if (edited) {
                 mx_strdel(&edited->text);
                 edited->text = mx_strdup(arr[0]);
-                gtk_widget_destroy(edited->label);
-                edited->label = gtk_button_new_with_label(edited->text);
-                gtk_widget_set_size_request(edited->label, 100, 30);
-                MX_SET_NAME_MSG(false, edited->label);
-                mx_idle_show(false, edited->label);
-                gtk_widget_set_tooltip_text(edited->label, arr[2]);
+                gtk_button_set_label(GTK_BUTTON(edited->label), edited->text);
+                // gtk_widget_destroy(edited->label);
+                // edited->label = gtk_button_new_with_label(edited->text);
+                // gtk_widget_set_size_request(edited->label, 100, 30);
+                // MX_SET_NAME_MSG(false, edited->label);
+                // mx_idle_show(false, edited->label);
+                // gtk_widget_set_tooltip_text(edited->label, arr[2]);
             }
         }
         mx_strdel(&cmd); 
@@ -119,7 +120,7 @@ bool mx_check_activ(t_main *m, t_list *list, int size) {
 
     if (!us || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
         return false;
-    // check_edited(us, ((t_data *)list->data)->list, size); // EDIT
+    check_edited(us, ((t_data *)list->data)->list, size); // EDIT
     if (size == m->count_reqw)
         mx_reset_photo(us, ((t_data *)list->data)->path);
     if (mx_check_last_index(us, list) == true)
