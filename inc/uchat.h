@@ -410,11 +410,7 @@ void the_ic(int flag, t_main *m);
 void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
                 GdkEvent *event, t_main *m);
 void mx_exit(GtkWidget *object, t_main *m);
-<<<<<<< HEAD
-
-=======
 void mx_voice(t_main *m);
->>>>>>> e409225ed72415ebbb9af41349e3cd1adfb97638
 
 /////////////////////////////////////////////////////////////////////////////
 // Olya login screen

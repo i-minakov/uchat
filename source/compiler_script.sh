@@ -1,5 +1,6 @@
 #!/bin/zsh
 
+cd ./source
 mkdir keys
 cd keys
 

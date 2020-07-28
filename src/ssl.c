@@ -9,17 +9,17 @@ SSL_CTX *mx_get_client_context(void) {
         fprintf(stderr, "Cannot create a client context\n");
         return NULL;
     }
-    if (SSL_CTX_load_verify_locations(ctx, "./keys/ca/ca_cert.pem", NULL) != 1) {
+    if (SSL_CTX_load_verify_locations(ctx, "./source/keys/ca/ca_cert.pem", NULL) != 1) {
         fprintf(stderr, "Cannot load client's CA file\n");
         SSL_CTX_free(ctx);
         return NULL;
     }
-    if (SSL_CTX_use_certificate_file(ctx, "./keys/client/client_cert.pem", SSL_FILETYPE_PEM) != 1) {
+    if (SSL_CTX_use_certificate_file(ctx, "./source/keys/client/client_cert.pem", SSL_FILETYPE_PEM) != 1) {
         fprintf(stderr, "Cannot load client's certificate file\n");
         SSL_CTX_free(ctx);
         return NULL;
     }
-    if (SSL_CTX_use_PrivateKey_file(ctx, "./keys/client/private/client_key.pem", SSL_FILETYPE_PEM) != 1) {
+    if (SSL_CTX_use_PrivateKey_file(ctx, "./source/keys/client/private/client_key.pem", SSL_FILETYPE_PEM) != 1) {
         fprintf(stderr, "Cannot load client's key file\n");
         SSL_CTX_free(ctx);
         return NULL;
@@ -67,18 +67,18 @@ SSL_CTX *get_server_context() {
         fprintf(stderr, "SSL_CTX_new failed\n");
         return NULL;
     }
-    if (SSL_CTX_load_verify_locations(ctx, "./keys/ca/ca_cert.pem", NULL) != 1) {
+    if (SSL_CTX_load_verify_locations(ctx, "./source/keys/ca/ca_cert.pem", NULL) != 1) {
         fprintf(stderr, "Cannot set the CA file location\n");
         SSL_CTX_free(ctx);
         return NULL;
     }
-    SSL_CTX_set_client_CA_list(ctx, SSL_load_client_CA_file("./keys/ca/ca_cert.pem"));
-    if (SSL_CTX_use_certificate_file(ctx, "./keys/server/server_cert.pem", SSL_FILETYPE_PEM) != 1) {
+    SSL_CTX_set_client_CA_list(ctx, SSL_load_client_CA_file("./source/keys/ca/ca_cert.pem"));
+    if (SSL_CTX_use_certificate_file(ctx, "./source/keys/server/server_cert.pem", SSL_FILETYPE_PEM) != 1) {
         fprintf(stderr, "Cannot set the server's certificate\n");
         SSL_CTX_free(ctx);
         return NULL;
     }
-    if (SSL_CTX_use_PrivateKey_file(ctx, "./keys/server/private/server_key.pem", SSL_FILETYPE_PEM) != 1) {
+    if (SSL_CTX_use_PrivateKey_file(ctx, "./source/keys/server/private/server_key.pem", SSL_FILETYPE_PEM) != 1) {
         fprintf(stderr, "Cannot set the server's key\n");
         SSL_CTX_free(ctx);
         return NULL;

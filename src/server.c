@@ -40,17 +40,20 @@ static void mx_send_history_line(t_list **list, char *from, char *to, SSL *ssl) 
         mx_del_strarr(&arr);
     }
 }
-void mx_send_history_list(t_node **node, char *name) {
+void mx_send_history_list(t_node **node, char *name, char *json) {
     t_list *list = NULL;
     char *size = NULL;
+    char **arr = NULL;
 
     if (mx_strcmp(name, (*node)->chat) == 0)
         size = mx_strdup((*node)->size);
     else
         size = mx_strdup("1");
     if (mx_strcmp((*node)->history, "normal") != 0 && mx_strcmp(name, (*node)->chat) == 0) {
-        list = mx_mssg_search((*node)->user, (*node)->chat, (*node)->history, size);
+        arr = mx_get_arr(json);
+        list = mx_mssg_search((*node)->user, (*node)->chat, arr[2], size);
         mx_replace(&(*node)->history, "normal");
+        mx_del_strarr(&arr);
     }
     else
         list = mx_history_back((*node)->user, name, size);
@@ -111,9 +114,10 @@ void mx_send_user_file(char *img_path, t_node **node) {
         fclose(file);
     }
 }
-void mx_send_answer_list(t_node **node, t_list *list, int hist_flag, char *cmd) {
+void mx_send_answer_list(t_node **node, t_list *list, int hist_flag, char *json) {
     t_list *i = list;
     t_table_list *data = NULL;
+    char *cmd = mx_get_value(json, "command");
 
     mx_bites_str((*node)->ssl, cmd, 'C');
     mx_send_size_list(node, list);
@@ -125,10 +129,11 @@ void mx_send_answer_list(t_node **node, t_list *list, int hist_flag, char *cmd) 
         else if ((*node)->flag >= (FLAG * mx_list_size(list)))
             (*node)->flag = 0;
         if (hist_flag == 1)
-            mx_send_history_list(node, data->name);
+            mx_send_history_list(node, data->name, json);
         data = NULL;
     }
     mx_bites_str((*node)->ssl, "end", 'E');
+    mx_strdel(&cmd);
 }
 
 /* not mutex */
@@ -154,7 +159,7 @@ static void mx_send_back(t_node **node, char **json) {
 
     if (mx_strcmp(command, "mx_send_list_back") == 0)
         list = mx_send_list_back(arr[0], mx_atoi(arr[1]));
-    else if (mx_strcmp(command, "mx_regular_request") == 0) {
+    else if (mx_strcmp(command, "mx_regular_request") == 0 || mx_strcmp(command, "mx_mssg_search") == 0) {
         list = mx_send_list_back(arr[0], 0);
         hist_flagh = 1;
     }
@@ -179,7 +184,7 @@ static void mx_send_back(t_node **node, char **json) {
         }
     }
     if (list) {
-        mx_send_answer_list(node, list, hist_flagh, command);
+        mx_send_answer_list(node, list, hist_flagh, *json);
         mx_del_list(&list, 0);
         if (hist_flagh == 1)
             hist_flagh = 0;
