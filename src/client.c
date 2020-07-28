@@ -461,6 +461,7 @@ static void mx_check_status(t_client *client) {
         gtk_widget_hide(client->gtk->window);
         free_all(client->gtk);
         client->gtk = malloc_main();
+        client->gtk->log_in->start_flag = 1;
         log_screen(client->gtk);
         client->gtk->cmd = BLCK;
     }
@@ -514,18 +515,12 @@ void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
     if (ch[0] == 'T') {
         if (ch[1] == 'L') {
             tmp = mx_atoi(&ch[2]);
-            if (tmp == 1 || tmp == 0)
-                client->gtk->style->lang = 2;
-            else 
-                client->gtk->style->lang = 1;
+            client->gtk->style->lang = tmp + 1;
             client->gtk->cmd = THEME;
         }
         else if (ch[1] == 'T')  {
             tmp = mx_atoi(&ch[2]);
-            if (tmp == 1 || tmp == 0)
-                client->gtk->style->color = 2;
-            else 
-                client->gtk->style->color = 1;
+            client->gtk->style->color = tmp + 1;
             client->gtk->cmd = SIG_IN;
         }
     }

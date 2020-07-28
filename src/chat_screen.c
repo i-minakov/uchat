@@ -213,6 +213,15 @@ void hide_something(t_main *m) {
 t_main *malloc_main() {
     t_main *m = (t_main *)malloc(sizeof(t_main));
 
+	m->log_in = (t_wid *)malloc(sizeof(t_wid) * 10);
+	m->log_in->sig = (t_sign *)malloc(sizeof(t_sign) * 16);
+	m->log_in->log = (t_login *)malloc(sizeof(t_login) * 10);
+	// t_eye *eye = (t_eye *)malloc(sizeof(t_eye) * 4);
+    // eye->wid = m->log_in;
+	m->log_in->m = m;
+	m->log_in->m->log_in = m->log_in;
+	m->log_in->sig->sigfile = NULL;
+
     m->exit = 0;
     m->cap = (t_cap *)malloc(sizeof(t_cap) * 100);
     m->menu = (t_menu *)malloc(sizeof(t_menu) * 100);
@@ -266,7 +275,6 @@ int chat_screen(t_main **gtk) {
     // for (int i = 10; i > 0; i--) 
     //     user_pushback(&m->users, "yarik"); 
     init_components(m);
-    connect_css(m, 1);
     init_signals(m);  
     gtk_label_set_text(GTK_LABEL(m->lab_start),
                      "Please select a chat to start messaging");
@@ -276,14 +284,12 @@ int chat_screen(t_main **gtk) {
     hide_something(m);
     // gtk_window_set_icon_from_file(GTK_WINDOW(m->window), "source/resource/logo.png", NULL);
     m->cmd = DEF;
-    // mx_printint(m->style->lang);
-    // mx_printint(m->style->color);
     change_lang(NULL, m);
     change_color(NULL, m);
     mx_del_strarr(&m->command);
     return ex;
 }
- 
+
 int interface() {
     t_main *m = malloc_main();
     

@@ -222,6 +222,7 @@ void init_signals(t_main *m) {
     g_signal_connect(m->but1, "clicked", G_CALLBACK(send_but), m);
     g_signal_connect(m->sms, "activate", G_CALLBACK(entry_activate), m);
     g_signal_connect(m->sms, "icon-press", G_CALLBACK(attach_file), m);
+    g_signal_connect(m->edit_entry, "icon-press", G_CALLBACK(attach_file), m);
     g_signal_connect(m->dots->search_msg_but, "clicked", G_CALLBACK(show_search_msg), m);
     g_signal_connect(m->scrol_bar, "edge-overshot", G_CALLBACK(mx_increase_msg_list), m);
     g_signal_connect(m->search, "activate", G_CALLBACK(search_activ), m);

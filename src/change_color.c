@@ -1,7 +1,7 @@
 #include "../inc/uchat.h"
 
 static void sent_reqw(t_main *m) {
-    char *str = mx_itoa(m->style->color);
+    char *str = mx_itoa(m->style->color - 1);
 
     m->command = mx_arrjoin(m->command, "mx_set_type");
     m->command = mx_arrjoin(m->command, m->my_name);
@@ -31,16 +31,27 @@ static void wid_ch(t_main *m) {
 
 void change_color(GtkToggleButton *togglebutton, t_main *m) {
     (void)togglebutton;
-    if (m->style->color == 1) 
-        m->style->color = 2;
-    else 
-        m->style->color = 1;
-    connect_css(m, 2);
+    if (m->style->start_l == 0) {
+        if (m->style->color == 1) 
+            m->style->color = 2;
+        else 
+            m->style->color = 1;
+    }
+    connect_css(m);
     gtk_widget_destroy(m->grid_user);
     set_users(m);
     gtk_widget_show_all(m->fix_for_users);
     show_hide_back_us(m->users);
     wid_ch(m);
-    sent_reqw(m);
+    if (m->style->start_l == 0)
+        sent_reqw(m);
+    else {
+        m->style->start_l = 0;
+        if (m->style->color == 2) {
+            g_signal_handlers_block_by_func(m->set->color1, (gpointer) change_color, m);
+            gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON(m->set->color2), TRUE);
+            g_signal_handlers_unblock_by_func(m->set->color1, (gpointer) change_color, m);
+        }
+    }
 }
 
