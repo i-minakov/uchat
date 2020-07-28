@@ -47,9 +47,10 @@ void set_emoji(t_main *m) {
     int col = 0;
     m->emo->img = (GtkWidget **)malloc(sizeof(GtkWidget *) * 28);
     m->emo->but = (GtkWidget **)malloc(sizeof(GtkWidget *) * 28);
-    m->emo->utf = (char **)malloc(sizeof(char *) * 28);
+    m->emo->utf = (char **)malloc(sizeof(char *) * 29);
     m->grid_emo = gtk_grid_new();
 
+    m->emo->utf[28] = NULL;
     gtk_grid_insert_row(GTK_GRID(m->grid_emo), row);
     gtk_grid_insert_column(GTK_GRID(m->grid_emo), col);
     gtk_grid_set_row_spacing(GTK_GRID(m->grid_emo), 8);

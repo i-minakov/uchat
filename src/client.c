@@ -612,15 +612,15 @@ void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
     }
     else if (ch[0] == 'E' && ch[1] == 'E') {
         mx_sort_recv_list(info);
-        printf("cmd = %s\n", (*info)->cmd);
-        printf("size = %s\n", (*info)->size);
-        for (t_list *i = (*info)->list; i; i = i->next) {
-            printf("name = %s\n", ((t_data *)i->data)->name);
-            for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
-                if ((char *)j->data)
-                    printf("mssg = %s\n", (char *)j->data);
-        }
-        printf("\n");
+        // printf("cmd = %s\n", (*info)->cmd);
+        // printf("size = %s\n", (*info)->size);
+        // for (t_list *i = (*info)->list; i; i = i->next) {
+        //     printf("name = %s\n", ((t_data *)i->data)->name);
+        //     for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
+        //         if ((char *)j->data)
+        //             printf("mssg = %s\n", (char *)j->data);
+        // }
+        // printf("\n");
         mx_check_rcv_list(*info, client->gtk);
         mx_trim_full_list(info);
         *info = mx_create_info();

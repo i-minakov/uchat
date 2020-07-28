@@ -19,24 +19,25 @@ static void msg_file_pushfront(t_msg **head, t_add_m *s, int sticer) {
 void file_check(gchar *tmp, t_msg **msg, char *name, bool my) {
     t_msg *t = *msg;
 
-    if (mx_strstr(tmp, ".jpg") || mx_strstr(tmp, ".jpeg")
-        || mx_strstr(tmp, ".gif")) {
-            if (mx_strstr(tmp, ".gif"))
-                t->file = gtk_image_new_from_file(tmp);
-            else 
-                t->file = resize_image(tmp, 200, 200);
-            gtk_button_set_image(GTK_BUTTON(t->label), t->file);
-    }
-    else {
+    (void)tmp;
+    // if (mx_strstr(tmp, ".jpg") || mx_strstr(tmp, ".jpeg")
+    //     || mx_strstr(tmp, ".gif")) {
+    //         if (mx_strstr(tmp, ".gif"))
+    //             t->file = gtk_image_new_from_file(tmp);
+    //         else 
+    //             t->file = resize_image(tmp, 200, 200);
+    //         gtk_button_set_image(GTK_BUTTON(t->label), t->file);
+    // }
+    // else {
         t->file = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
         MX_BOX_START(t->file, gtk_image_new_from_file("./source/resource/load image.png"));
         gtk_box_pack_start(GTK_BOX(t->file), gtk_label_new(name), FALSE, FALSE, 10); 
         gtk_container_add(GTK_CONTAINER(t->label), t->file);
         mx_idle_show(my, t->label);
-    }
+    // }
 }
 
-static void send_file(t_user *us, t_add_m *s, t_msg *t, int flag) {
+static void send_file(t_user *us, t_add_m *s, t_msg *t) {
     GtkWidget *wid;
 
     wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 900);
@@ -46,8 +47,6 @@ static void send_file(t_user *us, t_add_m *s, t_msg *t, int flag) {
     gtk_grid_attach(GTK_GRID(us->text_grid), wid, 0, t->count, 1, 1);
     mx_idle_show(s->my, wid);   
     us->row++;
-    if (s->my == true) 
-        command_msg(us, s, flag);
 }
 
 void add_file(t_user *us, t_add_m *s, int stic, int id) {
@@ -62,13 +61,13 @@ void add_file(t_user *us, t_add_m *s, int stic, int id) {
     t->user = us;
     t->id = id;
     if (stic == 0) {
-        file_check(s->text, &t, name, s->my);
-        send_file(us, s, t, stic);
+        file_check(s->text, &t, s->my == 0 ? name : s->text, s->my);
+        send_file(us, s, t);
     }
     else {
         t->file = gtk_image_new_from_file(s->text);
         gtk_button_set_image(GTK_BUTTON(t->label), t->file);
-        send_file(us, s, t, stic);
+        send_file(us, s, t);
     }
     mx_del_strarr(&p);
     free(s);
