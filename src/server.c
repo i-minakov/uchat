@@ -10,6 +10,20 @@ static void mx_rep_for_mssg(char ***arr, t_list *node, int flag) {
         *arr = mx_arrjoin(*arr, (((t_history *)node->data)->forward
                             ? ((t_history *)node->data)->forward : "NULL"));
 }
+static void mx_send_history_line_adt(t_list *node, char *from, char *to, char ***arr) {
+    if (mx_strcmp(((t_history *)node->data)->flag, "1") == 0)
+        *arr = mx_arrjoin(*arr, ((t_history *)node->data)->file_name);
+    if (mx_strcmp(((t_history *)node->data)->mssg_id, "NULL") != 0
+        && mx_strcmp(((t_history *)node->data)->forward, "NULL") == 0) {
+        mx_reply_forward(from, to, ((t_history *)node->data)->mssg_id, &node);
+        mx_rep_for_mssg(arr, node, 0);
+    }
+    else if (mx_strcmp(((t_history *)node->data)->forward, "NULL") != 0) {
+        mx_reply_forward(from, ((t_history *)node->data)->forward,
+                            ((t_history *)node->data)->mssg_id, &node);
+        mx_rep_for_mssg(arr, node, 1);
+    }
+}
 static void mx_send_history_line(t_list **list, char *from, char *to, SSL *ssl) {
     char *command = NULL;
     char **arr = NULL;
@@ -21,18 +35,7 @@ static void mx_send_history_line(t_list **list, char *from, char *to, SSL *ssl) 
         arr = mx_arrjoin(arr, ((t_history *)node->data)->time);
         arr = mx_arrjoin(arr, ((t_history *)node->data)->name);
         arr = mx_arrjoin(arr, ((t_history *)node->data)->flag);
-        if (mx_strcmp(((t_history *)node->data)->flag, "1") == 0)
-            arr = mx_arrjoin(arr, ((t_history *)node->data)->file_name);
-        if (mx_strcmp(((t_history *)node->data)->mssg_id, "NULL") != 0
-            && mx_strcmp(((t_history *)node->data)->forward, "NULL") == 0) {
-            mx_reply_forward(from, to, ((t_history *)node->data)->mssg_id, &node);
-            mx_rep_for_mssg(&arr, node, 0);
-        }
-        else if (mx_strcmp(((t_history *)node->data)->forward, "NULL") != 0) {
-            mx_reply_forward(from, ((t_history *)node->data)->forward,
-                             ((t_history *)node->data)->mssg_id, &node);
-            mx_rep_for_mssg(&arr, node, 1);
-        }
+        mx_send_history_line_adt(node, from, to, &arr);
         json = mx_request(command, arr);
         mx_bites_str(ssl, json, 'H');
         mx_strdel(&json);
@@ -49,7 +52,8 @@ void mx_send_history_list(t_node **node, char *name, char *json) {
         size = mx_strdup((*node)->size);
     else
         size = mx_strdup("1");
-    if (mx_strcmp((*node)->history, "normal") != 0 && mx_strcmp(name, (*node)->chat) == 0) {
+    if (mx_strcmp((*node)->history, "normal") != 0
+        && mx_strcmp(name, (*node)->chat) == 0) {
         arr = mx_get_arr(json);
         list = mx_mssg_search((*node)->user, (*node)->chat, arr[2], size);
         mx_replace(&(*node)->history, "normal");
@@ -73,7 +77,7 @@ void mx_send_answer_type(t_node **node, int type, int flag) {
     if (flag == 1)
         send[1] = 'T';
     mx_mom(send, type_str, mx_strlen(type_str), 0);
-    if (SSL_write((*node)->ssl, send, SIZE_SEND) != -1)
+    if (SSL_write((*node)->ssl, send, SIZE_SEND) == -1)
         return ;
     mx_strdel(&type_str);
 }

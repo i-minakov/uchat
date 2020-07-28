@@ -154,7 +154,7 @@ void mx_file_format(char **arr, SSL *ssl, char ch1, char ch2) {
     ch[0] = ch1;
     ch[1] = ch2;
     mx_mom(ch, arr[mx_arr_size(arr) - 1], SIZE_SEND_LESS, 0);
-    if (SSL_write(ssl, ch, SIZE_SEND) != -1)
+    if (SSL_write(ssl, ch, SIZE_SEND) == -1)
         return ;
 }
 
@@ -167,7 +167,7 @@ void mx_file_bites(FILE *file, SSL *ssl, char ch1, char ch2) {
         send[0] = ch1;
         send[1] = ch2;
         send[2] = ch;
-        if (SSL_write(ssl, send, SIZE_SEND) != -1)
+        if (SSL_write(ssl, send, SIZE_SEND) == -1)
             return ;
         mx_memset(send, '\0', SIZE_SEND);
     }
@@ -180,7 +180,7 @@ void mx_file_size_close(SSL *ssl, char *str, char ch1, char ch2) {
     send[0] = ch1;
     send[1] = ch2;
     mx_mom(send, str, mx_strlen(str), 0);
-    if (SSL_write(ssl, send, SIZE_SEND) != -1)
+    if (SSL_write(ssl, send, SIZE_SEND) == -1)
         return ;
 }
 
@@ -195,7 +195,7 @@ void mx_bites_str(SSL *ssl, char *json, char ch1) {
             ch[1] = 'S';
         else
             ch[1] = 'E';
-        if (SSL_write(ssl, ch, SIZE_SEND) != -1)
+        if (SSL_write(ssl, ch, SIZE_SEND) == -1)
             return ;
     }
 }
