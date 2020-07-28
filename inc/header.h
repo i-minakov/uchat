@@ -26,8 +26,6 @@
 #include <sys/ioctl.h>
 #include <ctype.h>
 
-// #include "../source/libportaudio/include/portaudio.h"
-// #include "../source/libsndfile/include/sndfile.h"
 #include "../libmx/inc/libmx.h"
 #include "json_functions.h"
 #include "database.h"

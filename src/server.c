@@ -371,6 +371,7 @@ static bool mx_check_command(char *json) {
         || mx_check_json_cmd(json, "command", "mx_del_history")
         || mx_check_json_cmd(json, "command", "mx_del_message")
         || mx_check_json_cmd(json, "command", "mx_edit")
+        || mx_check_json_cmd(json, "command", "mx_log_out")
         || mx_check_json_cmd(json, "command", "mx_change_log")
         || mx_check_json_cmd(json, "command", "mx_change_pass")
         || mx_check_json_cmd(json, "command", "mx_del_user_from_table")
@@ -507,15 +508,14 @@ void mx_del_client(t_way **list, t_node **node, void *data, int flag) {
     free(*list);
     *list = NULL;
 }
-void *mx_server_handel(void *data) { // delete
+void *mx_server_handel(void *data) {
     t_way *list = *((t_way **)data);
     t_node *node = (t_node *)list->data;
     char *json = NULL;
 
     while (node->exit == 1) {
         mx_choose(node, &json);
-        // if (json) {system("clear"); printf("%s\n", json);}                       // delete
-        // if (json) {printf("%d\n", node->client); printf("%s\n", json);}          // delete
+        if (json) {system("clear"); printf("%s\n", json);}
         mx_exe_request(&node, &json);
         mx_strdel(&json);
     }
