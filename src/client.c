@@ -506,7 +506,6 @@ static void mx_server_answer(char ch[], char *str, t_client *client) { // server
         }
     }
 }
-
 void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
     char *str = NULL;
     int tmp;
@@ -534,7 +533,6 @@ void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
         mx_server_answer(ch, str, client);
     mx_strdel(&str);
 }
-
 static t_data *mx_create_data(void) {
     t_data *node = (t_data *)malloc(sizeof(t_data));
     char *str = NULL;

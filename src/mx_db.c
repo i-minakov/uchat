@@ -1143,6 +1143,7 @@ int mx_del_history(char *name_from, char *name_to) {
     result += mx_del_files(new_command);
     mx_strdel(&new_command);
     result += mx_del_other_hist(name_from, name_to);
+    result += mx_del_user_from_table(name_from, name_to, 0);
     return result;
 }
 
