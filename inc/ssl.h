@@ -22,6 +22,8 @@
 #define SERVER_CERT "./source/keys/server/server_cert.pem"
 #define SERVER_KEY "./source/keys/server/private/server_key.pem"
 
+#define NEW_USER "INSERT INTO Users(Name, Lan, Theme, Pass, Img) VALUES(?, ?, ?, ?, ?);"
+
 typedef struct s_way {
     void *data;
     struct s_way *next;

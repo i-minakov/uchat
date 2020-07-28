@@ -359,7 +359,7 @@ static void mx_change_cmp(char ***arr) {
     mx_del_strarr(&(*arr));
     *arr = shift;
 }
-static int mx_parse_time(char *str1, char *str2) {
+static int mx_parse_time(char *str1, char *str2) { // seg
     if (!str1 || !str2)
         return 0;
     int result = 0;
