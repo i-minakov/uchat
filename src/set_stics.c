@@ -37,9 +37,10 @@ void set_stics(t_main *m) {
     int col = 0;
     m->stic->img = (GtkWidget **)malloc(sizeof(GtkWidget *) * 37);
     m->stic->but = (GtkWidget **)malloc(sizeof(GtkWidget *) * 37);
-    m->stic->way = (char **)malloc(sizeof(char *) * 37);
+    m->stic->way = (char **)malloc(sizeof(char *) * 38);
     m->grid_stic = gtk_grid_new();
 
+    m->stic->way[37] = NULL;
     gtk_grid_insert_row(GTK_GRID(m->grid_stic), row);
     gtk_grid_insert_column(GTK_GRID(m->grid_stic), col);
     gtk_grid_set_row_spacing(GTK_GRID(m->grid_stic), 8);

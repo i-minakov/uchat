@@ -106,13 +106,12 @@ void check_edited(t_user *us, t_list *list, int size) {
             if (edited) {
                 mx_strdel(&edited->text);
                 edited->text = mx_strdup(arr[0]);
-                gtk_button_set_label(GTK_BUTTON(edited->label), edited->text);
-                // gtk_widget_destroy(edited->label);
-                // edited->label = gtk_button_new_with_label(edited->text);
-                // gtk_widget_set_size_request(edited->label, 100, 30);
-                // MX_SET_NAME_MSG(false, edited->label);
-                // mx_idle_show(false, edited->label);
-                // gtk_widget_set_tooltip_text(edited->label, arr[2]);
+                gtk_widget_destroy(edited->label);
+                edited->label = gtk_button_new_with_label(edited->text);
+                gtk_widget_set_size_request(edited->label, 100, 30);
+                MX_SET_NAME_MSG(false, edited->label);
+                mx_idle_show(false, edited->label);
+                gtk_widget_set_tooltip_text(edited->label, arr[2]);
             }
         }
         mx_strdel(&cmd); 
@@ -189,18 +188,8 @@ void mx_cmp_list(t_main *m, t_info *info) {
 void mx_check_rcv_list(t_info *info, t_main *m) {
     char *size = NULL;
 
-    if (m->cmd == SRCH_US || m->cmd == SRCH_MSG) {
-        printf("cmd = %s\n", (info)->cmd);
-        printf("size = %s\n", (info)->size);
-        for (t_list *i = (info)->list; i; i = i->next) {
-            printf("name = %s\n", ((t_data *)i->data)->name);
-            for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
-                if ((char *)j->data)
-                    printf("mssg = %s\n", (char *)j->data);
-        }
-        printf("\n");
+    if (m->cmd == SRCH_US || m->cmd == SRCH_MSG) 
         show_result_of_search(info->list, m);
-    }
     else if (m->cmd == DEF)
         mx_cmp_list(m, info);
     else if (m->cmd == UPDATE_SIZE) {
@@ -447,7 +436,7 @@ static void mx_check_status(t_client *client) {
         free_all(client->gtk);
         client->gtk = malloc_main();
         log_screen(client->gtk);
-        client->gtk->cmd = DEF;
+        client->gtk->cmd = BLCK;
     }
     if (client->gtk->cmd == SIG_IN || client->gtk->cmd == SIG_UP)
         chat_screen(&client->gtk);

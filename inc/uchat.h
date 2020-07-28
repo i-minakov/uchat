@@ -51,19 +51,18 @@
 #define MX_STICS(flag) flag == 2 ? "Стикеры" : "Stickers"
 
 enum e_cmd {
-    SRCH_MSG, 
-    SRCH_US,
+    SIG_UP = -3,
+    SIG_IN,
+    LOG_OUT,
     BLCK,
     DEF,
-    SIG_UP,
-    SIG_IN,
-    USERS,
-    THEME,
     LANG,
+    THEME,
+    SRCH_MSG, 
+    SRCH_US,
     CHECK_PASS,
     CHECK_US,
     UPDATE_SIZE,
-    LOG_OUT,
     BLACK_LIST
 };
 
