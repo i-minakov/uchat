@@ -618,7 +618,7 @@ void mx_recv_list_files(char ch[], t_info **info, t_files *files, t_client *clie
         files->file = fopen(files->file_name, "wb");
     }
     else if (ch[1] == 'B') {
-        if ((int)fwrite(&ch[2], 1, 1, files->file) == -1)
+        if (fwrite(&ch[2], 1, 1, files->file) == -1)
             return ;
     }
     else if (ch[1] == 'C')

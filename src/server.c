@@ -414,10 +414,13 @@ static void mx_recv_file(t_node *node, char ch[]) {
     }
     else if (ch[1] == 'S')
         mx_static_read(ch, &node->for_files->file_size);
-    else if (node->for_files->file && ch[1] == 'B')
-        fwrite(&ch[2], 1, 1, node->for_files->file);
+    else if (node->for_files->file && ch[1] == 'B') {
+        if ((int)fwrite(&ch[2], 1, 1, node->for_files->file) == -1)
+            return ;
+    }
     else if (node->for_files->file && ch[1] == 'C')
-        mx_check_file_size(node->for_files->file, &node->for_files->file_size,
+        mx_check_file_size(node->for_files->file,
+                           &node->for_files->file_size,
                            &node->for_files->file_name);
 }
 static void mx_recv_request(t_node *node, char **json) {
@@ -515,7 +518,6 @@ void *mx_server_handel(void *data) {
 
     while (node->exit == 1) {
         mx_choose(node, &json);
-        if (json) {system("clear"); printf("%s\n", json);}
         mx_exe_request(&node, &json);
         mx_strdel(&json);
     }
