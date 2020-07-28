@@ -3,6 +3,8 @@
 
 #include <sqlite3.h>
 
+#define NEW_MSSG "(Message, Time, Name, Reply, Forward, File, Flag, Fk) VALUES(?, ?, ?, ?, ?, ?, ?, ?);"
+
 typedef struct s_db {
     sqlite3 *db;
     sqlite3_stmt *res;
@@ -77,12 +79,13 @@ int mx_change_img(char *name, char *img_name);
 int mx_change_pass(char *name, char *new_pass);
 int mx_set_type(char *name, char *type, int flag);
 int mx_del_history(char *name_from, char *name_to);
+int mx_delete_all(char *name, char *user, int flag);
 int mx_open_db(int flag, sqlite3 **db, char **err_msg);
 int mx_add_new_user(char *name, char *pass, char *img_name);
 int mx_del_message(char *name_from, char *name_to, char *id);
 int mx_add_user_to_table(char *name, char *another_name, int flag);
 int mx_exe(int flag, sqlite3 **db, char **command, char **err_msg);
+int mx_change_other_folders(char *name, char *user, char *new_user);
 int mx_del_user_from_table(char *name, char *another_name, int flag);
 int mx_edit(char *name_from, char *name_to, char *new_mssg, char *id);
-
 #endif
