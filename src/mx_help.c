@@ -217,6 +217,8 @@ void mx_del_list(t_list **list, int flag) {
 }
 
 void mx_static_read(char ch[], char **str) {
+    if (!str)
+        return ;
     for (int i = 2; ch[i]; i++)
         *str = mx_add_char(*str, ch[i]);
 }
