@@ -170,7 +170,8 @@ static t_list *mx_list_adition(char *command, char **arr, int *hist_flagh) {
 
     if (mx_strcmp(command, "mx_send_list_back") == 0)
         list = mx_send_list_back(arr[0], mx_atoi(arr[1]));
-    else if (mx_strcmp(command, "mx_regular_request") == 0 || mx_strcmp(command, "mx_mssg_search") == 0) {
+    else if (mx_strcmp(command, "mx_regular_request") == 0
+        || mx_strcmp(command, "mx_mssg_search") == 0) {
         list = mx_send_list_back(arr[0], 0);
         *hist_flagh = 1;
     }
@@ -191,6 +192,14 @@ static int mx_type_adition(char *command, char **arr, t_node **node, char **json
         mx_check_user_pass_adt(arr, node);
     return -1;
 }
+static void mx_send_back_adt(t_node **node, t_list *list, char **json) {
+    if (!list
+        && mx_check_json_cmd(*json, "command", "mx_send_list_back"))
+        mx_bites_str((*node)->ssl, "mx_send_list_back", 'B');
+    else if (!list
+             && mx_check_json_cmd(*json, "command", "mx_mssg_search"))
+        mx_bites_str((*node)->ssl, "mx_mssg_search", 'B');
+}
 void mx_send_back(t_node **node, char **json) {
     char *command = mx_get_value(*json, "command");
     char **arr = mx_get_arr(*json);
@@ -209,6 +218,7 @@ void mx_send_back(t_node **node, char **json) {
     }
     else if (type != -1)
         mx_send_answer_type(node, type, mx_atoi(arr[1]));
+    mx_send_back_adt(node, list, json);
     mx_strdel(&command);
     mx_del_strarr(&arr);
 }
@@ -340,7 +350,8 @@ void mx_mutex_command(t_node **node, char *json) {
     mx_mutex_second_adt(node, command, arr);
     mx_mutex_third_adt(node, command, arr);
     mx_mutex_fourth_adt(node, command, arr);
-    if (mx_strcmp(command, "mx_log_out") == 0) {
+    if (mx_strcmp(command, "mx_log_out") == 0
+        || mx_strcmp(command, "mx_delete_user") == 0) {
         pthread_mutex_lock(&(*node)->files_mutex);
         mx_log_out_fie_del(&(*node)->list);
         pthread_mutex_unlock(&(*node)->files_mutex);
@@ -361,6 +372,7 @@ static bool mx_check_command(char *json) {
         || mx_check_json_cmd(json, "command", "mx_del_history")
         || mx_check_json_cmd(json, "command", "mx_del_message")
         || mx_check_json_cmd(json, "command", "mx_edit")
+        || mx_check_json_cmd(json, "command", "mx_log_out")
         || mx_check_json_cmd(json, "command", "mx_change_log")
         || mx_check_json_cmd(json, "command", "mx_change_pass")
         || mx_check_json_cmd(json, "command", "mx_del_user_from_table")
@@ -497,7 +509,7 @@ void mx_del_client(t_way **list, t_node **node, void *data, int flag) {
     free(*list);
     *list = NULL;
 }
-void *mx_server_handel(void *data) { // delete
+void *mx_server_handel(void *data) {
     t_way *list = *((t_way **)data);
     t_node *node = (t_node *)list->data;
     char *json = NULL;

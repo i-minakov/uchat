@@ -31,10 +31,18 @@ void init_builder(t_wid *wid) {
 	wid->window = GTK_WIDGET(gtk_builder_get_object(wid->builder, "main_window"));
 	wid->fixed = GTK_WIDGET(gtk_builder_get_object(wid->builder, "fixed"));
 	
-	GtkCssProvider *cssProvider = gtk_css_provider_new();
-	gtk_css_provider_load_from_path(cssProvider, "src/style.css", NULL);
+	if (wid->start_flag  == 1) {
+		wid->cssProvider = gtk_css_provider_new();
+        gtk_css_provider_load_from_path(wid->cssProvider, "./src/unset.css", NULL);
+        gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
+                                GTK_STYLE_PROVIDER(wid->cssProvider),
+                                GTK_STYLE_PROVIDER_PRIORITY_USER);
+		wid->start_flag = 0;
+	}
+	wid->cssProvider = gtk_css_provider_new();
+	gtk_css_provider_load_from_path(wid->cssProvider, "src/style.css", NULL);
 	gtk_style_context_add_provider_for_screen(gdk_screen_get_default(),
-								GTK_STYLE_PROVIDER(cssProvider),
+								GTK_STYLE_PROVIDER(wid->cssProvider),
 								GTK_STYLE_PROVIDER_PRIORITY_USER);
 }
 
@@ -50,14 +58,15 @@ void do_opening(t_wid *wid) {
 int log_screen(t_main *m)
 {
 	int ex = 0;
-	t_wid *wid = (t_wid *)malloc(sizeof(t_wid) * 10);
-	wid->sig = (t_sign *)malloc(sizeof(t_sign) * 16);
-	wid->log = (t_login *)malloc(sizeof(t_login) * 10);
+	t_wid *wid = m->log_in;
+	// t_wid *wid = (t_wid *)malloc(sizeof(t_wid) * 10);
+	// wid->sig = (t_sign *)malloc(sizeof(t_sign) * 16);
+	// wid->log = (t_login *)malloc(sizeof(t_login) * 10);
 	t_eye *eye = (t_eye *)malloc(sizeof(t_eye) * 4);
     eye->wid = wid;
-	wid->m = m;
-	wid->m->log_in = wid;
-	wid->sig->sigfile = NULL;
+	// wid->m = m;
+	// wid->m->log_in = wid;
+	// wid->sig->sigfile = NULL;
 
 	gtk_init(NULL, NULL);
 	init_builder(wid);

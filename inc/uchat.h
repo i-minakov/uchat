@@ -29,7 +29,9 @@
 #define MX_SL_PH(flag) flag == 1 ? "./source/resource/slept photo.png" : "./source/resource/slept photo2.png"
 #define MX_ICON_ENTRY_PR(flag) flag == 1 ? "./source/resource/attach.png" : "./source/resource/attach1.png"
 #define MX_ICON_ENTRY_SEC(flag) flag == 1 ? "./source/resource/smile.png" : "./source/resource/smile1.png"
- 
+#define MX_ICON_ENTRY_LOOP(flag) flag == 1 ? "./source/resource/searchic.png" : "./source/resource/searchic2.png"
+#define MX_ICON_ENTRY_CANS(flag) flag == 1 ? "./source/resource/cancel.png" : "./source/resource/cancel1.png"
+
 #define MX_START(flag) flag == 2 ? "Выберите чат, чтобы начать переписку" : "Please select a chat to start messaging"
 #define MX_MENU_EX(flag) flag == 2 ? "Выход" : "Exit"
 #define MX_MENU_SET(flag) flag == 2 ? "Настройки" : "Settings"
@@ -106,6 +108,8 @@ typedef struct s_size {
 typedef struct s_style {
     int lang;
     int color;
+    int start_l;
+    int start_c;
 }              t_style;
 
 typedef struct s_message {
@@ -393,7 +397,7 @@ void hide_menu(t_main *m);
 void hide_set(t_main *m);
 void show_set(t_main *m);
 
-void connect_css(t_main *m, int flag);
+void connect_css(t_main *m);
 void change_color(GtkToggleButton *togglebutton, t_main *m);
 void change_lang(GtkToggleButton *togglebutton, t_main *m);
 void change_notif(GtkToggleButton *togglebutton, t_main *m);
@@ -462,6 +466,8 @@ typedef struct s_sign {
 } 			t_sign;
 
 typedef struct s_wid {
+    int start_flag;
+    GtkCssProvider *cssProvider;
 	GtkBuilder *builder; 
     GtkWidget *window;
 	GtkWidget *fixed;

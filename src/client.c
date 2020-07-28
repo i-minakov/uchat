@@ -1,6 +1,6 @@
 #include "../inc/header.h"
 
-/* check file format */
+/* for files Ilay */
 bool mx_check_file_format(char *path) {
     char **slesh = mx_strsplit(path, '/');
     char **dots = mx_strsplit(slesh[mx_arr_size(slesh) - 1], '.');
@@ -13,6 +13,22 @@ bool mx_check_file_format(char *path) {
     mx_del_strarr(&dots);
     mx_del_strarr(&slesh);
     return false;
+}
+void mx_move_to_part_dir(char *name, char *path) {
+    if (!name || !path)
+        return ;
+    char dir[SIZE_SEND_LESS];
+    char *old = NULL;
+    char *new = NULL;
+
+    getcwd(dir, SIZE_SEND_LESS);
+    old = mx_super_join(dir, "/", 0);
+    old = mx_super_join(old, name, 1);
+    new = mx_super_join(path, "/", 0);
+    new = mx_super_join(new, name, 1);
+    rename(old, new);
+    mx_strdel(&old);
+    mx_strdel(&new);
 }
 
 /* Ilay */
@@ -112,9 +128,10 @@ void check_deleted(t_user *us, t_list *list, int size) {
     int j = 1;
     int *mas = id_of_msgs(us);
 
-    if (list == NULL || list->next == NULL || size/10 != us->m->count_reqw_edit)
+    if (list == NULL || list->next == NULL || 
+            size/10 != us->m->count_reqw_edit)
         return;
-    for (t_list *i = list->next; i->data && mas[j] != -1; i = i->next) {
+    for (t_list *i = list; i->data && mas[j] != -1; i = i->next) {
         cmd = mx_get_value(i->data, "command");
         if (mas[j] != mx_atoi(cmd))
             delete_msg(NULL, mx_msg_by_id(us, mas[j]));
@@ -169,8 +186,8 @@ bool mx_check_activ(t_main *m, t_list *list, int size) {
         mx_msg_or_file(arr, id_new, us);
         mx_del_strarr(&arr);
     }
-    else if (us->msg->next && (us->msg->next->id > mx_atoi(us->exist_id->data)))
-        delete_msg(NULL, mx_msg_by_id(us, us->msg->next->id));
+    // else if (us->msg->next && (us->msg->next->id > mx_atoi(us->exist_id->data)))
+    //     delete_msg(NULL, mx_msg_by_id(us, us->msg->next->id));
     mx_strdel(&id_new);
     check_deleted(us, list, size);
     return true;
@@ -358,13 +375,13 @@ static void mx_change_cmp(char ***arr) {
     mx_del_strarr(&(*arr));
     *arr = shift;
 }
-static int mx_parse_time(char *str1, char *str2) { // seg
-    if (!str1 || !str2)
-        return 0;
+static int mx_parse_time(char *str1, char *str2) {
     int result = 0;
     char **arr1 = mx_strsplit(str1, ' ');
     char **arr2 = mx_strsplit(str2, ' ');
 
+    if (!arr1 || !arr2)
+        return 0;
     for (int i = 0; i < 6; i++) {
         if (i == 3) {
             mx_change_cmp(&arr1);
@@ -377,33 +394,49 @@ static int mx_parse_time(char *str1, char *str2) { // seg
     mx_del_strarr(&arr2);
     return result;
 }
-static int mx_pre_parse_time(char *json1, char *json2) {
+int mx_pre_parse_time(char *json1, char *json2) {
+    if (!json1 || !json2)
+        return 0;
     int result = 0;
     char **arr1 = mx_get_arr(json1);
     char **arr2 = mx_get_arr(json2);
 
+    if (!arr1 || !arr2)
+        return 0;
     result = mx_parse_time(arr1[1], arr2[1]);
     mx_del_strarr(&arr1);
     mx_del_strarr(&arr2);
     return result;
 }
+static void mx_sort_mssg_adt(int flag, t_list *i, char **str1, char **str2) {
+    if (flag == 0) {
+        *str1 = (char *)((t_data *)i->data)->list->data;
+        *str2 = (char *)((t_data *)i->next->data)->list->data;
+    }
+    else if (flag == 1) {
+        *str1 = ((t_data *)i->data)->name;
+        *str2 = ((t_data *)i->next->data)->name;
+    }
+}
 void mx_sort_mssg(t_list **list, int flag) {
     int out = 0;
     void *data = NULL;
+    char *str1 = NULL;
+    char *str2 = NULL;
 
     while (out == 0) {
         out = 1;
-        for (t_list *i = *list; i && i->next; i = i->next)
-            if ((flag == 0 && mx_pre_parse_time((char *)((t_data *)i->data)->list->data,
-                    (char *)((t_data *)i->next->data)->list->data) > 0)
-                || (flag == 1 && mx_strcmp(((t_data *)i->data)->name,
-                    ((t_data *)i->next->data)->name) > 0)) {
+        for (t_list *i = *list; i && i->next; i = i->next) {
+            mx_sort_mssg_adt(flag, i, &str1, &str2);
+            if ((flag == 0 && mx_pre_parse_time(str1, str2) > 0)
+                || (flag == 1 && mx_strcmp(str1, str2) > 0)) {
                 data = i->data;
                 i->data = i->next->data;
                 i->next->data = data;
                 data = NULL;
                 out = 0;
             }
+        }
     }
 }
 
@@ -432,19 +465,30 @@ void mx_hash_pass(char **json) {
     mx_strdel(&command);
     mx_del_strarr(&arr);
 }
+static void mx_command_user_adt(t_client *client, char **json) {
+    char **arr = mx_get_arr(*json);
+
+    if (mx_check_json_cmd(*json, "command", "mx_update")
+        && mx_strcmp(arr[0], "user") == 0)
+        client->user = mx_strdup(arr[1]);
+    mx_del_strarr(&arr);
+}
+static void mx_command_adt(t_client *client, char **json, int *result) {
+    if (mx_check_json_cmd(*json, "command", "mx_error"))
+        *result = 1;
+    else if (mx_check_json_cmd(*json, "command", "mx_add_new_user")
+            || mx_check_json_cmd(*json, "command", "mx_check_user_pass")
+            || mx_check_json_cmd(*json, "command", "mx_change_pass"))
+        mx_hash_pass(json);
+    else if (mx_check_json_cmd(*json, "command", "mx_log_out"))
+        mx_strdel(&client->user);
+    mx_command_user_adt(client, json);
+}
 static int mx_command(t_client *client, char **json) {
     int result = 0;
 
     pthread_mutex_lock(client->mutex);
-    if (mx_check_json_cmd(*json, "command", "mx_error"))
-        result = 1;
-    else if (mx_check_json_cmd(*json, "command", "mx_add_new_user")
-            || mx_check_json_cmd(*json, "command", "mx_check_user_pass")
-            || mx_check_json_cmd(*json, "command", "mx_change_pass")) {
-            mx_hash_pass(json);
-    }
-    else if (mx_check_json_cmd(*json, "command", "mx_log_out"))
-        mx_strdel(&client->user);
+    mx_command_adt(client, json, &result);
     if (mx_for_file(*json)) {
         mx_push_file_way(&client->list, (void *)*json);
         *json = NULL;
@@ -460,6 +504,7 @@ static void mx_check_status(t_client *client) {
         gtk_widget_hide(client->gtk->window);
         free_all(client->gtk);
         client->gtk = malloc_main();
+        client->gtk->log_in->start_flag = 1;
         log_screen(client->gtk);
         client->gtk->cmd = BLCK;
     }
@@ -484,10 +529,13 @@ void mx_client_send(t_client *client) {
 }
 
 /* recv callbacks */
-static void mx_server_answer(char ch[], char *str, t_client *client) { // server answer
+static void mx_server_answer(char ch[], char *str, t_client *client) {
     client->status = mx_strdup(str);
     if (ch[0] == 'B') {
-        // printf("error = %s\n", client->status);
+        if (client->gtk->cmd == BLACK_LIST && !mx_strcmp(client->status, "mx_send_list_back")) {
+            client->gtk->cmd = DEF;
+            return;
+        }
         if (mx_strcmp(client->status, "Wrong pass or user name") == 0)
             bad_act(client->gtk->log_in, 1, 2);
         if (mx_strcmp(client->status, "User already exist") == 0)
@@ -496,7 +544,6 @@ static void mx_server_answer(char ch[], char *str, t_client *client) { // server
         client->gtk->cmd = DEF;
     }
     if (ch[0] == 'G') {
-        // printf("good = %s\n", client->status);
         if (mx_strcmp("mx_add_new_user", client->status) == 0)
             client->gtk->cmd = SIG_UP;
         if (mx_strcmp("mx_check_user_pass", client->status) == 0) {
@@ -505,8 +552,7 @@ static void mx_server_answer(char ch[], char *str, t_client *client) { // server
         }
     }
 }
-
-void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
+void mx_recv_lan_theme(char ch[], t_client *client) {
     char *str = NULL;
     int tmp;
 
@@ -514,18 +560,12 @@ void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
     if (ch[0] == 'T') {
         if (ch[1] == 'L') {
             tmp = mx_atoi(&ch[2]);
-            if (tmp == 1 || tmp == 0)
-                client->gtk->style->lang = 2;
-            else 
-                client->gtk->style->lang = 1;
+            client->gtk->style->lang = tmp + 1;
             client->gtk->cmd = THEME;
         }
         else if (ch[1] == 'T')  {
             tmp = mx_atoi(&ch[2]);
-            if (tmp == 1 || tmp == 0)
-                client->gtk->style->color = 2;
-            else 
-                client->gtk->style->color = 1;
+            client->gtk->style->color = tmp + 1;
             client->gtk->cmd = SIG_IN;
         }
     }
@@ -533,7 +573,6 @@ void mx_recv_lan_theme(char ch[], t_client *client) { // change lan and theme
         mx_server_answer(ch, str, client);
     mx_strdel(&str);
 }
-
 static t_data *mx_create_data(void) {
     t_data *node = (t_data *)malloc(sizeof(t_data));
     char *str = NULL;
@@ -563,7 +602,6 @@ char *mx_right_path(t_info **info, t_files *files, t_client *client, char *name)
     }
     else if (mx_strcmp((*info)->cmd, "mx_your_photo") == 0) {
         path = mx_super_join("./source/cash_", arr[0], 0);
-        client->user = mx_strdup(arr[0]);
         path = mx_super_join(path, "/", 1);
         path = mx_super_join(path, files->file_name, 1);
     }
@@ -581,11 +619,12 @@ void mx_recv_list_files(char ch[], t_info **info, t_files *files, t_client *clie
         files->file_name = mx_right_path(info, files, client, s);
         mx_strdel(&s);
         mx_del_if_exist(files->file_name);
-        printf("%s\n", files->file_name);
         files->file = fopen(files->file_name, "wb");
     }
-    else if (ch[1] == 'B')
-        fwrite(&ch[2], 1, 1, files->file);
+    else if (ch[1] == 'B') {
+        if ((int)fwrite(&ch[2], 1, 1, files->file) == -1)
+            return ;
+    }
     else if (ch[1] == 'C')
         mx_check_file_size(files->file, &files->file_size,
                            &files->file_name);
@@ -638,21 +677,12 @@ void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
     }
     else if (ch[0] == 'E' && ch[1] == 'E') {
         mx_sort_recv_list(info);
-        // printf("cmd = %s\n", (*info)->cmd);
-        // printf("size = %s\n", (*info)->size);
-        // for (t_list *i = (*info)->list; i; i = i->next) {
-        //     printf("name = %s\n", ((t_data *)i->data)->name);
-        //     for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
-        //         if ((char *)j->data)
-        //             printf("mssg = %s\n", (char *)j->data);
-        // }
-        // printf("\n");
         mx_check_rcv_list(*info, client->gtk);
         mx_trim_full_list(info);
         *info = mx_create_info();
     }
 }
-void mx_client_recv_file(char ch[], t_client *client) { // move to particular dir
+void mx_client_recv_file(char ch[], t_client *client) {
     if (ch[1] == 'E') {
         char *name = NULL;
 
@@ -666,13 +696,23 @@ void mx_client_recv_file(char ch[], t_client *client) { // move to particular di
     else if (client->for_files->file && ch[1] == 'B')
         fwrite(&ch[2], 1, 1, client->for_files->file);
     else if (client->for_files->file && ch[1] == 'C') {
-        mx_check_file_size(client->for_files->file, &client->for_files->file_size,
+        mx_check_file_size(client->for_files->file,
+                           &client->for_files->file_size,
                            &client->for_files->file_name);
-        // move to particular dir
     }
 }
 
 /* read recv */
+static bool mx_client_read_adt(char ch[]) {
+    if (ch[0] == 'S'
+        || ch[0] == 'N'
+        || ch[0] == 'I'
+        || ch[0] == 'H'
+        || ch[0] == 'C'
+        || ch[0] == 'E')
+        return true;
+    return false;
+}
 void *mx_client_read(void *client_pointer) {
     t_client *client = (t_client *)client_pointer;
     t_info *info = mx_create_info();
@@ -684,7 +724,7 @@ void *mx_client_read(void *client_pointer) {
             break;            
         else if (ch[0] == 'T' || ch[0] == 'G' || ch[0] == 'B')
             mx_recv_lan_theme(ch, client);
-        else if (ch[0] == 'S' || ch[0] == 'N' || ch[0] == 'I' || ch[0] == 'H' || ch[0] == 'C' || ch[0] == 'E')
+        else if (mx_client_read_adt(ch))
             mx_recv_list(ch, &info, &file, client);
         else if (ch[0] == 'F')
             mx_client_recv_file(ch, client);
@@ -786,7 +826,6 @@ static void mx_client_sin_log(t_client client) {
     mx_client_send(&client);
     pthread_join(client.read, NULL);
     pthread_join(client.files, NULL);
-
     if (client.for_files->file)
         fclose(client.for_files->file);
     mx_strdel(&client.for_files->file_name);
@@ -799,7 +838,7 @@ static void mx_client_sin_log(t_client client) {
     close(client.socket);
 }
 int mx_client(int argc, char *argv[]) {
-    if (argc != 4) // add usage
+    if (argc != 4)
         return 1;
     t_client client;
     pthread_mutex_t mutex;

@@ -14,7 +14,7 @@ static void put_fix(t_main *m) {
 }
 
 static void secondary_init(t_main *m) {
-    m->set->color1 = GTK_WIDGET(gtk_builder_get_object(
+    m->set->color2 = GTK_WIDGET(gtk_builder_get_object(
             m->builder, "color2"));
     m->set->my_name = GTK_WIDGET(gtk_builder_get_object
         (m->builder, "my_name"));
@@ -55,7 +55,7 @@ void init_set(t_main *m) {
         (m->builder, "Lang1"));
     m->set->color1 = GTK_WIDGET(gtk_builder_get_object
         (m->builder, "color1"));
-     m->set->lang1 = GTK_WIDGET(gtk_builder_get_object
+     m->set->lang2 = GTK_WIDGET(gtk_builder_get_object
         (m->builder, "Lang2"));
     secondary_init(m);
     put_fix(m);

@@ -1143,6 +1143,7 @@ int mx_del_history(char *name_from, char *name_to) {
     result += mx_del_files(new_command);
     mx_strdel(&new_command);
     result += mx_del_other_hist(name_from, name_to);
+    result += mx_del_user_from_table(name_from, name_to, 0);
     return result;
 }
 
@@ -1378,7 +1379,8 @@ static int mx_change_log_adt(t_db *data, char *name, char *new_name) {
 int mx_change_log(char *name, char *new_name) {
     if (!name
         || !new_name
-        || isdigit(new_name[0]))
+        || isdigit(new_name[0])
+        || mx_check_user_name("Users", name))
         return 1;
     t_db data;
 
