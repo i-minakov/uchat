@@ -16,6 +16,12 @@
 
 #include "../libmx/inc/libmx.h"
 
+#define CA_CERT "./source/keys/ca/ca_cert.pem"
+#define CLIENT_CERT "./source/keys/client/client_cert.pem"
+#define CLIENT_KEY "./source/keys/client/private/client_key.pem"
+#define SERVER_CERT "./source/keys/server/server_cert.pem"
+#define SERVER_KEY "./source/keys/server/private/server_key.pem"
+
 typedef struct s_way {
     void *data;
     struct s_way *next;
