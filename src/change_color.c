@@ -1,7 +1,7 @@
 #include "../inc/uchat.h"
 
 static void sent_reqw(t_main *m) {
-    char *str = mx_itoa(m->style->color);
+    char *str = mx_itoa(m->style->color - 1);
 
     m->command = mx_arrjoin(m->command, "mx_set_type");
     m->command = mx_arrjoin(m->command, m->my_name);

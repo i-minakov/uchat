@@ -45,7 +45,7 @@ void change_lang(GtkToggleButton *togglebutton, t_main *m) {
     else 
         m->style->lang = 1;
     ch_lang(m);
-    str = mx_itoa(m->style->color);
+    str = mx_itoa(m->style->color - 1);
     m->command = mx_arrjoin(m->command, "mx_set_type");
     m->command = mx_arrjoin(m->command, m->my_name);
     m->command = mx_arrjoin(m->command, str);
