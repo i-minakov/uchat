@@ -2,19 +2,21 @@
 
 static void set_and_stic(t_main *m) {
     gtk_button_set_label(GTK_BUTTON(m->set->my_name), 
-    MX_NAME(m->style->lang));
+        MX_NAME(m->style->lang));
     gtk_button_set_label(GTK_BUTTON(m->set->my_pas), 
-    MX_PAS(m->style->lang));
+        MX_PAS(m->style->lang));
     gtk_label_set_text(GTK_LABEL(m->set->color_text), 
-    MX_COLOR(m->style->lang));
+        MX_COLOR(m->style->lang));
     gtk_label_set_text(GTK_LABEL(m->set->lang_text), 
-    MX_LANG(m->style->lang));
+        MX_LANG(m->style->lang));
     gtk_label_set_text(GTK_LABEL(m->set->notif_text), 
-    MX_NOT(m->style->lang));
+        MX_NOT(m->style->lang));
+    gtk_button_set_label(GTK_BUTTON(m->set->del_me), 
+        MX_DEL_ACC(m->style->lang));
     gtk_button_set_label(GTK_BUTTON(m->stic_smile), 
-    MX_EMOJI(m->style->lang));
+        MX_EMOJI(m->style->lang));
     gtk_button_set_label(GTK_BUTTON(m->stic_stic),  
-    MX_STICS(m->style->lang));
+        MX_STICS(m->style->lang));
 }
 
 static void ch_lang(t_main *m) {
@@ -24,17 +26,17 @@ static void ch_lang(t_main *m) {
     gtk_button_set_label(GTK_BUTTON(m->menu->settings), 
         MX_MENU_SET(m->style->lang));
     gtk_button_set_label(GTK_BUTTON(m->menu->contacts), 
-    MX_MENU_CONT(m->style->lang));
+        MX_MENU_CONT(m->style->lang));
     gtk_button_set_label(GTK_BUTTON(m->menu->search), 
-    MX_MENU_SEA(m->style->lang));
+        MX_MENU_SEA(m->style->lang));
     gtk_button_set_label(GTK_BUTTON(m->menu->black_list),  
-    MX_MENU_BLL(m->style->lang));
+        MX_MENU_BLL(m->style->lang));
     gtk_button_set_label(GTK_BUTTON(m->dots->clear_msg_but), 
-    MX_DOT_DEL(m->style->lang));
+        MX_DOT_DEL(m->style->lang));
     gtk_button_set_label(GTK_BUTTON(m->dots->block_but), 
-    MX_DOT_BL(m->style->lang));
+        MX_DOT_BL(m->style->lang));
     gtk_button_set_label(GTK_BUTTON(m->dots->search_msg_but), 
-    MX_DOT_FI(m->style->lang));
+        MX_DOT_FI(m->style->lang));
     set_and_stic(m);
 }
 
