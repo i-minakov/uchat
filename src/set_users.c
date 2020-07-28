@@ -32,7 +32,6 @@ static void insert_component(t_user *i) {
     gtk_widget_set_size_request(i->but, 305, 79);
     gtk_fixed_put(GTK_FIXED(i->fix), (i->but), 11, 0);
     gtk_fixed_put(GTK_FIXED(i->fix), (i->newmsg), 269, 40);
-    mx_idle_hide(false, i->newmsg);
     markup = g_markup_printf_escaped(MX_NAME_COLOR(i->m->style->color), i->name);
     gtk_label_set_markup(GTK_LABEL(i->l_name), markup); 
     reset_l_mess(i);

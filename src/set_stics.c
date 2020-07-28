@@ -1,12 +1,13 @@
 #include "../inc/uchat.h"
 
 void stic_click(GtkWidget *w, t_main *m) {
-    t_user *us = NULL;
+    t_user *us = mx_activ_us(m);
+    t_add_m *s = create_struct((char *)gtk_widget_get_name(w),
+                true, 0, NULL);
 
-    for (t_user *i = m->users; i; i = i->next)
-        i->check == true ? us = i : 0;
-    add_file(us, create_struct((char *)gtk_widget_get_name(w),
-         true, 0, NULL), 2, us->msg->next ? us->msg->next->id + 1 : 1);
+    add_file(us, s, 2, us->msg->next ? us->msg->next->id + 1 : 1);
+    command_msg(us, s, 2);
+    free(s);
 }
 
 static void init_signals_stics(t_main *m) {

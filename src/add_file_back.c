@@ -1,6 +1,6 @@
 #include "../inc/uchat.h"
 
-static void file_pushback(t_msg **head, t_add_m *s, int sticer) {
+static void file_pushback(t_msg **head, t_add_m *s) {
     t_msg *tmp = NULL;
 
     tmp = create_msg(NULL, s->text);
@@ -13,7 +13,6 @@ static void file_pushback(t_msg **head, t_add_m *s, int sticer) {
             break ;
         }
     }
-    mx_add_popup_menu(sticer, tmp);
 }
 
 static void send_file_back(t_user *us, t_add_m *s, t_msg *t) {
@@ -25,7 +24,7 @@ static void send_file_back(t_user *us, t_add_m *s, t_msg *t) {
     MX_SET_NAME_MSG(s->my, t->label);
     gtk_grid_attach_next_to(GTK_GRID(us->text_grid), wid, NULL, GTK_POS_TOP, 1, 1);
     mx_idle_show(s->my, wid);
-    
+    mx_add_popup_menu(t->stic, t);
 }
 
 void add_file_back(t_user *us, t_add_m *s, int stic, int count) {
@@ -33,7 +32,7 @@ void add_file_back(t_user *us, t_add_m *s, int stic, int count) {
     char **p = mx_strsplit(s->text, '/');
     char *name = NULL;
 
-    file_pushback(&us->msg, s, stic);
+    file_pushback(&us->msg, s);
     for (t_msg *k = us->msg; k; k = k->next)
         if (k->next == NULL) {
             msg = k;
@@ -41,8 +40,9 @@ void add_file_back(t_user *us, t_add_m *s, int stic, int count) {
         }
     msg->id = s->id;
     msg->count = count;
-    if (stic == 0) {
-        file_check(s->text, &msg, name, s->my);
+    msg->stic = stic;
+    if (stic == 1) {
+        file_check(&msg, name, s->my);
         send_file_back(us, s, msg);
     }
     else {

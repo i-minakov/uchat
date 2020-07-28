@@ -360,7 +360,7 @@ void show_result_of_search(t_list *list, t_main *m);
 void clear_history(GtkWidget *wid, t_main *m);
 int mx_msg_size(t_msg *list);
 void mx_new_msg_back(t_user *us, t_list *new);
-void file_check(gchar *tmp, t_msg **msg, char *name, bool my);
+void file_check(t_msg **msg, char *name, bool my);
 void add_file_back(t_user *us, t_add_m *s, int stic, int count);
 void add_time(t_user *i, t_add_m *s);
 t_user *mx_activ_us(t_main *m);
