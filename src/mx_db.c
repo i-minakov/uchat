@@ -389,7 +389,7 @@ int mx_change_img(char *name, char *img_name) {
     command = mx_super_join(command, name, 1);
     command = mx_super_join(command, ".jpg", 1);
     old = mx_super_join("./", img_name, 0);
-    remove(command);
+    // remove(command);
     result += rename(old, command);
     mx_strdel(&old);
     mx_strdel(&command);
@@ -451,6 +451,8 @@ static int mx_user_tables(char *name) {
 int mx_add_new_user(char *name, char *pass, char *img_name) {
     if (!name || !pass || mx_check_user_name("Users", name)) {
         mx_rm_if_error(name);
+        char *s = NULL;
+        s = img_name;
         return 1;
     }
     t_db data;
@@ -724,14 +726,15 @@ static int mx_move_file(char *name_from, char *name_to, char *message, char *fil
     int result = 0;
     char *command = NULL;
     char *old = NULL;
+    char **format = mx_strsplit(message, '.');
 
     command = mx_super_join("./database/", name_from, 0);
     command = mx_super_join(command, "/", 1);
     command = mx_super_join(command, name_to, 1);
     command = mx_super_join(command, "/", 1);
     command = mx_super_join(command, mx_get_time(), 1);
-    char **format = mx_strsplit(message, '.');
-
+    command = mx_super_join(command, ".", 1);
+    command = mx_super_join(command, format[mx_arr_size(format) - 1], 1);
     old = mx_super_join("./", file_name, 0);
     if (mx_arr_size(format) == 2) {
         old = mx_super_join(old, ".", 1);

@@ -2,3 +2,4 @@
 
 cd ./source/
 ./database
+./bot

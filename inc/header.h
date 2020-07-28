@@ -26,8 +26,8 @@
 #include <sys/ioctl.h>
 #include <ctype.h>
 
-#include "../source/libportaudio/include/portaudio.h"
-#include "../source/libsndfile/include/sndfile.h"
+// #include "../source/libportaudio/include/portaudio.h"
+// #include "../source/libsndfile/include/sndfile.h"
 #include "../libmx/inc/libmx.h"
 #include "json_functions.h"
 #include "database.h"
@@ -59,10 +59,10 @@ int mx_client(int argc, char *argv[]);
 void mx_choose(t_node *node, char **json);
 void mx_not_mutex(t_node **node, char **json);
 void mx_exe_request(t_node **node, char **json);
-void mx_send_history_list(t_node **node, char *name);
+void mx_send_history_list(t_node **node, char *name, char *json);
+void mx_send_answer_list(t_node **node, t_list *list, int hist_flag, char *json);
 void mx_send_answer_type(t_node **node, int type, int flag);
 void mx_del_client(t_way **list, t_node **node, void *data, int flag);
-void mx_send_answer_list(t_node **node, t_list *list, int hist_flag, char *cmd);
 void *mx_server_files(void *data);
 void *mx_server_handel(void *data);
 int mx_server(int argc, char *argv[]);

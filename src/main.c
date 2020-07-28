@@ -119,21 +119,18 @@ int main(int argc, char *argv[]) {
     return result;
 }*/
 
-/*static int mx_bot_start(char *name, char *pass, char *img_path) {
+/*int main() {
     int result = 0;
 
-    result = mx_add_new_user(name, pass, img_path);
-    return result;
-}
+    result += mx_add_new_user("Yarik", "Yarik", "Yarik.jpg");
+    result += mx_add_new_user("Ilya", "Ilya", "Ilya.jpg");
+    result += mx_add_new_user("Olya", "Olya", "Olya.jpg");
+    result += mx_add_new_user("PetFriend", "PetFriend", "PetFriend.jpg");
 
-int main() {
-    int result = 0;
-
-    result += mx_create_table_users();
-    result += mx_bot_start("Yaroslav", "Yaroslav", "../source/resource/Yaroslav.jpg");
-    result += mx_bot_start("Ilya", "Ilya", "../source/resource/Ilya.jpg");
-    result += mx_bot_start("Olya", "Olya", "../source/resource/Olya.jpg");
-    result += mx_bot_start("PetFriend", "PetFriend", "../source/resource/PetFriend.jpg");
+    result += mx_copy("./Yarik.jpg", "./../database/Yarik/Yarik.jpg");
+    result += mx_copy("./Ilya.jpg", "./../database/Ilya/Ilya.jpg");
+    result += mx_copy("./Olya.jpg", "./../database/Olya/Olya.jpg");
+    result += mx_copy("./PetFriend.jpg", "./../database/PetFriend/PetFriend.jpg");
     return result;
 }*/
 

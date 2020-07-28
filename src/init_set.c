@@ -35,6 +35,7 @@ static void secondary_init(t_main *m) {
         ("./source/resource/my_fr1.png");
     m->set->chan_ph = gtk_button_new();
     m->set->flag = 0;
+    m->set->notif_flag = 1; 
 }
 
 void init_set(t_main *m) {

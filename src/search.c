@@ -96,7 +96,7 @@ void result_msg(t_list *list, t_main *m) {
     m->grid_search = gtk_grid_new();
     gtk_grid_set_row_spacing(GTK_GRID(m->grid_search), 8);
     gtk_fixed_put(GTK_FIXED(m->fix_for_text), m->grid_search, 0, 0);
-    for (t_list *i = ((t_data *)list->data)->list; i; i = i->next) {
+    for (t_list *i = ((t_data *)list->data)->list; i->data; i = i->next) {
         arr = mx_get_arr(i->data);
         wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
         l = gtk_button_new_with_label(arr[0]);
