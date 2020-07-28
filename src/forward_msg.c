@@ -2,7 +2,7 @@
 
 static void user_recipient(GtkWidget *wid, t_user *us) {
     t_msg_forw *fm = us->m->forw->fm;
-    t_add_m *s = create_struct(fm->text ? NULL : fm->filename, true, 1, NULL);
+    t_add_m *s = create_struct(fm->text ? fm->text : fm->filename, true, 1, NULL);
 
     (void)wid;
     gtk_widget_hide(fm->f->fix_forw);

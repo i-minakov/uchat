@@ -26,9 +26,9 @@ void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos,
     dialog = gtk_file_chooser_dialog_new ("Open File", GTK_WINDOW(m->window), action, ("_Cancel"), 
                         GTK_RESPONSE_CANCEL, ("_Open"), GTK_RESPONSE_ACCEPT, NULL);
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
-        s = create_struct((char *)tmp, true, 0, NULL);
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         tmp = gtk_file_chooser_get_filename (chooser);
+        s = create_struct((char *)tmp, true, 0, NULL);
         add_file(us, s, 1, 
             us->msg->next ? us->msg->next->id + 1 : 1);
         command_msg(us, s, 1);

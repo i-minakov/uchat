@@ -1,25 +1,22 @@
 #include "../inc/uchat.h"
 
-static void msg_file_pushfront(t_msg **head, t_add_m *s, int sticer) {
+static void msg_file_pushfront(t_msg **head, t_add_m *s) {
     t_msg *tmp = NULL;
 
     tmp = create_msg(NULL, s->text);
     tmp->my = s->my;
     tmp->prev = *head;
     tmp->next = (*head)->next; 
-    tmp->stic = sticer;
     (*head)->next = tmp;
     if (tmp->next != NULL) {
         tmp->next->prev = tmp;
         tmp->count = tmp->next->count + 1;
     }
-    mx_add_popup_menu(sticer, tmp);
 }
 
-void file_check(gchar *tmp, t_msg **msg, char *name, bool my) {
+void file_check(t_msg **msg, char *name, bool my) {
     t_msg *t = *msg;
 
-    (void)tmp;
     // if (mx_strstr(tmp, ".jpg") || mx_strstr(tmp, ".jpeg")
     //     || mx_strstr(tmp, ".gif")) {
     //         if (mx_strstr(tmp, ".gif"))
@@ -47,6 +44,7 @@ static void send_file(t_user *us, t_add_m *s, t_msg *t) {
     gtk_grid_attach(GTK_GRID(us->text_grid), wid, 0, t->count, 1, 1);
     mx_idle_show(s->my, wid);   
     us->row++;
+    mx_add_popup_menu(t->stic, t);
 }
 
 void add_file(t_user *us, t_add_m *s, int stic, int id) {
@@ -54,14 +52,17 @@ void add_file(t_user *us, t_add_m *s, int stic, int id) {
     char **p = mx_strsplit(s->text, '/');
     char *name = NULL;
 
-    for (int i = 0; p[i]; i++)
-        p[i + 1] == NULL ? name = p[i] : 0;
-    msg_file_pushfront(&us->msg, s, stic);
+    if (p)
+        name = p[mx_len_of_array(p) - 1];
+    else 
+        name = s->text;
+    msg_file_pushfront(&us->msg, s);
     t = us->msg->next;
     t->user = us;
     t->id = id;
-    if (stic == 0) {
-        file_check(s->text, &t, s->my == 0 ? name : s->text, s->my);
+    t->stic = stic;
+    if (stic == 1) {
+        file_check(&t, name, s->my);
         send_file(us, s, t);
     }
     else {
@@ -70,5 +71,4 @@ void add_file(t_user *us, t_add_m *s, int stic, int id) {
         send_file(us, s, t);
     }
     mx_del_strarr(&p);
-    free(s);
 }
