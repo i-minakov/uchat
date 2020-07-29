@@ -39,10 +39,17 @@ void add_time(t_user *i, t_add_m *s) {
         gtk_widget_set_tooltip_text(i->msg->next->label, s->time_m);
     }
 }
-static void mx_notif(t_add_m *s, t_user *i) {
+static void mx_notif(t_add_m *s, t_user *i) { // PetFriend
+    t_add_m *new = NULL;
+
     if (s->my == false && i->m->set->notif_flag == 1) {
         system("echo \"\a\"");
         system("echo \"\a\"");
+    }
+    if (s->my == true && !mx_strcmp(i->name, "PetFriend")) {
+        new = create_struct("Sosi dick i kiday babki", false, 0, NULL);
+        add_message(mx_user_by_name("PetFriend", MX_DEF_PHOTO, i->m), new, 
+            mx_atoi(mx_user_by_name("PetFriend", MX_DEF_PHOTO, i->m)->exist_id->data) + 1);
     }
 }
 int mx_id_for_msg(t_user *us, int id) {
@@ -94,8 +101,8 @@ void add_message(t_user *i, t_add_m *s, int id) {
     if (s->my == false && i->check == false &&
             gtk_widget_is_visible(i->newmsg) == false) {
         mx_idle_show(false, i->newmsg);
-        mx_notif(s, i);
     }
+    mx_notif(s, i);
 }
 void send_but(GtkWidget *wid, t_main *m) {
     char *text = NULL;

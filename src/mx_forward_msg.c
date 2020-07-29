@@ -70,6 +70,7 @@ static void search_forw(GtkEntry *e, t_forw *f) {
 
 void forward_msg(GtkMenuItem *item, t_msg *msg) {
     t_forw *f = msg->user->m->forw;
+    t_main *m = msg->user->m;
 
     (void)item;
     f->fm = (t_msg_forw *)malloc(sizeof(t_msg_forw) * 10);
@@ -86,4 +87,6 @@ void forward_msg(GtkMenuItem *item, t_msg *msg) {
     g_signal_connect(f->but_cancel, "clicked", G_CALLBACK(cancel_forw), f);
     g_signal_connect(f->search_forw, "activate", G_CALLBACK(search_forw), f);
     gtk_widget_show_all(f->fix_forw);
+    if (m->style->color == 2)
+        gtk_widget_hide(f->forw_img);
 }

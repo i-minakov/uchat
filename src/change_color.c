@@ -17,7 +17,6 @@ static void wid_ch(t_main *m) {
     MX_SHOW_HIDE(m->style->color, m->dots->dot_img);
     MX_SHOW_HIDE(m->style->color, m->menu->menu_box);
     MX_SHOW_HIDE(m->style->color, m->set->my_frame);
-    MX_SHOW_HIDE(m->style->color, m->forw->forw_img);
     MX_SHOW_HIDE(m->style->color, m->stic_fix_img);
     the_ic(m->style->color, m);
     icon_entr_set(m);
