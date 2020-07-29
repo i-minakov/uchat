@@ -15,22 +15,18 @@ bool mx_check_file_format(char *path) {
     mx_del_strarr(&slesh);
     return true;
 }
-void mx_move_to_part_dir(char *name, char *path) {
-    if (!name || !path)
+void mx_move_to_part_dir(char *name, char *user) {
+    if (!name || !user)
         return ;
-    char dir[SIZE_SEND_LESS];
-    char *old = NULL;
-    char *new = NULL;
+    char *old = mx_super_join("./", name, 0);
+    char *new = mx_super_join("./source/cash_", user, 0);
 
-    getcwd(dir, SIZE_SEND_LESS);
-    old = mx_super_join(dir, "/", 0);
-    old = mx_super_join(old, name, 1);
-    new = mx_super_join(path, "/", 0);
+    new = mx_super_join(new, "/downloads/", 1);
     new = mx_super_join(new, name, 1);
     remove(new);
     rename(old, new);
-    mx_strdel(&old);
     mx_strdel(&new);
+    mx_strdel(&old);
 }
 
 /* file or msg back and last ind */
@@ -274,12 +270,6 @@ void mx_check_sigin(t_main *m) {
     mx_check_sigup(m);
 }
 /* end Ilay*/
-
-
-
-
-
-
 
 
 
@@ -657,31 +647,20 @@ static void mx_sort_recv_list(t_info **info) {
     else
         mx_sort_mssg(&(*info)->list, 0);
 }
-void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
-    if (ch[0] == 'C') {
-        mx_strdel(&(*info)->cmd);
-        mx_static_read(ch, &(*info)->cmd);
-    }
+static void mx_recv_list_adt(char ch[], t_info **info, t_files *files, t_client *client) {
+    if (ch[0] == 'I')
+        mx_recv_list_files(ch, info, files, client);
     else if (ch[0] == 'S')
         mx_static_read(ch, &(*info)->size);
-    else if (ch[0] == 'N') {
-        if (ch[1] == 'E')
-            mx_push_front(&(*info)->list, (void *)mx_create_data());
-        mx_static_read(ch, &((t_data *)(*info)->list->data)->name);
-        ((t_data *)(*info)->list->data)->path = mx_super_join("./source/cash_", client->gtk->my_name, 0);
-        ((t_data *)(*info)->list->data)->path = mx_super_join(((t_data *)(*info)->list->data)->path, "/chats/", 1);
-        ((t_data *)(*info)->list->data)->path = mx_super_join(((t_data *)(*info)->list->data)->path, ((t_data *)(*info)->list->data)->name, 1);
-        ((t_data *)(*info)->list->data)->path = mx_super_join(((t_data *)(*info)->list->data)->path, ".jpg", 1);
-    }
-    else if (ch[0] == 'I')
-        mx_recv_list_files(ch, info, files, client);
     else if (ch[0] == 'H') {
         if (ch[1] == 'E') {
             char *str = NULL;
 
-            mx_push_front(&((t_data *)(*info)->list->data)->list, (void *)str);
+            mx_push_front(&((t_data *)(*info)->list->data)->list,
+                          (void *)str);
         }
-        mx_static_read(ch, (char **)&((t_data *)(*info)->list->data)->list->data);
+        mx_static_read(ch,
+                       (char **)&((t_data *)(*info)->list->data)->list->data);
     }
     else if (ch[0] == 'E' && ch[1] == 'E') {
         mx_sort_recv_list(info);
@@ -690,7 +669,47 @@ void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
         *info = mx_create_info();
     }
 }
-void mx_client_recv_file(char ch[], t_client *client) { // here
+void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
+    if (ch[0] == 'C') {
+        mx_strdel(&(*info)->cmd);
+        mx_static_read(ch, &(*info)->cmd);
+    }
+    else if (ch[0] == 'N') {
+        if (ch[1] == 'E')
+            mx_push_front(&(*info)->list, (void *)mx_create_data());
+        mx_static_read(ch, &((t_data *)(*info)->list->data)->name);
+        ((t_data *)(*info)->list->data)->path =
+            mx_super_join("./source/cash_", client->gtk->my_name, 0);
+        ((t_data *)(*info)->list->data)->path =
+            mx_super_join(((t_data *)(*info)->list->data)->path,
+                          "/chats/", 1);
+        ((t_data *)(*info)->list->data)->path =
+            mx_super_join(((t_data *)(*info)->list->data)->path,
+                          ((t_data *)(*info)->list->data)->name, 1);
+        ((t_data *)(*info)->list->data)->path =
+            mx_super_join(((t_data *)(*info)->list->data)->path, ".jpg", 1);
+    }
+    mx_recv_list_adt(ch, info, files, client);
+}
+static void mx_recv_file_adt(FILE *file, char **size, char **name, t_client *client) {
+    if (file && name && size && *size && *name) {
+        int len = 0;
+
+        fclose(file);
+        file = fopen(*name, "rb");
+        fseek(file, 0, SEEK_END);
+        len = ftell(file);
+        fseek(file, 0, SEEK_SET);
+        if (len != mx_atoi(*size))
+            remove(*name);
+        fclose(file);
+        file = NULL;
+        mx_move_to_part_dir(*name, client->gtk->my_name);
+        mx_strdel(size);
+        mx_strdel(name);
+    }
+}
+void mx_client_recv_file(char ch[], t_client *client) {
     if (ch[1] == 'E') {
         char *name = NULL;
 
@@ -705,12 +724,11 @@ void mx_client_recv_file(char ch[], t_client *client) { // here
         if ((int)fwrite(&ch[2], 1, 1, client->for_files->file) == -1)
             return ;
     }
-    else if (client->for_files->file && ch[1] == 'C') {
-        mx_check_file_size(client->for_files->file,
+    else if (client->for_files->file && ch[1] == 'C')
+        mx_recv_file_adt(client->for_files->file,
                            &client->for_files->file_size,
-                           &client->for_files->file_name);
-        
-    }
+                           &client->for_files->file_name,
+                           client);
 }
 
 /* read recv */
