@@ -752,12 +752,15 @@ void *mx_client_read(void *client_pointer) {
 }
 
 /* send file */
-static void mx_change_file_pass(char ***arr) {
+static void mx_change_file_pass(char ***arr, char *command) {
     char **argv = *arr;
     char **pars = mx_strsplit(argv[2], '/');
 
     mx_strdel(&argv[2]);
-    argv[2] = mx_super_join(argv[2], pars[mx_arr_size(pars) - 1], 1);
+    if (mx_strcmp(command, "mx_add_new_user") == 0)
+        argv[2] = mx_super_join(argv[0], ".jpg", 0);
+    else
+        argv[2] = mx_super_join(argv[2], pars[mx_arr_size(pars) - 1], 1);
     mx_del_strarr(&pars);
 }
 void mx_send_command(char *json, t_client *client) {
@@ -765,7 +768,7 @@ void mx_send_command(char *json, t_client *client) {
     char *command = mx_get_value(json, "command");
     char **arr = mx_get_arr(json);
 
-    mx_change_file_pass(&arr);
+    mx_change_file_pass(&arr, command);
     new_json = mx_request(command, arr);
     mx_bites_str(client->ssl, new_json, 'T');
     mx_strdel(&command);

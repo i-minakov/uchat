@@ -518,7 +518,7 @@ void *mx_server_handel(void *data) {
 
     while (node->exit == 1) {
         mx_choose(node, &json);
-        // if (json) {system("clear"); printf("%s\n", json);}                       // delete
+        if (json) {system("clear"); printf("%s\n", json);}                       // delete
         // if (json) {printf("%d\n", node->client); printf("%s\n", json);}          // delete
         mx_exe_request(&node, &json);
         mx_strdel(&json);

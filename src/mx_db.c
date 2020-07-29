@@ -93,8 +93,8 @@ static int mx_check_user_name_adt(t_db *data, char *table, char *name) {
     data->command = mx_super_join(data->command, "SELECT * FROM ", 1);
     data->command = mx_super_join(data->command, table, 1);
     data->command = mx_super_join(data->command, " WHERE Name = ?;", 1);
-    data->flag =
-        sqlite3_prepare_v2(data->db, data->command, -1, &data->res, 0);
+    data->flag = sqlite3_prepare_v2(data->db, data->command,
+                                    -1, &data->res, 0);
     if (data->flag == SQLITE_OK)
         sqlite3_bind_text(data->res, 1, name, -1, SQLITE_TRANSIENT);
     else {
