@@ -35,7 +35,7 @@ static void mx_client_sin_log(t_client client) {
 }
 
 int mx_client(int argc, char *argv[]) {
-    if (argc != 4) {
+    if (argc != 3) {
         fprintf(stderr, "usage: uchat IP PORT\n");
         return 1;
     }

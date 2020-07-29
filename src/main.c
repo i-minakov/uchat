@@ -1,10 +1,24 @@
 #include "../inc/header.h"
 
+static char *last_slash(char *s) {
+    int i = mx_strlen(s) - 1;
+
+    for ( ; s && s[i]; i--) {
+        if (s[i] == '/') {
+            i++;
+            break;
+        }
+    }
+    return &s[i];
+}
+
 int main(int argc, char *argv[]) {
-    if (!strcmp(argv[1], "server"))
-        return mx_server(argc, argv);
-    else if (!strcmp(argv[1], "client"))
+    if (!strcmp(last_slash(argv[0]), "uchat_server")) {
+        return mx_daemon_state(argc, argv);
+    }
+    else {
         return mx_client(argc, argv);
+    }
     return 0;
 }
 
