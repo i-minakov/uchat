@@ -25,7 +25,7 @@ void save_file(GtkMenuItem *item, t_msg *msg) {
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
         tmp = gtk_file_chooser_get_filename(chooser);
-        mx_reqw_file(msg->user->m);
+        mx_reqw_file(msg->user->m, msg);
         msg->user->m->save->path = mx_strdup(tmp);
     }
     gtk_widget_destroy(dialog);

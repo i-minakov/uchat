@@ -362,7 +362,6 @@ void reply_msg(GtkMenuItem *item, t_msg *msg);
 t_add_m *create_struct(char *text, bool my, int forw, char *time_m);
 void move_scrol(t_main *m);
 void add_message_back(t_user *i, t_add_m *s, int count, int id);
-void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg);
 void command_msg(t_user *us, t_add_m *s, int flag);
 t_user *mx_user_by_name(char *name, char *path, t_main *m);
 void set_chat_grid(t_main *m, int flag);
