@@ -178,7 +178,6 @@ static void hide_something(t_main *m) {
     hide_set(m);
 
     gtk_widget_hide(m->micro_on);
-    gtk_widget_hide(m->micro_of_but);
     gtk_widget_hide(m->set->chan_name);
     gtk_widget_hide(m->set->chan_pas);
     gtk_widget_hide(m->grid_stic);
@@ -224,6 +223,14 @@ t_main *malloc_main() {
     m->cap->m = m;
     return m;
 }
+
+void free_start(t_main *m) {
+	free(m->log_in->sig);
+	free(m->log_in->log);
+    free(m->log_in->eye);
+    free(m->log_in);
+}
+
 void free_all(t_main *m) {
     free_users(&m->users);
     free(m->cap);
@@ -235,6 +242,7 @@ void free_all(t_main *m) {
     stic_free(m);
     free(m->stic);
     free(m->emo);
+    free_start(m);
     free(m);
     m = NULL;
 }
@@ -258,6 +266,7 @@ int mx_chat_screen(t_main **gtk) {
     change_lang(NULL, m);
     change_color(NULL, m);
     mx_del_strarr(&m->command);
+    
     return ex;
 }
 

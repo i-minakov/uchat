@@ -32,6 +32,7 @@
 #include "ssl.h"
 #include "uchat.h"
 
+#include "audio_heder.h"
 #include "portaudio.h"
 #include "sndfile.h"
 
@@ -43,7 +44,7 @@
 
 #define SAMPLE_RATE (44100)
 #define FRAMES_PER_BUFFER (512)
-#define NUM_SECONDS (15)
+#define NUM_SECONDS (5)
 #define NUM_CHANNELS (2)
 
 #define DITHER_FLAG (0) 
