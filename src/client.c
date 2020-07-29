@@ -160,7 +160,6 @@ static bool mx_check_activ(t_main *m, t_list *list, int size) {
     if (mx_check_last_index(us, list) == true)
         return true;
     check_edited(us, ((t_data *)list->data)->list, size); // EDIT
-    // check_deleted(us, list, size);
     id_new = mx_get_value(((t_data *)list->data)->list->data, "command");
     if (!us->msg->next || mx_atoi(id_new) > mx_atoi(us->exist_id->data)) {
         arr = mx_get_arr(((t_data *)list->data)->list->data);

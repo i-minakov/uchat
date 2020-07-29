@@ -51,4 +51,5 @@ void mx_play_audio(char *path) {
     sf_close(data.file);
     error = Pa_CloseStream(stream);
     error = Pa_Terminate();
+    g_idle_remove_by_data(path);
 }

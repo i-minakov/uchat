@@ -9,6 +9,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <time.h>
+#include "audio_heder.h"
 
 #define MX_DEF_PHOTO "source/resource/default.jpg"
 #define MX_SCROL_END(m) g_idle_add((GSourceFunc)move_scrol, m)
