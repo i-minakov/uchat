@@ -128,7 +128,6 @@ void check_edited(t_user *us, t_list *list, int size) {
 // void check_deleted(t_user *us, t_list *list, int size) {
 //     char *cmd = NULL;
 //     int j = mx_atoi(us->exist_id->data);
-
 //     if (list == NULL || list->next == NULL || 
 //             size/10 != us->m->count_reqw_del || j == 0) {
 //         us->m->count_reqw_del++;
@@ -136,8 +135,7 @@ void check_edited(t_user *us, t_list *list, int size) {
 //     }
 //     for (t_list *i = list->next; i->data; i = i->next) {
 //         cmd = mx_get_value(i->data, "command");
-    
-//         if (j != mx_atoi(cmd) && mx_msg_by_id(us, mx_atoi(cmd)))
+    //         if (j != mx_atoi(cmd) && mx_msg_by_id(us, mx_atoi(cmd)))
 //             delete_msg(NULL, mx_msg_by_id(us, mx_atoi(cmd)));
 //         mx_strdel(&cmd); 
 //         j--;
@@ -276,6 +274,18 @@ void mx_check_sigin(t_main *m) {
     mx_check_sigup(m);
 }
 /* end Ilay*/
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 static void mx_enter_argv(char ***arr, t_client *client) {
@@ -523,10 +533,10 @@ void mx_client_send(t_client *client) {
 }
 
 /* recv callbacks */
-static void mx_server_answer(char ch[], char *str, t_client *client) {
-    client->status = mx_strdup(str);
+static void mx_server_answer_adt(char ch[], t_client *client) {
     if (ch[0] == 'B') {
-        if (client->gtk->cmd == BLACK_LIST && !mx_strcmp(client->status, "mx_send_list_back")) {
+        if (client->gtk->cmd == BLACK_LIST
+            && !mx_strcmp(client->status, "mx_send_list_back")) {
             client->gtk->cmd = DEF;
             return;
         }
@@ -537,6 +547,10 @@ static void mx_server_answer(char ch[], char *str, t_client *client) {
         mx_idle_hide(false, client->gtk->log_in->wait_gif);
         client->gtk->cmd = DEF;
     }
+}
+static void mx_server_answer(char ch[], char *str, t_client *client) {
+    client->status = mx_strdup(str);
+    mx_server_answer_adt(ch, client);
     if (ch[0] == 'G') {
         if (mx_strcmp("mx_add_new_user", client->status) == 0)
             client->gtk->cmd = SIG_UP;
@@ -671,17 +685,12 @@ void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
     }
     else if (ch[0] == 'E' && ch[1] == 'E') {
         mx_sort_recv_list(info);
-        // for (t_list *i = (*info)->list; i; i = i->next) {
-        //     printf("%s\n", ((t_data *)i->data)->name);
-        //     for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
-        //         printf("%s\n", j->data);
-        // }
         mx_check_rcv_list(*info, client->gtk);
         mx_trim_full_list(info);
         *info = mx_create_info();
     }
 }
-void mx_client_recv_file(char ch[], t_client *client) { // hear
+void mx_client_recv_file(char ch[], t_client *client) { // here
     if (ch[1] == 'E') {
         char *name = NULL;
 
@@ -690,9 +699,8 @@ void mx_client_recv_file(char ch[], t_client *client) { // hear
         mx_del_if_exist(client->for_files->file_name);
         client->for_files->file = fopen(client->for_files->file_name, "wb");
     }
-    else if (ch[1] == 'L') {
+    else if (ch[1] == 'L')
         mx_static_read(ch, &client->for_files->file_size);
-    }
     else if (client->for_files->file && ch[1] == 'B') {
         if ((int)fwrite(&ch[2], 1, 1, client->for_files->file) == -1)
             return ;
@@ -701,7 +709,7 @@ void mx_client_recv_file(char ch[], t_client *client) { // hear
         mx_check_file_size(client->for_files->file,
                            &client->for_files->file_size,
                            &client->for_files->file_name);
-
+        
     }
 }
 
@@ -721,6 +729,14 @@ static void mx_set_files_adt(t_files *file) {
     file->file_name = NULL;
     file->file_size = NULL;
 }
+static void mx_client_adt(char ch[], t_client *client, t_info **info, t_files *file) {
+    if (ch[0] == 'T' || ch[0] == 'G' || ch[0] == 'B')
+        mx_recv_lan_theme(ch, client);
+    else if (mx_client_read_adt(ch))
+        mx_recv_list(ch, info, file, client);
+    else if (ch[0] == 'F')
+        mx_client_recv_file(ch, client);
+}
 void *mx_client_read(void *client_pointer) {
     t_client *client = (t_client *)client_pointer;
     t_info *info = mx_create_info();
@@ -731,12 +747,7 @@ void *mx_client_read(void *client_pointer) {
     while (SSL_read(client->ssl, ch, SIZE_SEND) != -1) {
         if (((t_client *)client_pointer)->exit == 0)
             break;            
-        else if (ch[0] == 'T' || ch[0] == 'G' || ch[0] == 'B')
-            mx_recv_lan_theme(ch, client);
-        else if (mx_client_read_adt(ch))
-            mx_recv_list(ch, &info, &file, client);
-        else if (ch[0] == 'F')
-            mx_client_recv_file(ch, client);
+        mx_client_adt(ch, client, &info, &file);
         mx_memset(ch, '\0', SIZE_SEND);
     }
     mx_del_file(client->for_files->file, &client->for_files->file_size,
