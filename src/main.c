@@ -5,8 +5,6 @@ int main(int argc, char *argv[]) {
         return mx_server(argc, argv);
     else if (!strcmp(argv[1], "client"))
         return mx_client(argc, argv);
-    else if (!strcmp(argv[1], "chat"))
-        return interface();
     return 0;
 }
 

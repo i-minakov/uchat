@@ -1,5 +1,6 @@
 #include "../inc/uchat.h"
 
+/* msg send util */
 void command_msg(t_user *us, t_add_m *s, int flag) {
     char *r_id = mx_itoa(flag);
 
@@ -19,7 +20,6 @@ void command_msg(t_user *us, t_add_m *s, int flag) {
     else 
         us->m->command = mx_arrjoin(us->m->command, "NULL");
 }
-
 void add_time(t_user *i, t_add_m *s) {
     char **m = NULL;
     time_t rawtime;
@@ -39,20 +39,19 @@ void add_time(t_user *i, t_add_m *s) {
         gtk_widget_set_tooltip_text(i->msg->next->label, s->time_m);
     }
 }
-
-static void beeeb(t_add_m *s, t_user *i) {
+static void mx_notif(t_add_m *s, t_user *i) {
     if (s->my == false && i->m->set->notif_flag == 1) {
         system("echo \"\a\"");
         system("echo \"\a\"");
     }
 }
-
 int mx_id_for_msg(t_user *us, int id) {
+    while (us->exist_id && mx_atoi(us->exist_id->data) == id)
+        id++;
     mx_push_front(&us->exist_id, mx_itoa(id));
     return id;
 }
-
-void add_message(t_user *i, t_add_m *s, int id) {
+char *str_for_msg(t_add_m *s) {
     char *str = mx_strnew(mx_strlen(s->text) + ((mx_strlen(s->text)/50) + 1));
     int k = 0;
 
@@ -60,6 +59,25 @@ void add_message(t_user *i, t_add_m *s, int id) {
         str[k++] = s->text[j];
         (j%50 == 0 && j != 0) ? str[k++] = '\n' : 0;
     }
+    return str;
+}
+
+/**/
+t_add_m *create_struct(char *text, bool my, int forw, char *time_m) {
+    t_add_m *new = (t_add_m *)malloc(sizeof(t_add_m) * 6);
+
+    new->text = text;
+    new->my = my;
+    new->id = -1;
+    new->forw = forw;
+    new->time_m = time_m;
+    new->forw_from = NULL;
+    new->reply_id = -1;
+    return new;
+}
+void add_message(t_user *i, t_add_m *s, int id) {
+    char *str = str_for_msg(s);
+
     msg_pushfront(&i->msg, str, s->my, s->forw);
     gtk_grid_insert_row(GTK_GRID(i->text_grid), i->row);
     i->msg->next->user = i;
@@ -67,18 +85,18 @@ void add_message(t_user *i, t_add_m *s, int id) {
     i->msg->next->box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
     gtk_widget_set_size_request(i->msg->next->box, 650, 30);
     add_time(i, s);
-    MX_MSG_PACK(s->my, i->msg->next->label, i->msg->next->box); // SEG
+    MX_MSG_PACK(s->my, i->msg->next->label, i->msg->next->box);
     gtk_grid_attach(GTK_GRID(i->text_grid), i->msg->next->box, 0, i->row++, 1, 1);
     mx_idle_show(s->my, i->msg->next->box);
+    MX_SCROL_END(i->m);
     reset_l_mess(i);
     free(str);
-    MX_SCROL_END(i->m);
     if (s->my == false && i->check == false &&
-            gtk_widget_is_visible(i->newmsg) == false)
+            gtk_widget_is_visible(i->newmsg) == false) {
         mx_idle_show(false, i->newmsg);
-    beeeb(s, i);
+        mx_notif(s, i);
+    }
 }
-
 void send_but(GtkWidget *wid, t_main *m) {
     char *text = NULL;
     t_add_m *s = NULL;
@@ -99,4 +117,3 @@ void send_but(GtkWidget *wid, t_main *m) {
     }
     gtk_entry_set_text(GTK_ENTRY(m->sms), "");
 }
-// Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.

@@ -1,14 +1,20 @@
 #include "../inc/uchat.h"
 
 void reply_msg(GtkMenuItem *item, t_msg *msg) {
+    t_add_m *s = create_struct(NULL, true, 2, NULL);
+
     (void)item;
     if (msg->text) {
         if (msg->forward != 2) 
-           msg->user->m->text = mx_backjoin("Replied at:\n", msg->text);
+           s->text = mx_backjoin("Replied at:\n", msg->text);
         else
-            msg->user->m->text = msg->text;
-        // add_message(msg->user, create_struct(msg->user->m->text, true, 2, NULL), msg->next->id + 1);
+            s->text = mx_strdup(msg->text);
+        add_message(msg->user, s, mx_atoi(msg->user->exist_id->data) + 1);
     }
-    // else 
-        // add_file(msg->user->m, (gchar *)msg->filename, true);
+    else {
+        s->text = mx_strdup(msg->filename);
+        add_file(msg->user, s, msg->stic, mx_atoi(msg->user->exist_id->data) + 1);
+    }
+    mx_strdel(&s->text);
+    free(s);
 }
