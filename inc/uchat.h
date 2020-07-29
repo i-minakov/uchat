@@ -76,6 +76,11 @@ enum e_cmd {
     BLACK_LIST
 };
 
+typedef struct s_save {
+    char *path;
+    char *filename;
+}              t_save;
+
 typedef struct s_add_msg {
     char *text;
     bool my; 
@@ -162,6 +167,7 @@ typedef struct s_data_users {
     GtkWidget *backg_us_activ;
     GtkWidget *frame_photo_act;
     GtkWidget *frame_photo_slept;
+    struct s_list *exist_id;
     struct s_main *m;
     struct s_message *msg;
     struct s_data_users *head;
@@ -285,7 +291,6 @@ typedef struct s_main {
     GtkWidget *micro_on;
     GtkWidget *micro_of;
     GtkWidget *micro_on_but;
-    GtkWidget *micro_of_but;
     int micro_flag;
 
     GtkWidget *fix_for_users;
@@ -306,6 +311,7 @@ typedef struct s_main {
     char *search_str;
     int count_reqw;
     int count_reqw_edit;
+    int count_reqw_del;
     int bl;
     struct s_forward *forw;
     struct s_dot_menu *dots;
@@ -318,17 +324,16 @@ typedef struct s_main {
     struct s_setting *set;
     struct s_search *srch;
     struct s_wid *log_in;
+    struct s_save *save;
 }              t_main;
 
-int chat_screen(t_main **gtk);
+int mx_chat_screen(t_main **gtk);
 int log_screen(t_main *m);
-int interface();
 
 void mx_hide(GtkWidget *w);
 void mx_show(GtkWidget *wid);
 t_main *malloc_main();
 t_user *mx_create_user(char *name, char *path);
-void user_pushback(t_user **head, char *name);
 void free_users(t_user **list);
 void set_users(t_main *m);
 void reset_users(t_main *m);
@@ -354,7 +359,6 @@ void reply_msg(GtkMenuItem *item, t_msg *msg);
 t_add_m *create_struct(char *text, bool my, int forw, char *time_m);
 void move_scrol(t_main *m);
 void add_message_back(t_user *i, t_add_m *s, int count, int id);
-void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg);
 void command_msg(t_user *us, t_add_m *s, int flag);
 t_user *mx_user_by_name(char *name, char *path, t_main *m);
 void set_chat_grid(t_main *m, int flag);
@@ -377,9 +381,10 @@ void mx_blacklist(t_main *m, t_list *list);
 void mx_destroy(GtkWidget *wid);
 void mx_idle_destroy(bool flag, GtkWidget *wid);
 void mx_remove_user_by_name(t_user **users, char *name);
-void mx_msg_or_file(char **arr, char *id, t_user *us);
 void result_msg(t_list *list, t_main *m);
 void mx_add_popup_menu(int flag, t_msg *msg);
+int mx_id_for_msg(t_user *us, int id);
+bool mx_check_file_format(char *path);
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);
@@ -410,7 +415,6 @@ void backto_pas(GtkEntry *entry, GtkEntryIconPosition icon_pos,
 void enter_pas(GtkWidget *widget, t_main *m);
 
 void micro_start(GtkWidget *w, t_main *m);
-void micro_end(GtkWidget *w, t_main *m);
 void icon_entr_set(t_main *m);
 void first_emo_set(t_main *m);
 void set_emo_tab(t_main *m);

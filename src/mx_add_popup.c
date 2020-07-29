@@ -1,6 +1,17 @@
 #include "../inc/header.h"
 
-void mx_add_popup_menu(int flag, t_msg *msg) { // 0 - text, 1 - file, 2 - sticer/gif
+static void popup_menu(GtkButton *widget, GdkEventButton  *event,
+                         t_msg *msg) {
+    (void)widget;
+    if (event->button != 1) {
+        gtk_menu_popup_at_widget(GTK_MENU(msg->menu), (msg->label), GDK_GRAVITY_SOUTH_WEST, 
+            GDK_GRAVITY_SOUTH_EAST, (GdkEvent *)event);
+    }
+    else if (msg->filename != NULL && msg->stic != 2)
+        save_file(NULL, msg);
+}
+
+void mx_add_popup_menu(int flag, t_msg *msg) { 
     char *s[] = {"Edit", "Reply", "Save", "Forward", "Delete", NULL};
     void (*menu_option[])(GtkMenuItem *item, t_msg *msg) = 
         {edit_msg, reply_msg, save_file, forward_msg, delete_msg};

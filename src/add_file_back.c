@@ -16,15 +16,25 @@ static void file_pushback(t_msg **head, t_add_m *s) {
 }
 
 static void send_file_back(t_user *us, t_add_m *s, t_msg *t) {
-    GtkWidget *wid;
-
-    wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 900);
-    gtk_widget_set_size_request(wid, 630, 30);
-    MX_MSG_PACK(s->my, t->label, wid);
+    t->box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 900);
+    gtk_widget_set_size_request(t->box, 630, 30);
+    MX_MSG_PACK(s->my, t->label, t->box);
     MX_SET_NAME_MSG(s->my, t->label);
-    gtk_grid_attach_next_to(GTK_GRID(us->text_grid), wid, NULL, GTK_POS_TOP, 1, 1);
-    mx_idle_show(s->my, wid);
+    gtk_grid_attach_next_to(GTK_GRID(us->text_grid), t->box, NULL, GTK_POS_TOP, 1, 1);
+    mx_idle_show(s->my, t->box);
     mx_add_popup_menu(t->stic, t);
+}
+
+static t_msg *mx_back_msg(t_msg *list) {
+    t_msg *msg = NULL;
+
+    for (t_msg *k = list; k; k = k->next) {
+        if (k->next == NULL) {
+            msg = k;
+            k->user = list->user;
+        }
+    }
+    return msg;
 }
 
 void add_file_back(t_user *us, t_add_m *s, int stic, int count) {
@@ -33,12 +43,9 @@ void add_file_back(t_user *us, t_add_m *s, int stic, int count) {
     char *name = NULL;
 
     file_pushback(&us->msg, s);
-    for (t_msg *k = us->msg; k; k = k->next)
-        if (k->next == NULL) {
-            msg = k;
-            k->user = us;
-        }
+    msg = mx_back_msg(us->msg);
     msg->id = s->id;
+    msg->user = us;
     msg->count = count;
     msg->stic = stic;
     if (stic == 1) {

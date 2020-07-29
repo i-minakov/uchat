@@ -16,32 +16,37 @@ static void msg_pushback(t_msg **head, char *text, bool my, int forw) {
     mx_add_popup_menu(0, tmp);
 }
 
-void add_message_back(t_user *i, t_add_m *s, int count, int id) {
-    GtkWidget *wid;
+static t_msg *msg_new(t_add_m *s, t_user *i) {
     char *str = mx_strnew(mx_strlen(s->text) + ((mx_strlen(s->text)/50) + 1));
-    int k = 0;
     t_msg *msg = NULL;
+    int k = 0;
 
     for (int j = 0; s->text[j]; j++) {
         str[k++] = s->text[j];
         (j%50 == 0 && j != 0) ? str[k++] = '\n' : 0;
     }
     msg_pushback(&i->msg, str, s->my, s->forw);
-    for (t_msg *k = i->msg; k; k = k->next)
+    for (t_msg *k = i->msg; k; k = k->next) {
         if (k->next == NULL) {
             msg = k;
             k->user = i;
         }
+    }
+    free(str);
+    return msg;
+}
+
+void add_message_back(t_user *i, t_add_m *s, int count, int id) {
+    t_msg *msg = msg_new(s, i);
+
     msg->id = id;
     msg->count = count;
-    wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_widget_set_size_request(wid, 650, 30);
+    msg->box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_widget_set_size_request(msg->box, 650, 30);
     add_time(i, s);
-    MX_MSG_PACK(s->my, msg->label, wid);
+    MX_MSG_PACK(s->my, msg->label, msg->box);
     MX_SET_NAME_MSG(s->my, msg->label);
-    gtk_grid_attach_next_to(GTK_GRID(i->text_grid), wid, NULL, GTK_POS_TOP, 1, 1);
-    mx_idle_show(false, wid);
-    reset_l_mess(i);
-    free(str);
+    gtk_grid_attach_next_to(GTK_GRID(i->text_grid), msg->box, NULL, GTK_POS_TOP, 1, 1);
+    mx_idle_show(false, msg->box);
     free(s);
 }

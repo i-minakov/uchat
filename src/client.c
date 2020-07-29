@@ -1,6 +1,7 @@
 #include "../inc/header.h"
 
-/* for files Ilay */
+/* Ilay */
+/* for files */
 bool mx_check_file_format(char *path) {
     char **slesh = mx_strsplit(path, '/');
     char **dots = mx_strsplit(slesh[mx_arr_size(slesh) - 1], '.');
@@ -8,11 +9,11 @@ bool mx_check_file_format(char *path) {
     if (mx_arr_size(dots) == 1) {
         mx_del_strarr(&dots);
         mx_del_strarr(&slesh);
-        return true;
+        return false;
     }
     mx_del_strarr(&dots);
     mx_del_strarr(&slesh);
-    return false;
+    return true;
 }
 void mx_move_to_part_dir(char *name, char *path) {
     if (!name || !path)
@@ -26,25 +27,14 @@ void mx_move_to_part_dir(char *name, char *path) {
     old = mx_super_join(old, name, 1);
     new = mx_super_join(path, "/", 0);
     new = mx_super_join(new, name, 1);
+    remove(new);
     rename(old, new);
     mx_strdel(&old);
     mx_strdel(&new);
 }
 
-/* Ilay */
-void mx_msg_or_file(char **arr, char *id, t_user *us) {
-    if (arr == NULL || id == NULL)
-        return;
-    if (mx_atoi(arr[FLG]) == 0)
-        add_message(us, create_struct(arr[TXT], !mx_strcmp(us->m->my_name,
-            arr[NAME]) ? true : false, 
-                !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(id));
-    else 
-        add_file(us, create_struct(arr[0], !mx_strcmp(us->m->my_name,
-            arr[2]) ? true : false, 
-                !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(arr[FLG]), mx_atoi(id));
-}
-void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
+/* file or msg back and last ind */
+static void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
     t_add_m *s = NULL;
 
     if (mx_atoi(arr[3]) == 0)
@@ -72,9 +62,9 @@ void mx_new_msg_back(t_user *us, t_list *list) {
         mx_strdel(&id_new);
         c--;
     }
+
 }
-/* check rcv list */
-int find_last_ind_new(t_list *list) {
+static int find_last_ind_new(t_list *list) {
     char *id_new = NULL;
     int last_id_new = 0;
 
@@ -108,89 +98,51 @@ bool mx_check_last_index(t_user *us, t_list *list) {
     }
     return false;
 }
-int *id_of_msgs(t_user *us) {
-    int len = 0;
-    int *res = NULL;
-    int j = 0;
 
-    for (t_msg *i = us->msg->next; i; i = i->next)
-        len++;
-    res = (int *)malloc(sizeof(int) * (len + 1));
-    res[len] = -1;
-    for (t_msg *i = us->msg->next; i; i = i->next) {
-        res[j] = i->id;
-        j++;
-    }
-    return res;
-}
-void check_deleted(t_user *us, t_list *list, int size) {
-    char *cmd = NULL;
-    int j = 1;
-    int *mas = id_of_msgs(us);
-
-    if (list == NULL || list->next == NULL || size/10 != us->m->count_reqw_edit)
-        return;
-    for (t_list *i = list->next; i->data && mas[j] != -1; i = i->next) {
-        cmd = mx_get_value(i->data, "command");
-        if (mas[j] != mx_atoi(cmd))
-            delete_msg(NULL, mx_msg_by_id(us, mas[j]));
-        mx_strdel(&cmd); 
-        j++;
-    }
-    free(mas);
+/* edit and delete */
+static void reset_edit_msg(t_msg *edited, char **arr) {
+    mx_strdel(&edited->text);
+    edited->text = mx_strdup(arr[TXT]);
+    gtk_button_set_label(GTK_BUTTON(edited->label), arr[TXT]);
 }
 void check_edited(t_user *us, t_list *list, int size) {
     char *cmd = NULL;
     char **arr = NULL;
     t_msg *edited = NULL;
-    (void)size;
-    // if (size/10 != us->m->count_reqw_edit)
-    //     return;
+
+    if (size/10 != us->m->count_reqw_edit)
+        return;
     for (t_list *i = list; i->data; i = i->next) {
         cmd = mx_get_value(i->data, "command");
         arr = mx_get_arr(i->data);
         if (mx_strcmp(arr[NAME], us->m->my_name) && mx_get_substr_index(arr[TIME], "edit") > -1) {
             edited = mx_msg_by_id(us, mx_atoi(cmd));
-            if (edited) {
-                mx_strdel(&edited->text);
-                edited->text = mx_strdup(arr[TXT]);
-                gtk_widget_destroy(edited->label);
-                edited->label = gtk_button_new_with_label(edited->text);
-                gtk_widget_set_size_request(edited->label, 100, 30);
-                MX_MSG_PACK(false, edited->label, edited->box);
-                MX_SET_NAME_MSG(false, edited->label);
-                mx_idle_show(false, edited->label);
-                gtk_widget_set_tooltip_text(edited->label, arr[TIME]);
-            }
+            if (edited && edited->text) 
+                reset_edit_msg(edited, arr);
         }
         mx_strdel(&cmd); 
         mx_del_strarr(&arr);
     }
     us->m->count_reqw_edit = 0;
 }
-bool mx_check_activ(t_main *m, t_list *list, int size) {
-    t_user *us = mx_activ_us(m);
-    char **arr = NULL;
-    char *id_new = NULL;
-    (void)size;
+// void check_deleted(t_user *us, t_list *list, int size) {
+//     char *cmd = NULL;
+//     int j = mx_atoi(us->exist_id->data);
 
-    if (!us || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
-        return false;
-    // check_edited(us, ((t_data *)list->data)->list, size); // EDIT
-    if (mx_check_last_index(us, list) == true)
-        return true;
-    id_new = mx_get_value(((t_data *)list->data)->list->data, "command");
-    if (!us->msg->next || us->msg->next->id < mx_atoi(id_new)) {
-        arr = mx_get_arr(((t_data *)list->data)->list->data);
-        mx_msg_or_file(arr, id_new, us);
-        mx_del_strarr(&arr);
-    }
-    // else if (us->msg->next && (us->msg->next->id > mx_atoi(id_new)))
-    //     delete_msg(NULL, mx_msg_by_id(us, us->msg->next->id));
-    mx_strdel(&id_new);
-    // check_deleted(us, list, size);
-    return true;
-}
+//     if (list == NULL || list->next == NULL || 
+//             size/10 != us->m->count_reqw_del || j == 0) {
+//         us->m->count_reqw_del++;
+//         return;
+//     }
+//     for (t_list *i = list->next; i->data; i = i->next) {
+//         cmd = mx_get_value(i->data, "command");
+    
+//         if (j != mx_atoi(cmd) && mx_msg_by_id(us, mx_atoi(cmd)))
+//             delete_msg(NULL, mx_msg_by_id(us, mx_atoi(cmd)));
+//         mx_strdel(&cmd); 
+//         j--;
+//     }
+// }
 void mx_check_rename(t_main *m, t_info *info) {
     char *name = NULL;
     bool flag = false;
@@ -205,7 +157,42 @@ void mx_check_rename(t_main *m, t_info *info) {
         flag = false;
     }
 }
-void mx_cmp_list(t_main *m, t_info *info) {
+
+/* check rcv list and activ */
+static void mx_msg_or_file(char **arr, char *id, t_user *us) {
+    if (arr == NULL || id == NULL)
+        return;
+    if (mx_atoi(arr[FLG]) == 0)
+        add_message(us, create_struct(arr[TXT], !mx_strcmp(us->m->my_name,
+            arr[NAME]) ? true : false, 
+                !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(id));
+    else 
+        add_file(us, create_struct(arr[TXT], !mx_strcmp(us->m->my_name,
+            arr[NAME]) ? true : false, 
+                !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(arr[FLG]), mx_atoi(id));
+}
+static bool mx_check_activ(t_main *m, t_list *list, int size) {
+    t_user *us = mx_activ_us(m);
+    char **arr = NULL;
+    char *id_new = NULL;
+    (void)size;
+
+    if (!us || mx_strcmp(us->name, ((t_data *)list->data)->name) != 0)
+        return false;
+    if (mx_check_last_index(us, list) == true)
+        return true;
+    check_edited(us, ((t_data *)list->data)->list, size); // EDIT
+    // check_deleted(us, list, size);
+    id_new = mx_get_value(((t_data *)list->data)->list->data, "command");
+    if (!us->msg->next || mx_atoi(id_new) > mx_atoi(us->exist_id->data)) {
+        arr = mx_get_arr(((t_data *)list->data)->list->data);
+        mx_msg_or_file(arr, id_new, us);
+        mx_del_strarr(&arr);
+    }
+    mx_strdel(&id_new);
+    return true;
+}
+static void mx_cmp_list(t_main *m, t_info *info) {
     t_user *us = NULL;
     char *json = NULL;
     char *cmd = NULL;
@@ -245,13 +232,14 @@ void mx_check_rcv_list(t_info *info, t_main *m) {
     else if (m->cmd == BLACK_LIST)
         mx_blacklist(m, info->list);
 }
+
+/* check sigin and sigup */
 void mx_check_sigup(t_main *m) {
     if (m->cmd == SRCH_MSG) {
         m->command = mx_arrjoin(m->command, "mx_mssg_search");
         m->command = mx_arrjoin(m->command, m->my_name);
         m->command = mx_arrjoin(m->command, mx_activ_us(m)->name);
         m->command = mx_arrjoin(m->command, m->search_str);
-        mx_strdel(&m->search_str);
         m->cmd = SRCH_US;
     }
     if (m->cmd == CHECK_US) {
@@ -287,6 +275,9 @@ void mx_check_sigin(t_main *m) {
     }
     mx_check_sigup(m);
 }
+/* end Ilay*/
+
+
 static void mx_enter_argv(char ***arr, t_client *client) {
     char **request = client->gtk->command;
 
@@ -296,7 +287,6 @@ static void mx_enter_argv(char ***arr, t_client *client) {
     }
     mx_check_sigin(client->gtk);
 }
-
 /* Cash */
 static void mx_create_del_cash(char *name) {
     char *cmd = mx_super_join("./source/cash_", name, 0);
@@ -509,7 +499,7 @@ static void mx_check_status(t_client *client) {
         client->gtk->cmd = BLCK;
     }
     if (client->gtk->cmd == SIG_IN || client->gtk->cmd == SIG_UP)
-        chat_screen(&client->gtk);
+        mx_chat_screen(&client->gtk);
 }
 void mx_client_send(t_client *client) {
     char *json = NULL;
@@ -532,6 +522,10 @@ void mx_client_send(t_client *client) {
 static void mx_server_answer(char ch[], char *str, t_client *client) {
     client->status = mx_strdup(str);
     if (ch[0] == 'B') {
+        if (client->gtk->cmd == BLACK_LIST && !mx_strcmp(client->status, "mx_send_list_back")) {
+            client->gtk->cmd = DEF;
+            return;
+        }
         if (mx_strcmp(client->status, "Wrong pass or user name") == 0)
             bad_act(client->gtk->log_in, 1, 2);
         if (mx_strcmp(client->status, "User already exist") == 0)
@@ -673,6 +667,11 @@ void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
     }
     else if (ch[0] == 'E' && ch[1] == 'E') {
         mx_sort_recv_list(info);
+        // for (t_list *i = (*info)->list; i; i = i->next) {
+        //     printf("%s\n", ((t_data *)i->data)->name);
+        //     for (t_list *j = ((t_data *)i->data)->list; j; j = j->next)
+        //         printf("%s\n", j->data);
+        // }
         mx_check_rcv_list(*info, client->gtk);
         mx_trim_full_list(info);
         *info = mx_create_info();
@@ -687,14 +686,22 @@ void mx_client_recv_file(char ch[], t_client *client) {
         mx_del_if_exist(client->for_files->file_name);
         client->for_files->file = fopen(client->for_files->file_name, "wb");
     }
-    else if (ch[1] == 'L')
+    else if (ch[1] == 'L') {
         mx_static_read(ch, &client->for_files->file_size);
-    else if (client->for_files->file && ch[1] == 'B')
-        fwrite(&ch[2], 1, 1, client->for_files->file);
+    }
+    else if (client->for_files->file && ch[1] == 'B') {
+        if ((int)fwrite(&ch[2], 1, 1, client->for_files->file) == -1)
+            return ;
+    }
     else if (client->for_files->file && ch[1] == 'C') {
         mx_check_file_size(client->for_files->file,
                            &client->for_files->file_size,
                            &client->for_files->file_name);
+        // mx_move_to_part_dir(client->gtk->save->filename,
+        //      client->gtk->save->path);
+        // mx_strdel(&client->gtk->save->filename);
+        // mx_strdel(&client->gtk->save->path);
+        // free(client->gtk->save);
     }
 }
 
@@ -709,12 +716,18 @@ static bool mx_client_read_adt(char ch[]) {
         return true;
     return false;
 }
+static void mx_set_files_adt(t_files *file) {
+    file->file = NULL;
+    file->file_name = NULL;
+    file->file_size = NULL;
+}
 void *mx_client_read(void *client_pointer) {
     t_client *client = (t_client *)client_pointer;
     t_info *info = mx_create_info();
     t_files file;
     char ch[SIZE_SEND];
 
+    mx_set_files_adt(&file);
     while (SSL_read(client->ssl, ch, SIZE_SEND) != -1) {
         if (((t_client *)client_pointer)->exit == 0)
             break;            
@@ -733,13 +746,15 @@ void *mx_client_read(void *client_pointer) {
 }
 
 /* send file */
-static void mx_change_file_pass(char ***arr) {
+static void mx_change_file_pass(char ***arr, char *command) {
     char **argv = *arr;
-    char **pars = mx_strsplit(argv[2], '.');
+    char **pars = mx_strsplit(argv[2], '/');
 
     mx_strdel(&argv[2]);
-    argv[2] = mx_super_join(argv[0], ".", 0);
-    argv[2] = mx_super_join(argv[2], pars[mx_arr_size(pars) - 1], 1);
+    if (mx_strcmp(command, "mx_add_new_user") == 0)
+        argv[2] = mx_super_join(argv[0], ".jpg", 0);
+    else
+        argv[2] = mx_super_join(argv[2], pars[mx_arr_size(pars) - 1], 1);
     mx_del_strarr(&pars);
 }
 void mx_send_command(char *json, t_client *client) {
@@ -747,7 +762,7 @@ void mx_send_command(char *json, t_client *client) {
     char *command = mx_get_value(json, "command");
     char **arr = mx_get_arr(json);
 
-    mx_change_file_pass(&arr);
+    mx_change_file_pass(&arr, command);
     new_json = mx_request(command, arr);
     mx_bites_str(client->ssl, new_json, 'T');
     mx_strdel(&command);

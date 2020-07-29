@@ -1,7 +1,6 @@
 #include "../inc/header.h"
 
 static void mx_unblock_user(GtkWidget *wid, t_main *m) {
-    printf("%s/n", (char *)gtk_widget_get_name(wid));
     m->command = mx_arrjoin(m->command, "mx_del_user_from_table");
     m->command = mx_arrjoin(m->command, m->my_name);
     m->command = mx_arrjoin(m->command, (char *)gtk_widget_get_name(wid));

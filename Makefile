@@ -1,10 +1,26 @@
 NAME = uchat
-INC = inc/*.h
-SRC := $(wildcard src/*.c)
+INC = ./inc/*.h
+SRC := $(wildcard src/*.c) $(wildcard src/daemon_voice/*.c) $(wildcard src/db/*.c) $(wildcard src/help/*.c) $(wildcard src/json_functions/*.c) $(wildcard src/server/*.c)
 OBJ = $(addprefix obj/, $(notdir $(SRC:%.c=%.o)))
 LIBMX = libmx/libmx.a
+PA = ./source/libportaudio/libportaudio.a
+SF = ./source/libsndfile/libsndfile.a
+
+OG = ./source/libogg/libogg.a
+FC = ./source/libflac/libFLAC.a
+OP = ./source/libopus/libopus.a
+VB = ./source/libvorbis/lib/libvorbis.a ./source/libvorbis/lib/libvorbisenc.a ./source/libvorbis/lib/libvorbisfile.a
+OP_PATH = -I./source/libopus/include
+VB_PATH = -I./source/libvorbis/include
+OG_PATH = -I./source/libogg/include
+FC_PATH = -I./source/libflac/include
+
+
 SSL_PATH = -I/usr/local/opt/openssl/include
-FLAGS = $(SSL_PATH) $(SANFLAG) #-std=c11 -Wall -Wextra -Werror -Wpedantic 
+PA_PATH = -I./source/libportaudio/include
+SF_PATH = -I./source/libsndfile/include
+ADD_FLAG = -framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon
+FLAGS = $(SSL_PATH) $(SANFLAG) $(PA_PATH) $(SF_PATH) $(OG_PATH) $(FC_PATH) $(VB_PATH) $(OP_PATH) -std=c11 -Wall -Wextra -Werror -Wpedantic 
 SANFLAG = -g -fsanitize=address
 SQLITE = -lsqlite3
 PTHREAD = -lpthread
@@ -17,7 +33,7 @@ install: $(NAME)
 
 $(NAME): $(LIBMX) $(OBJ)
 	@make clean
-	@clang $(FLAGS) `pkg-config --cflags --libs gtk+-3.0` $(OBJ) $(LIBMX) -o $(NAME) $(SQLITE) $(SSL) $(PTHREAD)
+	@clang $(FLAGS) `pkg-config --cflags --libs gtk+-3.0` $(OBJ) $(LIBMX) $(PA) $(SF) $(OG) $(FC) $(VB) $(OP) -o $(NAME) $(SQLITE) $(SSL) $(PTHREAD) $(ADD_FLAG)
 	@printf "\x1b[32;1m$(NAME) created\x1b[0m\n"
 
 $(LIBMX):
@@ -29,7 +45,27 @@ obj:
 	@mkdir obj
 
 obj/%.o: src/%.c $(INC)
-	@clang $(FLAGS) `pkg-config --cflags gtk+-3.0` -o $@ -c $< 
+	@clang $(FLAGS) `pkg-config --cflags gtk+-3.0` -o $@ -c $<
+	@printf "\x1b[32mcompiled: \x1b[0m[$<]\n"
+
+obj/%.o: src/daemon_voice/%.c $(INC)
+	@clang $(FLAGS) `pkg-config --cflags gtk+-3.0` -o $@ -c $<
+	@printf "\x1b[32mcompiled: \x1b[0m[$<]\n"
+
+obj/%.o: src/db/%.c $(INC)
+	@clang $(FLAGS) `pkg-config --cflags gtk+-3.0` -o $@ -c $<
+	@printf "\x1b[32mcompiled: \x1b[0m[$<]\n"
+
+obj/%.o: src/help/%.c $(INC)
+	@clang $(FLAGS) `pkg-config --cflags gtk+-3.0` -o $@ -c $<
+	@printf "\x1b[32mcompiled: \x1b[0m[$<]\n"
+
+obj/%.o: src/json_functions/%.c $(INC)
+	@clang $(FLAGS) `pkg-config --cflags gtk+-3.0` -o $@ -c $<
+	@printf "\x1b[32mcompiled: \x1b[0m[$<]\n"
+
+obj/%.o: src/server/%.c $(INC)
+	@clang $(FLAGS) `pkg-config --cflags gtk+-3.0` -o $@ -c $<
 	@printf "\x1b[32mcompiled: \x1b[0m[$<]\n"
 
 clean:

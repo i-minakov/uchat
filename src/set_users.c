@@ -1,5 +1,18 @@
 #include "../inc/uchat.h"
 
+void show_hide_back_us(t_user *users) {
+    for (t_user *i = users; i; i = i->next) {
+        if (i->check == true) {
+            gtk_widget_hide(i->backg_us_slept);
+            gtk_widget_hide(i->frame_photo_slept);
+        }
+        else {
+            gtk_widget_hide(i->backg_us_activ);
+            gtk_widget_hide(i->frame_photo_act);
+        }
+    }
+}
+
 static void init_signals_users(t_main *m) {
     for (t_user *i = (m->users); i; i = i->next)
         g_signal_connect(i->but, "clicked", G_CALLBACK(user_click), i);

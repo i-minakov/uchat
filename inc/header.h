@@ -32,11 +32,33 @@
 #include "ssl.h"
 #include "uchat.h"
 
+#include "portaudio.h"
+#include "sndfile.h"
+
 #define FLAG 100
 #define TIMER 1000
 #define SIZE_SEND 1027
 #define FILE_SIZE 262144000
 #define SIZE_SEND_LESS 1024
+
+#define SAMPLE_RATE (44100)
+#define FRAMES_PER_BUFFER (512)
+#define NUM_SECONDS (5)
+#define NUM_CHANNELS (2)
+
+#define DITHER_FLAG (0) 
+#define WRITE_TO_FILE (0)
+
+#define PA_SAMPLE_TYPE  paFloat32
+typedef float SAMPLE;
+#define SAMPLE_SILENCE (0.0f)
+#define PRINTF_S_FORMAT "%.8f"
+
+typedef struct s_paTestData{
+    int frameIndex;
+    int maxFrameIndex;
+    SAMPLE *recordedSamples;
+}              t_paTestData;
 
 // Client
 char *mx_right_path(t_info **info, t_files *files, t_client *client, char *name);
@@ -54,16 +76,21 @@ int mx_intcmp(char *str1, char *str2);
 int mx_client(int argc, char *argv[]);
 
 // Server
-void mx_choose(t_node *node, char **json);
-void mx_not_mutex(t_node **node, char **json);
-void mx_exe_request(t_node **node, char **json);
 void mx_send_history_list(t_node **node, char *name, char *json);
-void mx_send_answer_list(t_node **node, t_list *list, int hist_flag, char *json);
 void mx_send_answer_type(t_node **node, int type, int flag);
-void mx_del_client(t_way **list, t_node **node, void *data, int flag);
-void *mx_server_files(void *data);
-void *mx_server_handel(void *data);
+void mx_send_user_file(char *img_path, t_node **node);
+void mx_send_answer_list(t_node **node, t_list *list, int hist_flag, char *json);
 int mx_server(int argc, char *argv[]);
+void *mx_server_files(void *data);
+void mx_del_client(t_way **list, t_node **node, void *data, int flag);
+void *mx_server_handel(void *data);
+void mx_choose(t_node *node, char **json);
+void mx_log_out_fie_del(t_way **list);
+void mx_exe_request(t_node **node, char **json);
+void mx_mutex_command(t_node **node, char *json);
+void mx_send_your_photo(t_node **node);
+void mx_not_mutex(t_node **node, char **json);
+void mx_send_back(t_node **node, char **json);
 
 // Help
 void mx_del_if_exist(char *name);
@@ -89,6 +116,16 @@ void *mx_mom(void *restrict dst, const void *restrict src, size_t n, size_t i);
 int mx_arr_size(char **arr);
 
 // Ilay
-int chat_screen(t_main **gtk);
+int mx_chat_screen(t_main **gtk);
+
+void mx_voice_save(char *path);
+int mx_recordcallback(const void *inputBuffer,
+                      void *outputBuffer,
+                      unsigned long framesPerBuffer,
+                      const PaStreamCallbackTimeInfo *timeInfo,
+                      PaStreamCallbackFlags statusFlags,
+                      void *userData);
+void mx_save_snd_file(t_paTestData data, int numSamples, char *path);
+int mx_daemon_state(int argc, char *argv[]);
 
 #endif
