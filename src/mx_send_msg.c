@@ -41,10 +41,11 @@ void add_time(t_user *i, t_add_m *s) {
 }
 static void mx_notif(t_add_m *s, t_user *i) {
     if (s->my == false && i->m->set->notif_flag == 1) {
-        system("echo \"\a\"");
-        system("echo \"\a\"");
+        mx_play_audio("./source/resource/meow.wav ");
+        puts("++++\n");
     }
 }
+
 int mx_id_for_msg(t_user *us, int id) {
     while (us->exist_id && mx_atoi(us->exist_id->data) == id)
         id++;
