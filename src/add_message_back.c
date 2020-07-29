@@ -16,22 +16,30 @@ static void msg_pushback(t_msg **head, char *text, bool my, int forw) {
     mx_add_popup_menu(0, tmp);
 }
 
-void add_message_back(t_user *i, t_add_m *s, int count, int id) {
-    GtkWidget *wid;
+static t_msg *msg_new(t_add_m *s, t_user *i) {
     char *str = mx_strnew(mx_strlen(s->text) + ((mx_strlen(s->text)/50) + 1));
-    int k = 0;
     t_msg *msg = NULL;
+    int k = 0;
 
     for (int j = 0; s->text[j]; j++) {
         str[k++] = s->text[j];
         (j%50 == 0 && j != 0) ? str[k++] = '\n' : 0;
     }
     msg_pushback(&i->msg, str, s->my, s->forw);
-    for (t_msg *k = i->msg; k; k = k->next)
+    for (t_msg *k = i->msg; k; k = k->next) {
         if (k->next == NULL) {
             msg = k;
             k->user = i;
         }
+    }
+    free(str);
+    return msg;
+}
+
+void add_message_back(t_user *i, t_add_m *s, int count, int id) {
+    GtkWidget *wid;
+    t_msg *msg = msg_new(s, i);
+
     msg->id = id;
     msg->count = count;
     wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
@@ -42,6 +50,5 @@ void add_message_back(t_user *i, t_add_m *s, int count, int id) {
     gtk_grid_attach_next_to(GTK_GRID(i->text_grid), wid, NULL, GTK_POS_TOP, 1, 1);
     mx_idle_show(false, wid);
     reset_l_mess(i);
-    free(str);
     free(s);
 }
