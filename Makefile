@@ -22,7 +22,7 @@ install: $(NAME)
 
 $(NAME): $(LIBMX) $(OBJ)
 	@make clean
-	@clang $(FLAGS) `pkg-config --cflags --libs gtk+-3.0` $(OBJ) $(LIBMX) $(PA) $(SF) -o $(NAME) $(SQLITE) $(SSL) $(PTHREAD) $(ADD_FLAG)
+	@clang $(FLAGS) `pkg-config --cflags --libs gtk+-3.0` $(OBJ) $(LIBMX) -o $(NAME) $(SQLITE) $(SSL) $(PTHREAD)
 	@printf "\x1b[32;1m$(NAME) created\x1b[0m\n"
 
 $(LIBMX):

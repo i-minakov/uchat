@@ -33,19 +33,8 @@ void mx_move_to_part_dir(char *name, char *path) {
 }
 
 /* Ilay */
-void mx_msg_or_file(char **arr, char *id, t_user *us) {
-    if (arr == NULL || id == NULL)
-        return;
-    if (mx_atoi(arr[FLG]) == 0)
-        add_message(us, create_struct(arr[TXT], !mx_strcmp(us->m->my_name,
-            arr[NAME]) ? true : false, 
-                !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(id));
-    else 
-        add_file(us, create_struct(arr[TXT], !mx_strcmp(us->m->my_name,
-            arr[NAME]) ? true : false, 
-                !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(arr[FLG]), mx_atoi(id));
-}
-void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
+/* file or msg back */
+static void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
     t_add_m *s = NULL;
 
     if (mx_atoi(arr[3]) == 0)
@@ -73,6 +62,19 @@ void mx_new_msg_back(t_user *us, t_list *list) {
         mx_strdel(&id_new);
         c--;
     }
+}
+
+void mx_msg_or_file(char **arr, char *id, t_user *us) {
+    if (arr == NULL || id == NULL)
+        return;
+    if (mx_atoi(arr[FLG]) == 0)
+        add_message(us, create_struct(arr[TXT], !mx_strcmp(us->m->my_name,
+            arr[NAME]) ? true : false, 
+                !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(id));
+    else 
+        add_file(us, create_struct(arr[TXT], !mx_strcmp(us->m->my_name,
+            arr[NAME]) ? true : false, 
+                !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(arr[FLG]), mx_atoi(id));
 }
 /* check rcv list */
 int find_last_ind_new(t_list *list) {
@@ -109,19 +111,34 @@ bool mx_check_last_index(t_user *us, t_list *list) {
     }
     return false;
 }
-// void check_deleted(t_user *us, t_list *list, int size) {
-//     char *cmd = NULL;
+void check_deleted(t_user *us, t_list *list, int size) {
+    char *cmd = NULL;
+    int j = 0;
 
-//     if (list == NULL || list->next == NULL || size/10 != us->m->count_reqw_edit)
-//         return;
-//     for (t_list *i = list->next; i->data && mas[j] != -1; i = i->next) {
-//         cmd = mx_get_value(i->data, "command");
-//         if (mas[j] != mx_atoi(cmd))
-//             delete_msg(NULL, mx_msg_by_id(us, mas[j]));
-//         mx_strdel(&cmd); 
-//         j++;
-//     }
-// }
+    if (list == NULL || list->next == NULL || size/10 != us->m->count_reqw_del) {
+        us->m->count_reqw_del++;
+        return;
+    }
+    for (t_list *i = list->next; i->data; i = i->next) {
+        cmd = mx_get_value(i->data, "command");
+        if (j != mx_atoi(cmd) && mx_msg_by_id(us, mx_atoi(cmd)))
+            delete_msg(NULL, mx_msg_by_id(us, mx_atoi(cmd)));
+        mx_strdel(&cmd); 
+        j++;
+    }
+}
+void reset_edit_msg(t_msg *edited, char **arr) {
+    mx_strdel(&edited->text);
+    edited->text = mx_strdup(arr[TXT]);
+    gtk_widget_destroy(edited->label);
+    edited->label = gtk_button_new_with_label(edited->text);
+    gtk_widget_set_size_request(edited->label, 100, 30);
+    MX_MSG_PACK(false, edited->label, edited->box);
+    MX_SET_NAME_MSG(false, edited->label);
+    mx_idle_show(false, edited->label);
+    gtk_widget_set_tooltip_text(edited->label, arr[TIME]);
+    mx_add_popup_menu(0, edited);
+}
 void check_edited(t_user *us, t_list *list, int size) {
     char *cmd = NULL;
     char **arr = NULL;
@@ -135,16 +152,7 @@ void check_edited(t_user *us, t_list *list, int size) {
         if (mx_strcmp(arr[NAME], us->m->my_name) && mx_get_substr_index(arr[TIME], "edit") > -1) {
             edited = mx_msg_by_id(us, mx_atoi(cmd));
             if (edited) {
-                mx_strdel(&edited->text);
-                edited->text = mx_strdup(arr[TXT]);
-                gtk_widget_destroy(edited->label);
-                edited->label = gtk_button_new_with_label(edited->text);
-                gtk_widget_set_size_request(edited->label, 100, 30);
-                MX_MSG_PACK(false, edited->label, edited->box);
-                MX_SET_NAME_MSG(false, edited->label);
-                mx_idle_show(false, edited->label);
-                gtk_widget_set_tooltip_text(edited->label, arr[TIME]);
-                mx_add_popup_menu(0, edited);
+                reset_edit_msg(edited, arr);
             }
         }
         mx_strdel(&cmd); 
@@ -170,7 +178,7 @@ bool mx_check_activ(t_main *m, t_list *list, int size) {
         mx_del_strarr(&arr);
     }
     mx_strdel(&id_new);
-    // check_deleted(us, list, size);
+    check_deleted(us, list, size);
     return true;
 }
 void mx_check_rename(t_main *m, t_info *info) {

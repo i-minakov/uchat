@@ -312,6 +312,7 @@ typedef struct s_main {
     char *search_str;
     int count_reqw;
     int count_reqw_edit;
+    int count_reqw_del;
     int bl;
     struct s_forward *forw;
     struct s_dot_menu *dots;
