@@ -3,13 +3,13 @@ INC = inc/*.h
 SRC := $(wildcard src/*.c)
 OBJ = $(addprefix obj/, $(notdir $(SRC:%.c=%.o)))
 LIBMX = libmx/libmx.a
-PA = ./source/libportaudio/libportaudio.a
-SF = -L./source/libsndfile/lib -lsndfile
+# PA = ./source/libportaudio/libportaudio.a
+# SF = -L./source/libsndfile/lib -lsndfile
 SSL_PATH = -I/usr/local/opt/openssl/include
-PA_PATH = -I./source/libportaudio/include
-SF_PATH = -I./source/libsndfile/include
-ADD_FLAG = -framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon
-FLAGS = $(SSL_PATH) $(SANFLAG) $(PA_PATH) $(SF_PATH) -std=c11 -Wall -Wextra -Werror -Wpedantic 
+# PA_PATH = -I./source/libportaudio/include
+# SF_PATH = -I./source/libsndfile/include
+#ADD_FLAG = -framework CoreAudio -framework AudioToolbox -framework AudioUnit -framework Carbon
+FLAGS = $(SSL_PATH) $(SANFLAG) -std=c11 -Wall -Wextra -Werror -Wpedantic 
 SANFLAG = -g -fsanitize=address
 SQLITE = -lsqlite3
 PTHREAD = -lpthread

@@ -1,6 +1,7 @@
 #include "../inc/header.h"
 
-/* for files Ilay */
+/* Ilay */
+/* for files */
 bool mx_check_file_format(char *path) {
     char **slesh = mx_strsplit(path, '/');
     char **dots = mx_strsplit(slesh[mx_arr_size(slesh) - 1], '.');
@@ -32,8 +33,7 @@ void mx_move_to_part_dir(char *name, char *path) {
     mx_strdel(&new);
 }
 
-/* Ilay */
-/* file or msg back */
+/* file or msg back and last ind */
 static void mx_msg_or_file_back(char **arr, char *id, t_user *us, int count) {
     t_add_m *s = NULL;
 
@@ -62,22 +62,9 @@ void mx_new_msg_back(t_user *us, t_list *list) {
         mx_strdel(&id_new);
         c--;
     }
-}
 
-void mx_msg_or_file(char **arr, char *id, t_user *us) {
-    if (arr == NULL || id == NULL)
-        return;
-    if (mx_atoi(arr[FLG]) == 0)
-        add_message(us, create_struct(arr[TXT], !mx_strcmp(us->m->my_name,
-            arr[NAME]) ? true : false, 
-                !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(id));
-    else 
-        add_file(us, create_struct(arr[TXT], !mx_strcmp(us->m->my_name,
-            arr[NAME]) ? true : false, 
-                !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(arr[FLG]), mx_atoi(id));
 }
-/* check rcv list */
-int find_last_ind_new(t_list *list) {
+static int find_last_ind_new(t_list *list) {
     char *id_new = NULL;
     int last_id_new = 0;
 
@@ -111,11 +98,14 @@ bool mx_check_last_index(t_user *us, t_list *list) {
     }
     return false;
 }
-void check_deleted(t_user *us, t_list *list, int size) {
-    char *cmd = NULL;
-    int j = 0;
 
-    if (list == NULL || list->next == NULL || size/10 != us->m->count_reqw_del) {
+/* edit and delete */
+static void check_deleted(t_user *us, t_list *list, int size) {
+    char *cmd = NULL;
+    int j = mx_atoi(us->exist_id->data);
+
+    if (list == NULL || list->next == NULL || 
+            size/10 != us->m->count_reqw_del || j == 0) {
         us->m->count_reqw_del++;
         return;
     }
@@ -124,7 +114,7 @@ void check_deleted(t_user *us, t_list *list, int size) {
         if (j != mx_atoi(cmd) && mx_msg_by_id(us, mx_atoi(cmd)))
             delete_msg(NULL, mx_msg_by_id(us, mx_atoi(cmd)));
         mx_strdel(&cmd); 
-        j++;
+        j--;
     }
 }
 void reset_edit_msg(t_msg *edited, char **arr) {
@@ -151,16 +141,43 @@ void check_edited(t_user *us, t_list *list, int size) {
         arr = mx_get_arr(i->data);
         if (mx_strcmp(arr[NAME], us->m->my_name) && mx_get_substr_index(arr[TIME], "edit") > -1) {
             edited = mx_msg_by_id(us, mx_atoi(cmd));
-            if (edited) {
+            if (edited) 
                 reset_edit_msg(edited, arr);
-            }
         }
         mx_strdel(&cmd); 
         mx_del_strarr(&arr);
     }
     us->m->count_reqw_edit = 0;
 }
-bool mx_check_activ(t_main *m, t_list *list, int size) {
+void mx_check_rename(t_main *m, t_info *info) {
+    char *name = NULL;
+    bool flag = false;
+
+    for (t_list *i = info->list; i; i = i->next) {
+        name = ((t_data *)i->data)->name;
+        for (t_user *j = m->users; j; j = j->next) {
+            !mx_strcmp(name, j->name) ? flag = true : 0;
+        }
+        if (flag == false)
+            mx_remove_user_by_name(&m->users, name);
+        flag = false;
+    }
+}
+
+/* check rcv list and activ */
+static void mx_msg_or_file(char **arr, char *id, t_user *us) {
+    if (arr == NULL || id == NULL)
+        return;
+    if (mx_atoi(arr[FLG]) == 0)
+        add_message(us, create_struct(arr[TXT], !mx_strcmp(us->m->my_name,
+            arr[NAME]) ? true : false, 
+                !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(id));
+    else 
+        add_file(us, create_struct(arr[TXT], !mx_strcmp(us->m->my_name,
+            arr[NAME]) ? true : false, 
+                !arr[RPL_FORW] ? 0 : 1, arr[TIME]), mx_atoi(arr[FLG]), mx_atoi(id));
+}
+static bool mx_check_activ(t_main *m, t_list *list, int size) {
     t_user *us = mx_activ_us(m);
     char **arr = NULL;
     char *id_new = NULL;
@@ -181,21 +198,7 @@ bool mx_check_activ(t_main *m, t_list *list, int size) {
     check_deleted(us, list, size);
     return true;
 }
-void mx_check_rename(t_main *m, t_info *info) {
-    char *name = NULL;
-    bool flag = false;
-
-    for (t_list *i = info->list; i; i = i->next) {
-        name = ((t_data *)i->data)->name;
-        for (t_user *j = m->users; j; j = j->next) {
-            !mx_strcmp(name, j->name) ? flag = true : 0;
-        }
-        if (flag == false)
-            mx_remove_user_by_name(&m->users, name);
-        flag = false;
-    }
-}
-void mx_cmp_list(t_main *m, t_info *info) {
+static void mx_cmp_list(t_main *m, t_info *info) {
     t_user *us = NULL;
     char *json = NULL;
     char *cmd = NULL;
@@ -235,6 +238,8 @@ void mx_check_rcv_list(t_info *info, t_main *m) {
     else if (m->cmd == BLACK_LIST)
         mx_blacklist(m, info->list);
 }
+
+/* check sigin and sigup */
 void mx_check_sigup(t_main *m) {
     if (m->cmd == SRCH_MSG) {
         m->command = mx_arrjoin(m->command, "mx_mssg_search");
@@ -276,6 +281,9 @@ void mx_check_sigin(t_main *m) {
     }
     mx_check_sigup(m);
 }
+/* end Ilay*/
+
+
 static void mx_enter_argv(char ***arr, t_client *client) {
     char **request = client->gtk->command;
 
@@ -285,7 +293,6 @@ static void mx_enter_argv(char ***arr, t_client *client) {
     }
     mx_check_sigin(client->gtk);
 }
-
 /* Cash */
 static void mx_create_del_cash(char *name) {
     char *cmd = mx_super_join("./source/cash_", name, 0);

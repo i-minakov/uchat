@@ -385,7 +385,6 @@ void mx_blacklist(t_main *m, t_list *list);
 void mx_destroy(GtkWidget *wid);
 void mx_idle_destroy(bool flag, GtkWidget *wid);
 void mx_remove_user_by_name(t_user **users, char *name);
-void mx_msg_or_file(char **arr, char *id, t_user *us);
 void result_msg(t_list *list, t_main *m);
 void mx_add_popup_menu(int flag, t_msg *msg);
 int mx_id_for_msg(t_user *us, int id);
