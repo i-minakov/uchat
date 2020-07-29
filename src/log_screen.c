@@ -55,23 +55,21 @@ void do_opening(t_wid *wid) {
 	g_idle_remove_by_data(wid);
 }
 
+
 int log_screen(t_main *m)
 {
 	int ex = 0;
+	// 	t_wid *wid = m->log_in;
+	// t_eye *eye = (t_eye *)malloc(sizeof(t_eye) * 4);
+    // eye->wid = wid;
 	t_wid *wid = m->log_in;
-	// t_wid *wid = (t_wid *)malloc(sizeof(t_wid) * 10);
-	// wid->sig = (t_sign *)malloc(sizeof(t_sign) * 16);
-	// wid->log = (t_login *)malloc(sizeof(t_login) * 10);
-	t_eye *eye = (t_eye *)malloc(sizeof(t_eye) * 4);
-    eye->wid = wid;
-	// wid->m = m;
-	// wid->m->log_in = wid;
-	// wid->sig->sigfile = NULL;
+	m->log_in->eye = (t_eye *)malloc(sizeof(t_eye) * 4);
+    m->log_in->eye->wid = wid;
 
 	gtk_init(NULL, NULL);
 	init_builder(wid);
-	init_widgets_start(wid, eye);
-	init_signals_start(wid, eye);
+	init_widgets_start(wid, m->log_in->eye);
+	init_signals_start(wid, m->log_in->eye);
 
     // g_object_unref(wid->builder);
 

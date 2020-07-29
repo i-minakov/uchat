@@ -64,7 +64,7 @@ void bad_act(t_wid *wid, int flag, int thred) {
 	if(flag == 3)
 		tmp = "Passwords mismatch";
 	if(flag == 4)
-		tmp = "PNG, JPG and JPEG formats acceptable";
+		tmp = "Only JPG format is acceptable";
 	if(flag == 5)
 		tmp = "The access to this photo is denied";
 	if(flag == 6)

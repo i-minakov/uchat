@@ -36,8 +36,7 @@ void add_sig_photo(GtkWidget *widget, t_wid *wid) {
 	(void)widget;
 	for (int i = 0; tmp[i]; i++) {
 		if(tmp[i] == '.') {
-			if (mx_strcmp(&tmp[i], ".png") == 0 || mx_strcmp(&tmp[i], ".jpg") == 0
-				|| mx_strcmp(&tmp[i], ".jpeg") == 0) {
+			if (mx_strcmp(&tmp[i], ".jpg")) {
 				wid->sig->sigfile = tmp;
 				if(show_photo(wid))
 				return ;
