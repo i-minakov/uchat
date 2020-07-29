@@ -21,7 +21,7 @@ void mx_add_popup_menu(int flag, t_msg *msg) {
     msg->menu = gtk_menu_new();
     gtk_widget_set_name(msg->menu, "rbut");
     g_signal_connect(msg->label, "button_press_event", G_CALLBACK(popup_menu), msg);
-    if (flag == 0 && (msg->my == false || msg->forward == 1))
+    if (flag == 0 && (msg->my == false || (msg->forward == 1 || msg->forward == 2)))
         i = 1;
     flag == 1 ? i = 2 : 0;
     flag == 2 ? i = 3 : 0;
