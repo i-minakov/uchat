@@ -67,7 +67,7 @@ t_msg *create_msg(char *text, char *filename) {
         gtk_button_set_label(GTK_BUTTON(new->label), new->text);
     }
     else 
-        mx_strdup(filename); 
+        new->filename = mx_strdup(filename); 
     return new;
 }
 
