@@ -42,10 +42,8 @@ void add_time(t_user *i, t_add_m *s) {
 static void mx_notif(t_add_m *s, t_user *i) { // PetFriend
     t_add_m *new = NULL;
 
-    if (s->my == false && i->m->set->notif_flag == 1) {
-        g_idle_add((GSourceFunc)mx_play_audio, "./source/resource/meow.wav ");
-        puts("++++\n");
-    }
+    if (s->my == false && i->m->set->notif_flag == 1)
+        g_idle_add((GSourceFunc)mx_play_audio, "./source/resource/meow.wav");
     if (s->my == true && !mx_strcmp(i->name, "PetFriend")) {
         new = create_struct("Sosi dick i kiday babki", false, 0, NULL);
         add_message(mx_user_by_name("PetFriend", MX_DEF_PHOTO, i->m), new, 
