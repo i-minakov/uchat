@@ -1,6 +1,6 @@
 NAME = uchat
 INC = ./inc/*.h
-SRC := $(wildcard src/*.c) $(wildcard src/daemon_voice/*.c) $(wildcard src/db/*.c) $(wildcard src/help/*.c) $(wildcard src/json_functions/*.c) $(wildcard src/server/*.c)
+SRC := $(wildcard src/*.c) $(wildcard src/daemon_voice/*.c) $(wildcard src/db/*.c) $(wildcard src/help/*.c) $(wildcard src/json_functions/*.c) $(wildcard src/server/*.c) $(wildcard src/client/*.c)
 OBJ = $(addprefix obj/, $(notdir $(SRC:%.c=%.o)))
 LIBMX = libmx/libmx.a
 PA = ./source/libportaudio/libportaudio.a
@@ -65,6 +65,10 @@ obj/%.o: src/json_functions/%.c $(INC)
 	@printf "\x1b[32mcompiled: \x1b[0m[$<]\n"
 
 obj/%.o: src/server/%.c $(INC)
+	@clang $(FLAGS) `pkg-config --cflags gtk+-3.0` -o $@ -c $<
+	@printf "\x1b[32mcompiled: \x1b[0m[$<]\n"
+
+obj/%.o: src/client/%.c $(INC)
 	@clang $(FLAGS) `pkg-config --cflags gtk+-3.0` -o $@ -c $<
 	@printf "\x1b[32mcompiled: \x1b[0m[$<]\n"
 
