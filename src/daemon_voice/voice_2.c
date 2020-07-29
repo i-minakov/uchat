@@ -61,8 +61,9 @@ void mx_save_snd_file(t_paTestData data, int numSamples, char *name) {
     sf_info.samplerate = SAMPLE_RATE;
     sf_info.format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;
     char *path = mx_super_join("./source/cash_", name, 0);
-    
+
     path = mx_super_join(path, ".wav", 1);
+    remove(path);
     SNDFILE *outfile = sf_open(path, SFM_WRITE, &sf_info);
     sf_count_t count = 0;
 
