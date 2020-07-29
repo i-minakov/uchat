@@ -1,4 +1,5 @@
 NAME = uchat
+NAME_SERVER = uchat_server
 INC = ./inc/*.h
 SRC := $(wildcard src/*.c) 					\
 	   $(wildcard src/daemon_voice/*.c) 	\
@@ -50,12 +51,25 @@ $(NAME): $(LIBMX) $(OBJ)
 	@clang $(FLAGS) `pkg-config --cflags --libs gtk+-3.0` 		\
 		   $(OBJ) $(LIBMX) $(PA) $(SF) $(OG) $(FC) $(VB) $(OP) 	\
 		   -o $(NAME) $(SQLITE) $(SSL) $(PTHREAD) $(ADD_FLAG)
+	@clang $(FLAGS) `pkg-config --cflags --libs gtk+-3.0` 		\
+		   $(OBJ) $(LIBMX) $(PA) $(SF) $(OG) $(FC) $(VB) $(OP) 	\
+		   -o $(NAME_SERVER) $(SQLITE) $(SSL) $(PTHREAD) $(ADD_FLAG)
 	@printf "\x1b[32;1m$(NAME) created\x1b[0m\n"
 
 $(LIBMX):
 	@make -C libmx
 
 $(OBJ): | obj
+
+client: $(LIBMX) $(OBJ)
+	@clang $(FLAGS) `pkg-config --cflags --libs gtk+-3.0` 		\
+		   $(OBJ) $(LIBMX) $(PA) $(SF) $(OG) $(FC) $(VB) $(OP) 	\
+		   -o $(NAME) $(SQLITE) $(SSL) $(PTHREAD) $(ADD_FLAG)
+
+server: $(LIBMX) $(OBJ)
+	@clang $(FLAGS) `pkg-config --cflags --libs gtk+-3.0` 		\
+		   $(OBJ) $(LIBMX) $(PA) $(SF) $(OG) $(FC) $(VB) $(OP) 	\
+		   -o $(NAME_SERVER) $(SQLITE) $(SSL) $(PTHREAD) $(ADD_FLAG)
 
 obj:
 	@mkdir obj
@@ -101,6 +115,7 @@ uninstall: clean
 	@make clean
 	@rm -rf ./obj
 	@rm -rf $(NAME)
+	@rm -rf $(NAME_SERVER)
 
 reinstall: uninstall install
 
