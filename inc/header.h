@@ -32,6 +32,7 @@
 #include "ssl.h"
 #include "uchat.h"
 
+#include "audio_heder.h"
 #include "portaudio.h"
 #include "sndfile.h"
 
