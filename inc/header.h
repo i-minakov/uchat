@@ -61,19 +61,25 @@ typedef struct s_paTestData{
 }              t_paTestData;
 
 // Client
-char *mx_right_path(t_info **info, t_files *files, t_client *client, char *name);
-void mx_client_send(t_client *client);
-void mx_sort_mssg(t_list **list, int flag);
-void mx_send_command(char *json, t_client *client);
-void mx_recv_len_theme(char ch[], t_client *client);
-void mx_client_recv_file(char ch[], t_client *client);
-void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client);
-void mx_recv_list_files(char ch[], t_info **info, t_files *files, t_client *client);
-void *mx_files(void *client_pointer);
-void *mx_client_read(void *client_pointer);
-int mx_monthcmp(char *month1, char *month2);
-int mx_intcmp(char *str1, char *str2);
+void mx_for_cash(char *json);
 int mx_client(int argc, char *argv[]);
+void mx_send_command(char *json, t_client *client);
+void *mx_files(void *client_pointer);
+int mx_pre_parse_time(char *json1, char *json2);
+int mx_intcmp(char *str1, char *str2);
+int mx_monthcmp(char *month1, char *month2);
+void mx_sort_mssg(t_list **list, int flag);
+void mx_client_send(t_client *client);
+void mx_hash_pass(char **json);
+void mx_recv_lan_theme(char ch[], t_client *client);
+char *mx_right_path(t_info **info, t_files *files, t_client *client, char *name);
+void mx_recv_list_files(char ch[], t_info **info, t_files *files, t_client *client);
+void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client);
+void mx_client_recv_file(char ch[], t_client *client);
+void *mx_client_read(void *client_pointer);
+void mx_get_request(char **json, t_client *client);
+t_data *mx_create_data(void);
+t_info *mx_create_info(void);
 
 // Server
 void mx_send_history_list(t_node **node, char *name, char *json);
@@ -117,6 +123,16 @@ int mx_arr_size(char **arr);
 
 // Ilay
 int mx_chat_screen(t_main **gtk);
+void mx_enter_argv(char ***arr, t_client *client);
+bool mx_check_file_format(char *path);
+void mx_move_to_part_dir(char *name, char *user);
+void mx_new_msg_back(t_user *us, t_list *list);
+bool mx_check_last_index(t_user *us, t_list *list);
+void check_edited(t_user *us, t_list *list, int size);
+void mx_check_rename(t_main *m, t_info *info);
+void mx_check_rcv_list(t_info *info, t_main *m);
+void mx_check_sigup(t_main *m);
+void mx_check_sigin(t_main *m);
 
 void mx_voice_save(char *path, t_main *m);
 int mx_recordcallback(const void *inputBuffer,
@@ -127,5 +143,11 @@ int mx_recordcallback(const void *inputBuffer,
                       void *userData);
 void mx_save_snd_file(t_paTestData data, int numSamples, char *path);
 int mx_daemon_state(int argc, char *argv[]);
+char *mx_path_down(t_main *m);
+bool mx_check_last_index(t_user *us, t_list *list);
+void check_edited(t_user *us, t_list *list, int size);
+void mx_check_rename(t_main *m, t_info *info);
+void mx_check_rcv_list(t_info *info, t_main *m);
+void mx_notif(t_add_m *s, t_user *i);
 
 #endif
