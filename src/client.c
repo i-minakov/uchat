@@ -303,6 +303,10 @@ static void mx_create_del_cash(char *name) {
     cmd = mx_super_join(cmd, "/chats", 1);
     mkdir(cmd, 0777);
     mx_strdel(&cmd);
+    cmd = mx_super_join("./source/cash_", name, 0);
+    cmd = mx_super_join(cmd, "/downloads", 1);
+    mkdir(cmd, 0777);
+    mx_strdel(&cmd);
 }
 void mx_for_cash(char *json) {
     char *cmd = mx_get_value(json, "command");
@@ -683,7 +687,7 @@ void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
         *info = mx_create_info();
     }
 }
-void mx_client_recv_file(char ch[], t_client *client) {
+void mx_client_recv_file(char ch[], t_client *client) { // hear
     if (ch[1] == 'E') {
         char *name = NULL;
 
@@ -703,11 +707,7 @@ void mx_client_recv_file(char ch[], t_client *client) {
         mx_check_file_size(client->for_files->file,
                            &client->for_files->file_size,
                            &client->for_files->file_name);
-        // mx_move_to_part_dir(client->gtk->save->filename,
-        //      client->gtk->save->path);
-        // mx_strdel(&client->gtk->save->filename);
-        // mx_strdel(&client->gtk->save->path);
-        // free(client->gtk->save);
+
     }
 }
 

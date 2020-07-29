@@ -134,24 +134,4 @@ int main(int argc, char *argv[]) {
 //     return result;
 // }
 
-/*static void mx_del_cash(void) {
-    char *path = "./";
-    DIR *dir;
-    struct dirent *entry;
 
-    dir = opendir(path);
-    while ((entry = readdir(dir)) != NULL)
-        if (mx_strstr(entry->d_name, "cash_") != NULL) {
-            char *full_path = mx_super_join(path, entry->d_name, 0);
-
-            mx_del_files(full_path);
-            remove(full_path);
-            mx_strdel(&full_path);
-        }
-    closedir(dir);
-}
-
-int main() {
-    mx_del_cash();
-    return 0;
-}*/
