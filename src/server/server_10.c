@@ -27,7 +27,8 @@ static t_node *mx_create_t_node(t_server server) {
     return node;
 }
 
-static void mx_server_properties(t_server *server, char *argv[], int argc) {
+static void mx_server_properties(t_server *server,
+                                 char *argv[], int argc) {
     int auditor = 0;
 
     auditor = argc;
@@ -40,30 +41,35 @@ static void mx_server_properties(t_server *server, char *argv[], int argc) {
     signal(SIGPIPE, SIG_IGN);
 }
 
-static void mx_server_sin_log(t_server server) {
-    pthread_create(&((t_node *)server.list->data)->thread,
-                   NULL, mx_server_handel, &server.list);
-    pthread_create(&((t_node *)server.list->data)->files,
-                   NULL, mx_server_files, &server.list);
+static void mx_server_sin_log(t_server server, t_node *node) {
+    socklen_t addr_size = sizeof(struct sockaddr_in);
+
+    node->client = accept(server.server,
+                          (struct sockaddr *)&node->client_addr, &addr_size);
+    server.list = NULL;
+    mx_push_back_t_way(&(server.list), (void *)node);
+    if (mx_server_handshake(&server) == 1)
+        mx_del_client(&server.list, (t_node **)&server.list->data,
+                      &server.list, 1);
+    else {
+        pthread_create(&((t_node *)server.list->data)->thread,
+                       NULL, mx_server_handel, &server.list);
+        pthread_create(&((t_node *)server.list->data)->files,
+                       NULL, mx_server_files, &server.list);
+    }
 }
 
 int mx_server(int argc, char *argv[]) {
     t_server server;
-    socklen_t addr_size = sizeof(struct sockaddr_in);
 
     mx_server_properties(&server, argv, argc);
-    bind(server.server, (struct sockaddr *)&server.server_addr, sizeof(server.server_addr));
+    bind(server.server, (struct sockaddr *)&server.server_addr,
+         sizeof(server.server_addr));
     while (1) {
         listen(server.server, 1);
         t_node *node = mx_create_t_node(server);
 
-        node->client = accept(server.server, (struct sockaddr *)&node->client_addr, &addr_size);        
-        server.list = NULL;
-        mx_push_back_t_way(&(server.list), (void *)node);
-        if (mx_server_handshake(&server) == 1)
-            mx_del_client(&server.list, (t_node **)&server.list->data, &server.list, 1);
-        else
-            mx_server_sin_log(server);
+        mx_server_sin_log(server, node);
     }
     pthread_mutex_destroy(&(server.mutex));
     close(server.server);

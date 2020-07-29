@@ -1,7 +1,8 @@
 #include "../../inc/header.h"
 
 /* reply forward */
-static int mx_reply_forward_adt(t_db *data, char *name_from, char *name_to, char *id) {
+static int mx_reply_forward_adt(t_db *data, char *name_from,
+                                char *name_to, char *id) {
     if (mx_open_db(data->flag, &data->db, &data->err_msg) == -1)
         return 1;
     data->command = NULL;
@@ -22,7 +23,8 @@ static int mx_reply_forward_adt(t_db *data, char *name_from, char *name_to, char
     return 0;
 }
 
-void mx_reply_forward(char *name_from, char *name_to, char *id, t_list **list) {
+void mx_reply_forward(char *name_from, char *name_to,
+                      char *id, t_list **list) {
     if (!name_to || !name_from || !id || !*list)
         return ;
     t_db data;

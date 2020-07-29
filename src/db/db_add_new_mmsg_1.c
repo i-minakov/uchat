@@ -24,7 +24,8 @@ bool mx_check_blacklist(char *name_from, char *name_to) {
     return false;
 }
 
-int mx_move_file(char *name_from, char *name_to, char *message, char *file_name) {
+int mx_move_file(char *name_from, char *name_to,
+                 char *message, char *file_name) {
     int result = 0;
     char *command = NULL;
     char *old = NULL;

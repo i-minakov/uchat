@@ -1,7 +1,8 @@
 #include "../../inc/header.h"
 
 /* change log */
-static int mx_change_path_table_adt(t_db *data, char *new_user, char *new_path) {
+static int mx_change_path_table_adt(t_db *data,
+                                    char *new_user, char *new_path) {
     data->command = "UPDATE Users SET Img = ? WHERE Name = ?";
     if (mx_open_db(data->flag, &data->db, &data->err_msg) == -1)
         return 1;
@@ -34,7 +35,8 @@ int mx_change_path_table(char *new_user, char *new_path) {
     return 0;
 }
 
-static int mx_change_ofol_adt(struct dirent *entry, char *name, char *user, char *new_user) {
+static int mx_change_ofol_adt(struct dirent *entry, char *name,
+                              char *user, char *new_user) {
     char *path = NULL;
     int result = 0;
 

@@ -1,6 +1,7 @@
 #include "../../inc/header.h"
 
-static void mx_mutex_first_adt(t_node **node, char *command, char **arr) {
+static void mx_mutex_first_adt(t_node **node,
+                               char *command, char **arr) {
     if (mx_strcmp(command, "mx_error") == 0)
         (*node)->exit = 0;
     else if (mx_strcmp(command, "mx_add_new_user") == 0) {
@@ -23,7 +24,8 @@ static void mx_mutex_first_adt(t_node **node, char *command, char **arr) {
             : mx_bites_str((*node)->ssl, "Can't delete user", 'B');
 }
 
-static void mx_mutex_second_adt(t_node **node, char *command, char **arr) {
+static void mx_mutex_second_adt(t_node **node,
+                                char *command, char **arr) {
     if (mx_strcmp(command, "mx_recv_new_mess") == 0) {
         t_input data;
 
@@ -43,7 +45,8 @@ static void mx_mutex_second_adt(t_node **node, char *command, char **arr) {
     }
 }
 
-static void mx_mutex_third_adt(t_node **node, char *command, char **arr) {
+static void mx_mutex_third_adt(t_node **node,
+                               char *command, char **arr) {
     if (mx_strcmp(command, "mx_del_history") == 0)
         mx_del_history(arr[0], arr[1]) == 0
             ? mx_bites_str((*node)->ssl, "mx_del_history", 'G')
@@ -66,7 +69,8 @@ static void mx_mutex_third_adt(t_node **node, char *command, char **arr) {
             : mx_bites_str((*node)->ssl, "Can't change password", 'B');
 }
 
-static void mx_mutex_fourth_adt(t_node **node, char *command, char **arr) {
+static void mx_mutex_fourth_adt(t_node **node,
+                                char *command, char **arr) {
     if (mx_strcmp(command, "mx_set_type") == 0)
         mx_set_type(arr[0], arr[1], mx_atoi(arr[2])) == 0
             ? mx_bites_str((*node)->ssl, "mx_set_type", 'G')

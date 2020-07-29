@@ -8,7 +8,8 @@ static void mx_close_voice(t_paTestData *data, PaError *err) {
         *err = 1;
 }
 
-static void mx_enter_data(t_paTestData *data, PaError *err, int *numSamples) {
+static void mx_enter_data(t_paTestData *data,
+                          PaError *err, int *numSamples) {
     int totalFrames;
     int numBytes;
 
@@ -23,7 +24,8 @@ static void mx_enter_data(t_paTestData *data, PaError *err, int *numSamples) {
         data->recordedSamples[i] = 0;
 }
 
-static void mx_enter_input(t_paTestData *data, PaError *err, PaStreamParameters *inputParameters) {
+static void mx_enter_input(t_paTestData *data, PaError *err,
+                           PaStreamParameters *inputParameters) {
     *err = Pa_Initialize();
     if (*err != paNoError)
         mx_close_voice(data, err);
@@ -36,7 +38,8 @@ static void mx_enter_input(t_paTestData *data, PaError *err, PaStreamParameters 
     inputParameters->hostApiSpecificStreamInfo = NULL;
 }
 
-static void mx_voice_check(t_paTestData *data, PaError *err, PaStream *stream) {
+static void mx_voice_check(t_paTestData *data,
+                           PaError *err, PaStream *stream) {
     if (*err != paNoError)
         mx_close_voice(data, err);
     *err = Pa_StartStream(stream);
@@ -61,7 +64,8 @@ void mx_voice_save(char *path, t_main *m) {
 
     mx_enter_data(&data, &err, &numSamples);
     mx_enter_input(&data, &err, &inputParameters);
-    err = Pa_OpenStream(&stream, &inputParameters, NULL, SAMPLE_RATE, FRAMES_PER_BUFFER, paClipOff, mx_recordcallback, &data);
+    err = Pa_OpenStream(&stream, &inputParameters, NULL,
+        SAMPLE_RATE, FRAMES_PER_BUFFER, paClipOff, mx_recordcallback, &data);
     mx_voice_check(&data, &err, stream);
     mx_save_snd_file(data, numSamples, path);
     mx_close_voice(&data, &err);

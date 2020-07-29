@@ -17,7 +17,8 @@ static int mx_find_last_mssg_adt(t_db *data, char *table) {
     return 0;
 }
 
-static void mx_find_last_mssg(char *table, char **message, char **time) {
+static void mx_find_last_mssg(char *table,
+                              char **message, char **time) {
     t_db data;
 
     if (mx_open_db(data.flag, &data.db, &data.err_msg) == -1)

@@ -12,7 +12,8 @@ static void mx_send_size_list(t_node **node, t_list *list) {
     mx_strdel(&str);
 }
 
-static int mx_send_user_f_s(char *img_path, FILE *file, t_node **node) {
+static int mx_send_user_f_s(char *img_path,
+                            FILE *file, t_node **node) {
     char *len = NULL;
     char **slesh = mx_strsplit(img_path, '/');
 
@@ -41,7 +42,8 @@ void mx_send_user_file(char *img_path, t_node **node) {
     }
 }
 
-void mx_send_answer_list(t_node **node, t_list *list, int hist_flag, char *json) {
+void mx_send_answer_list(t_node **node, t_list *list,
+                         int hist_flag, char *json) {
     t_list *i = list;
     t_table_list *data = NULL;
     char *cmd = mx_get_value(json, "command");

@@ -45,11 +45,14 @@ void mx_play_audio(char *path) {
                                  ,FRAMES_PER_BUFFER
                                  ,callback
                                  ,&data); /* our sndfile data struct */
+    g_idle_remove_by_data(path);
+    if (error != paNoError) {
+        return;
+    }
     error = Pa_StartStream(stream);
     while (Pa_IsStreamActive(stream))
         Pa_Sleep(100);
     sf_close(data.file);
     error = Pa_CloseStream(stream);
     error = Pa_Terminate();
-    g_idle_remove_by_data(path);
 }

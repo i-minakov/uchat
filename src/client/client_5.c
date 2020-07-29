@@ -21,7 +21,8 @@ t_info *mx_create_info(void) {
     return node;
 }
 
-char *mx_right_path(t_info **info, t_files *files, t_client *client, char *name) {
+char *mx_right_path(t_info **info, t_files *files,
+                    t_client *client, char *name) {
     char *path = NULL;
     char **arr = mx_strsplit(name, '.');
 
@@ -39,7 +40,8 @@ char *mx_right_path(t_info **info, t_files *files, t_client *client, char *name)
     return path;
 }
 
-void mx_recv_list_files(char ch[], t_info **info, t_files *files, t_client *client) {
+void mx_recv_list_files(char ch[], t_info **info,
+                        t_files *files, t_client *client) {
     if (ch[1] == 'S')
         mx_static_read(ch, &files->file_size);
     else if (ch[1] == 'N') {

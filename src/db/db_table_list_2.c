@@ -16,7 +16,8 @@ static t_table_list *mx_create_table_list(char *name) {
     return node;
 }
 
-static int mx_list_back(void *NotUsed, int argc, char **argv, char **azColName) {
+static int mx_list_back(void *NotUsed, int argc,
+                        char **argv, char **azColName) {
     char **s = NULL;
 
     s = azColName;
@@ -26,7 +27,8 @@ static int mx_list_back(void *NotUsed, int argc, char **argv, char **azColName) 
     return 0;
 }
 
-static int mx_send_list_back_adt(t_db *data, t_list **list, char *name, int flag) {
+static int mx_send_list_back_adt(t_db *data, t_list **list,
+                                 char *name, int flag) {
     if (mx_open_db(data->flag, &data->db, &data->err_msg) == -1)
         return 1;
     data->command = NULL;

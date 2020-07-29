@@ -1,7 +1,8 @@
 #include "../../inc/header.h"
 
 /* user search */
-static int mx_users(void *NotUsed, int argc, char **argv, char **azColName) {
+static int mx_users(void *NotUsed, int argc,
+                    char **argv, char **azColName) {
     char **s = NULL;
 
     s = azColName;

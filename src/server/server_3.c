@@ -11,7 +11,8 @@ static void mx_check_user_pass_adt(char **arr, t_node **node) {
     }
 }
 
-static t_list *mx_list_adition(char *command, char **arr, int *hist_flagh) {
+static t_list *mx_list_adition(char *command,
+                               char **arr, int *hist_flagh) {
     t_list *list = NULL;
 
     if (mx_strcmp(command, "mx_send_list_back") == 0)
@@ -26,7 +27,8 @@ static t_list *mx_list_adition(char *command, char **arr, int *hist_flagh) {
     return list;
 }
 
-static int mx_type_adition(char *command, char **arr, t_node **node, char **json) {
+static int mx_type_adition(char *command, char **arr,
+                           t_node **node, char **json) {
     if (mx_strcmp(command, "mx_get_type") == 0)
         return mx_get_type(arr[0], mx_atoi(arr[1]));
     else if (mx_strcmp(command, "mx_get_img_path") == 0) {
@@ -40,7 +42,8 @@ static int mx_type_adition(char *command, char **arr, t_node **node, char **json
     return -1;
 }
 
-static void mx_send_back_adt(t_node **node, t_list *list, char **json) {
+static void mx_send_back_adt(t_node **node,
+                             t_list *list, char **json) {
     if (!list
         && mx_check_json_cmd(*json, "command", "mx_send_list_back"))
         mx_bites_str((*node)->ssl, "mx_send_list_back", 'B');

@@ -18,7 +18,8 @@ static void mx_set_files_adt(t_files *file) {
     file->file_size = NULL;
 }
 
-static void mx_client_adt(char ch[], t_client *client, t_info **info, t_files *file) {
+static void mx_client_adt(char ch[], t_client *client,
+                          t_info **info, t_files *file) {
     if (ch[0] == 'T' || ch[0] == 'G' || ch[0] == 'B')
         mx_recv_lan_theme(ch, client);
     else if (mx_client_read_adt(ch))

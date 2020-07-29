@@ -24,7 +24,8 @@ static void mx_free_struct(t_node **node, int flag) {
     *node = NULL;
 }
 
-static void mx_unset_node_adt(t_way **list, t_way **next, t_way **back) {
+static void mx_unset_node_adt(t_way **list,
+                              t_way **next, t_way **back) {
     if ((*list)->next)
         (*next) = (*list)->next;
     if ((*list)->back)

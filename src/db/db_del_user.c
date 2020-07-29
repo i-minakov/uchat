@@ -18,7 +18,8 @@ static int mx_delete_in_other(char *name) {
     return result;
 }
 
-static int mx_delete_all_adt(struct dirent *entry, char *name, char *user, int flag) {
+static int mx_delete_all_adt(struct dirent *entry,
+                             char *name, char *user, int flag) {
     char *path = NULL;
     int result = 0;
 
@@ -74,4 +75,3 @@ int mx_delete_user(char *name) {
         return 1;
     return result;
 }
-

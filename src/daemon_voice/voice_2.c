@@ -1,6 +1,7 @@
 #include "../../inc/header.h"
 
-static void mx_call_first(t_paTestData *data, long *framesToCalc, int *finished, unsigned long framesPerBuffer) {
+static void mx_call_first(t_paTestData *data, long *framesToCalc,
+                          int *finished, unsigned long framesPerBuffer) {
     unsigned long framesLeft = data->maxFrameIndex - data->frameIndex;
 
     if (framesLeft < framesPerBuffer) {
@@ -23,7 +24,8 @@ static void mx_call_second(SAMPLE **wptr, long framesToCalc) {
     }
 }
 
-static void mx_call_third(SAMPLE **wptr, const SAMPLE **rptr, long framesToCalc) {
+static void mx_call_third(SAMPLE **wptr, const SAMPLE **rptr,
+                          long framesToCalc) {
     SAMPLE *s1 = *wptr;
     const SAMPLE *s2 = *rptr;
 
@@ -34,7 +36,10 @@ static void mx_call_third(SAMPLE **wptr, const SAMPLE **rptr, long framesToCalc)
     }
 }
 
-int mx_recordcallback(const void *inputBuffer, void *outputBuffer, unsigned long framesPerBuffer, const PaStreamCallbackTimeInfo *timeInfo, PaStreamCallbackFlags statusFlags, void *userData) {
+int mx_recordcallback(const void *inputBuffer, void *outputBuffer,
+                      unsigned long framesPerBuffer,
+                      const PaStreamCallbackTimeInfo *timeInfo,
+                      PaStreamCallbackFlags statusFlags, void *userData) {
     t_paTestData *data = (t_paTestData *)userData;
     const SAMPLE *rptr = (const SAMPLE *)inputBuffer;
     SAMPLE *wptr = &data->recordedSamples[data->frameIndex * NUM_CHANNELS];

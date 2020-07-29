@@ -1,7 +1,8 @@
 #include "../../inc/header.h"
 
 /* send history back */
-static int mx_history(void *NotUsed, int argc, char **argv, char **azColName) {
+static int mx_history(void *NotUsed, int argc,
+                      char **argv, char **azColName) {
     char **s = NULL;
 
     s = azColName;
@@ -23,7 +24,8 @@ static int mx_history(void *NotUsed, int argc, char **argv, char **azColName) {
     return 0;
 }
 
-static int mx_history_back_adt(t_db *data, char *name_from, char *name_to, char *size) {
+static int mx_history_back_adt(t_db *data, char *name_from,
+                               char *name_to, char *size) {
     if (mx_open_db(data->flag, &data->db, &data->err_msg) == -1)
         return 1;
     data->command = NULL;
@@ -32,7 +34,8 @@ static int mx_history_back_adt(t_db *data, char *name_from, char *name_to, char 
     data->command = mx_super_join(data->command, "_", 1);
     data->command = mx_super_join(data->command, name_to, 1);
     if (size) {
-        data->command = mx_super_join(data->command, " ORDER BY Id DESC LIMIT ", 1);
+        data->command =
+            mx_super_join(data->command, " ORDER BY Id DESC LIMIT ", 1);
         data->command = mx_super_join(data->command, size, 1);
     }
     return 0;
