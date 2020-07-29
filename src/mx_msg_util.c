@@ -1,18 +1,5 @@
 #include "../inc/uchat.h"
 
-// static void mx_reqw_save_file(t_main *m, t_msg *msg, char *tmp) {
-//     char *str = mx_itoa(msg->id);
-
-//     m->command = mx_arrjoin(m->command, "mx_get_img_path");
-//     m->command = mx_arrjoin(m->command, m->my_name);
-//     m->command = mx_arrjoin(m->command, msg->user->name);
-//     m->command = mx_arrjoin(m->command, str);
-//     mx_strdel(&str);
-//     m->save = (t_save *)malloc(sizeof(t_save) * 2);
-//     m->save->filename = mx_strdup(msg->text);
-//     m->save->path = mx_strdup(tmp);
-// }
-
 void save_file(GtkMenuItem *item, t_msg *msg) {
     char *str = mx_itoa(msg->id);
     t_main *m = msg->user->m;

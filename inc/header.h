@@ -118,7 +118,7 @@ int mx_arr_size(char **arr);
 // Ilay
 int mx_chat_screen(t_main **gtk);
 
-void mx_voice_save(char *path);
+void mx_voice_save(char *path, t_main *m);
 int mx_recordcallback(const void *inputBuffer,
                       void *outputBuffer,
                       unsigned long framesPerBuffer,
