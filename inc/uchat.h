@@ -291,7 +291,6 @@ typedef struct s_main {
     GtkWidget *micro_on;
     GtkWidget *micro_of;
     GtkWidget *micro_on_but;
-    GtkWidget *micro_of_but;
     int micro_flag;
 
     GtkWidget *fix_for_users;
@@ -416,7 +415,6 @@ void backto_pas(GtkEntry *entry, GtkEntryIconPosition icon_pos,
 void enter_pas(GtkWidget *widget, t_main *m);
 
 void micro_start(GtkWidget *w, t_main *m);
-void micro_end(GtkWidget *w, t_main *m);
 void icon_entr_set(t_main *m);
 void first_emo_set(t_main *m);
 void set_emo_tab(t_main *m);
@@ -474,6 +472,14 @@ typedef struct s_sign {
 	char *sigfile;
 } 			t_sign;
 
+typedef struct s_eye {
+	bool log;
+	bool sig;
+	bool sig2;
+    struct s_wid *wid;
+
+} 				t_eye;
+
 typedef struct s_wid {
     int start_flag;
     GtkCssProvider *cssProvider;
@@ -488,16 +494,9 @@ typedef struct s_wid {
 	GtkWidget *black_back;
     struct s_sign *sig;
     struct s_login *log;
+    struct s_eye *eye;
     struct s_main *m;
 } 			t_wid;
-
-typedef struct s_eye {
-	bool log;
-	bool sig;
-	bool sig2;
-    struct s_wid *wid;
-
-} 				t_eye;
 
 typedef struct s_sizefoto {
 		int x;

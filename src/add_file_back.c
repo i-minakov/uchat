@@ -42,6 +42,10 @@ void add_file_back(t_user *us, t_add_m *s, int stic, int count) {
     char **p = mx_strsplit(s->text, '/');
     char *name = NULL;
 
+    if (p)
+        name = p[mx_len_of_array(p) - 1];
+    else 
+        name = s->text;
     file_pushback(&us->msg, s);
     msg = mx_back_msg(us->msg);
     msg->id = s->id;

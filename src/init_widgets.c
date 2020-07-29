@@ -63,7 +63,7 @@ static void valid_widgets(t_wid *wid) {
 		("source/resource/gif/start.gif");
 	gtk_fixed_put(GTK_FIXED(wid->fixed), wid->start_gif, 5, 0);
 	wid->wait_gif = gtk_image_new_from_animation(wait);
-	gtk_fixed_put(GTK_FIXED(wid->fixed), wid->wait_gif, 5, 0);
+	gtk_fixed_put(GTK_FIXED(wid->fixed), wid->wait_gif, 372, 222);
 	// gtk_widget_show(wid->start_gif);
 	// gtk_widget_show(wid->wait_gif);
 }

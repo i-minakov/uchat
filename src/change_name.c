@@ -13,7 +13,6 @@ void change_name(GtkEntry *e, t_main *m) {
         m->command = mx_arrjoin(m->command, "mx_change_log");
         m->command = mx_arrjoin(m->command, m->my_name);
         m->command = mx_arrjoin(m->command, (char *)tmp);
-        printf("YES\n");
     }
 }
 

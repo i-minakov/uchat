@@ -30,17 +30,19 @@ void do_opening(t_wid *wid) {
 	g_idle_remove_by_data(wid);
 }
 
+
 int log_screen(t_main *m)
 {
 	int ex = 0;
 	t_wid *wid = m->log_in;
-	t_eye *eye = (t_eye *)malloc(sizeof(t_eye) * 4);
-    eye->wid = wid;
+	m->log_in->eye = (t_eye *)malloc(sizeof(t_eye) * 4);
+    m->log_in->eye->wid = wid;
 
 	gtk_init(NULL, NULL);
 	init_builder(wid);
-	init_widgets_start(wid, eye);
-	init_signals_start(wid, eye);
+	init_widgets_start(wid, m->log_in->eye);
+	init_signals_start(wid, m->log_in->eye);
     gtk_widget_show(wid->window); 
     return ex;
 }
+

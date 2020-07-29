@@ -220,7 +220,6 @@ static void init_signals_sec(t_main *m) {
     g_signal_connect(m->set->chan_pas, "activate", G_CALLBACK(change_pas), m);
     g_signal_connect(m->set->chan_ph, "clicked", G_CALLBACK(mx_change_my_photo), m);
     g_signal_connect(m->micro_on_but, "clicked", G_CALLBACK(micro_start), m);
-    g_signal_connect(m->micro_of_but, "clicked", G_CALLBACK(micro_end), m);
     set_dots_signal(m->dots);
 }
 void init_signals(t_main *m) {
