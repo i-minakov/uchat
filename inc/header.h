@@ -31,8 +31,8 @@
 #include "database.h"
 #include "ssl.h"
 #include "uchat.h"
-#include "portaudio.h"
-#include "sndfile.h"
+// #include "portaudio.h"
+// #include "sndfile.h"
 
 #define FLAG 100
 #define TIMER 1000
