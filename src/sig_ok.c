@@ -43,6 +43,7 @@ void sig_ok(GtkWidget *widget, t_wid *wid) {
 			wid->m->command = mx_arrjoin(wid->m->command, "mx_update");
 			wid->m->command = mx_arrjoin(wid->m->command, "user");
 			wid->m->command = mx_arrjoin(wid->m->command, wid->sig->signame);
+			gtk_widget_hide(wid->sig->sig_but);
 			gtk_widget_show(wid->wait_gif);
 			wid->m->cmd = CHECK_US;
 		}

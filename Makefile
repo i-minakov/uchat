@@ -47,6 +47,7 @@ all: $(NAME)
 install: $(NAME)
 
 $(NAME): $(LIBMX) $(OBJ)
+	@chmod 777 ./source/create_database.sh
 	@./source/create_database.sh
 	@make clean
 	@clang $(FLAGS) `pkg-config --cflags --libs gtk+-3.0` 		\
@@ -56,7 +57,6 @@ $(NAME): $(LIBMX) $(OBJ)
 		   $(OBJ) $(LIBMX) $(PA) $(SF) $(OG) $(FC) $(VB) $(OP) 	\
 		   -o $(NAME_SERVER) $(SQLITE) $(SSL) $(PTHREAD) $(ADD_FLAG)
 	@printf "\x1b[32;1m$(NAME) created\x1b[0m\n"
-#@chmod 777 ./source/create_database.sh
 
 $(LIBMX):
 	@make -C libmx
@@ -118,24 +118,24 @@ uninstall: clean
 	@rm -rf ./obj
 	@rm -rf $(NAME)
 	@rm -rf $(NAME_SERVER)
+	@chmod 777 ./source/del_cash.sh
 	@./source/del_cash.sh
 	@rm -rf database.db
 	@rm -rf database
-#@chmod 777 ./source/del_cash.sh
 
 reinstall: uninstall install
 
 keys:
+	@chmod 777 ./source/compiler_script.sh
 	@./source/compiler_script.sh
-#@chmod 777 ./source/compiler_script.sh
 
 db:
+	@chmod 777 ./source/create_database.sh
 	@./source/create_database.sh
-#@chmod 777 ./source/create_database.sh
 
 del_cash:
+	@chmod 777 ./source/del_cash.sh
 	@./source/del_cash.sh
-#@chmod 777 ./source/del_cash.sh
 
 del_keys:
 	@rm -rf ./source/keys

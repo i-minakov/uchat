@@ -75,4 +75,3 @@ int mx_server(int argc, char *argv[]) {
     close(server.server);
     return 0;
 }
-

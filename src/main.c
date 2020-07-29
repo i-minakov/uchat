@@ -14,7 +14,8 @@ static char *last_slash(char *s) {
 
 int main(int argc, char *argv[]) {
     if (!strcmp(last_slash(argv[0]), "uchat_server")) {
-        return mx_daemon_state(argc, argv);
+        // return mx_daemon_state(argc, argv);
+        return mx_server(argc, argv);
     }
     else {
         return mx_client(argc, argv);
@@ -131,19 +132,17 @@ int main(int argc, char *argv[]) {
     return result;
 }*/
 
-// int main() {
-//     int result = 0;
+/*int main() {
+    int result = 0;
 
-//     result += mx_add_new_user("Yarik", "Yarik", "Yarik.jpg");
-//     result += mx_add_new_user("Ilya", "Ilya", "Ilya.jpg");
-//     result += mx_add_new_user("Olya", "Olya", "Olya.jpg");
-//     result += mx_add_new_user("PetFriend", "PetFriend", "PetFriend.jpg");
+    result += mx_add_new_user("Yarik", "Yarik", "Yarik.jpg");
+    result += mx_add_new_user("Ilya", "Ilya", "Ilya.jpg");
+    result += mx_add_new_user("Olya", "Olya", "Olya.jpg");
+    result += mx_add_new_user("PetFriend", "PetFriend", "PetFriend.jpg");
 
-//     result += mx_copy("./Yarik.jpg", "./../database/Yarik/Yarik.jpg");
-//     result += mx_copy("./Ilya.jpg", "./../database/Ilya/Ilya.jpg");
-//     result += mx_copy("./Olya.jpg", "./../database/Olya/Olya.jpg");
-//     result += mx_copy("./PetFriend.jpg", "./../database/PetFriend/PetFriend.jpg");
-//     return result;
-// }
-
-
+    result += mx_copy("./Yarik.jpg", "./../database/Yarik/Yarik.jpg");
+    result += mx_copy("./Ilya.jpg", "./../database/Ilya/Ilya.jpg");
+    result += mx_copy("./Olya.jpg", "./../database/Olya/Olya.jpg");
+    result += mx_copy("./PetFriend.jpg", "./../database/PetFriend/PetFriend.jpg");
+    return result;
+}*/

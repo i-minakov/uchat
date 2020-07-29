@@ -29,6 +29,8 @@ static void hide_something(t_main *m) {
     gtk_widget_hide(m->dots->fix_dot_menu);
     gtk_widget_hide(m->forw->fix_forw);
     gtk_widget_hide(m->search);
+    gtk_widget_hide(m->micro_of);
+    gtk_widget_hide(m->micro_on_but);
 }
 
 static void check_cmd(t_main *m) {
