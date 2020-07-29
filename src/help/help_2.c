@@ -46,7 +46,9 @@ void mx_free_node(t_way **list) {
     *list = NULL;
 }
 
-void *mx_mom(void *restrict dst, const void *restrict src, size_t n, size_t i) {
+void *mx_mom(void *restrict dst,
+             const void *restrict src,
+             size_t n, size_t i) {
     unsigned char *d = (unsigned char *)dst;
     unsigned char *s = (unsigned char *)src;
 

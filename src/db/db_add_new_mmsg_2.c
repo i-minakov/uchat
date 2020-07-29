@@ -1,6 +1,7 @@
 #include "../../inc/header.h"
 
-static char *mx_other_mssg(char *name_from, char *name_to, char *message, int flag) {
+static char *mx_other_mssg(char *name_from, char *name_to,
+                           char *message, int flag) {
     char *path = NULL;
     char **arr = NULL;
 

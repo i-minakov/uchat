@@ -1,6 +1,7 @@
 #include "../../inc/header.h"
 
-static void mx_recv_file_adt(FILE *file, char **size, char **name, t_client *client) {
+static void mx_recv_file_adt(FILE *file, char **size,
+                             char **name, t_client *client) {
     if (file && name && size && *size && *name) {
         int len = 0;
 

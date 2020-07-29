@@ -46,7 +46,8 @@ int mx_client(int argc, char *argv[]) {
     client.mutex = &mutex;
     mx_client_properties(&client, argv);
     inet_pton(AF_INET, argv[2], &client.addr.sin_addr);
-    connect(client.socket, (struct sockaddr *)&client.addr, sizeof(client.addr));
+    connect(client.socket,
+        (struct sockaddr *)&client.addr, sizeof(client.addr));
     if (mx_client_handshake(&client) == 1) {
         fprintf(stderr, "Client's certificate and key don't match\n");
         return 1;

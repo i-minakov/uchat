@@ -1,7 +1,8 @@
 #include "../../inc/header.h"
 
 /* edit message */
-static char *mx_edit_cmd_adt(char *name_from, char *name_to, char *new_mssg, char *id) {
+static char *mx_edit_cmd_adt(char *name_from, char *name_to,
+                             char *new_mssg, char *id) {
     char *command = NULL;
 
     command = mx_super_join("UPDATE ", name_from, 0);
@@ -18,7 +19,8 @@ static char *mx_edit_cmd_adt(char *name_from, char *name_to, char *new_mssg, cha
     return command;
 }
 
-static int mx_edit_adt(char *name_from, char *name_to, char *new_mssg, char *id) {
+static int mx_edit_adt(char *name_from, char *name_to,
+                       char *new_mssg, char *id) {
     char *command = NULL;
     int result = 0;
     char *str_switch = NULL;

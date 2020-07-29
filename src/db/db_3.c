@@ -13,7 +13,8 @@ int mx_folder(char *name) {
 }
 
 /* get list of all tables */
-static int mx_tables(void *NotUsed, int argc, char **argv, char **azColName) {
+static int mx_tables(void *NotUsed, int argc,
+                     char **argv, char **azColName) {
     char **s = NULL;
 
     s = azColName;

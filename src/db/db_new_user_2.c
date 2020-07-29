@@ -23,7 +23,8 @@ static int mx_add_new_user_adt(t_db *data, char *name, char *pass) {
     return 0;    
 }
 
-static int mx_add_new_user_last_adt(t_db *data, char *name, char *img_name) {
+static int mx_add_new_user_last_adt(t_db *data,
+                                    char *name, char *img_name) {
     if (data->flag != SQLITE_DONE
         || mx_user_tables(name) != 0
         || mx_folder(name) != 0

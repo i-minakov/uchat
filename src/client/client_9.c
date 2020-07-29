@@ -31,7 +31,8 @@ int mx_monthcmp(char *month1, char *month2) {
     return 0;
 }
 
-static void mx_sort_mssg_adt(int flag, t_list *i, char **str1, char **str2) {
+static void mx_sort_mssg_adt(int flag, t_list *i,
+                             char **str1, char **str2) {
     if (flag == 0) {
         *str1 = (char *)((t_data *)i->data)->list->data;
         *str2 = (char *)((t_data *)i->next->data)->list->data;

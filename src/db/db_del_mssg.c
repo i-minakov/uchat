@@ -1,7 +1,8 @@
 #include "../../inc/header.h"
 
 /* delete message */
-static int mx_del_message_adt(char *name_from, char *name_to, char *id) {
+static int mx_del_message_adt(char *name_from,
+                              char *name_to, char *id) {
     int result = 0;
     char *new_command = NULL;
 

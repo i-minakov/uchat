@@ -1,7 +1,8 @@
 #include "../../inc/header.h"
 
 /* down load file */
-static int mx_get_img_path_adt(t_db *data, char *name, char *another_name, int id) {
+static int mx_get_img_path_adt(t_db *data, char *name,
+                               char *another_name, int id) {
     if (mx_open_db(data->flag, &data->db, &data->err_msg) == -1)
         return 1;
     data->command = NULL;
@@ -23,7 +24,8 @@ static int mx_get_img_path_adt(t_db *data, char *name, char *another_name, int i
     return 0;
 }
 
-char *mx_get_img_path(char *name, char *another_name, int id, char **img_name) {
+char *mx_get_img_path(char *name, char *another_name,
+                      int id, char **img_name) {
     t_db data;
     char *path = NULL;
 

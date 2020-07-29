@@ -1,6 +1,7 @@
 #include "../../inc/header.h"
 
-static int mx_json_add_object(cJSON **cmd_name, char *str1, char *str2) {
+static int mx_json_add_object(cJSON **cmd_name,
+                              char *str1, char *str2) {
     cJSON *check = NULL;
 
     if (str2)
@@ -14,7 +15,8 @@ static int mx_json_add_object(cJSON **cmd_name, char *str1, char *str2) {
     return 0;
 }
 
-static void mx_json_add_arr_adt(cJSON **argument, char **position, int i) {
+static void mx_json_add_arr_adt(cJSON **argument,
+                                char **position, int i) {
     *argument = cJSON_CreateObject();
     *position = mx_itoa(i + 1);
 }

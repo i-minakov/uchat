@@ -15,7 +15,8 @@ static void mx_copy_struct(t_history **first, t_history *second) {
     (*first)->r_f_time = NULL;
 }
 
-t_list *mx_mssg_search(char *name, char *another_name, char *part_mssg, char *size) {
+t_list *mx_mssg_search(char *name, char *another_name,
+                       char *part_mssg, char *size) {
     if (!name || !another_name || !part_mssg)
         return NULL;
     t_list *list = mx_history_back(name, another_name, NULL);

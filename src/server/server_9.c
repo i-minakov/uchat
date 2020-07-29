@@ -1,7 +1,8 @@
 #include "../../inc/header.h"
 
 /* handel for files */
-static int mx_send_size_name(t_node *node, FILE *file, char *img_name) {
+static int mx_send_size_name(t_node *node,
+                             FILE *file, char *img_name) {
     char *len = NULL;
 
     fseek(file, 0, SEEK_END);

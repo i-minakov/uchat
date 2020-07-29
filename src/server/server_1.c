@@ -11,7 +11,8 @@ static void mx_rep_for_mssg(char ***arr, t_list *node, int flag) {
                             ? ((t_history *)node->data)->forward : "NULL"));
 }
 
-static void mx_send_history_line_adt(t_list *node, char *from, char *to, char ***arr) {
+static void mx_send_history_line_adt(t_list *node, char *from,
+                                     char *to, char ***arr) {
     if (mx_strcmp(((t_history *)node->data)->mssg_id, "NULL") != 0
         && mx_strcmp(((t_history *)node->data)->forward, "NULL") == 0) {
         mx_reply_forward(from, to, ((t_history *)node->data)->mssg_id, &node);
@@ -24,7 +25,8 @@ static void mx_send_history_line_adt(t_list *node, char *from, char *to, char **
     }
 }
 
-static void mx_send_history_line(t_list **list, char *from, char *to, SSL *ssl) {
+static void mx_send_history_line(t_list **list, char *from,
+                                 char *to, SSL *ssl) {
     char *command = NULL;
     char **arr = NULL;
     char *json;

@@ -22,7 +22,8 @@ static void mx_sort_recv_list(t_info **info) {
         mx_sort_mssg(&(*info)->list, 0);
 }
 
-static void mx_recv_list_adt(char ch[], t_info **info, t_files *files, t_client *client) {
+static void mx_recv_list_adt(char ch[], t_info **info,
+                             t_files *files, t_client *client) {
     if (ch[0] == 'I')
         mx_recv_list_files(ch, info, files, client);
     else if (ch[0] == 'S')
@@ -45,7 +46,8 @@ static void mx_recv_list_adt(char ch[], t_info **info, t_files *files, t_client 
     }
 }
 
-void mx_recv_list(char ch[], t_info **info, t_files *files, t_client *client) {
+void mx_recv_list(char ch[], t_info **info,
+                  t_files *files, t_client *client) {
     if (ch[0] == 'C') {
         mx_strdel(&(*info)->cmd);
         mx_static_read(ch, &(*info)->cmd);
