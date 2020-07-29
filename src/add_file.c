@@ -17,21 +17,11 @@ static void msg_file_pushfront(t_msg **head, t_add_m *s) {
 void file_check(t_msg **msg, char *name, bool my) {
     t_msg *t = *msg;
 
-    // if (mx_strstr(tmp, ".jpg") || mx_strstr(tmp, ".jpeg")
-    //     || mx_strstr(tmp, ".gif")) {
-    //         if (mx_strstr(tmp, ".gif"))
-    //             t->file = gtk_image_new_from_file(tmp);
-    //         else 
-    //             t->file = resize_image(tmp, 200, 200);
-    //         gtk_button_set_image(GTK_BUTTON(t->label), t->file);
-    // }
-    // else {
-        t->file = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-        MX_BOX_START(t->file, gtk_image_new_from_file("./source/resource/load image.png"));
-        gtk_box_pack_start(GTK_BOX(t->file), gtk_label_new(name), FALSE, FALSE, 10); 
-        gtk_container_add(GTK_CONTAINER(t->label), t->file);
-        mx_idle_show(my, t->label);
-    // }
+    t->file = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    MX_BOX_START(t->file, gtk_image_new_from_file("./source/resource/load image.png"));
+    gtk_box_pack_start(GTK_BOX(t->file), gtk_label_new(name), FALSE, FALSE, 10); 
+    gtk_container_add(GTK_CONTAINER(t->label), t->file);
+    mx_idle_show(my, t->label);
 }
 
 static void send_file(t_user *us, t_add_m *s, t_msg *t) {
@@ -45,6 +35,18 @@ static void send_file(t_user *us, t_add_m *s, t_msg *t) {
     mx_idle_show(s->my, wid);   
     us->row++;
     mx_add_popup_menu(t->stic, t);
+}
+
+static void check_sticer(int stic, t_add_m *s, t_msg *t, char *name) {
+    if (stic == 1) {
+        file_check(&t, name, s->my);
+        send_file(t->user, s, t);
+    }
+    else {
+        t->file = gtk_image_new_from_file(s->text);
+        gtk_button_set_image(GTK_BUTTON(t->label), t->file);
+        send_file(t->user, s, t);
+    }
 }
 
 void add_file(t_user *us, t_add_m *s, int stic, int id) {
@@ -62,14 +64,6 @@ void add_file(t_user *us, t_add_m *s, int stic, int id) {
     t->user = us;
     t->id = mx_id_for_msg(us, id);
     t->stic = stic;
-    if (stic == 1) {
-        file_check(&t, name, s->my);
-        send_file(us, s, t);
-    }
-    else {
-        t->file = gtk_image_new_from_file(s->text);
-        gtk_button_set_image(GTK_BUTTON(t->label), t->file);
-        send_file(us, s, t);
-    }
+    check_sticer(stic, s, t, name);
     mx_del_strarr(&p);
 }

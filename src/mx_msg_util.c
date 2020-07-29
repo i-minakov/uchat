@@ -1,28 +1,32 @@
 #include "../inc/uchat.h"
 
+static void mx_reqw_file(t_main *m, t_msg *msg) {
+    char *str = mx_itoa(msg->id);
+    t_save *save = m->save;
+
+    m->command = mx_arrjoin(m->command, "mx_get_img_path");
+    m->command = mx_arrjoin(m->command, m->my_name);
+    m->command = mx_arrjoin(m->command, msg->user->name);
+    m->command = mx_arrjoin(m->command, str);
+    mx_strdel(&str);
+    save = (t_save *)malloc(sizeof(t_save) * 2);
+    save->filename = mx_strdup(msg->text);
+}
+
 void save_file(GtkMenuItem *item, t_msg *msg) {
     GtkWidget *dialog;
     GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER;
     gchar *tmp = NULL;
-    char *str = NULL;
-    t_main *m = msg->user->m;
-    t_save *save = m->save;
 
     (void)item;
-    dialog = gtk_file_chooser_dialog_new ("Save File", GTK_WINDOW(msg->user->m->window), action, ("_Cancel"), 
+    dialog = gtk_file_chooser_dialog_new ("Save File", 
+                        GTK_WINDOW(msg->user->m->window), action, ("_Cancel"), 
                         GTK_RESPONSE_CANCEL, ("_Save"), GTK_RESPONSE_ACCEPT, NULL);
     if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
         GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
-        tmp = gtk_file_chooser_get_filename (chooser);
-        str = mx_itoa(msg->id);
-        m->command = mx_arrjoin(m->command, "mx_get_img_path");
-        m->command = mx_arrjoin(m->command, m->my_name);
-        m->command = mx_arrjoin(m->command, msg->user->name);
-        m->command = mx_arrjoin(m->command, str);
-        mx_strdel(&str);
-        save = (t_save *)malloc(sizeof(t_save) * 2);
-        save->path = mx_strdup(tmp);
-        save->filename = mx_strdup(msg->text);
+        tmp = gtk_file_chooser_get_filename(chooser);
+        mx_reqw_file(msg->user->m);
+        msg->user->m->save->path = mx_strdup(tmp);
     }
     gtk_widget_destroy(dialog);
 }
@@ -47,16 +51,6 @@ void delete_msg(GtkMenuItem *item, t_msg *msg) {
     m->command = mx_arrjoin(m->command, id);
     free(msg);
     msg = NULL;
-}
-
-void popup_menu(GtkButton *widget, GdkEventButton  *event, t_msg *msg) {
-    (void)widget;
-    if (event->button != 1) {
-        gtk_menu_popup_at_widget(GTK_MENU(msg->menu), (msg->label), GDK_GRAVITY_SOUTH_WEST, 
-            GDK_GRAVITY_SOUTH_EAST, (GdkEvent *)event);
-    }
-    else if (msg->filename != NULL && msg->stic != 2)
-        save_file(NULL, msg);
 }
 
 t_msg *create_msg(char *text, char *filename) {

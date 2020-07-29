@@ -100,24 +100,7 @@ bool mx_check_last_index(t_user *us, t_list *list) {
 }
 
 /* edit and delete */
-static void check_deleted(t_user *us, t_list *list, int size) {
-    char *cmd = NULL;
-    int j = mx_atoi(us->exist_id->data);
-
-    if (list == NULL || list->next == NULL || 
-            size/10 != us->m->count_reqw_del || j == 0) {
-        us->m->count_reqw_del++;
-        return;
-    }
-    for (t_list *i = list->next; i->data; i = i->next) {
-        cmd = mx_get_value(i->data, "command");
-        if (j != mx_atoi(cmd) && mx_msg_by_id(us, mx_atoi(cmd)))
-            delete_msg(NULL, mx_msg_by_id(us, mx_atoi(cmd)));
-        mx_strdel(&cmd); 
-        j--;
-    }
-}
-void reset_edit_msg(t_msg *edited, char **arr) {
+static void reset_edit_msg(t_msg *edited, char **arr) {
     mx_strdel(&edited->text);
     edited->text = mx_strdup(arr[TXT]);
     gtk_widget_destroy(edited->label);
@@ -148,6 +131,23 @@ void check_edited(t_user *us, t_list *list, int size) {
         mx_del_strarr(&arr);
     }
     us->m->count_reqw_edit = 0;
+}
+void check_deleted(t_user *us, t_list *list, int size) {
+    char *cmd = NULL;
+    int j = mx_atoi(us->exist_id->data);
+
+    if (list == NULL || list->next == NULL || 
+            size/10 != us->m->count_reqw_del || j == 0) {
+        us->m->count_reqw_del++;
+        return;
+    }
+    for (t_list *i = list->next; i->data; i = i->next) {
+        cmd = mx_get_value(i->data, "command");
+        if (j != mx_atoi(cmd) && mx_msg_by_id(us, mx_atoi(cmd)))
+            delete_msg(NULL, mx_msg_by_id(us, mx_atoi(cmd)));
+        mx_strdel(&cmd); 
+        j--;
+    }
 }
 void mx_check_rename(t_main *m, t_info *info) {
     char *name = NULL;
