@@ -8,11 +8,9 @@ static void user_recipient(GtkWidget *wid, t_user *us) {
     gtk_widget_hide(fm->f->fix_forw);
     if (fm->text) {
         if (fm->was_forw == 0) 
-            us->m->text = mx_delit_fre(mx_delit_fre(
+            fm->text = mx_cooljoin(mx_delit_fre(
                 mx_strjoin("forwared by ", fm->autor), ":\n"), fm->text);
-        else
-            us->m->text = fm->text;
-        s->text = us->m->text;
+        s->text = fm->text;
         s->forw_from = mx_strdup(fm->autor);
         mx_del_strarr(&us->m->command);
         add_message(us, s, us->msg->next->id + 1);
@@ -21,6 +19,7 @@ static void user_recipient(GtkWidget *wid, t_user *us) {
     else 
         add_file(us, s, fm->stic, 
             us->msg->next ? us->msg->next->id + 1 : 1);
+    mx_strdel(&s->text);
     free(s);
     reset_users(us->m);
     gtk_widget_destroy(fm->f->grid_forw);
@@ -75,7 +74,7 @@ void forward_msg(GtkMenuItem *item, t_msg *msg) {
     (void)item;
     f->fm = (t_msg_forw *)malloc(sizeof(t_msg_forw) * 10);
     f->fm->f = f;    
-    f->fm->text = msg->text;
+    f->fm->text = mx_strdup(msg->text);
     f->fm->was_forw = msg->forward;
     f->fm->filename = msg->filename;
     f->fm->autor = msg->user->name;

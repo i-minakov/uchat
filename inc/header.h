@@ -91,6 +91,6 @@ void *mx_mom(void *restrict dst, const void *restrict src, size_t n, size_t i);
 int mx_arr_size(char **arr);
 
 // Ilay
-int chat_screen(t_main **gtk);
+int mx_chat_screen(t_main **gtk);
 
 #endif

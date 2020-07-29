@@ -37,18 +37,16 @@ static t_msg *msg_new(t_add_m *s, t_user *i) {
 }
 
 void add_message_back(t_user *i, t_add_m *s, int count, int id) {
-    GtkWidget *wid;
     t_msg *msg = msg_new(s, i);
 
     msg->id = id;
     msg->count = count;
-    wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
-    gtk_widget_set_size_request(wid, 650, 30);
+    msg->box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
+    gtk_widget_set_size_request(msg->box, 650, 30);
     add_time(i, s);
-    MX_MSG_PACK(s->my, msg->label, wid);
+    MX_MSG_PACK(s->my, msg->label, msg->box);
     MX_SET_NAME_MSG(s->my, msg->label);
-    gtk_grid_attach_next_to(GTK_GRID(i->text_grid), wid, NULL, GTK_POS_TOP, 1, 1);
-    mx_idle_show(false, wid);
-    reset_l_mess(i);
+    gtk_grid_attach_next_to(GTK_GRID(i->text_grid), msg->box, NULL, GTK_POS_TOP, 1, 1);
+    mx_idle_show(false, msg->box);
     free(s);
 }

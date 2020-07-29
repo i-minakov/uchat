@@ -328,15 +328,13 @@ typedef struct s_main {
     struct s_save *save;
 }              t_main;
 
-int chat_screen(t_main **gtk);
+int mx_chat_screen(t_main **gtk);
 int log_screen(t_main *m);
-int interface();
 
 void mx_hide(GtkWidget *w);
 void mx_show(GtkWidget *wid);
 t_main *malloc_main();
 t_user *mx_create_user(char *name, char *path);
-void user_pushback(t_user **head, char *name);
 void free_users(t_user **list);
 void set_users(t_main *m);
 void reset_users(t_main *m);

@@ -25,14 +25,12 @@ void file_check(t_msg **msg, char *name, bool my) {
 }
 
 static void send_file(t_user *us, t_add_m *s, t_msg *t) {
-    GtkWidget *wid;
-
-    wid = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 900);
-    gtk_widget_set_size_request(wid, 630, 30);
-    MX_MSG_PACK(s->my, t->label, wid);
+    t->box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 900);
+    gtk_widget_set_size_request(t->box, 630, 30);
+    MX_MSG_PACK(s->my, t->label, t->box);
     MX_SET_NAME_MSG(s->my, t->label);
-    gtk_grid_attach(GTK_GRID(us->text_grid), wid, 0, t->count, 1, 1);
-    mx_idle_show(s->my, wid);   
+    gtk_grid_attach(GTK_GRID(us->text_grid), t->box, 0, t->count, 1, 1);
+    mx_idle_show(s->my, t->box);   
     us->row++;
     mx_add_popup_menu(t->stic, t);
 }
@@ -65,5 +63,6 @@ void add_file(t_user *us, t_add_m *s, int stic, int id) {
     t->id = mx_id_for_msg(us, id);
     t->stic = stic;
     check_sticer(stic, s, t, name);
+    MX_SCROL_END(us->m);
     mx_del_strarr(&p);
 }

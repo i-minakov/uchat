@@ -34,6 +34,8 @@ void add_sig_photo(GtkWidget *widget, t_wid *wid) {
 	gchar *tmp = make_chooser(wid);
 	
 	(void)widget;
+	if (tmp == NULL)
+		return;
 	for (int i = 0; tmp[i]; i++) {
 		if(tmp[i] == '.') {
 			if (mx_strcmp(&tmp[i], ".png") == 0 || mx_strcmp(&tmp[i], ".jpg") == 0

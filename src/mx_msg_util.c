@@ -1,34 +1,28 @@
 #include "../inc/uchat.h"
 
-static void mx_reqw_file(t_main *m, t_msg *msg) {
+// static void mx_reqw_save_file(t_main *m, t_msg *msg, char *tmp) {
+//     char *str = mx_itoa(msg->id);
+
+//     m->command = mx_arrjoin(m->command, "mx_get_img_path");
+//     m->command = mx_arrjoin(m->command, m->my_name);
+//     m->command = mx_arrjoin(m->command, msg->user->name);
+//     m->command = mx_arrjoin(m->command, str);
+//     mx_strdel(&str);
+//     m->save = (t_save *)malloc(sizeof(t_save) * 2);
+//     m->save->filename = mx_strdup(msg->text);
+//     m->save->path = mx_strdup(tmp);
+// }
+
+void save_file(GtkMenuItem *item, t_msg *msg) {
     char *str = mx_itoa(msg->id);
-    t_save *save = m->save;
+    t_main *m = msg->user->m;
+    (void)item;
 
     m->command = mx_arrjoin(m->command, "mx_get_img_path");
     m->command = mx_arrjoin(m->command, m->my_name);
     m->command = mx_arrjoin(m->command, msg->user->name);
     m->command = mx_arrjoin(m->command, str);
     mx_strdel(&str);
-    save = (t_save *)malloc(sizeof(t_save) * 2);
-    save->filename = mx_strdup(msg->text);
-}
-
-void save_file(GtkMenuItem *item, t_msg *msg) {
-    GtkWidget *dialog;
-    GtkFileChooserAction action = GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER;
-    gchar *tmp = NULL;
-
-    (void)item;
-    dialog = gtk_file_chooser_dialog_new ("Save File", 
-                        GTK_WINDOW(msg->user->m->window), action, ("_Cancel"), 
-                        GTK_RESPONSE_CANCEL, ("_Save"), GTK_RESPONSE_ACCEPT, NULL);
-    if (gtk_dialog_run(GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT) {
-        GtkFileChooser *chooser = GTK_FILE_CHOOSER (dialog);
-        tmp = gtk_file_chooser_get_filename(chooser);
-        mx_reqw_file(msg->user->m, msg);
-        msg->user->m->save->path = mx_strdup(tmp);
-    }
-    gtk_widget_destroy(dialog);
 }
 
 void delete_msg(GtkMenuItem *item, t_msg *msg) {
@@ -61,17 +55,19 @@ t_msg *create_msg(char *text, char *filename) {
     new->count = 0;
     new->stic = 0;
     new->user = NULL;
-    new->filename = filename;
+    new->filename = NULL;
     new->text = NULL;
     new->time = NULL;
+    new->label = gtk_button_new();
     if (!text && !filename)
         return new;
-    new->label = gtk_button_new();
     gtk_widget_set_size_request(new->label, 100, 30);
     if (text) {
         new->text = mx_strdup(text);
         gtk_button_set_label(GTK_BUTTON(new->label), new->text);
-    } 
+    }
+    else 
+        mx_strdup(filename); 
     return new;
 }
 
