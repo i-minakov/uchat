@@ -4,6 +4,7 @@ static void mx_recv_file_adt(FILE *file, char **size,
                              char **name, t_client *client) {
     if (file && name && size && *size && *name) {
         int len = 0;
+        char *wav = NULL;
 
         fclose(file);
         file = fopen(*name, "rb");
@@ -15,6 +16,10 @@ static void mx_recv_file_adt(FILE *file, char **size,
         fclose(file);
         file = NULL;
         mx_move_to_part_dir(*name, client->gtk->my_name);
+        if (mx_get_substr_index(*name, ".wav") > 0) {
+            wav = mx_delit_fre(mx_path_down(client->gtk), "recodered.wav");
+            g_idle_add((GSourceFunc)mx_play_audio, wav);
+        }
         mx_strdel(size);
         mx_strdel(name);
     }

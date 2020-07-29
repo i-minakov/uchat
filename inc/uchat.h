@@ -268,7 +268,6 @@ typedef struct s_search
     struct s_search *next;
 }              t_search;
 
-
 typedef struct s_main {
     GtkCssProvider *css;
     GtkCssProvider *css2;
@@ -314,6 +313,7 @@ typedef struct s_main {
     int count_reqw_edit;
     int count_reqw_del;
     int bl;
+    struct s_list *voice_msg;
     struct s_forward *forw;
     struct s_dot_menu *dots;
     struct s_cap *cap;
@@ -386,6 +386,27 @@ void result_msg(t_list *list, t_main *m);
 void mx_add_popup_menu(int flag, t_msg *msg);
 int mx_id_for_msg(t_user *us, int id);
 bool mx_check_file_format(char *path);
+void show_setings(GtkWidget *wid, t_main *m);
+void hide_setings(GtkWidget *wid, t_main *m);
+void show_hide_dots_menu(GtkWidget *wid, t_dots *d);
+void show_search_msg(GtkWidget *w, t_main *m);
+void show_search_users(GtkWidget *w, t_main *m);
+void show_search_contacts(GtkWidget *w, t_main *m);
+void close_search(GtkEntry *entry, GtkEntryIconPosition icon_pos, 
+                GdkEvent *event, t_main *m);
+void mx_reset_my_photo(char *path, t_main *m);
+void mx_change_my_photo(GtkWidget *w, t_main *m);
+void mx_increase_msg_list(GtkScrolledWindow *scrol_bar, 
+                            GtkPositionType pos, t_main *m);
+void mx_reqw_for_bl(GtkWidget *wid, t_main *m);
+void clear_history(GtkWidget *wid, t_main *m);
+void block_user(GtkWidget *wid, t_main *m);
+void mx_log_out(GtkWidget *w, t_main *m);
+void init_signals(t_main *m);
+void init_components(t_main *m);
+char *str_for_msg(t_add_m *s);
+void result_contacts(t_list *list, t_main *m);
+
 
 void init_main_stuff(t_main *m);
 void init_menu(t_main *m);
@@ -431,6 +452,7 @@ void attach_file(GtkEntry *entry, GtkEntryIconPosition icon_pos,
                 GdkEvent *event, t_main *m);
 void mx_exit(GtkWidget *object, t_main *m);
 void mx_voice(t_main *m);
+void mx_notif(t_add_m *s, t_user *i);
 
 /////////////////////////////////////////////////////////////////////////////
 // Olya login screen

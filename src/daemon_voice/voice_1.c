@@ -54,12 +54,13 @@ static void mx_voice_check(t_paTestData *data,
         mx_close_voice(data, err);
 }
 
-void mx_voice_save(char *path) {
+void mx_voice_save(char *path, t_main *m) {
     PaStreamParameters inputParameters;
     PaStream *stream;
     PaError err = paNoError;
     t_paTestData data;
     int numSamples;
+    t_add_m *s = create_struct("recodered.wav", true, 0, NULL);
 
     mx_enter_data(&data, &err, &numSamples);
     mx_enter_input(&data, &err, &inputParameters);
@@ -68,5 +69,9 @@ void mx_voice_save(char *path) {
     mx_voice_check(&data, &err, stream);
     mx_save_snd_file(data, numSamples, path);
     mx_close_voice(&data, &err);
+    add_file(mx_activ_us(m), s, 1, mx_activ_us(m)->exist_id ? 
+            mx_atoi(mx_activ_us(m)->exist_id->data) + 1 : 1);
+    command_msg(mx_activ_us(m), s, 1);
+    free(s);
 }
 

@@ -134,8 +134,7 @@ void mx_check_rcv_list(t_info *info, t_main *m);
 void mx_check_sigup(t_main *m);
 void mx_check_sigin(t_main *m);
 
-// Voice
-void mx_voice_save(char *path);
+void mx_voice_save(char *path, t_main *m);
 int mx_recordcallback(const void *inputBuffer,
                       void *outputBuffer,
                       unsigned long framesPerBuffer,
@@ -144,5 +143,11 @@ int mx_recordcallback(const void *inputBuffer,
                       void *userData);
 void mx_save_snd_file(t_paTestData data, int numSamples, char *path);
 int mx_daemon_state(int argc, char *argv[]);
+char *mx_path_down(t_main *m);
+bool mx_check_last_index(t_user *us, t_list *list);
+void check_edited(t_user *us, t_list *list, int size);
+void mx_check_rename(t_main *m, t_info *info);
+void mx_check_rcv_list(t_info *info, t_main *m);
+void mx_notif(t_add_m *s, t_user *i);
 
 #endif
