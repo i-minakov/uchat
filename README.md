@@ -14,10 +14,10 @@ Uchat - messaging app with local connection, which worked on Unix systems.
 **Server and client requests**
 ## Developers:
 
-[Andrii Basystyi](https://github.com/vorobeyka)
-
 [Olha Lytvynenko](https://github.com/hlgltvnnk)
 
 [Ilya Minakov](https://github.com/i-minakov)
+
+[Andrii Basystyi](https://github.com/vorobeyka)
 
 [Yaroslav Ohrudkov](https://github.com/yohrudkov)
